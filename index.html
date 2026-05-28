@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Mega Quiz by Arif Hussain</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            height: 100dvh;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            z-index: 0;
+            pointer-events: auto;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: #fff;
+            width: 90%;
+            max-width: 600px;
+            pointer-events: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5), 0 0 60px rgba(180, 200, 255, 0.35);
+            margin-bottom: 2px;
+            letter-spacing: 1px;
+            pointer-events: none;
+        }
+        .by-line {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 34px;
+            opacity: 0.75;
+            color: #ccc;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+        }
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+            gap: 18px;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 18px;
+        }
+        .class-card {
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: none;
+            border-radius: 0;
+            padding: 8px 4px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+        .class-card::before {
+            display: none;
+        }
+        .class-card:hover,
+        .class-card:active {
+            background: transparent;
+            transform: translateY(-4px);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 30px rgba(180, 200, 255, 0.7);
+            border: none;
+            box-shadow: none;
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+            .class-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+            .class-card {
+                font-size: 0.8rem;
+                padding: 6px 2px;
+            }
+        }
+        .install-btn {
+            margin-top: 4px;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 11px 28px;
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+            display: none;
+            letter-spacing: 0.4px;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(30, 58, 138, 0.5);
+        }
+        .install-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            box-shadow: 0 8px 28px rgba(37, 99, 235, 0.6);
+            transform: translateY(-2px);
+        }
+        .footer-fixed {
+            position: fixed;
+            bottom: 12px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+            pointer-events: auto;
+            font-size: 0.7rem;
+            color: #ccc;
+            text-shadow: 0 0 8px rgba(255,255,255,0.3);
+            opacity: 0.8;
+            letter-spacing: 0.3px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="container">
+        <h1>Mega Quiz</h1>
+        <p class="by-line">By Arif Hussain</p>
+        <div class="class-grid">
+            <a href="class5.html" class="class-card">🎒 Class 5</a>
+            <a href="class6.html" class="class-card">📘 Class 6</a>
+            <a href="class7.html" class="class-card">📗 Class 7</a>
+            <a href="class8.html" class="class-card">📙 Class 8</a>
+            <a href="class9.html" class="class-card">📕 Class 9</a>
+            <a href="class10.html" class="class-card">📓 Class 10</a>
+            <a href="competitive.html" class="class-card">🏆 Competitive</a>
+        </div>
+        <button class="install-btn" id="installButton" style="display:none;">📲 অ্যাপ হিসেবে ইনস্টল করো</button>
+    </div>
+
+    <div class="footer-fixed">
+        📧 arifbeldanga@gmail.com &nbsp;|&nbsp; 💬 Telegram: @beldanga1
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(() => {});
+            });
+        }
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('installButton');
+            installBtn.style.display = 'inline-block';
+            installBtn.addEventListener('click', () => {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => {
+                    deferredPrompt = null;
+                    installBtn.style.display = 'none';
+                });
+            });
+        });
+    </script>
+
+    <script>
+        (function() {
+            const canvas = document.getElementById('bgCanvas');
+            const ctx = canvas.getContext('2d');
+            let w, h, dpr;
+
+            const mainBH = { x: 0, y: 0, eventHorizonRadius: 30, mass: 5000, photonRingRadius: 35 };
+            let stars = [];
+            const STAR_COUNT = 600;
+            const LARGE_STAR_COUNT = 6; // exactly 6 large stars (2x size)
+
+            let diskParticles = [];
+            const DISK_PARTICLE_COUNT = 180;
+            const DISK_VIEW_ANGLE = Math.PI / 3.2;
+
+            let userBlackHoles = [];
+
+            const mouse = {
+                x: -9999, y: -9999,
+                down: false,
+                holdStartTime: 0,
+                holdX: -9999, holdY: -9999,
+                holding: false,
+                activeGrowingBH: null,
+                lastClickTime: 0,
+                lastClickX: -9999, lastClickY: -9999,
+                isTouch: false,
+            };
+
+            let planets = [];
+            let nebulae = [];
+
+            function initPlanetsAndNebulae() {
+                planets = [
+                    {
+                        relX: 0.18, relY: 0.22,
+                        radius: 0,
+                        color1: '#d4a373', color2: '#b5835a',
+                        ringColor: 'rgba(210,180,140,0.7)',
+                        ringWidth: 0
+                    },
+                    {
+                        relX: 0.82, relY: 0.68,
+                        radius: 0,
+                        color1: '#6d8aa3', color2: '#4a6274',
+                        ringColor: null,
+                        ringWidth: 0
+                    }
+                ];
+                nebulae = [
+                    { relX: 0.3, relY: 0.25, sizeX: 0, sizeY: 0, color: 'rgba(100,60,150,0.08)', opacity: 0.6 },
+                    { relX: 0.75, relY: 0.65, sizeX: 0, sizeY: 0, color: 'rgba(30,80,140,0.07)', opacity: 0.55 },
+                    { relX: 0.5, relY: 0.8, sizeX: 0, sizeY: 0, color: 'rgba(120,40,80,0.06)', opacity: 0.5 }
+                ];
+                updatePlanetSizes();
+            }
+
+            function updatePlanetSizes() {
+                const minDim = Math.min(w, h);
+                for (let p of planets) {
+                    p.radius = minDim * 0.035;
+                    p.ringWidth = p.radius * 0.6;
+                }
+                for (let n of nebulae) {
+                    n.sizeX = w * 0.35;
+                    n.sizeY = h * 0.3;
+                }
+                planets[0].x = w * planets[0].relX;
+                planets[0].y = h * planets[0].relY;
+                planets[1].x = w * planets[1].relX;
+                planets[1].y = h * planets[1].relY;
+                nebulae[0].x = w * nebulae[0].relX;
+                nebulae[0].y = h * nebulae[0].relY;
+                nebulae[1].x = w * nebulae[1].relX;
+                nebulae[1].y = h * nebulae[1].relY;
+                nebulae[2].x = w * nebulae[2].relX;
+                nebulae[2].y = h * nebulae[2].relY;
+            }
+
+            function resize() {
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                w = canvas.width = window.innerWidth * dpr;
+                h = canvas.height = window.innerHeight * dpr;
+                canvas.style.width = window.innerWidth + 'px';
+                canvas.style.height = window.innerHeight + 'px';
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.scale(dpr, dpr);
+                w = window.innerWidth;
+                h = window.innerHeight;
+                mainBH.x = w * 0.5;
+                mainBH.y = h * 0.35;
+                mainBH.eventHorizonRadius = Math.min(w, h) * 0.048;
+                mainBH.photonRingRadius = mainBH.eventHorizonRadius * 1.18;
+                mainBH.mass = mainBH.eventHorizonRadius * 160;
+                createStars();
+                createDiskParticles();
+                initPlanetsAndNebulae();
+                updatePlanetSizes();
+            }
+
+            function createStars() {
+                stars = [];
+                const bh = mainBH;
+                const clusterRadius = Math.min(w, h) * 0.6;
+                const orbitalFraction = 0.80;
+                const staticFraction = 0.15;
+
+                for (let i = 0; i < STAR_COUNT; i++) {
+                    const typeRand = Math.random();
+                    let x, y, vx, vy;
+                    const baseSize = Math.random() * 1.8 + 0.3;
+                    // default size multiplier 1
+                    let sizeMultiplier = 1;
+
+                    if (typeRand < orbitalFraction) {
+                        const angle = Math.random() * Math.PI * 2;
+                        const dist = bh.eventHorizonRadius * 2.0 + Math.pow(Math.random(), 0.5) * (clusterRadius - bh.eventHorizonRadius * 2);
+                        x = bh.x + Math.cos(angle) * dist;
+                        y = bh.y + Math.sin(angle) * dist;
+                        const v_orbit = Math.sqrt(bh.mass * 0.03 / dist);
+                        const tx = -Math.sin(angle);
+                        const ty = Math.cos(angle);
+                        vx = tx * v_orbit;
+                        vy = ty * v_orbit;
+                    } else if (typeRand < orbitalFraction + staticFraction) {
+                        const angle = Math.random() * Math.PI * 2;
+                        const dist = clusterRadius * 1.1 + Math.random() * (Math.max(w, h) * 0.5 - clusterRadius * 1.1);
+                        x = bh.x + Math.cos(angle) * dist;
+                        y = bh.y + Math.sin(angle) * dist;
+                        vx = (Math.random() - 0.5) * 0.05;
+                        vy = (Math.random() - 0.5) * 0.05;
+                    } else {
+                        x = Math.random() * w;
+                        y = Math.random() * h;
+                        vx = (Math.random() - 0.5) * 0.5;
+                        vy = (Math.random() - 0.5) * 0.5;
+                    }
+
+                    stars.push({
+                        x, y, vx, vy,
+                        size: baseSize,
+                        sizeMultiplier: sizeMultiplier, // will set some to 2 later
+                        brightness: Math.random(),
+                        twinkleSpeed: Math.random() * 0.015 + 0.004,
+                        twinkleOffset: Math.random() * Math.PI * 2,
+                    });
+                }
+
+                // Mark exactly LARGE_STAR_COUNT random stars as 2x size
+                const indices = Array.from({length: STAR_COUNT}, (_, i) => i);
+                for (let i = indices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [indices[i], indices[j]] = [indices[j], indices[i]];
+                }
+                for (let k = 0; k < LARGE_STAR_COUNT; k++) {
+                    const idx = indices[k];
+                    if (stars[idx]) {
+                        stars[idx].sizeMultiplier = 2;
+                    }
+                }
+            }
+
+            function createDiskParticles() {
+                diskParticles = [];
+                const bh = mainBH;
+                for (let i = 0; i < DISK_PARTICLE_COUNT; i++) {
+                    const t = Math.random();
+                    const radius = bh.eventHorizonRadius * (1.4 + t * t * 4.5);
+                    const angle = Math.random() * Math.PI * 2;
+                    const baseSpeed = 0.022 / Math.sqrt((radius - bh.eventHorizonRadius * 0.7) / bh.eventHorizonRadius + 0.35);
+                    const speed = baseSpeed * (0.8 + Math.random() * 0.35);
+                    diskParticles.push({
+                        radius, angle, speed,
+                        size: Math.random() * 1.2 + 0.3,
+                        brightness: 0.45 + Math.random() * 0.4,
+                        colorShift: Math.random(),
+                    });
+                }
+                diskParticles.sort((a, b) => a.radius - b.radius);
+            }
+
+            function getAllBlackHoles() {
+                const all = [{ x: mainBH.x, y: mainBH.y, mass: mainBH.mass, radius: mainBH.eventHorizonRadius, isMain: true }];
+                for (const ubh of userBlackHoles) {
+                    if (ubh.alive && ubh.radius > 0.3) {
+                        all.push({ x: ubh.x, y: ubh.y, mass: ubh.mass, radius: ubh.radius, isMain: false, ref: ubh });
+                    }
+                }
+                return all;
+            }
+
+            function applyGravity(star, allBH) {
+                for (const bh of allBH) {
+                    const dx = bh.x - star.x;
+                    const dy = bh.y - star.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const isUserBH = bh.ref && bh.ref.alive;
+                    const forceMultiplier = isUserBH ? 3.5 : 1.0;
+                    const minDist = bh.radius * 1.6;
+                    if (dist < minDist && dist > 0.01) {
+                        const force = bh.mass / (dist * dist + 8) * 0.05 * forceMultiplier;
+                        star.vx += (dx / dist) * force;
+                        star.vy += (dy / dist) * force;
+                    } else if (dist > minDist && dist < bh.radius * 16) {
+                        const force = bh.mass / (dist * dist) * 0.03 * forceMultiplier;
+                        star.vx += (dx / dist) * force;
+                        star.vy += (dy / dist) * force;
+                    }
+                    if (dist < bh.radius * 0.75 && bh.radius > 2) {
+                        if (bh.ref && bh.ref.alive) {
+                            respawnStarFromEdge(star, bh.ref);
+                            bh.ref.particlesConsumed = (bh.ref.particlesConsumed || 0) + 1;
+                        } else {
+                            star.x = Math.random() * w;
+                            star.y = Math.random() * h;
+                            star.vx = (Math.random() - 0.5) * 0.4;
+                            star.vy = (Math.random() - 0.5) * 0.4;
+                        }
+                    }
+                }
+            }
+
+            function respawnStarFromEdge(star, userBH) {
+                const bhx = userBH.x;
+                const bhy = userBH.y;
+                const edge = Math.floor(Math.random() * 4);
+                let nx, ny;
+                const margin = 15;
+                if (edge === 0) { nx = margin; ny = Math.random() * h; }
+                else if (edge === 1) { nx = w - margin; ny = Math.random() * h; }
+                else if (edge === 2) { nx = Math.random() * w; ny = margin; }
+                else { nx = Math.random() * w; ny = h - margin; }
+
+                star.x = nx;
+                star.y = ny;
+                const dx = bhx - nx;
+                const dy = bhy - ny;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 1) return;
+
+                const radialDirX = dx / dist;
+                const radialDirY = dy / dist;
+                const tangentialDirX = -radialDirY;
+                const tangentialDirY = radialDirX;
+
+                const orbitSpeed = 2.5 + Math.random() * 1.8;
+                const radialPull = 0.6 + Math.random() * 0.9;
+
+                star.vx = radialDirX * radialPull + tangentialDirX * orbitSpeed;
+                star.vy = radialDirY * radialPull + tangentialDirY * orbitSpeed;
+
+                const speedLimit = 4.5;
+                const currentSpeed = Math.sqrt(star.vx*star.vx + star.vy*star.vy);
+                if (currentSpeed > speedLimit) {
+                    const scale = speedLimit / currentSpeed;
+                    star.vx *= scale;
+                    star.vy *= scale;
+                }
+            }
+
+            function applyMouseRepulsion(star) {
+                if (mouse.x < -500 || mouse.y < -500) return;
+                const dx = star.x - mouse.x;
+                const dy = star.y - mouse.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const repelRadius = 150;
+                if (dist < repelRadius && dist > 0.5) {
+                    const strength = 3200 / (dist * dist + 180);
+                    const force = Math.min(strength, 2.5);
+                    star.vx += (dx / dist) * force * 0.035;
+                    star.vy += (dy / dist) * force * 0.035;
+                }
+                if (dist < 35 && dist > 0.3) {
+                    const forceClose = 5.5 / (dist + 2.5);
+                    star.vx += (dx / dist) * forceClose * 0.07;
+                    star.vy += (dy / dist) * forceClose * 0.07;
+                }
+            }
+
+            function updateStars() {
+                const allBH = getAllBlackHoles();
+                for (const star of stars) {
+                    applyGravity(star, allBH);
+                    applyMouseRepulsion(star);
+                    star.vx *= 0.999;
+                    star.vy *= 0.999;
+                    const speed = Math.sqrt(star.vx * star.vx + star.vy * star.vy);
+                    if (speed > 5.5) {
+                        const scale = 5.5 / speed;
+                        star.vx *= scale;
+                        star.vy *= scale;
+                    }
+                    star.x += star.vx;
+                    star.y += star.vy;
+                    if (star.x < -20) star.x = w + 20;
+                    if (star.x > w + 20) star.x = -20;
+                    if (star.y < -20) star.y = h + 20;
+                    if (star.y > h + 20) star.y = -20;
+                }
+            }
+
+            function updateDiskParticles() {
+                for (const p of diskParticles) {
+                    p.angle += p.speed;
+                    if (p.angle > Math.PI * 2) p.angle -= Math.PI * 2;
+                }
+            }
+
+            function updateUserBlackHoles() {
+                for (let i = userBlackHoles.length - 1; i >= 0; i--) {
+                    const ubh = userBlackHoles[i];
+                    if (!ubh.alive) {
+                        userBlackHoles.splice(i, 1);
+                        continue;
+                    }
+                    if (ubh.growing) {
+                        ubh.radius += (ubh.targetRadius - ubh.radius) * 0.1;
+                        ubh.mass = ubh.radius * 90;
+                        if (ubh.radius > ubh.targetRadius - 0.2) {
+                            ubh.radius = ubh.targetRadius;
+                            ubh.growing = false;
+                        }
+                    }
+                    if (!ubh.growing && ubh.fading && ubh.radius > 0.2) {
+                        ubh.radius *= 0.982;
+                        ubh.mass = ubh.radius * 90;
+                        ubh.alpha *= 0.982;
+                        if (ubh.radius < 0.4) ubh.alive = false;
+                    }
+                    if (!ubh.growing && !ubh.fading && ubh.holdReleased) {
+                        ubh.fading = true;
+                        ubh.holdReleased = false;
+                    }
+                    if (!ubh.growing && !ubh.fading && !ubh.fromHold) {
+                        ubh.lifetime -= 0.016;
+                        if (ubh.lifetime <= 0) ubh.fading = true;
+                    }
+                }
+            }
+
+            function drawPlanetsAndNebulae() {
+                for (const n of nebulae) {
+                    const grad = ctx.createRadialGradient(n.x, n.y, n.sizeX * 0.1, n.x, n.y, n.sizeX);
+                    grad.addColorStop(0, n.color);
+                    grad.addColorStop(1, 'rgba(0,0,0,0)');
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.ellipse(n.x, n.y, n.sizeX, n.sizeY, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                for (const p of planets) {
+                    const grad = ctx.createRadialGradient(p.x - p.radius * 0.3, p.y - p.radius * 0.3, p.radius * 0.1, p.x, p.y, p.radius);
+                    grad.addColorStop(0, p.color1);
+                    grad.addColorStop(1, p.color2);
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                    if (p.ringColor) {
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, p.radius * 1.9, p.radius * 0.45, 0, 0, Math.PI * 2);
+                        ctx.strokeStyle = p.ringColor;
+                        ctx.lineWidth = p.ringWidth;
+                        ctx.stroke();
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, p.radius * 1.5, p.radius * 0.3, 0, 0, Math.PI * 2);
+                        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+                        ctx.lineWidth = p.ringWidth * 0.5;
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+                }
+            }
+
+            function renderMainBlackHole() {
+                const bh = mainBH;
+                const cx = bh.x, cy = bh.y;
+                const rEvent = bh.eventHorizonRadius;
+                const rPhoton = bh.photonRingRadius;
+                const diskTilt = DISK_VIEW_ANGLE;
+                const cosTilt = Math.cos(diskTilt);
+
+                const haloGrad = ctx.createRadialGradient(cx, cy, rEvent * 0.8, cx, cy, rEvent * 4);
+                haloGrad.addColorStop(0, 'rgba(20,30,60,0)');
+                haloGrad.addColorStop(0.3, 'rgba(40,80,160,0.04)');
+                haloGrad.addColorStop(0.6, 'rgba(60,100,200,0.02)');
+                haloGrad.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.beginPath();
+                ctx.arc(cx, cy, rEvent * 4, 0, Math.PI * 2);
+                ctx.fillStyle = haloGrad;
+                ctx.fill();
+
+                const farParticles = [];
+                const nearParticles = [];
+                for (const p of diskParticles) {
+                    const angle = p.angle;
+                    const r = p.radius;
+                    const diskX = r * Math.cos(angle);
+                    const diskZ = r * Math.sin(angle);
+                    const screenX = cx + diskX;
+                    const screenY = cy + diskZ * cosTilt;
+                    const behind = diskZ * Math.sin(diskTilt);
+                    const distFromCenter = Math.sqrt(diskX * diskX + (diskZ * cosTilt) * (diskZ * cosTilt));
+                    const particleData = {
+                        screenX, screenY, behind, distFromCenter,
+                        r, angle, size: p.size, brightness: p.brightness,
+                        colorShift: p.colorShift, speed: p.speed
+                    };
+                    if (behind > 0 && distFromCenter < rEvent * 4.2) {
+                        const lensStrength = behind / (distFromCenter + rEvent * 0.5) * rEvent * 2;
+                        particleData.screenY -= lensStrength;
+                        particleData.lensed = true;
+                        farParticles.push(particleData);
+                    } else {
+                        nearParticles.push(particleData);
+                    }
+                }
+
+                for (const p of farParticles) {
+                    const alpha = Math.min(p.brightness * 0.7, 0.8);
+                    const col = getDiskColor(p.colorShift, p.speed, p.angle, true);
+                    ctx.fillStyle = col.replace('1)', `${alpha})`).replace('rgb', 'rgba');
+                    ctx.beginPath();
+                    ctx.arc(p.screenX, p.screenY, p.size * 1.1, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.beginPath();
+                ctx.arc(cx, cy, rEvent, 0, Math.PI * 2);
+                ctx.fillStyle = 'black';
+                ctx.fill();
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(cx, cy, rPhoton, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(210,230,255,0.9)';
+                ctx.lineWidth = 2.2;
+                ctx.shadowColor = 'rgba(180,210,255,0.8)';
+                ctx.shadowBlur = 8;
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(cx, cy, rPhoton - 1, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+                ctx.lineWidth = 1;
+                ctx.shadowBlur = 4;
+                ctx.stroke();
+                ctx.restore();
+
+                for (const p of nearParticles) {
+                    const alpha = Math.min(p.brightness, 0.85);
+                    const col = getDiskColor(p.colorShift, p.speed, p.angle, false);
+                    ctx.fillStyle = col.replace('1)', `${alpha})`).replace('rgb', 'rgba');
+                    ctx.beginPath();
+                    ctx.arc(p.screenX, p.screenY, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.ellipse(cx, cy - rEvent * 0.45, rEvent * 2.6, rEvent * 0.3, 0, Math.PI * 0.2, Math.PI * 0.8);
+                ctx.strokeStyle = 'rgba(180,200,240,0.2)';
+                ctx.lineWidth = rEvent * 0.25;
+                ctx.shadowColor = 'rgba(130,160,210,0.3)';
+                ctx.shadowBlur = 16;
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.ellipse(cx, cy + rEvent * 0.1, rEvent * 2.5, rEvent * 0.25, 0, Math.PI * 1.1, Math.PI * 1.9);
+                ctx.strokeStyle = 'rgba(200,170,130,0.25)';
+                ctx.lineWidth = rEvent * 0.2;
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            function getDiskColor(colorShift, speed, angle, isFarSide) {
+                const dopplerFactor = Math.sin(angle);
+                const r = 0.5 + colorShift * 0.3 + Math.max(0, dopplerFactor) * 0.35;
+                const g = 0.4 + colorShift * 0.2 + Math.abs(dopplerFactor) * 0.2;
+                const b = 0.55 + (1 - colorShift) * 0.35 - Math.max(0, dopplerFactor) * 0.15;
+                const brightness = 0.65 + Math.abs(dopplerFactor) * 0.3;
+                const fr = Math.min(1, r * brightness);
+                const fg = Math.min(1, g * brightness);
+                const fb = Math.min(1, b * brightness);
+                if (isFarSide) return `rgb(${Math.floor(fr*200)},${Math.floor(fg*180)},${Math.floor(fb*230)})`;
+                return `rgb(${Math.floor(fr*220)},${Math.floor(fg*190)},${Math.floor(fb*210)})`;
+            }
+
+            function renderUserBlackHoles() {
+                for (const ubh of userBlackHoles) {
+                    if (!ubh.alive || ubh.radius < 0.3) continue;
+                    const cx = ubh.x, cy = ubh.y, r = ubh.radius, alpha = ubh.alpha;
+                    const haloGrad = ctx.createRadialGradient(cx, cy, r * 0.4, cx, cy, r * 3);
+                    haloGrad.addColorStop(0, `rgba(30,40,70,${0.05*alpha})`);
+                    haloGrad.addColorStop(0.5, `rgba(50,80,150,${0.03*alpha})`);
+                    haloGrad.addColorStop(1, 'rgba(0,0,0,0)');
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, r * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = haloGrad;
+                    ctx.fill();
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, r * 1.15, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(200,220,255,${0.65*alpha})`;
+                    ctx.lineWidth = Math.max(0.8, r * 0.05);
+                    ctx.shadowColor = `rgba(140,180,220,${0.5*alpha})`;
+                    ctx.shadowBlur = r * 0.25;
+                    ctx.stroke();
+                    ctx.restore();
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0,0,0,${1*alpha})`;
+                    ctx.fill();
+                    if (ubh.particlesConsumed > 0 && ubh.radius > 4) {
+                        const sparkCount = Math.floor(ubh.particlesConsumed);
+                        for (let s = 0; s < Math.min(sparkCount, 10); s++) {
+                            const sa = Math.random() * Math.PI * 2;
+                            const sr = r * (1.05 + Math.random() * 1.2);
+                            const sx = cx + Math.cos(sa) * sr;
+                            const sy = cy + Math.sin(sa) * sr;
+                            ctx.fillStyle = `rgba(255,255,255,${0.4*alpha*Math.random()})`;
+                            ctx.beginPath();
+                            ctx.arc(sx, sy, Math.random() * 1.5 + 0.3, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                        ubh.particlesConsumed *= 0.88;
+                        if (ubh.particlesConsumed < 0.05) ubh.particlesConsumed = 0;
+                    }
+                }
+            }
+
+            function renderStars() {
+                for (const star of stars) {
+                    const twinkle = 0.5 + 0.5 * Math.sin(Date.now() * star.twinkleSpeed + star.twinkleOffset);
+                    const alpha = 0.4 + star.brightness * 0.45 + twinkle * 0.2;
+                    const renderSize = star.size * (star.sizeMultiplier || 1);
+                    ctx.fillStyle = `rgba(255,255,255,${Math.min(1,alpha)})`;
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, renderSize, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            function renderGrowingIndicator() {
+                if (mouse.holding && mouse.activeGrowingBH && mouse.activeGrowingBH.growing) {
+                    const ubh = mouse.activeGrowingBH;
+                    const cx = ubh.x, cy = ubh.y, r = ubh.radius;
+                    const pulse = 0.5 + 0.5 * Math.sin(Date.now() * 0.012);
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, r + 5 + pulse * 4, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(255,255,255,${0.45*pulse})`;
+                    ctx.lineWidth = 1.5;
+                    ctx.setLineDash([6, 5]);
+                    ctx.lineDashOffset = Date.now() * 0.04;
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+            }
+
+            function render() {
+                ctx.clearRect(0, 0, w, h);
+                const bgGrad = ctx.createRadialGradient(mainBH.x, mainBH.y, mainBH.eventHorizonRadius * 0.4, w / 2, h / 2, Math.max(w, h));
+                bgGrad.addColorStop(0, '#040a18');
+                bgGrad.addColorStop(0.5, '#010308');
+                bgGrad.addColorStop(1, '#000002');
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(0, 0, w, h);
+
+                drawPlanetsAndNebulae();
+                renderStars();
+                renderMainBlackHole();
+                renderUserBlackHoles();
+                renderGrowingIndicator();
+
+                const vignetteGrad = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.6, w / 2, h / 2, Math.max(w, h) * 0.8);
+                vignetteGrad.addColorStop(0, 'rgba(0,0,0,0)');
+                vignetteGrad.addColorStop(1, 'rgba(0,0,0,0.5)');
+                ctx.fillStyle = vignetteGrad;
+                ctx.fillRect(0, 0, w, h);
+            }
+
+            function animate() {
+                updateStars();
+                updateDiskParticles();
+                updateUserBlackHoles();
+                render();
+                requestAnimationFrame(animate);
+            }
+
+            function createUserBlackHole(x, y, fromHold = false) {
+                if (userBlackHoles.length >= 5) userBlackHoles[0].alive = false;
+                const ubh = {
+                    x, y,
+                    radius: 1.5,
+                    targetRadius: fromHold ? (6 + Math.random() * 14) : (4 + Math.random() * 8),
+                    mass: 100,
+                    alpha: 1,
+                    growing: true,
+                    fading: false,
+                    alive: true,
+                    fromHold,
+                    holdReleased: false,
+                    lifetime: 3 + Math.random() * 3.5,
+                    particlesConsumed: 0,
+                };
+                userBlackHoles.push(ubh);
+                return ubh;
+            }
+
+            function getEventPos(e) {
+                if (e.touches && e.touches.length > 0) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                if (e.changedTouches && e.changedTouches.length > 0) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+                return { x: e.clientX, y: e.clientY };
+            }
+
+            function isInteractiveTarget(e) {
+                const target = e.target;
+                if (!target) return false;
+                return target.closest('.class-card') || target.closest('.install-btn') || target.closest('a') || target.closest('button');
+            }
+
+            function onDown(e) {
+                if (isInteractiveTarget(e)) return;
+                const pos = getEventPos(e);
+                mouse.down = true;
+                mouse.holdStartTime = Date.now();
+                mouse.holdX = pos.x;
+                mouse.holdY = pos.y;
+                mouse.holding = false;
+                mouse.activeGrowingBH = null;
+                mouse.isTouch = e.type === 'touchstart';
+                if (mouse.isTouch) e.preventDefault();
+            }
+
+            function onMove(e) {
+                const pos = getEventPos(e);
+                mouse.x = pos.x;
+                mouse.y = pos.y;
+                if (mouse.down && mouse.activeGrowingBH && mouse.activeGrowingBH.growing) {
+                    mouse.activeGrowingBH.x = pos.x;
+                    mouse.activeGrowingBH.y = pos.y;
+                    mouse.holdX = pos.x;
+                    mouse.holdY = pos.y;
+                }
+                if (mouse.down && !mouse.holding && mouse.activeGrowingBH === null) {
+                    const dx = pos.x - mouse.holdX;
+                    const dy = pos.y - mouse.holdY;
+                    if (Math.sqrt(dx * dx + dy * dy) > 22) mouse.holdStartTime = 0;
+                }
+                if (mouse.isTouch && e.type === 'touchmove') e.preventDefault();
+            }
+
+            function onUp(e) {
+                const pos = getEventPos(e);
+                mouse.x = pos.x;
+                mouse.y = pos.y;
+                if (mouse.activeGrowingBH) {
+                    mouse.activeGrowingBH.growing = false;
+                    mouse.activeGrowingBH.holdReleased = true;
+                    mouse.activeGrowingBH.targetRadius = mouse.activeGrowingBH.radius;
+                    mouse.activeGrowingBH = null;
+                }
+                mouse.down = false;
+                mouse.holding = false;
+                mouse.holdStartTime = 0;
+            }
+
+            function onClick(e) {
+                if (isInteractiveTarget(e)) return;
+                if (mouse.isTouch) return;
+                const pos = getEventPos(e);
+                const now = Date.now();
+                const dx = pos.x - mouse.lastClickX;
+                const dy = pos.y - mouse.lastClickY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const timeDiff = now - mouse.lastClickTime;
+                if (timeDiff < 380 && dist < 35 && mouse.lastClickTime > 0) {
+                    const ubh = createUserBlackHole(pos.x, pos.y, false);
+                    ubh.targetRadius = 5 + Math.random() * 10;
+                    mouse.lastClickTime = 0;
+                    return;
+                }
+                mouse.lastClickTime = now;
+                mouse.lastClickX = pos.x;
+                mouse.lastClickY = pos.y;
+            }
+
+            function checkHold() {
+                if (mouse.down && !mouse.holding && mouse.holdStartTime > 0) {
+                    const elapsed = Date.now() - mouse.holdStartTime;
+                    if (elapsed > 350 && !isInteractiveTarget({ target: document.elementFromPoint(mouse.holdX, mouse.holdY) })) {
+                        mouse.holding = true;
+                        const ubh = createUserBlackHole(mouse.holdX, mouse.holdY, true);
+                        ubh.targetRadius = 8 + Math.random() * 16;
+                        mouse.activeGrowingBH = ubh;
+                    }
+                }
+                if (mouse.holding && mouse.activeGrowingBH && mouse.activeGrowingBH.growing) {
+                    const ubh = mouse.activeGrowingBH;
+                    ubh.targetRadius = Math.min(ubh.targetRadius + 0.12, 28);
+                }
+            }
+
+            document.addEventListener('mousemove', onMove, { passive: true });
+            document.addEventListener('mousedown', onDown);
+            document.addEventListener('mouseup', onUp);
+            document.addEventListener('click', onClick);
+            document.addEventListener('touchstart', onDown, { passive: false });
+            document.addEventListener('touchmove', onMove, { passive: false });
+            document.addEventListener('touchend', onUp);
+            document.addEventListener('touchcancel', onUp);
+            document.addEventListener('contextmenu', (e) => {
+                if (!isInteractiveTarget(e)) e.preventDefault();
+            });
+
+            resize();
+            window.addEventListener('resize', resize);
+            window.addEventListener('orientationchange', () => setTimeout(resize, 200));
+            setInterval(checkHold, 50);
+            animate();
+        })();
+    </script>
+</body>
+</html>

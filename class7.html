@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="bn"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dipayan Pathsala || Class VII</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js">
+  </script>
+  <style>
+    :root {
+      --bg: #eef3f8;
+      --ink: #162033;
+      --muted: #64748b;
+      --card: #ffffff;
+      --line: #d9e2ee;
+      --primary: #1e6b3a;
+      --primary-dark: #145226;
+      --orange: #e67e22;
+      --green: #15803d;
+      --red: #b91c1c;
+      --slate: #475569;
+      --shadow: 0 18px 42px rgba(22, 32, 51, 0.12);
+    }
+    * { box-sizing: border-box; letter-spacing: 0; }
+    html, body { min-height: 100%; }
+    body {
+      margin: 0; padding: 15px; color: var(--ink);
+      font-family: "Segoe UI", "Noto Sans Bengali", system-ui, sans-serif;
+      background: radial-gradient(circle at top left, rgba(30,107,58,0.12), transparent 28rem),
+                  radial-gradient(circle at right 18%, rgba(21,128,61,0.10), transparent 22rem),
+                  linear-gradient(135deg, rgba(30,107,58,0.05) 25%, transparent 25%) 0 0 / 30px 30px, var(--bg);
+    }
+    button, input, select, textarea { font: inherit; }
+    button {
+      border: 0; border-radius: 999px; padding: 5px 11px; cursor: pointer; color: #fff;
+      background: var(--primary); font-weight: 400; font-size: 13px;
+      transition: transform 0.15s, background 0.15s, opacity 0.15s;
+    }
+    button:hover { background: var(--primary-dark); }
+    button:active { transform: translateY(1px); }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    input, select, textarea {
+      border: 1px solid #cbd5e1; border-radius: 999px; padding: 5px 10px;
+      background: #fff; color: var(--ink); outline: none; font-size: 13px; min-width: 0;
+    }
+    textarea { width: 100%; min-height: 110px; border-radius: 14px; resize: vertical; line-height: 1.45; }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(30,107,58,0.16); }
+    label { cursor: pointer; }
+    hr { border: 0; border-top: 1px solid var(--line); width: 100%; }
+    .btn-warning { background: var(--orange); }
+    .btn-danger { background: var(--red); }
+    .btn-success { background: var(--green); }
+    .btn-muted { background: var(--slate); }
+    .btn-light { background: #e2e8f0; color: var(--ink); }
+    .btn-icon { width: 34px; height: 34px; display: inline-grid; place-items: center; padding: 0; border-radius: 50%; }
+
+    /* 🔴 WARNING GATE – সর্বদা সবার উপরে */
+    .gate {
+      position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; padding: 18px;
+      background: rgba(10,15,28,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      opacity: 1; pointer-events: auto;
+      transition: opacity 0.5s ease; overflow: hidden;
+    }
+    .gate::before {
+      content: ""; position: absolute; inset: 0; background: rgba(255,0,0,0.3);
+      animation: sirenFlash 0.8s infinite alternate; pointer-events: none; z-index: 0;
+    }
+    @keyframes sirenFlash { 0% { opacity: 0.25; } 50% { opacity: 0.7; } 100% { opacity: 0.25; } }
+    .gate.hidden { 
+      opacity: 0; pointer-events: none; 
+    }
+    .gate-card {
+      position: relative; z-index: 1; width: min(590px, 100%); background: #fff;
+      border-radius: 8px; padding: clamp(18px,5vw,34px); box-shadow: var(--shadow); text-align: center;
+    }
+    .gate-card .warn-icon { font-size: clamp(56px,16vw,92px); display: block; margin-bottom: 10px; }
+    .gate-card h1 {
+      margin: 0 0 12px; font-size: clamp(32px,6vw,48px); font-weight: 900; letter-spacing: 4px;
+      color: #ff0000; text-transform: uppercase;
+      animation: warningPulse 1s ease-in-out infinite alternate;
+      text-shadow: 0 0 20px rgba(255,0,0,0.8);
+    }
+    @keyframes warningPulse {
+      0% { text-shadow: 0 0 15px rgba(255,0,0,0.5); transform: scale(1); }
+      100% { text-shadow: 0 0 35px rgba(255,0,0,1), 0 0 60px rgba(255,0,0,0.7); transform: scale(1.03); }
+    }
+    .gate-card p { margin: 0 0 18px; line-height: 1.7; font-weight: 800; font-size: clamp(17px,4vw,22px); }
+    .password-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+    .password-row input { min-height: 42px; }
+    .error-line { min-height: 24px; color: var(--red); font-weight: 800; margin-top: 8px; }
+
+    .app { max-width: 1600px; margin: auto; opacity: 0; transform: translateY(36px); transition: opacity 0.5s, transform 0.5s; }
+    .app.visible { opacity: 1; transform: translateY(0); }
+    .container { background: rgba(255,255,255,0.96); border: 1px solid rgba(217,226,238,0.85); border-radius: 24px; padding: 15px; box-shadow: var(--shadow); }
+    .main-header {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
+      margin: -15px -15px 15px; padding: 12px 20px; background: #182039; color: #fff;
+      border-radius: 24px 24px 0 0; border-bottom: 2px solid var(--primary);
+    }
+    .main-title { font-size: clamp(18px,4vw,24px); font-weight: 900; }
+    .main-title small { color: #cbd5e1; font-size: 12px; }
+    .credit { font-size: 12px; color: #e0e7ff; background: rgba(255,255,255,0.13); border-radius: 999px; padding: 4px 12px; }
+    .controls { background: #e9eef5; border: 1px solid var(--line); border-radius: 18px; padding: 8px 10px; margin-bottom: 15px; }
+    .controls button { padding: 4px 10px; font-size: 12px; }
+    .controls input { padding: 4px 8px; font-size: 12px; }
+    .flex-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; }
+    .top-controls { justify-content: space-between; }
+    .chapter-panel { display: none; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 10px; margin-top: 10px; overflow: hidden; }
+    .chapter-panel.open { display: block; }
+    .subject-accordion { border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden; margin-bottom: 8px; background: #fff; }
+    .subject-header {
+      display: flex; justify-content: space-between; align-items: center; min-height: 48px;
+      padding: 12px 16px; font-weight: 700; cursor: pointer; user-select: none;
+    }
+    .subject-header.science { background: #e8f5e9; color: #2e7d32; }
+    .subject-header.history { background: #fff3e0; color: #c62828; }
+    .subject-header.geography { background: #e3f2fd; color: #0d47a1; }
+    .subject-arrow { transition: transform 0.35s ease; }
+    .subject-accordion.open .subject-arrow { transform: rotate(180deg); }
+    .subject-chapters { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); border-top: 1px solid #e2e8f0; }
+    .subject-chapters.open { max-height: 520px; }
+    .subject-chapters-inner { display: flex; flex-wrap: wrap; gap: 7px; padding: 11px 14px; max-height: 310px; overflow-y: auto; }
+    .chapter-item {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px;
+      border-radius: 999px; background: #f1f5f9; font-size: 13px; white-space: nowrap;
+    }
+    .chapter-item:hover { background: #e2e8f0; }
+    .chapter-item input { margin: 0; width: 15px; height: 15px; }
+    .q-count { color: var(--primary); font-size: 11px; font-weight: 600; }
+    .subject-action-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+    .quiz-panel { display: grid; grid-template-columns: minmax(0,1fr) 270px; gap: 15px; align-items: start; }
+    .questions-area { min-width: 0; }
+    .question-card {
+      position: relative; background: #fff; border: 1px solid var(--line); border-left: 5px solid var(--primary);
+      border-radius: 18px; padding: 18px; min-height: 350px; box-shadow: 0 8px 24px rgba(22,32,51,0.07);
+    }
+    .question-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 9px; padding-right: 78px; }
+    .pill { border: 1px solid #dbe5f2; background: #f8fafc; border-radius: 999px; padding: 3px 9px; color: var(--muted); font-size: 12px; }
+    .question-text { font-weight: 700; font-size: clamp(17px,4vw,22px); line-height: 1.55; margin-bottom: 14px; padding-right: 78px; }
+    .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 8px; margin: 10px 0; }
+    .option {
+      display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 8px; min-height: 44px;
+      padding: 8px 12px; border: 1px solid #dbe5f2; border-radius: 999px; background: #eef4f7; cursor: pointer; font-size: 15px;
+    }
+    .option:hover { background: #dbe8f2; }
+    .option.correct-answer { background: #15803d; color: #fff; border-color: #15803d; }
+    .option.wrong-feedback { background: #b91c1c; color: #fff; border-color: #b91c1c; }
+    .key { width: 26px; height: 26px; display: inline-grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,0.75); color: #162033; font-weight: 600; }
+    .info { display: none; margin-top: 10px; padding: 10px 12px; border: 1px solid #fed7aa; border-radius: 14px; background: #fff7ed; color: #7c2d12; line-height: 1.65; font-size: 14px; }
+    .info.show { display: block; }
+    .nav-buttons-large { display: flex; justify-content: center; gap: 14px; margin-top: 15px; }
+    .sidebar { background: #f8fafc; border: 1px solid var(--line); border-radius: 18px; padding: 12px; position: sticky; top: 12px; }
+    .score-board { font-size: 18px; font-weight: 500; margin-bottom: 10px; text-align: center; }
+    .nav-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(34px,1fr)); gap: 5px; max-height: 310px; overflow-y: auto; margin-top: 10px; }
+    .q-num { background: #e2e8f0; text-align: center; padding: 6px 4px; border-radius: 999px; cursor: pointer; font-size: 12px; font-weight: 500; }
+    .q-num.answered-correct { background: #166534; color: #fff; }
+    .q-num.answered-wrong { background: #991b1b; color: #fff; }
+    .q-num.current { background: #f59e0b; color: #fff; }
+    .note-toggle { display: flex; align-items: center; justify-content: center; background: #e9eef5; padding: 7px 9px; border-radius: 999px; margin-top: 10px; font-size: 12px; }
+    .note-toggle input { margin: 0 6px 0 0; }
+    .restart-area { text-align: center; margin-top: 18px; }
+    .master-edit-toggle {
+      position: absolute; top: 12px; right: 12px; z-index: 3; background: rgba(148,163,184,0.25);
+      color: #94a3b8; box-shadow: none; font-size: 15px; width: 32px; height: 32px; transition: all 0.25s;
+    }
+    .master-edit-toggle:hover { background: rgba(148,163,184,0.45); color: #64748b; }
+    .master-edit-toggle.unlocked { background: var(--green); color: #fff; box-shadow: 0 2px 8px rgba(21,128,61,0.35); }
+    .master-edit-toggle.unlocked:hover { background: #166534; }
+    .edit-q-btn { position: absolute; top: 12px; right: 54px; z-index: 3; padding: 6px 10px; background: var(--primary); }
+    .inline-editor { display: none; margin-top: 12px; padding: 12px; border: 1px dashed #94a3b8; border-radius: 14px; background: #f8fafc; }
+    .inline-editor.open { display: block; }
+    .inline-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; margin-top: 8px; }
+    .edit-section-bottom { margin-top: 25px; border-top: 1px solid var(--line); padding-top: 15px; }
+    .edit-header-bottom {
+      display: inline-flex; align-items: center; gap: 8px; background: rgba(226,232,240,0.65);
+      color: #94a3b8; border-radius: 999px; padding: 5px 14px; cursor: pointer; font-weight: 400;
+      font-size: 12px; transition: all 0.25s; border: 1px solid transparent;
+    }
+    .edit-header-bottom:hover { background: rgba(203,213,225,0.8); color: #64748b; }
+    .edit-body-bottom { display: none; margin-top: 10px; padding: 12px; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 18px; }
+    .edit-body-bottom.open { display: block; }
+    .edit-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; align-items: start; }
+    .edit-card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+    .backup-bottom { margin-top: 12px; border: 2px solid #bbf7d0; }
+    .edit-card h3 { margin: 0 0 8px; font-size: 16px; }
+    .subject-mgmt-header { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: white; border-radius: 999px; padding: 5px 14px; cursor: pointer; font-weight: 600; font-size: 13px; margin-bottom: 8px; }
+    .subject-mgmt-body { display: none; background: #e8f0fe; border: 1px solid #cfe0f8; border-radius: 16px; padding: 10px; margin-bottom: 12px; }
+    .subject-mgmt-body.open { display: block; }
+    .subject-editor-row { display: grid; grid-template-columns: 34px minmax(170px,1fr) minmax(135px,190px) auto; gap: 8px; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 6px; margin-bottom: 7px; }
+    .status-msg { min-height: 22px; margin-top: 8px; font-size: 13px; text-align: center; }
+    .preview-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 6px; font-size: 12px; margin-top: 8px; }
+    .stat-item { background: #f8fafc; border: 1px solid var(--line); border-radius: 10px; padding: 7px; }
+    .footer-contact { text-align: center; margin-top: 20px; padding: 8px; background: #e9eef5; border-radius: 999px; font-size: 12px; color: #334155; }
+    @media (max-width:900px) { .quiz-panel { grid-template-columns: 1fr; } .sidebar { position: static; } .edit-grid { grid-template-columns: 1fr; } }
+    @media (max-width:620px) {
+      body { padding: 8px; } .container { border-radius: 16px; padding: 10px; }
+      .main-header { margin: -10px -10px 12px; border-radius: 16px 16px 0 0; }
+      .password-row, .inline-grid { grid-template-columns: 1fr; }
+      .top-controls { justify-content: center; } .top-controls>.flex-row { width: 100%; }
+      .top-controls button, .top-controls input { flex: 1 1 140px; }
+      .chapter-item { font-size: 12px; white-space: normal; }
+      .question-text, .question-meta { padding-right: 64px; } .options { grid-template-columns: 1fr; }
+      .nav-buttons-large { gap: 8px; } .subject-editor-row { grid-template-columns: 1fr; border-radius: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🔴 সতর্কতা গেট – কখনোই বাইপাস হবে না -->
+  <section class="gate hidden" id="warningGate">
+    <div class="gate-card">
+      <span class="warn-icon">⚠️</span>
+      <h1>WARNING</h1>
+      <p>ছেলে-মেয়েকে একা মোবাইল ছেড়ে পড়তে দেবেন না। যখনই দেবেন, অভিভাবক পাশে বসে নজরে রাখবেন।</p>
+      <div class="password-row">
+        <input type="password" id="gatePassword" placeholder="পাসওয়ার্ড দিন" autocomplete="current-password">
+        <button id="gateEnter">প্রবেশ করুন</button>
+      </div>
+      <div class="error-line" id="gateError"></div>
+    </div>
+  </section>
+
+  <main class="app visible" id="app">
+    <div class="container">
+      <div class="main-header">
+        <div class="main-title">📚 Dipayan Pathsala <small>| Class VII | পরিবেশ ও বিজ্ঞান, ইতিহাস, ভূগোল</small></div>
+        <div class="credit" id="creditName">✨ By Arif Hussain</div>
+        <button class="btn-icon btn-muted" id="resetHeaderBtn" title="Reset Quiz">🔄</button>
+      </div>
+      <section class="controls">
+        <div class="flex-row top-controls">
+          <button class="btn-muted" id="chapterToggleBtn">📂 Select Chapters</button>
+          <div class="flex-row">
+            <label style="font-size:12px;font-weight:500;">Questions:</label>
+            <input type="number" id="quizSize" value="20" min="1" max="5000" style="width:78px;">
+            <button id="generateBtn">✅ Generate (Sequential)</button>
+            <button id="randomBtn" class="btn-warning">🎲 Random</button>
+            <button id="resetAnswersBtn" class="btn-muted">🔄 Reset Answers</button>
+            <button id="confettiToggleBtn" class="btn-icon btn-light" title="Confetti ON" style="opacity: 1;">🎉</button>
+          </div>
+        </div>
+        <div class="chapter-panel open" id="chapterPanel">
+          <div id="subjectAccordions"><div class="subject-accordion open"><div class="subject-header science" data-group="science"><span>🌿 পরিবেশ ও বিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch1"><span>ভৌত পরিবেশ ও শক্তি: তাপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch2" checked=""><span>আলো</span><span class="q-count">[79]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch3"><span>চুম্বক</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch4"><span>তড়িৎ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch5"><span>পরিবেশবান্ধব শক্তি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch6"><span>সময় ও গতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch7"><span>পরমাণু, অণু ও রাসায়নিক বিক্রিয়ার প্রাথমিক ধারণা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1779907911009"><span>পরিবেশ গঠনে পদার্থের ভূমিকা</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1779907922571"><span>মানুষের খাদ্য</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1779907934009"><span>পরিবেশের সজীব উপাদানের বৈচিত্র্য</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1779907949992"><span>উদ্ভিদের সংরক্ষণ এবং পরিবেশ ও জনস্বাস্থ্য</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header history" data-group="history"><span>📜 ইতিহাস</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch1"><span>ভারতের ইতিহাসের ধারা (প্রাচীন যুগ)</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch2"><span>গুপ্ত ও গুপ্তোত্তর যুগ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch3"><span>দিল্লি সুলতানি (প্রাথমিক)</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch4"><span>মোঘল সাম্রাজ্য (প্রাথমিক)</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch5"><span>বাংলার ইতিহাস (মধ্যযুগ)</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch6"><span>ইংরেজ শাসনের সূচনা</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header geography" data-group="geography"><span>🌍 ভূগোল</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch1"><span>পৃথিবীর গতি ও অভিকর্ষ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch2"><span>বায়ুমণ্ডল ও জলবায়ু</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch3"><span>বৃষ্টিপাত ও বায়ুপ্রবাহ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch4"><span>ভারতের নদনদী ও জলসম্পদ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch5"><span>ভারতের কৃষি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch6"><span>মানচিত্র ও ভূ-পরিচয়</span><span class="q-count">[1]</span></label></div></div></div></div>
+          <div class="subject-action-row">
+            <div class="flex-row">
+              <button id="selectAllBtn">Select All</button>
+              <button id="deselectAllBtn" class="btn-muted">Deselect All</button>
+            </div>
+            <button id="clearSelectedSubjectsBtn" class="btn-danger">🗑️ Clear Chapters</button>
+          </div>
+          <div style="font-size:12px;color:#64748b;margin-top:6px;">⚠️ "Clear Chapters"</div>
+        </div>
+      </section>
+      <section class="quiz-panel">
+        <div class="questions-area" id="questionsArea"><div class="question-card"><button class="btn-icon master-edit-toggle locked" id="masterEditToggle" title="Unlock question edit">✏️</button><div class="question-meta"><span class="pill">1/10</span><span class="pill">পরিবেশ ও বিজ্ঞান</span><span class="pill">আলো</span></div><div class="question-text">1. সমতল আয়নায় গঠিত প্রতিবিম্ব হয়—</div><div class="options"><div class="option" data-opt="0"><span class="key">1</span><span>A. বিবর্ধিত</span></div><div class="option correct-answer" data-opt="1"><span class="key">2</span><span>B. সমশীর্ষ</span></div><div class="option" data-opt="2"><span class="key">3</span><span>C. অবশীর্ষ</span></div><div class="option" data-opt="3"><span class="key">4</span><span>D. খর্বিত</span></div></div><div class="info show" id="noteBox">📖 সমতল দর্পণে গঠিত প্রতিবিম্ব সমশীর্ষ (সোজা), অসদ ও বস্তুর সমান আকারের হয়।</div><div class="inline-editor" id="inlineEditor"><strong>প্রশ্ন এডিট করুন</strong><textarea id="editQ">সমতল আয়নায় গঠিত প্রতিবিম্ব হয়—</textarea><div class="inline-grid"><input id="editA" value="বিবর্ধিত" placeholder="A"><input id="editB" value="সমশীর্ষ" placeholder="B"><input id="editC" value="অবশীর্ষ" placeholder="C"><input id="editD" value="খর্বিত" placeholder="D"><select id="editCorrect"><option value="0">Correct A</option><option value="1" selected="">Correct B</option><option value="2">Correct C</option><option value="3">Correct D</option></select><input id="editNote" value="সমতল দর্পণে গঠিত প্রতিবিম্ব সমশীর্ষ (সোজা), অসদ ও বস্তুর সমান আকারের হয়।" placeholder="Explanation"></div><div class="flex-row" style="margin-top:8px;"><button id="saveQuestionEdit" class="btn-success">সংরক্ষণ</button><button id="cancelQuestionEdit" class="btn-muted">বন্ধ</button></div></div><div class="nav-buttons-large"><button id="prevQ" class="btn-muted" disabled="">◀ Previous</button><button id="nextQ" class="btn-muted">Next ▶</button></div></div></div>
+        <aside class="sidebar">
+          <div class="score-board" id="scoreBoard">🎯 Score: 1/10<br><span style="font-size:12px;color:#64748b;">Answered: 1/10</span></div>
+          <div id="navGrid" class="nav-grid"><div class="q-num answered-correct current" data-idx="0">1</div><div class="q-num" data-idx="1">2</div><div class="q-num" data-idx="2">3</div><div class="q-num" data-idx="3">4</div><div class="q-num" data-idx="4">5</div><div class="q-num" data-idx="5">6</div><div class="q-num" data-idx="6">7</div><div class="q-num" data-idx="7">8</div><div class="q-num" data-idx="8">9</div><div class="q-num" data-idx="9">10</div></div>
+          <button id="showScoreBtn" class="btn-muted" style="margin-top:10px;width:100%;">📊 Show Score</button>
+          <div class="note-toggle"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show note before answering</label></div>
+        </aside>
+      </section>
+      <div class="footer-contact" id="footerContact">📧 arifbeldanga@gmail.com &nbsp;|&nbsp; 💬 Telegram: @beldanga1</div>
+      <section class="edit-section-bottom">
+        <div class="edit-header-bottom" id="editHeaderBottom"><span>✏️ Edit</span><span>▼</span></div>
+        <div class="edit-body-bottom open" id="editBodyBottom">
+          <div class="password-row" id="editLockRow" style="max-width: 430px; display: none;">
+            <input type="password" id="adminPass" placeholder="পাসওয়ার্ড দিন"><button id="unlockEditBtn">🔓 Unlock</button>
+          </div>
+          <div id="editContent" style="display: block; margin-top: 12px;">
+            <div class="subject-mgmt-header" id="subjectMgmtHeader"><span>📌 Manage Chapters (Add/Delete/Edit)</span><span>▼</span></div>
+            <div class="subject-mgmt-body" id="subjectMgmtBody">
+              <div id="subjectListForEdit"><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">1.</span><input type="text" value="ভৌত পরিবেশ ও শক্তি: তাপ" data-key="sci_ch1" class="edit-subject-name"><select data-key="sci_ch1" class="edit-subject-group"><option value="science" selected="">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="sci_ch1">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">2.</span><input type="text" value="আলো" data-key="sci_ch2" class="edit-subject-name"><select data-key="sci_ch2" class="edit-subject-group"><option value="science" selected="">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="sci_ch2">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">3.</span><input type="text" value="চুম্বক" data-key="sci_ch3" class="edit-subject-name"><select data-key="sci_ch3" class="edit-subject-group"><option value="science" selected="">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="sci_ch3">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">4.</span><input type="text" value="তড়িৎ" data-key="sci_ch4" class="edit-subject-name"><select data-key="sci_ch4" class="edit-subject-group"><option value="science" selected="">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="sci_ch4">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">5.</span><input type="text" value="পরিবেশবান্ধব শক্তি" data-key="sci_ch5" class="edit-subject-name"><select data-key="sci_ch5" class="edit-subject-group"><option value="science" selected="">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="sci_ch5">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">6.</span><input type="text" value="সময় ও গতি" data-key="sci_ch6" class="edit-subject-name"><select data-key="sci_ch6" class="edit-subject-group"><option value="science" selected="">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="sci_ch6">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">7.</span><input type="text" value="পরমাণু, অণু ও রাসায়নিক বিক্রিয়ার প্রাথমিক ধারণা" data-key="sci_ch7" class="edit-subject-name"><select data-key="sci_ch7" class="edit-subject-group"><option value="science" selected="">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="sci_ch7">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">8.</span><input type="text" value="ভারতের ইতিহাসের ধারা (প্রাচীন যুগ)" data-key="his_ch1" class="edit-subject-name"><select data-key="his_ch1" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history" selected="">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="his_ch1">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">9.</span><input type="text" value="গুপ্ত ও গুপ্তোত্তর যুগ" data-key="his_ch2" class="edit-subject-name"><select data-key="his_ch2" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history" selected="">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="his_ch2">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">10.</span><input type="text" value="দিল্লি সুলতানি (প্রাথমিক)" data-key="his_ch3" class="edit-subject-name"><select data-key="his_ch3" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history" selected="">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="his_ch3">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">11.</span><input type="text" value="মোঘল সাম্রাজ্য (প্রাথমিক)" data-key="his_ch4" class="edit-subject-name"><select data-key="his_ch4" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history" selected="">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="his_ch4">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">12.</span><input type="text" value="বাংলার ইতিহাস (মধ্যযুগ)" data-key="his_ch5" class="edit-subject-name"><select data-key="his_ch5" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history" selected="">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="his_ch5">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">13.</span><input type="text" value="ইংরেজ শাসনের সূচনা" data-key="his_ch6" class="edit-subject-name"><select data-key="his_ch6" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history" selected="">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="his_ch6">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">14.</span><input type="text" value="পৃথিবীর গতি ও অভিকর্ষ" data-key="geo_ch1" class="edit-subject-name"><select data-key="geo_ch1" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography" selected="">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="geo_ch1">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">15.</span><input type="text" value="বায়ুমণ্ডল ও জলবায়ু" data-key="geo_ch2" class="edit-subject-name"><select data-key="geo_ch2" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography" selected="">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="geo_ch2">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">16.</span><input type="text" value="বৃষ্টিপাত ও বায়ুপ্রবাহ" data-key="geo_ch3" class="edit-subject-name"><select data-key="geo_ch3" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography" selected="">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="geo_ch3">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">17.</span><input type="text" value="ভারতের নদনদী ও জলসম্পদ" data-key="geo_ch4" class="edit-subject-name"><select data-key="geo_ch4" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography" selected="">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="geo_ch4">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">18.</span><input type="text" value="ভারতের কৃষি" data-key="geo_ch5" class="edit-subject-name"><select data-key="geo_ch5" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography" selected="">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="geo_ch5">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">19.</span><input type="text" value="মানচিত্র ও ভূ-পরিচয়" data-key="geo_ch6" class="edit-subject-name"><select data-key="geo_ch6" class="edit-subject-group"><option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography" selected="">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="geo_ch6">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">20.</span><input type="text" value="পরিবেশ গঠনে পদার্থের ভূমিকা" data-key="custom_1779907911009" class="edit-subject-name"><select data-key="custom_1779907911009" class="edit-subject-group"><option value="science" selected="">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="custom_1779907911009">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">21.</span><input type="text" value="মানুষের খাদ্য" data-key="custom_1779907922571" class="edit-subject-name"><select data-key="custom_1779907922571" class="edit-subject-group"><option value="science" selected="">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="custom_1779907922571">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">22.</span><input type="text" value="পরিবেশের সজীব উপাদানের বৈচিত্র্য" data-key="custom_1779907934009" class="edit-subject-name"><select data-key="custom_1779907934009" class="edit-subject-group"><option value="science" selected="">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="custom_1779907934009">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">23.</span><input type="text" value="উদ্ভিদের সংরক্ষণ এবং পরিবেশ ও জনস্বাস্থ্য" data-key="custom_1779907949992" class="edit-subject-name"><select data-key="custom_1779907949992" class="edit-subject-group"><option value="science" selected="">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select><button class="btn-danger delete-subject-btn" data-key="custom_1779907949992">🗑️ Delete</button></div></div>
+              <div class="flex-row" style="margin-top:8px;">
+                <input type="text" id="newSubjectName" placeholder="New chapter name" style="flex:2;min-width:170px;">
+                <select id="newSubjectGroup">
+                  <option value="science">পরিবেশ ও বিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option>
+                </select>
+                <button id="addSubjectBtn" class="btn-success">➕ Add Chapter</button>
+              </div>
+              <div class="flex-row" style="margin-top:8px;"><button id="deleteAllExceptFirstBtn" class="btn-danger">🗑️ Delete All Chapters Except First</button></div>
+              <div style="font-size:12px;color:#64748b;margin-top:5px;">⚠️ Delete/Edit করলে প্রশ্ন ও chapter structure পরিবর্তন হবে।</div>
+            </div>
+            <div class="edit-card"><h3>Chapter selector</h3><select id="targetChapterSimple"><option value="sci_ch1">পরিবেশ ও বিজ্ঞান - ভৌত পরিবেশ ও শক্তি: তাপ [0]</option><option value="sci_ch2">পরিবেশ ও বিজ্ঞান - আলো [79]</option><option value="sci_ch3">পরিবেশ ও বিজ্ঞান - চুম্বক [1]</option><option value="sci_ch4">পরিবেশ ও বিজ্ঞান - তড়িৎ [1]</option><option value="sci_ch5">পরিবেশ ও বিজ্ঞান - পরিবেশবান্ধব শক্তি [1]</option><option value="sci_ch6">পরিবেশ ও বিজ্ঞান - সময় ও গতি [1]</option><option value="sci_ch7">পরিবেশ ও বিজ্ঞান - পরমাণু, অণু ও রাসায়নিক বিক্রিয়ার প্রাথমিক ধারণা [1]</option><option value="his_ch1">ইতিহাস - ভারতের ইতিহাসের ধারা (প্রাচীন যুগ) [1]</option><option value="his_ch2">ইতিহাস - গুপ্ত ও গুপ্তোত্তর যুগ [1]</option><option value="his_ch3">ইতিহাস - দিল্লি সুলতানি (প্রাথমিক) [1]</option><option value="his_ch4">ইতিহাস - মোঘল সাম্রাজ্য (প্রাথমিক) [1]</option><option value="his_ch5">ইতিহাস - বাংলার ইতিহাস (মধ্যযুগ) [1]</option><option value="his_ch6">ইতিহাস - ইংরেজ শাসনের সূচনা [1]</option><option value="geo_ch1">ভূগোল - পৃথিবীর গতি ও অভিকর্ষ [1]</option><option value="geo_ch2">ভূগোল - বায়ুমণ্ডল ও জলবায়ু [1]</option><option value="geo_ch3">ভূগোল - বৃষ্টিপাত ও বায়ুপ্রবাহ [1]</option><option value="geo_ch4">ভূগোল - ভারতের নদনদী ও জলসম্পদ [1]</option><option value="geo_ch5">ভূগোল - ভারতের কৃষি [1]</option><option value="geo_ch6">ভূগোল - মানচিত্র ও ভূ-পরিচয় [1]</option><option value="custom_1779907911009">পরিবেশ ও বিজ্ঞান - পরিবেশ গঠনে পদার্থের ভূমিকা [0]</option><option value="custom_1779907922571">পরিবেশ ও বিজ্ঞান - মানুষের খাদ্য [0]</option><option value="custom_1779907934009">পরিবেশ ও বিজ্ঞান - পরিবেশের সজীব উপাদানের বৈচিত্র্য [0]</option><option value="custom_1779907949992">পরিবেশ ও বিজ্ঞান - উদ্ভিদের সংরক্ষণ এবং পরিবেশ ও জনস্বাস্থ্য [0]</option></select></div>
+            <div class="edit-grid" style="margin-top:12px;">
+              <div class="edit-card">
+                <h3>⚡ Bulk Upload (Text)</h3>
+                <div style="font-size:12px;color:#64748b;">Format: Question || Option1,Option2,Option3,Option4 || CorrectIndex (0-3) || Explanation</div>
+                <textarea id="bulkQuestions" placeholder="একসাথে অনেকগুলো প্রশ্ন যোগ করতে এখানে paste করুন..."></textarea>
+                <div class="flex-row"><button id="bulkUploadBtn" class="btn-success">📤 Bulk Upload</button></div>
+              </div>
+              <div class="edit-card">
+                <h3>📂 JSON Import</h3>
+                <div style="font-size:12px;color:#64748b;">Choose a JSON file to replace or append questions.</div>
+                <div class="flex-row" style="margin-top:8px;">
+                  <button id="restoreJsonBtn" class="btn-warning">📂 Replace whole Bank (Full JSON)</button>
+                  <input type="file" id="restoreFileInput" accept=".json" style="display:none">
+                </div>
+                <div class="flex-row" style="margin-top:8px;">
+                  <select id="appendSubjectSelect" style="flex:1;"><option value="">-- Choose chapter --</option><option value="sci_ch1">পরিবেশ ও বিজ্ঞান - ভৌত পরিবেশ ও শক্তি: তাপ (0 questions)</option><option value="sci_ch2">পরিবেশ ও বিজ্ঞান - আলো (79 questions)</option><option value="sci_ch3">পরিবেশ ও বিজ্ঞান - চুম্বক (1 questions)</option><option value="sci_ch4">পরিবেশ ও বিজ্ঞান - তড়িৎ (1 questions)</option><option value="sci_ch5">পরিবেশ ও বিজ্ঞান - পরিবেশবান্ধব শক্তি (1 questions)</option><option value="sci_ch6">পরিবেশ ও বিজ্ঞান - সময় ও গতি (1 questions)</option><option value="sci_ch7">পরিবেশ ও বিজ্ঞান - পরমাণু, অণু ও রাসায়নিক বিক্রিয়ার প্রাথমিক ধারণা (1 questions)</option><option value="his_ch1">ইতিহাস - ভারতের ইতিহাসের ধারা (প্রাচীন যুগ) (1 questions)</option><option value="his_ch2">ইতিহাস - গুপ্ত ও গুপ্তোত্তর যুগ (1 questions)</option><option value="his_ch3">ইতিহাস - দিল্লি সুলতানি (প্রাথমিক) (1 questions)</option><option value="his_ch4">ইতিহাস - মোঘল সাম্রাজ্য (প্রাথমিক) (1 questions)</option><option value="his_ch5">ইতিহাস - বাংলার ইতিহাস (মধ্যযুগ) (1 questions)</option><option value="his_ch6">ইতিহাস - ইংরেজ শাসনের সূচনা (1 questions)</option><option value="geo_ch1">ভূগোল - পৃথিবীর গতি ও অভিকর্ষ (1 questions)</option><option value="geo_ch2">ভূগোল - বায়ুমণ্ডল ও জলবায়ু (1 questions)</option><option value="geo_ch3">ভূগোল - বৃষ্টিপাত ও বায়ুপ্রবাহ (1 questions)</option><option value="geo_ch4">ভূগোল - ভারতের নদনদী ও জলসম্পদ (1 questions)</option><option value="geo_ch5">ভূগোল - ভারতের কৃষি (1 questions)</option><option value="geo_ch6">ভূগোল - মানচিত্র ও ভূ-পরিচয় (1 questions)</option><option value="custom_1779907911009">পরিবেশ ও বিজ্ঞান - পরিবেশ গঠনে পদার্থের ভূমিকা (0 questions)</option><option value="custom_1779907922571">পরিবেশ ও বিজ্ঞান - মানুষের খাদ্য (0 questions)</option><option value="custom_1779907934009">পরিবেশ ও বিজ্ঞান - পরিবেশের সজীব উপাদানের বৈচিত্র্য (0 questions)</option><option value="custom_1779907949992">পরিবেশ ও বিজ্ঞান - উদ্ভিদের সংরক্ষণ এবং পরিবেশ ও জনস্বাস্থ্য (0 questions)</option></select>
+                  <button id="appendJsonBtn">📎 Append JSON to chapter</button>
+                  <input type="file" id="appendFileInput" accept=".json" style="display:none">
+                </div>
+              </div>
+            </div>
+            <div class="edit-card" style="margin-top:12px;">
+              <h3>✏️ Add Single Question</h3>
+              <textarea id="simpleQText" placeholder="Question"></textarea>
+              <div class="inline-grid">
+                <input type="text" id="optA" placeholder="A"><input type="text" id="optB" placeholder="B">
+                <input type="text" id="optC" placeholder="C"><input type="text" id="optD" placeholder="D">
+                <select id="correctIndex"><option value="0">Correct A</option><option value="1">Correct B</option><option value="2">Correct C</option><option value="3">Correct D</option></select>
+                <input type="text" id="simpleNote" placeholder="Explanation">
+              </div>
+              <div class="flex-row" style="margin-top:8px;"><button id="simpleAddBtn" class="btn-success">➕ Add Question</button></div>
+            </div>
+            <details style="margin-top:12px;"><summary style="cursor:pointer;font-weight:600;">📋 Chapter wise question count</summary><div id="previewStats" class="preview-stats"><div class="stat-item"><strong>পরিবেশ ও বিজ্ঞান</strong><br>ভৌত পরিবেশ ও শক্তি: তাপ: <strong>0</strong></div><div class="stat-item"><strong>পরিবেশ ও বিজ্ঞান</strong><br>আলো: <strong>79</strong></div><div class="stat-item"><strong>পরিবেশ ও বিজ্ঞান</strong><br>চুম্বক: <strong>1</strong></div><div class="stat-item"><strong>পরিবেশ ও বিজ্ঞান</strong><br>তড়িৎ: <strong>1</strong></div><div class="stat-item"><strong>পরিবেশ ও বিজ্ঞান</strong><br>পরিবেশবান্ধব শক্তি: <strong>1</strong></div><div class="stat-item"><strong>পরিবেশ ও বিজ্ঞান</strong><br>সময় ও গতি: <strong>1</strong></div><div class="stat-item"><strong>পরিবেশ ও বিজ্ঞান</strong><br>পরমাণু, অণু ও রাসায়নিক বিক্রিয়ার প্রাথমিক ধারণা: <strong>1</strong></div><div class="stat-item"><strong>ইতিহাস</strong><br>ভারতের ইতিহাসের ধারা (প্রাচীন যুগ): <strong>1</strong></div><div class="stat-item"><strong>ইতিহাস</strong><br>গুপ্ত ও গুপ্তোত্তর যুগ: <strong>1</strong></div><div class="stat-item"><strong>ইতিহাস</strong><br>দিল্লি সুলতানি (প্রাথমিক): <strong>1</strong></div><div class="stat-item"><strong>ইতিহাস</strong><br>মোঘল সাম্রাজ্য (প্রাথমিক): <strong>1</strong></div><div class="stat-item"><strong>ইতিহাস</strong><br>বাংলার ইতিহাস (মধ্যযুগ): <strong>1</strong></div><div class="stat-item"><strong>ইতিহাস</strong><br>ইংরেজ শাসনের সূচনা: <strong>1</strong></div><div class="stat-item"><strong>ভূগোল</strong><br>পৃথিবীর গতি ও অভিকর্ষ: <strong>1</strong></div><div class="stat-item"><strong>ভূগোল</strong><br>বায়ুমণ্ডল ও জলবায়ু: <strong>1</strong></div><div class="stat-item"><strong>ভূগোল</strong><br>বৃষ্টিপাত ও বায়ুপ্রবাহ: <strong>1</strong></div><div class="stat-item"><strong>ভূগোল</strong><br>ভারতের নদনদী ও জলসম্পদ: <strong>1</strong></div><div class="stat-item"><strong>ভূগোল</strong><br>ভারতের কৃষি: <strong>1</strong></div><div class="stat-item"><strong>ভূগোল</strong><br>মানচিত্র ও ভূ-পরিচয়: <strong>1</strong></div><div class="stat-item"><strong>পরিবেশ ও বিজ্ঞান</strong><br>পরিবেশ গঠনে পদার্থের ভূমিকা: <strong>0</strong></div><div class="stat-item"><strong>পরিবেশ ও বিজ্ঞান</strong><br>মানুষের খাদ্য: <strong>0</strong></div><div class="stat-item"><strong>পরিবেশ ও বিজ্ঞান</strong><br>পরিবেশের সজীব উপাদানের বৈচিত্র্য: <strong>0</strong></div><div class="stat-item"><strong>পরিবেশ ও বিজ্ঞান</strong><br>উদ্ভিদের সংরক্ষণ এবং পরিবেশ ও জনস্বাস্থ্য: <strong>0</strong></div></div></details>
+            <div id="uploadStatus" class="status-msg"></div>
+            <div class="edit-card backup-bottom">
+              <h3>Backup</h3>
+              <div class="flex-row">
+                <button id="backupSelectedJsonBtn">📥 Backup Selected (JSON)</button>
+                <button id="backupFullJsonBtn">📥 Full Backup (JSON)</button>
+                <button id="downloadHtmlBtn" class="btn-success">💾 Save as Permanent HTML</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const CLASS_LABEL = "VII";
+    const GATE_PASSWORD = "seven";
+    const EDIT_PASSWORD = "956438";
+    const APP_VERSION = "dipayan_classVII_v3";
+    const BANK_KEY = "DIPAYAN_QUIZ_BANK_CLASS_VII_" + APP_VERSION;
+    const SESSION_KEY = "DIPAYAN_QUIZ_SESSION_CLASS_VII_" + APP_VERSION;
+    const SELECTED_KEY = "DIPAYAN_QUIZ_SELECTED_CLASS_VII_" + APP_VERSION;
+    const CONFETTI_KEY = "DIPAYAN_QUIZ_CONFETTI_CLASS_VII_" + APP_VERSION;
+    const EMBEDDED_BANK = {
+  "__subjects__": [
+    {
+      "key": "sci_ch1",
+      "group": "science",
+      "name": "ভৌত পরিবেশ ও শক্তি: তাপ",
+      "num": 1
+    },
+    {
+      "key": "sci_ch2",
+      "group": "science",
+      "name": "আলো",
+      "num": 2
+    },
+    {
+      "key": "sci_ch3",
+      "group": "science",
+      "name": "চুম্বক",
+      "num": 3
+    },
+    {
+      "key": "sci_ch4",
+      "group": "science",
+      "name": "তড়িৎ",
+      "num": 4
+    },
+    {
+      "key": "sci_ch5",
+      "group": "science",
+      "name": "পরিবেশবান্ধব শক্তি",
+      "num": 5
+    },
+    {
+      "key": "sci_ch6",
+      "group": "science",
+      "name": "সময় ও গতি",
+      "num": 6
+    },
+    {
+      "key": "sci_ch7",
+      "group": "science",
+      "name": "পরমাণু, অণু ও রাসায়নিক বিক্রিয়ার প্রাথমিক ধারণা",
+      "num": 7
+    },
+    {
+      "key": "his_ch1",
+      "group": "history",
+      "name": "ভারতের ইতিহাসের ধারা (প্রাচীন যুগ)",
+      "num": 8
+    },
+    {
+      "key": "his_ch2",
+      "group": "history",
+      "name": "গুপ্ত ও গুপ্তোত্তর যুগ",
+      "num": 9
+    },
+    {
+      "key": "his_ch3",
+      "group": "history",
+      "name": "দিল্লি সুলতানি (প্রাথমিক)",
+      "num": 10
+    },
+    {
+      "key": "his_ch4",
+      "group": "history",
+      "name": "মোঘল সাম্রাজ্য (প্রাথমিক)",
+      "num": 11
+    },
+    {
+      "key": "his_ch5",
+      "group": "history",
+      "name": "বাংলার ইতিহাস (মধ্যযুগ)",
+      "num": 12
+    },
+    {
+      "key": "his_ch6",
+      "group": "history",
+      "name": "ইংরেজ শাসনের সূচনা",
+      "num": 13
+    },
+    {
+      "key": "geo_ch1",
+      "group": "geography",
+      "name": "পৃথিবীর গতি ও অভিকর্ষ",
+      "num": 14
+    },
+    {
+      "key": "geo_ch2",
+      "group": "geography",
+      "name": "বায়ুমণ্ডল ও জলবায়ু",
+      "num": 15
+    },
+    {
+      "key": "geo_ch3",
+      "group": "geography",
+      "name": "বৃষ্টিপাত ও বায়ুপ্রবাহ",
+      "num": 16
+    },
+    {
+      "key": "geo_ch4",
+      "group": "geography",
+      "name": "ভারতের নদনদী ও জলসম্পদ",
+      "num": 17
+    },
+    {
+      "key": "geo_ch5",
+      "group": "geography",
+      "name": "ভারতের কৃষি",
+      "num": 18
+    },
+    {
+      "key": "geo_ch6",
+      "group": "geography",
+      "name": "মানচিত্র ও ভূ-পরিচয়",
+      "num": 19
+    },
+    {
+      "key": "custom_1779907911009",
+      "group": "science",
+      "name": "পরিবেশ গঠনে পদার্থের ভূমিকা",
+      "num": 20
+    },
+    {
+      "key": "custom_1779907922571",
+      "group": "science",
+      "name": "মানুষের খাদ্য",
+      "num": 21
+    },
+    {
+      "key": "custom_1779907934009",
+      "group": "science",
+      "name": "পরিবেশের সজীব উপাদানের বৈচিত্র্য",
+      "num": 22
+    },
+    {
+      "key": "custom_1779907949992",
+      "group": "science",
+      "name": "উদ্ভিদের সংরক্ষণ এবং পরিবেশ ও জনস্বাস্থ্য",
+      "num": 23
+    }
+  ],
+  "sci_ch1": [],
+  "sci_ch2": [
+    {
+      "q": "সমতল আয়নায় গঠিত প্রতিবিম্ব হয়—",
+      "o": [
+        "অবশীর্ষ",
+        "সমশীর্ষ",
+        "বিবর্ধিত",
+        "খর্বিত"
+      ],
+      "a": 1,
+      "note": "সমতল দর্পণে গঠিত প্রতিবিম্ব সমশীর্ষ (সোজা), অসদ ও বস্তুর সমান আকারের হয়।"
+    },
+    {
+      "q": "বস্তুর স্পষ্ট প্রতিবিম্ব গঠনের জন্য প্রয়োজন—",
+      "o": [
+        "বিক্ষিপ্ত প্রতিফলন",
+        "নিয়মিত প্রতিফলন",
+        "আলোর প্রতিসরণ",
+        "আলোর বিচ্ছুরণ"
+      ],
+      "a": 1,
+      "note": "স্পষ্ট প্রতিবিম্বের জন্য প্রয়োজন মসৃণ তল থেকে নিয়মিত প্রতিফলন, যেখানে সমান্তরাল রশ্মিগুচ্ছ প্রতিফলনের পরও সমান্তরাল থাকে।"
+    },
+    {
+      "q": "আলোর প্রতিফলন কাকে বলে?",
+      "o": [
+        "আলো এক মাধ্যম থেকে অন্য মাধ্যমে বেঁকে যাওয়া",
+        "আলোকরশ্মি বিভেদতল থেকে ফিরে প্রথম মাধ্যমে ফিরে আসা",
+        "আলো শোষিত হওয়ার ঘটনা",
+        "আলো সাতটি রঙে ভেঙে যাওয়া"
+      ],
+      "a": 1,
+      "note": "আলোকরশ্মি যখন দুই মাধ্যমের বিভেদতলে আপতিত হয়ে পুনরায় প্রথম মাধ্যমে ফিরে আসে, তখন তাকে প্রতিফলন বলে।"
+    },
+    {
+      "q": "প্রতিফলনের দ্বিতীয় সূত্রটি কী?",
+      "o": [
+        "আপতিত রশ্মি ও প্রতিফলিত রশ্মি একই সমতলে থাকে",
+        "প্রতিফলিত রশ্মি আপতিত রশ্মির সাথে ৯০° কোণ করে",
+        "আপতন কোণ ও প্রতিফলন কোণ পরস্পর সমান",
+        "প্রতিফলিত রশ্মি অভিলম্বের সাথে মিলে যায়"
+      ],
+      "a": 2,
+      "note": "প্রতিফলনের দ্বিতীয় সূত্র অনুসারে আপতন কোণ ও প্রতিফলন কোণ পরস্পর সমান।"
+    },
+    {
+      "q": "আলোর প্রতিসরণ বলতে বোঝায়—",
+      "o": [
+        "আলোকরশ্মি এক মাধ্যম থেকে ফিরে আসা",
+        "আলোর সাত রঙে বিভাজন",
+        "আলোকরশ্মি এক মাধ্যম থেকে অন্য মাধ্যমে প্রবেশের সময় গতিপথ পরিবর্তন করা",
+        "আলোকরশ্মির সরলরেখায় চলা"
+      ],
+      "a": 2,
+      "note": "এক মাধ্যম থেকে অন্য মাধ্যমে তির্যকভাবে প্রবেশের সময় আলোর গতিপথ পরিবর্তন হওয়ার ঘটনাই প্রতিসরণ।"
+    },
+    {
+      "q": "আলোকরশ্মি ঘন মাধ্যম থেকে লঘু মাধ্যমে প্রতিসৃত হলে অভিলম্বের—",
+      "o": [
+        "কাছে সরে যায়",
+        "দূরে সরে যায়",
+        "সমান্তরালে চলে",
+        "সঙ্গে মিলে যায়"
+      ],
+      "a": 1,
+      "note": "ঘন থেকে লঘু মাধ্যমে প্রতিসরণে আলোকরশ্মি অভিলম্ব থেকে দূরে সরে যায়, অর্থাৎ প্রতিসরণ কোণ আপতন কোণের চেয়ে বড় হয়।"
+    },
+    {
+      "q": "“আলোকরশ্মি যখন কোনো অমসৃণ তলে আপতিত হয়ে বিভিন্ন দিকে ছড়িয়ে পড়ে”, তাকে বলে—",
+      "o": [
+        "নিয়মিত প্রতিফলন",
+        "বিক্ষিপ্ত প্রতিফলন",
+        "অভ্যন্তরীণ প্রতিফলন",
+        "প্রতিসরণ"
+      ],
+      "a": 1,
+      "note": "অমসৃণ তল থেকে আলো বিভিন্ন দিকে বিক্ষিপ্তভাবে প্রতিফলিত হলে তাকে বিক্ষিপ্ত প্রতিফলন বলে।"
+    },
+    {
+      "q": "“মসৃণ তলে সমান্তরাল আলোকরশ্মিগুচ্ছ আপতিত হয়ে প্রতিফলনের পরও সমান্তরাল থাকে”, তাকে বলে—",
+      "o": [
+        "বিক্ষিপ্ত প্রতিফলন",
+        "আলোর বিচ্ছুরণ",
+        "নিয়মিত প্রতিফলন",
+        "পূর্ণ অভ্যন্তরীণ প্রতিফলন"
+      ],
+      "a": 2,
+      "note": "মসৃণ তলে আপতিত সমান্তরাল রশ্মিগুচ্ছ প্রতিফলনের পরও সমান্তরাল থাকলে তাকে নিয়মিত প্রতিফলন বলে, যা স্পষ্ট প্রতিবিম্ব গঠন করে।"
+    },
+    {
+      "q": "আলোর বিচ্ছুরণ কাকে বলে?",
+      "o": [
+        "আলো প্রতিফলকের ওপর থেকে ফিরে আসা",
+        "সাদা আলো প্রিজমের মধ্য দিয়ে যাওয়ার সময় সাতটি বর্ণে বিভক্ত হওয়া",
+        "আলোর গতি কমে যাওয়া",
+        "আলোর শোষিত হওয়া"
+      ],
+      "a": 1,
+      "note": "সাদা আলো প্রিজমের মধ্য দিয়ে যাওয়ার সময় প্রতিসরণ ও বিচ্ছুরণের ফলে সাতটি বর্ণে বিভক্ত হওয়ার ঘটনাকে আলোর বিচ্ছুরণ বলে।"
+    },
+    {
+      "q": "জলে কোনো লাঠি আংশিক ডোবালে বাঁকা দেখানোর কারণ—",
+      "o": [
+        "আলোর বিচ্ছুরণ",
+        "আলোর প্রতিসরণ",
+        "আলোর প্রতিফলন",
+        "দৃষ্টিভ্রম"
+      ],
+      "a": 1,
+      "note": "জলে আংশিক ডোবানো লাঠির ক্ষেত্রে জল ও বায়ুর বিভেদতলে আলোর প্রতিসরণ ঘটায় লাঠিটি বাঁকা বা ভাঙা দেখায়।"
+    },
+    {
+      "q": "রামধনু সৃষ্টির কারণ হলো—",
+      "o": [
+        "আলোর শোষণ",
+        "আলোর প্রতিফলন",
+        "আলোর প্রতিসরণ",
+        "আলোর বিচ্ছুরণ"
+      ],
+      "a": 3,
+      "note": "রামধনু সূর্যের সাদা আলো জলের কণায় প্রতিসৃত ও বিচ্ছুরিত হয়ে সাত রঙে বিভক্ত হওয়ার মাধ্যমে সৃষ্টি হয়, এটি আলোর বিচ্ছুরণ।"
+    },
+    {
+      "q": "একটি স্বপ্রভ বস্তু হলো—",
+      "o": [
+        "পৃথিবী",
+        "গ্রহ",
+        "সূর্য",
+        "চন্দ্র"
+      ],
+      "a": 2,
+      "note": "সূর্য নিজস্ব আলো বিকিরণ করে, তাই এটি স্বপ্রভ; পৃথিবী, গ্রহ ও চন্দ্র অপ্রভ।"
+    },
+    {
+      "q": "সুচিছিদ্র ক্যামেরায় বস্তুর কী দেখা যায়?",
+      "o": [
+        "ছায়া",
+        "প্রচ্ছায়া",
+        "প্রতিকৃতি",
+        "প্রতিবিম্ব"
+      ],
+      "a": 2,
+      "note": "সুচিছিদ্র ক্যামেরায় আলোর সরলরেখায় চলনের ফলে গঠিত আলোকচিত্রকে প্রতিকৃতি বলে, যা সদবিম্বের মতো।"
+    },
+    {
+      "q": "পর্দায় ধরা যায় না—",
+      "o": [
+        "সদবিম্ব",
+        "অসদবিম্ব",
+        "উভয়ই",
+        "কোনোটিই নয়"
+      ],
+      "a": 1,
+      "note": "অসদবিম্ব শুধু চোখে দেখা যায়, পর্দায় ফেলা যায় না।"
+    },
+    {
+      "q": "চামড়ায় অতিবেগুনি রশ্মি পড়লে যে রোগের সৃষ্টি হয়—",
+      "o": [
+        "উচ্চ রক্তচাপ",
+        "থ্যালাসেমিয়া",
+        "মাথাব্যথা",
+        "ক্যান্সার"
+      ],
+      "a": 3,
+      "note": "অতিবেগুনি রশ্মি ত্বকের কোষের DNA নষ্ট করে ত্বকের ক্যান্সার ঘটাতে পারে।"
+    },
+    {
+      "q": "কোনটির পার্শ্বীয় পরিবর্তন হয়?",
+      "o": [
+        "A",
+        "B",
+        "T",
+        "U"
+      ],
+      "a": 1,
+      "note": "B অক্ষরটি প্রতিসম নয়, সমতল দর্পণে প্রতিফলনের ফলে বাম-ডান পার্শ্বীয় পরিবর্তন দেখা যায়।"
+    },
+    {
+      "q": "আলোর প্রভাবে কোন প্রাণীর চোখের মণির আকার পরিবর্তিত হয়?",
+      "o": [
+        "ব্যাং",
+        "হাতি",
+        "বিড়াল",
+        "মানুষ"
+      ],
+      "a": 2,
+      "note": "বিড়ালের চোখের মণি আলোর তীব্রতা অনুসারে সঙ্কুচিত বা প্রসারিত হয়।"
+    },
+    {
+      "q": "অসমসত্ত্ব মাধ্যম হলো—",
+      "o": [
+        "কাচ",
+        "বায়ু",
+        "জল",
+        "কোয়ার্টজ"
+      ],
+      "a": 1,
+      "note": "বায়ু একটি অসমসত্ত্ব মাধ্যম, কারণ এর ঘনত্ব বিভিন্ন স্থানে ভিন্ন; কাচ, জল ও কোয়ার্টজ সমসত্ত্ব।"
+    },
+    {
+      "q": "ঈষৎ-স্বচ্ছ মাধ্যম হলো—",
+      "o": [
+        "কাচ",
+        "কাগজ",
+        "ঘষা কাচ",
+        "কাঠ"
+      ],
+      "a": 2,
+      "note": "ঘষা কাচ আংশিক আলো ভেদ করতে দেয় কিন্তু বস্তু স্পষ্ট দেখা যায় না, তাই ঈষৎ-স্বচ্ছ।"
+    },
+    {
+      "q": "লুসিফেরিন থাকে কাদের দেহে—",
+      "o": [
+        "মাছ",
+        "অ্যামিবা",
+        "গ্রিনটোড",
+        "জোনাকি"
+      ],
+      "a": 3,
+      "note": "জোনাকি পোকায় লুসিফেরিন নামক প্রোটিন থাকে যা জারণের মাধ্যমে জীব দ্যুতি (আলো) উৎপন্ন করে।"
+    },
+    {
+      "q": "ত্বক কালো হওয়ার কারণ ত্বকে—",
+      "o": [
+        "মেলানিনের পরিমাণ কম থাকে",
+        "মেলানিনের পরিমাণ বেশি থাকে",
+        "ইউরিক অ্যাসিডের পরিমাণ কম থাকে",
+        "ইউরিক অ্যাসিডের পরিমাণ বেশি থাকে"
+      ],
+      "a": 1,
+      "note": "ত্বকে মেলানিন রঞ্জক পদার্থের পরিমাণ বেশি থাকলে ত্বক কালো হয়।"
+    },
+    {
+      "q": "শীতকালে যে গাছে ফুল ফোটে—",
+      "o": [
+        "পালং",
+        "টিউলিপ",
+        "চাঁপা",
+        "জুঁই"
+      ],
+      "a": 1,
+      "note": "টিউলিপ একটি শীতকালীন ফুল; স্বল্প দিবাদৈর্ঘ্যে ফুল ফোটে।"
+    },
+    {
+      "q": "শীতঘুম দেয়—",
+      "o": [
+        "স্যামন মাছ",
+        "জুগনু",
+        "মেরু ভালুক",
+        "বিড়াল"
+      ],
+      "a": 2,
+      "note": "মেরু ভালুক শীতকালে দীর্ঘ সময়ের জন্য শীতঘুমে যায়।"
+    },
+    {
+      "q": "যৌগিক আলো—",
+      "o": [
+        "সাদা",
+        "লাল",
+        "নীল",
+        "সবুজ"
+      ],
+      "a": 0,
+      "note": "সাদা আলো একাধিক বর্ণের সমন্বয়ে গঠিত, তাই একে যৌগিক আলো বলে।"
+    },
+    {
+      "q": "সমতল দর্পণ দ্বারা গঠিত প্রতিবিম্বের প্রকৃতি—",
+      "o": [
+        "সদ ও সোজা",
+        "সদ ও উলটো",
+        "অসদ ও সোজা",
+        "অসদ ও উলটো"
+      ],
+      "a": 2,
+      "note": "সমতল দর্পণে গঠিত প্রতিবিম্ব অসদ, সোজা ও বস্তুর সমান আকারের হয়।"
+    },
+    {
+      "q": "ওজোন স্তরে ছিদ্র তৈরির জন্য দায়ী—",
+      "o": [
+        "CO₂",
+        "CFC",
+        "ক্লোরোফিল",
+        "নাইট্রোজেন"
+      ],
+      "a": 1,
+      "note": "ক্লোরোফ্লুরোকার্বন (CFC) গ্যাস ওজোন স্তরকে ক্ষয় করে ছিদ্র সৃষ্টির জন্য দায়ী।"
+    },
+    {
+      "q": "একটি গাছের ছায়ার দৈর্ঘ্য ছোটো হবে—",
+      "o": [
+        "সকালে",
+        "দুপুরে",
+        "বিকালে",
+        "রাত্রে"
+      ],
+      "a": 1,
+      "note": "দুপুরে সূর্য মাথার ওপরে থাকে, আপতন কোণ কম হওয়ায় ছায়া সবচেয়ে ছোট হয়।"
+    },
+    {
+      "q": "শূন্য মাধ্যমে আলোর বেগ—",
+      "o": [
+        "3×10⁷ m/s",
+        "3×10⁸ m/s",
+        "3×10⁹ m/s",
+        "3×10¹⁰ m/s"
+      ],
+      "a": 1,
+      "note": "শূন্যস্থানে আলোর গতিবেগ 3×10⁸ মিটার/সেকেন্ড।"
+    },
+    {
+      "q": "বইয়ের পাতায় কোন ধরনের প্রতিফলন হয়—",
+      "o": [
+        "নিয়মিত",
+        "বিক্ষিপ্ত",
+        "পূর্ণ",
+        "কোনোটিই নয়"
+      ],
+      "a": 1,
+      "note": "বইয়ের অমসৃণ পৃষ্ঠ থেকে বিক্ষিপ্ত প্রতিফলনের জন্যই আমরা বই পড়তে পারি।"
+    },
+    {
+      "q": "সাদা আলোর বিচ্ছুরণ বর্ণালীতে কোনটি থাকে না?",
+      "o": [
+        "গোলাপি",
+        "কমলা",
+        "আকাশি",
+        "হলুদ"
+      ],
+      "a": 0,
+      "note": "সাদা আলোর বর্ণালীতে সাতটি বর্ণ (VIBGYOR) থাকে; গোলাপি রং অনুপস্থিত।"
+    },
+    {
+      "q": "প্রথম থার্মোমিটার তৈরি করেন—",
+      "o": [
+        "সেলসিয়াস",
+        "কেলভিন",
+        "গ্যালিলিও",
+        "ফারেনহাইট"
+      ],
+      "a": 2,
+      "note": "গ্যালিলিও ১৫৯সালে প্রথম বায়ু থার্মোস্কোপ (থার্মোমিটার) তৈরি করেন।"
+    },
+    {
+      "q": "বাড়ির দেওয়ালে আলোর কোন ঘটনা হয়?",
+      "o": [
+        "নিয়মিত প্রতিফলন",
+        "বিক্ষিপ্ত প্রতিফলন",
+        "প্রতিসরণ",
+        "বিক্ষেপণ"
+      ],
+      "a": 1,
+      "note": "দেওয়াল অমসৃণ হওয়ায় আলোর বিক্ষিপ্ত প্রতিফলন ঘটে, ফলে সবদিক থেকে দেখা যায়।"
+    },
+    {
+      "q": "‘AMBULANCE’-এর মধ্যে কোন অক্ষরটির পার্শ্বীয় পরিবর্তন হয় না?",
+      "o": [
+        "A",
+        "M",
+        "U",
+        "সব কয়টি"
+      ],
+      "a": 3,
+      "note": "A, M, U অক্ষরগুলি প্রতিসম, তাই সমতল দর্পণে প্রতিফলনে পার্শ্বীয় পরিবর্তন দেখা যায় না।"
+    },
+    {
+      "q": "আলোর প্রভাবে উদ্ভিদের কোন ঘটনা ঘটে?",
+      "o": [
+        "সালোকসংশ্লেষ",
+        "ফুলফোটা",
+        "উদ্ভিদের চলন",
+        "সব কয়টি"
+      ],
+      "a": 3,
+      "note": "আলো সালোকসংশ্লেষ, ফুলফোটা (আলোক-পর্যায়ক্রম) ও ফোটোট্রপিক চলন সবই নিয়ন্ত্রণ করে।"
+    },
+    {
+      "q": "অপসারী আলোকরশ্মিগুচ্ছ হলো—",
+      "o": [
+        "সমান্তরাল রেখাগুচ্ছ",
+        "এক বিন্দু থেকে ছড়িয়ে পড়া রেখাগুচ্ছ",
+        "এক বিন্দুতে এসে মেলা রেখাগুচ্ছ",
+        "আঁকাবাঁকা রেখাগুচ্ছ"
+      ],
+      "a": 1,
+      "note": "অপসারী রশ্মিগুচ্ছ একটি বিন্দু থেকে বাইরের দিকে ছড়িয়ে পড়ে।"
+    },
+    {
+      "q": "সুচিছিদ্র ক্যামেরার ছিদ্র বড়ো হলে প্রতিকৃতি কেমন হয়?",
+      "o": [
+        "স্পষ্ট হয়",
+        "অস্পষ্ট বা স্থূল হয়",
+        "অতি উজ্জ্বল ও স্পষ্ট হয়",
+        "অপরিবর্তিত থাকে"
+      ],
+      "a": 1,
+      "note": "ছিদ্র বড়ো হলে একাধিক রশ্মি প্রবেশ করে, ফলে প্রতিকৃতি অস্পষ্ট ও স্থূল হয়।"
+    },
+    {
+      "q": "সমতল দর্পণ দ্বারা গঠিত প্রতিবিম্ব এবং বস্তু কেমন হয়?",
+      "o": [
+        "প্রতিবিম্ব বস্তুর চেয়ে বড়ো হয়",
+        "প্রতিবিম্ব বস্তুর চেয়ে ছোটো হয়",
+        "প্রতিবিম্ব ও বস্তু সমান হয়",
+        "কোনোটিই নয়"
+      ],
+      "a": 2,
+      "note": "সমতল দর্পণে বিবর্ধন 1, তাই প্রতিবিম্ব ও বস্তুর আকার সমান হয়।"
+    },
+    {
+      "q": "আলো ______, তাই দেখা যায় না। (শূন্যস্থান পূরণ)",
+      "o": [
+        "নিজে অদৃশ্য কিন্তু অন্যকে দেখতে সাহায্য করে",
+        "নিজে দৃশ্যমান কিন্তু অন্যকে দেখতে দেয় না",
+        "এক প্রকার তরল পদার্থ",
+        "জড় বস্তু"
+      ],
+      "a": 0,
+      "note": "আলো নিজে অদৃশ্য; বস্তু থেকে প্রতিফলিত হয়ে চোখে আসলে আমরা বস্তু দেখতে পাই।"
+    },
+    {
+      "q": "সাদা আলো কয়টি বর্ণের সমষ্টি?",
+      "o": [
+        "৩টি",
+        "৫টি",
+        "৭টি",
+        "১২টি"
+      ],
+      "a": 2,
+      "note": "সাদা আলো সাতটি বর্ণের (বেগুনী, নীল, আকাশি, সবুজ, হলুদ, কমলা, লাল) সমষ্টি।"
+    },
+    {
+      "q": "ছায়া গঠনের জন্য আলোর কোন ধর্ম দায়ী?",
+      "o": [
+        "আলোর বক্ররেখায় চলন",
+        "আলোর সরলরেখায় চলন",
+        "আলোর বিচ্ছুরণ",
+        "আলোর প্রতিসরণ"
+      ],
+      "a": 1,
+      "note": "আলো সরলরেখায় চলে বলে অস্বচ্ছ বস্তুর পেছনে আলো না পৌঁছে ছায়া তৈরি হয়।"
+    },
+    {
+      "q": "কোন রশ্মি চামড়ায় পড়লে ক্যানসার হয়?",
+      "o": [
+        "দৃশ্যমান আলো",
+        "অবলোহিত রশ্মি",
+        "অতিবেগুনি (UV) রশ্মি",
+        "এক্স-রশ্মি"
+      ],
+      "a": 2,
+      "note": "অতিবেগুনি রশ্মি ত্বকের কোষে DNA ক্ষতিগ্রস্ত করে ত্বকের ক্যান্সার সৃষ্টি করতে পারে।"
+    },
+    {
+      "q": "আলোকরশ্মি দর্পণে লম্বভাবে আপতিত হলে প্রতিফলন কোণ কত?",
+      "o": [
+        "90°",
+        "45°",
+        "0°",
+        "180°"
+      ],
+      "a": 2,
+      "note": "লম্ব আপতনে আপতন কোণ 0°, প্রতিফলন কোণও 0° হয়।"
+    },
+    {
+      "q": "আলোকরশ্মি ঘন মাধ্যম থেকে লঘু মাধ্যমে প্রবেশ করলে প্রতিসরণ কোণ আপতন কোণ অপেক্ষা—",
+      "o": [
+        "ছোটো হয়",
+        "সমান হয়",
+        "বড়ো হয়",
+        "অর্ধেক হয়"
+      ],
+      "a": 2,
+      "note": "ঘন থেকে লঘু মাধ্যমে গেলে আলো লম্ব থেকে দূরে সরে যায়, প্রতিসরণ কোণ বড় হয়।"
+    },
+    {
+      "q": "হাতের তালু ও আঙুলের সাহায্যে পর্দায় যে চিত্র প্রদর্শনী করা হয় তাকে কী বলে?",
+      "o": [
+        "বায়োস্কোপ",
+        "সায়াটোগ্রাফি বা ছায়াশিল্প",
+        "সিনেমা",
+        "ক্যালিগ্রাফি"
+      ],
+      "a": 1,
+      "note": "হাতের ছায়া দিয়ে প্রাণীর আকৃতি তৈরি করাকে সায়াটোগ্রাফি বা ছায়াশিল্প বলে।"
+    },
+    {
+      "q": "প্রথম মাধ্যমে আলোর বেগ ও দ্বিতীয় মাধ্যমে আলোর বেগের অনুপাতকে কী বলে?",
+      "o": [
+        "প্রতিসরণাঙ্ক",
+        "প্রতিফলন কোণ",
+        "ক্রান্তি কোণ",
+        "বিবর্ধন"
+      ],
+      "a": 0,
+      "note": "দ্বিতীয় মাধ্যমের সাপেক্ষে প্রথম মাধ্যমের প্রতিসরণাঙ্ক = (প্রথম মাধ্যমে আলোর বেগ)/(দ্বিতীয় মাধ্যমে আলোর বেগ)।"
+    },
+    {
+      "q": "মেলানিন তৈরি হয় দেহের কোন অংশে?",
+      "o": [
+        "যকৃতে",
+        "ফুসফুসে",
+        "ত্বকে",
+        "হৃদপিণ্ডে"
+      ],
+      "a": 2,
+      "note": "ত্বকের মেলানোসাইট কোষ মেলানিন রঞ্জক উৎপন্ন করে।"
+    },
+    {
+      "q": "কোন গ্যাসীয় স্তর সূর্যের অতিবেগুনি রশ্মি আটকায়?",
+      "o": [
+        "অক্সিজেন স্তর",
+        "ওজোন স্তর (O₃)",
+        "নাইট্রোজেন স্তর",
+        "কার্বন ডাই অক্সাইড স্তর"
+      ],
+      "a": 1,
+      "note": "স্ট্রাটোস্ফিয়ারের ওজোন স্তর ক্ষতিকর অতিবেগুনি রশ্মি শোষণ করে পৃথিবীকে রক্ষা করে।"
+    },
+    {
+      "q": "আলোর প্রভাবে বিড়াল বা বাঘের চোখের কী পরিবর্তন হয়?",
+      "o": [
+        "চোখের আকৃতির",
+        "চোখের মণির আকারের",
+        "চোখের সংখ্যার",
+        "কোনোটিই নয়"
+      ],
+      "a": 1,
+      "note": "আলোর তীব্রতা অনুযায়ী বিড়াল বা বাঘের চোখের মণি সংকুচিত বা প্রসারিত হয়।"
+    },
+    {
+      "q": "প্রতিফলনের দ্বিতীয় সূত্র অনুযায়ী আপতন কোণ ও প্রতিফলন কোণ—",
+      "o": [
+        "আপতন কোণ দ্বিগুণ",
+        "পরস্পর সমান",
+        "আপতন কোণ অর্ধেক",
+        "সম্পর্কহীন"
+      ],
+      "a": 1,
+      "note": "প্রতিফলনের দ্বিতীয় সূত্র: আপতন কোণ = প্রতিফলন কোণ।"
+    },
+    {
+      "q": "সাদা চামড়ার মানুষের ক্ষেত্রে কালো চামড়ার তুলনায় ______ হওয়ার সম্ভাবনা বেশি।",
+      "o": [
+        "ত্বকের ক্যানসার",
+        "ম্যালেরিয়া",
+        "অ্যানিমিয়া",
+        "জন্ডিস"
+      ],
+      "a": 0,
+      "note": "সাদা ত্বকে মেলানিন কম থাকায় UV রশ্মি থেকে সুরক্ষা কম, ফলে ত্বকের ক্যান্সারের ঝুঁকি বেশি।"
+    },
+    {
+      "q": "আলোর সরলরেখায় চলার ধর্মের ফলে গঠিত হয়—",
+      "o": [
+        "ছায়া (অস্বচ্ছ মাধ্যমে)",
+        "বর্ণালী",
+        "আলো",
+        "নিয়মিত প্রতিফলন"
+      ],
+      "a": 0,
+      "note": "আলো সরলরেখায় চলার কারণে অস্বচ্ছ বস্তুর পেছনে অন্ধকার অঞ্চল ছায়া তৈরি হয়।"
+    },
+    {
+      "q": "আলো সহজে চলতে পারে না—",
+      "o": [
+        "অস্বচ্ছ মাধ্যম",
+        "স্বচ্ছ মাধ্যম",
+        "ঈষৎ স্বচ্ছ মাধ্যম",
+        "শূন্য মাধ্যম"
+      ],
+      "a": 0,
+      "note": "অস্বচ্ছ মাধ্যম আলো ভেদ করতে পারে না, তাই আলো চলতে পারে না।"
+    },
+    {
+      "q": "প্রতিবিম্ব গঠনের প্রধান কারণ—",
+      "o": [
+        "আলোর শোষণ",
+        "আলোর সরলরেখায় চলন",
+        "নিয়মিত প্রতিফলন বা প্রতিসরণ",
+        "আলোর বিচ্ছুরণ"
+      ],
+      "a": 2,
+      "note": "দর্পণে নিয়মিত প্রতিফলন ও লেন্সে প্রতিসরণের মাধ্যমে প্রতিবিম্ব গঠিত হয়।"
+    },
+    {
+      "q": "আলোকপট্টি (বর্ণালী) গঠিত হয়—",
+      "o": [
+        "নিয়মিত প্রতিফলনে",
+        "বিক্ষিপ্ত প্রতিফলনে",
+        "বিচ্ছুরণে",
+        "শোষণে"
+      ],
+      "a": 2,
+      "note": "সাদা আলোর বিচ্ছুরণের ফলে বিভিন্ন বর্ণের আলো পৃথক হয়ে বর্ণালী সৃষ্টি করে।"
+    },
+    {
+      "q": "পার্শ্বীয় পরিবর্তন হয়—",
+      "o": [
+        "ইলেকট্রিক বাল্বে",
+        "সমান্তরাল রশ্মিগুচ্ছে",
+        "গভীরতা হ্রাসে",
+        "সমতল দর্পণে প্রতিফলনে"
+      ],
+      "a": 3,
+      "note": "সমতল দর্পণে প্রতিফলনে বস্তুর বাম-ডান পার্শ্বীয় পরিবর্তন ঘটে।"
+    },
+    {
+      "q": "বিস্তৃত আলোক উৎসের উদাহরণ—",
+      "o": [
+        "বিন্দু উৎস",
+        "একটি মাত্র তারা",
+        "ইলেকট্রিক বাল্ব",
+        "লেজার লাইট"
+      ],
+      "a": 2,
+      "note": "ইলেকট্রিক বাল্ব একটি বিস্তৃত উৎস, কারণ এটি বৃহৎ তল থেকে আলো বিকিরণ করে।"
+    },
+    {
+      "q": "সূর্য থেকে আগত রশ্মিগুচ্ছ মূলত—",
+      "o": [
+        "অপসারী",
+        "অভিসারী",
+        "সমান্তরাল",
+        "অসমান্তরাল"
+      ],
+      "a": 2,
+      "note": "সূর্য অনেক দূরে অবস্থিত, তাই পৃথিবীতে আগত রশ্মিগুচ্ছ সমান্তরাল বলে ধরা হয়।"
+    },
+    {
+      "q": "জলপূর্ণ পাত্রের তল উপর থেকে দেখলে—",
+      "o": [
+        "গভীরতা বাড়ে",
+        "গভীরতা কমে বোঝায়",
+        "একই থাকে",
+        "অন্ধকার দেখায়"
+      ],
+      "a": 1,
+      "note": "প্রতিসরণের কারণে জলের প্রকৃত গভীরতা অপেক্ষা আপাত গভীরতা কম মনে হয়।"
+    },
+    {
+      "q": "টমেটোর লাল রঙের জন্য দায়ী—",
+      "o": [
+        "মেলানিন",
+        "ক্রোমোপ্লাস্ট (লাইকোপিন)",
+        "ক্লোরোফিল",
+        "লিউকোপ্লাস্ট"
+      ],
+      "a": 1,
+      "note": "টমেটোতে উপস্থিত ক্রোমোপ্লাস্টে থাকা লাইকোপিন রঞ্জক টমেটোকে লাল রং দেয়।"
+    },
+    {
+      "q": "চামড়া ভেদ করতে পারে—",
+      "o": [
+        "দৃশ্যমান আলো",
+        "অবলোহিত রশ্মি",
+        "এক্স-রশ্মি",
+        "আলফা রশ্মি"
+      ],
+      "a": 2,
+      "note": "এক্স-রশ্মির ভেদনক্ষমতা বেশি, এটি ত্বক ভেদ করে দেহের অভ্যন্তরে প্রবেশ করতে পারে।"
+    },
+    {
+      "q": "কোশের DNA নষ্ট করে—",
+      "o": [
+        "দৃশ্যমান আলো",
+        "রেডিও তরঙ্গ",
+        "অতিবেগুনি (UV) রশ্মি",
+        "অবলোহিত রশ্মি"
+      ],
+      "a": 2,
+      "note": "UV রশ্মি উচ্চ শক্তিসম্পন্ন, এটি কোষের DNA অণু ভেঙে দিতে পারে, যা মিউটেশন ও ক্যান্সারের কারণ।"
+    },
+    {
+      "q": "আলো প্রসঙ্গে সঠিক উক্তি—",
+      "o": [
+        "আলো সরাসরি দেখা যায়",
+        "আলো নিজে অদৃশ্য বস্তুকে দৃশ্যমান করে",
+        "আলো তরল পদার্থ",
+        "আলো কেবল অন্ধকারে দেখা যায়"
+      ],
+      "a": 1,
+      "note": "আলো নিজে দেখা যায় না; বস্তুতে প্রতিফলিত হয়ে চোখে এলে আমরা বস্তু দেখি।"
+    },
+    {
+      "q": "সুচিছিদ্র ক্যামেরার মূলনীতি—",
+      "o": [
+        "আলোর প্রতিফলন",
+        "আলোর সরলরেখায় চলন",
+        "আলোর প্রতিসরণ",
+        "আলোর বিচ্ছুরণ"
+      ],
+      "a": 1,
+      "note": "আলো সরলরেখায় চলে, সুচিছিদ্র দিয়ে প্রবেশ করে পর্দায় বিপরীত প্রতিকৃতি গঠন করে।"
+    },
+    {
+      "q": "চাঁদ কোন ধরনের বস্তু?",
+      "o": [
+        "স্বপ্রভ",
+        "অপ্রভ",
+        "স্বচ্ছ",
+        "কৃত্রিম"
+      ],
+      "a": 1,
+      "note": "চাঁদের নিজস্ব আলো নেই, সূর্যের আলো প্রতিফলিত করে বলেই আমরা দেখি, তাই এটি অপ্রভ।"
+    },
+    {
+      "q": "অ্যাম্বুলেন্সে ‘AMBULANCE’ কীভাবে লেখা থাকে?",
+      "o": [
+        "সোজা",
+        "উলটো/পার্শ্বীয় পরিবর্তিত",
+        "তির্যক",
+        "রঙিন"
+      ],
+      "a": 1,
+      "note": "সামনের গাড়ির চালক রিয়ারভিউ মিররে উলটো লেখা দেখে সোজা বুঝতে পারে, তাই পার্শ্বীয় পরিবর্তিত লেখা থাকে।"
+    },
+    {
+      "q": "সমতল দর্পণে গঠিত প্রতিবিম্ব বস্তুর তুলনায়—",
+      "o": [
+        "বড়ো",
+        "ছোটো",
+        "সমান",
+        "দ্বিগুণ"
+      ],
+      "a": 2,
+      "note": "সমতল দর্পণে বিবর্ধন 1, তাই প্রতিবিম্বের আকার বস্তুর সমান।"
+    },
+    {
+      "q": "ইলিশ মাছের বাচ্চার মৃত্যুর জন্য দায়ী—",
+      "o": [
+        "বেশি আলো",
+        "কম আলো",
+        "লবণাক্ত পানি",
+        "ঠান্ডা পানি"
+      ],
+      "a": 1,
+      "note": "ইলিশের বাচ্চা পর্যাপ্ত আলোর অভাবে খাদ্য খুঁজে পায় না, ফলে মৃত্যু ঘটে।"
+    },
+    {
+      "q": "অ্যামিবার চলনে প্রভাব ফেলে—",
+      "o": [
+        "তাপ",
+        "আলো",
+        "শব্দ",
+        "আর্দ্রতা"
+      ],
+      "a": 1,
+      "note": "অ্যামিবা তীব্র আলো এড়িয়ে চলার জন্য ফোটোট্যাক্সিস প্রদর্শন করে।"
+    },
+    {
+      "q": "প্রিজমে সাদা আলো সাত রঙে ভাঙার ঘটনাকে বলে—",
+      "o": [
+        "রামধনু",
+        "প্রতিসরণ",
+        "বিচ্ছুরণ",
+        "প্রতিফলন"
+      ],
+      "a": 2,
+      "note": "প্রিজমে সাদা আলো বিচ্ছুরিত হয়ে বিভিন্ন বর্ণে বিভক্ত হয়, এই ঘটনা বিচ্ছুরণ।"
+    },
+    {
+      "q": "সুচিছিদ্র ক্যামেরায় সৃষ্ট প্রতিকৃতিটি—",
+      "o": [
+        "অসদবিম্ব",
+        "সদবিম্ব",
+        "কল্পিত বিম্ব",
+        "ছায়ামাত্র"
+      ],
+      "a": 1,
+      "note": "সুচিছিদ্র ক্যামেরায় পর্দায় যে আলোক চিত্র পাওয়া যায় তা সদবিম্ব, যা পর্দায় ফেলা যায়।"
+    },
+    {
+      "q": "অবতল লেন্সে গঠিত প্রতিবিম্ব—",
+      "o": [
+        "সদ",
+        "অসদ",
+        "কখনো সদ কখনো অসদ",
+        "কোনো প্রতিবিম্ব হয় না"
+      ],
+      "a": 1,
+      "note": "অবতল লেন্স সর্বদা অসদ, সোজা ও খর্বিত প্রতিবিম্ব গঠন করে।"
+    },
+    {
+      "q": "গ্লিসারিনে কাচদণ্ড অদৃশ্য হওয়ার কারণ—",
+      "o": [
+        "উভয়ের প্রতিসরণাঙ্ক সমান",
+        "কাচ গলে যায়",
+        "গ্লিসারিন অস্বচ্ছ",
+        "আলোর বিক্ষেপণ"
+      ],
+      "a": 0,
+      "note": "কাচ ও গ্লিসারিনের প্রতিসরণাঙ্ক প্রায় সমান, তাই আলোকরশ্মি প্রতিসৃত বা প্রতিফলিত না হলে কাচ দৃশ্যমান হয় না।"
+    },
+    {
+      "q": "কাঠের জানালা বন্ধ থাকলে রোদ ঢোকে না, কারণ কাঠ—",
+      "o": [
+        "স্বচ্ছ মাধ্যম",
+        "ঈষৎ স্বচ্ছ মাধ্যম",
+        "অস্বচ্ছ মাধ্যম",
+        "প্রতিফলক মাধ্যম"
+      ],
+      "a": 2,
+      "note": "কাঠ অস্বচ্ছ মাধ্যম, আলো ভেদ করতে পারে না।"
+    },
+    {
+      "q": "আলো প্রসঙ্গে সঠিক বক্তব্য—",
+      "o": [
+        "আলো দেখা ও অনুভব করা যায়",
+        "আলো দেখা যায় অনুভব করা যায় না",
+        "আলো নিজে দেখা যায় না কেবল বস্তুকে দৃশ্যমান করে",
+        "আলো কঠিন পদার্থ"
+      ],
+      "a": 2,
+      "note": "আলো তড়িৎচুম্বকীয় তরঙ্গ, সরাসরি দেখা যায় না, বস্তু থেকে প্রতিফলিত হয়ে চোখে এলে বস্তু দেখি।"
+    },
+    {
+      "q": "X-রশ্মির ক্ষেত্রে সঠিক উক্তি—",
+      "o": [
+        "প্রতিফলন ও প্রতিসরণ কোনোটিই ঘটে না",
+        "কেবল প্রতিফলন ঘটে",
+        "প্রতিফলন ও প্রতিসরণ উভয়ই ঘটে",
+        "কেবল প্রতিসরণ ঘটে"
+      ],
+      "a": 2,
+      "note": "X-রশ্মিরও প্রতিফলন ও প্রতিসরণ ঘটে, তবে খুবই ক্ষুদ্র কোণে বিশেষ ব্যবস্থায়।"
+    },
+    {
+      "q": "পেরিস্কোপে গঠিত প্রতিবিম্বের বৈশিষ্ট্য—",
+      "o": [
+        "পার্শ্বীয় পরিবর্তন হয়",
+        "পার্শ্বীয় পরিবর্তন হয় না",
+        "বিম্ব উলটো হয়",
+        "বিম্ব বিবর্ধিত হয়"
+      ],
+      "a": 1,
+      "note": "পেরিস্কোপে দুটি সমতল দর্পণ ব্যবহৃত হয়, দ্বিতীয় প্রতিফলনে পার্শ্বীয় পরিবর্তন পুনরুদ্ধার হয়, তাই বিম্বের পার্শ্বীয় পরিবর্তন হয় না।"
+    },
+    {
+      "q": "ভেদনক্ষমতার তুলনায়—",
+      "o": [
+        "দৃশ্যমান আলো > এক্স-রশ্মি",
+        "এক্স-রশ্মি > দৃশ্যমান আলো",
+        "দুটো সমান",
+        "দুটোই ভেদ করতে পারে না"
+      ],
+      "a": 1,
+      "note": "এক্স-রশ্মির তরঙ্গদৈর্ঘ্য কম, ভেদনক্ষমতা দৃশ্যমান আলোর চেয়ে অনেক বেশি।"
+    },
+    {
+      "q": "মৌমাছির দৃষ্টি সম্পর্কে সঠিক তথ্য—",
+      "o": [
+        "লাল রং ভালো দেখে",
+        "লাল দেখতে পায় না অতিবেগুনি রশ্মি দেখে",
+        "শুধু সাদা-কালো দেখে",
+        "সম্পূর্ণ বর্ণান্ধ"
+      ],
+      "a": 1,
+      "note": "মৌমাছিরা লাল রং দেখতে পায় না কিন্তু অতিবেগুনি রশ্মি দেখতে পারে, যা ফুলের মধু খোঁজায় সহায়তা করে।"
+    },
+    {
+      "q": "আপতন কোণ ও প্রতিসরণ কোণ সমান হয়—",
+      "o": [
+        "সর্বদা",
+        "কেবল লম্ব আপতনে",
+        "কখনোই নয়",
+        "ঘন থেকে লঘু মাধ্যমে গেলে"
+      ],
+      "a": 1,
+      "note": "লম্ব আপতনে আপতন কোণ 0°, প্রতিসরণ কোণও 0° হয়, অর্থাৎ কোণ দুটি সমান (0°) হয়।"
+    }
+  ],
+  "sci_ch3": [
+    {
+      "q": "শব্দ তরঙ্গ কোন ধরনের তরঙ্গ?",
+      "o": [
+        "তির্যক",
+        "অনুপ্রস্থ",
+        "অনুদৈর্ঘ্য",
+        "কোনোটিই নয়"
+      ],
+      "a": 2,
+      "note": "শব্দ অনুদৈর্ঘ্য তরঙ্গের মাধ্যমে সঞ্চালিত হয়।"
+    }
+  ],
+  "sci_ch4": [
+    {
+      "q": "পরমাণুর কেন্দ্রে কোন কণা থাকে?",
+      "o": [
+        "ইলেকট্রন",
+        "প্রোটন ও নিউট্রন",
+        "শুধু প্রোটন",
+        "শুধু নিউট্রন"
+      ],
+      "a": 1,
+      "note": "পরমাণুর কেন্দ্রে প্রোটন ও নিউট্রন একসাথে থাকে।"
+    }
+  ],
+  "sci_ch5": [
+    {
+      "q": "পদার্থের ভৌত পরিবর্তনের উদাহরণ কোনটি?",
+      "o": [
+        "লোহায় মরিচা ধরা",
+        "দুধ থেকে দই",
+        "বরফ গলা",
+        "কয়লা পোড়া"
+      ],
+      "a": 2,
+      "note": "বরফ গলা ভৌত পরিবর্তন।"
+    }
+  ],
+  "sci_ch6": [
+    {
+      "q": "উদ্ভিদের খাদ্য তৈরি করার প্রক্রিয়াকে কী বলে?",
+      "o": [
+        "শ্বসন",
+        "সালোকসংশ্লেষণ",
+        "পরিবহন",
+        "বাষ্পমোচন"
+      ],
+      "a": 1,
+      "note": "সালোকসংশ্লেষণে উদ্ভিদ সূর্যালোকের সাহায্যে খাদ্য তৈরি করে।"
+    }
+  ],
+  "sci_ch7": [
+    {
+      "q": "রক্তের কোন কণা রোগ প্রতিরোধ করে?",
+      "o": [
+        "লোহিত কণিকা",
+        "শ্বেত কণিকা",
+        "অণুচক্রিকা",
+        "প্লাজমা"
+      ],
+      "a": 1,
+      "note": "শ্বেত রক্তকণিকা শরীরের রোগ প্রতিরোধ ক্ষমতা বজায় রাখে।"
+    }
+  ],
+  "his_ch1": [
+    {
+      "q": "প্রাচীন ভারতে কোন সভ্যতা প্রথম নগরকেন্দ্রিক ছিল?",
+      "o": [
+        "বৈদিক সভ্যতা",
+        "সিন্ধু সভ্যতা",
+        "মৌর্য সভ্যতা",
+        "গুপ্ত সভ্যতা"
+      ],
+      "a": 1,
+      "note": "সিন্ধু সভ্যতার মহেঞ্জোদাড়ো ও হরপ্পা নগর পরিকল্পিত ছিল।"
+    }
+  ],
+  "his_ch2": [
+    {
+      "q": "গুপ্ত যুগের শ্রেষ্ঠ সম্রাট কে ছিলেন?",
+      "o": [
+        "চন্দ্রগুপ্ত মৌর্য",
+        "সমুদ্রগুপ্ত",
+        "দ্বিতীয় চন্দ্রগুপ্ত",
+        "স্কন্দগুপ্ত"
+      ],
+      "a": 1,
+      "note": "সমুদ্রগুপ্ত গুপ্ত সাম্রাজ্যের বিস্তার ঘটান এবং শিল্প-সাহিত্যের পৃষ্ঠপোষক ছিলেন।"
+    }
+  ],
+  "his_ch3": [
+    {
+      "q": "দিল্লি সুলতানির প্রথম সুলতান কে ছিলেন?",
+      "o": [
+        "কুতুবউদ্দিন আইবক",
+        "ইলতুৎমিশ",
+        "বলবন",
+        "আলাউদ্দিন খিলজি"
+      ],
+      "a": 0,
+      "note": "কুতুবউদ্দিন আইবক ১২০৬ সালে দিল্লি সুলতানি প্রতিষ্ঠা করেন।"
+    }
+  ],
+  "his_ch4": [
+    {
+      "q": "আকবরের ধর্মীয় নীতি কী নামে পরিচিত?",
+      "o": [
+        "সুলহ-ই-কুল",
+        "দীন-ই-ইলাহি",
+        "জাবতি",
+        "মনসবদারি"
+      ],
+      "a": 0,
+      "note": "আকবর 'সুলহ-ই-কুল' (সর্বধর্ম সমন্বয়) নীতি গ্রহণ করেছিলেন, পরে দীন-ই-ইলাহি প্রবর্তন করেন।"
+    }
+  ],
+  "his_ch5": [
+    {
+      "q": "বাংলার শেষ স্বাধীন নবাব কে ছিলেন?",
+      "o": [
+        "আলিবর্দী খান",
+        "সিরাজউদ্দৌলা",
+        "মীর জাফর",
+        "মীর কাসিম"
+      ],
+      "a": 1,
+      "note": "পলাশির যুদ্ধের সময় বাংলার নবাব সিরাজউদ্দৌলা ছিলেন।"
+    }
+  ],
+  "his_ch6": [
+    {
+      "q": "পলাশির যুদ্ধ কত সালে হয়?",
+      "o": [
+        "১৭৫৭",
+        "১৭৬৪",
+        "১৮৫৭",
+        "১৮৫৮"
+      ],
+      "a": 0,
+      "note": "১৭৫৭ সালের ২৩ জুন পলাশির যুদ্ধে ইংরেজরা জয়ী হয়।"
+    }
+  ],
+  "geo_ch1": [
+    {
+      "q": "পৃথিবীর আহ্নিক গতির ফলে কী ঘটে?",
+      "o": [
+        "ঋতু পরিবর্তন",
+        "দিন-রাত্রি",
+        "জোয়ার-ভাটা",
+        "সূর্যগ্রহণ"
+      ],
+      "a": 1,
+      "note": "পৃথিবী নিজ অক্ষে ঘোরার কারণে দিন ও রাত্রি হয়।"
+    }
+  ],
+  "geo_ch2": [
+    {
+      "q": "বায়ুমণ্ডলের সবচেয়ে নীচের স্তর কোনটি?",
+      "o": [
+        "স্ট্র্যাটোস্ফিয়ার",
+        "ট্রপোস্ফিয়ার",
+        "মেসোস্ফিয়ার",
+        "থার্মোস্ফিয়ার"
+      ],
+      "a": 1,
+      "note": "ট্রপোস্ফিয়ারে মেঘ, বৃষ্টি ইত্যাদি আবহাওয়ার ঘটনা ঘটে।"
+    }
+  ],
+  "geo_ch3": [
+    {
+      "q": "পৃথিবীতে বায়ুপ্রবাহের প্রধান কারণ কী?",
+      "o": [
+        "পৃথিবীর ঘূর্ণন",
+        "চাঁদের আকর্ষণ",
+        "সূর্যের তাপের অসম বন্টন",
+        "সমুদ্র স্রোত"
+      ],
+      "a": 2,
+      "note": "সূর্যের তাপের অসমতার জন্য বায়ুচাপ পার্থক্য সৃষ্টি হয়ে বায়ুপ্রবাহ হয়।"
+    }
+  ],
+  "geo_ch4": [
+    {
+      "q": "ভারতের দীর্ঘতম নদী কোনটি?",
+      "o": [
+        "গঙ্গা",
+        "সিন্ধু",
+        "ব্রহ্মপুত্র",
+        "গোদাবরী"
+      ],
+      "a": 0,
+      "note": "গঙ্গা নদী ভারতের মধ্যে দীর্ঘতম (২৫২৫ কিমি)।"
+    }
+  ],
+  "geo_ch5": [
+    {
+      "q": "ভারতে কোন ফসল 'সবুজ বিপ্লবের' ফলে বেশি উৎপাদিত হয়?",
+      "o": [
+        "ধান",
+        "গম",
+        "তুলো",
+        "চা"
+      ],
+      "a": 1,
+      "note": "সবুজ বিপ্লবে উচ্চফলনশীল গমের উৎপাদন বেড়ে যায়।"
+    }
+  ],
+  "geo_ch6": [
+    {
+      "q": "মানচিত্রে স্কেল ব্যবহার করা হয় কেন?",
+      "o": [
+        "রঙ দেখাতে",
+        "দূরত্ব বোঝাতে",
+        "উচ্চতা দেখাতে",
+        "দিক নির্দেশ করতে"
+      ],
+      "a": 1,
+      "note": "স্কেলের মাধ্যমে বাস্তব দূরত্ব আনুপাতিক হারে প্রকাশ করা হয়।"
+    }
+  ],
+  "custom_1779907911009": [],
+  "custom_1779907922571": [],
+  "custom_1779907934009": [],
+  "custom_1779907949992": []
+};
+
+    const subjectGroups = [
+      { key: "science", name: "🌿 পরিবেশ ও বিজ্ঞান", className: "science" },
+      { key: "history", name: "📜 ইতিহাস", className: "history" },
+      { key: "geography", name: "🌍 ভূগোল", className: "geography" }
+    ];
+
+    const defaultSubjects = [
+      { key: "sci_ch1", group: "science", name: "ভৌত পরিবেশ ও শক্তি: তাপ" },
+      { key: "sci_ch2", group: "science", name: "আলো" },
+      { key: "sci_ch3", group: "science", name: "চুম্বক" },
+      { key: "sci_ch4", group: "science", name: "তড়িৎ" },
+      { key: "sci_ch5", group: "science", name: "পরিবেশবান্ধব শক্তি" },
+      { key: "sci_ch6", group: "science", name: "সময় ও গতি" },
+      { key: "sci_ch7", group: "science", name: "পরমাণু, অণু ও রাসায়নিক বিক্রিয়ার প্রাথমিক ধারণা" },
+      { key: "his_ch1", group: "history", name: "ভারতের ইতিহাসের ধারা (প্রাচীন যুগ)" },
+      { key: "his_ch2", group: "history", name: "গুপ্ত ও গুপ্তোত্তর যুগ" },
+      { key: "his_ch3", group: "history", name: "দিল্লি সুলতানি (প্রাথমিক)" },
+      { key: "his_ch4", group: "history", name: "মোঘল সাম্রাজ্য (প্রাথমিক)" },
+      { key: "his_ch5", group: "history", name: "বাংলার ইতিহাস (মধ্যযুগ)" },
+      { key: "his_ch6", group: "history", name: "ইংরেজ শাসনের সূচনা" },
+      { key: "geo_ch1", group: "geography", name: "পৃথিবীর গতি ও অভিকর্ষ" },
+      { key: "geo_ch2", group: "geography", name: "বায়ুমণ্ডল ও জলবায়ু" },
+      { key: "geo_ch3", group: "geography", name: "বৃষ্টিপাত ও বায়ুপ্রবাহ" },
+      { key: "geo_ch4", group: "geography", name: "ভারতের নদনদী ও জলসম্পদ" },
+      { key: "geo_ch5", group: "geography", name: "ভারতের কৃষি" },
+      { key: "geo_ch6", group: "geography", name: "মানচিত্র ও ভূ-পরিচয়" }
+    ];
+
+    const seedQuestions = {
+      sci_ch1: [{ q: "তাপ সঞ্চালনের কোন পদ্ধতিতে মাধ্যম প্রয়োজন হয় না?", o: ["পরিবহন", "পরিচলন", "বিকিরণ", "উপরের সব"], a: 2, note: "বিকিরণ পদ্ধতিতে তাপ শূন্যস্থানের মধ্য দিয়েও যায়।" }],
+      sci_ch2: [{ q: "আলোর প্রতিফলনের সূত্র কয়টি?", o: ["১", "২", "৩", "৪"], a: 1, note: "দুটি সূত্র: আপতন কোণ = প্রতিফলন কোণ, এবং আপতিত রশ্মি, প্রতিফলিত রশ্মি ও অভিলম্ব একই সমতলে থাকে।" }],
+      sci_ch3: [{ q: "শব্দ তরঙ্গ কোন ধরনের তরঙ্গ?", o: ["তির্যক", "অনুপ্রস্থ", "অনুদৈর্ঘ্য", "কোনোটিই নয়"], a: 2, note: "শব্দ অনুদৈর্ঘ্য তরঙ্গের মাধ্যমে সঞ্চালিত হয়।" }],
+      sci_ch4: [{ q: "পরমাণুর কেন্দ্রে কোন কণা থাকে?", o: ["ইলেকট্রন", "প্রোটন ও নিউট্রন", "শুধু প্রোটন", "শুধু নিউট্রন"], a: 1, note: "পরমাণুর কেন্দ্রে প্রোটন ও নিউট্রন একসাথে থাকে।" }],
+      sci_ch5: [{ q: "পদার্থের ভৌত পরিবর্তনের উদাহরণ কোনটি?", o: ["লোহায় মরিচা ধরা", "দুধ থেকে দই", "বরফ গলা", "কয়লা পোড়া"], a: 2, note: "বরফ গলা ভৌত পরিবর্তন।" }],
+      sci_ch6: [{ q: "উদ্ভিদের খাদ্য তৈরি করার প্রক্রিয়াকে কী বলে?", o: ["শ্বসন", "সালোকসংশ্লেষণ", "পরিবহন", "বাষ্পমোচন"], a: 1, note: "সালোকসংশ্লেষণে উদ্ভিদ সূর্যালোকের সাহায্যে খাদ্য তৈরি করে।" }],
+      sci_ch7: [{ q: "রক্তের কোন কণা রোগ প্রতিরোধ করে?", o: ["লোহিত কণিকা", "শ্বেত কণিকা", "অণুচক্রিকা", "প্লাজমা"], a: 1, note: "শ্বেত রক্তকণিকা শরীরের রোগ প্রতিরোধ ক্ষমতা বজায় রাখে।" }],
+      his_ch1: [{ q: "প্রাচীন ভারতে কোন সভ্যতা প্রথম নগরকেন্দ্রিক ছিল?", o: ["বৈদিক সভ্যতা", "সিন্ধু সভ্যতা", "মৌর্য সভ্যতা", "গুপ্ত সভ্যতা"], a: 1, note: "সিন্ধু সভ্যতার মহেঞ্জোদাড়ো ও হরপ্পা নগর পরিকল্পিত ছিল।" }],
+      his_ch2: [{ q: "গুপ্ত যুগের শ্রেষ্ঠ সম্রাট কে ছিলেন?", o: ["চন্দ্রগুপ্ত মৌর্য", "সমুদ্রগুপ্ত", "দ্বিতীয় চন্দ্রগুপ্ত", "স্কন্দগুপ্ত"], a: 1, note: "সমুদ্রগুপ্ত গুপ্ত সাম্রাজ্যের বিস্তার ঘটান এবং শিল্প-সাহিত্যের পৃষ্ঠপোষক ছিলেন।" }],
+      his_ch3: [{ q: "দিল্লি সুলতানির প্রথম সুলতান কে ছিলেন?", o: ["কুতুবউদ্দিন আইবক", "ইলতুৎমিশ", "বলবন", "আলাউদ্দিন খিলজি"], a: 0, note: "কুতুবউদ্দিন আইবক ১২০৬ সালে দিল্লি সুলতানি প্রতিষ্ঠা করেন।" }],
+      his_ch4: [{ q: "আকবরের ধর্মীয় নীতি কী নামে পরিচিত?", o: ["সুলহ-ই-কুল", "দীন-ই-ইলাহি", "জাবতি", "মনসবদারি"], a: 0, note: "আকবর 'সুলহ-ই-কুল' (সর্বধর্ম সমন্বয়) নীতি গ্রহণ করেছিলেন, পরে দীন-ই-ইলাহি প্রবর্তন করেন।" }],
+      his_ch5: [{ q: "বাংলার শেষ স্বাধীন নবাব কে ছিলেন?", o: ["আলিবর্দী খান", "সিরাজউদ্দৌলা", "মীর জাফর", "মীর কাসিম"], a: 1, note: "পলাশির যুদ্ধের সময় বাংলার নবাব সিরাজউদ্দৌলা ছিলেন।" }],
+      his_ch6: [{ q: "পলাশির যুদ্ধ কত সালে হয়?", o: ["১৭৫৭", "১৭৬৪", "১৮৫৭", "১৮৫৮"], a: 0, note: "১৭৫৭ সালের ২৩ জুন পলাশির যুদ্ধে ইংরেজরা জয়ী হয়।" }],
+      geo_ch1: [{ q: "পৃথিবীর আহ্নিক গতির ফলে কী ঘটে?", o: ["ঋতু পরিবর্তন", "দিন-রাত্রি", "জোয়ার-ভাটা", "সূর্যগ্রহণ"], a: 1, note: "পৃথিবী নিজ অক্ষে ঘোরার কারণে দিন ও রাত্রি হয়।" }],
+      geo_ch2: [{ q: "বায়ুমণ্ডলের সবচেয়ে নীচের স্তর কোনটি?", o: ["স্ট্র্যাটোস্ফিয়ার", "ট্রপোস্ফিয়ার", "মেসোস্ফিয়ার", "থার্মোস্ফিয়ার"], a: 1, note: "ট্রপোস্ফিয়ারে মেঘ, বৃষ্টি ইত্যাদি আবহাওয়ার ঘটনা ঘটে।" }],
+      geo_ch3: [{ q: "পৃথিবীতে বায়ুপ্রবাহের প্রধান কারণ কী?", o: ["পৃথিবীর ঘূর্ণন", "চাঁদের আকর্ষণ", "সূর্যের তাপের অসম বন্টন", "সমুদ্র স্রোত"], a: 2, note: "সূর্যের তাপের অসমতার জন্য বায়ুচাপ পার্থক্য সৃষ্টি হয়ে বায়ুপ্রবাহ হয়।" }],
+      geo_ch4: [{ q: "ভারতের দীর্ঘতম নদী কোনটি?", o: ["গঙ্গা", "সিন্ধু", "ব্রহ্মপুত্র", "গোদাবরী"], a: 0, note: "গঙ্গা নদী ভারতের মধ্যে দীর্ঘতম (২৫২৫ কিমি)।" }],
+      geo_ch5: [{ q: "ভারতে কোন ফসল 'সবুজ বিপ্লবের' ফলে বেশি উৎপাদিত হয়?", o: ["ধান", "গম", "তুলো", "চা"], a: 1, note: "সবুজ বিপ্লবে উচ্চফলনশীল গমের উৎপাদন বেড়ে যায়।" }],
+      geo_ch6: [{ q: "মানচিত্রে স্কেল ব্যবহার করা হয় কেন?", o: ["রঙ দেখাতে", "দূরত্ব বোঝাতে", "উচ্চতা দেখাতে", "দিক নির্দেশ করতে"], a: 1, note: "স্কেলের মাধ্যমে বাস্তব দূরত্ব আনুপাতিক হারে প্রকাশ করা হয়।" }]
+    };
+
+    let questionBank = normalizeBank(EMBEDDED_BANK || loadJson(BANK_KEY, null) || buildDefaultBank());
+    let selectedKeys = new Set(loadJson(SELECTED_KEY, defaultSubjects.map(s => s.key)));
+    let currentQuestions = [], userAnswers = [], answerStatus = [], currentIndex = 0, totalQuestions = 0;
+    let isEditUnlocked = false, questionEditUnlocked = false;
+    let confettiEnabled = loadJson(CONFETTI_KEY, true);
+
+    const $ = id => document.getElementById(id);
+    function safeGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
+    function safeSet(k, v) { try { localStorage.setItem(k, v); } catch {} }
+    function safeRemove(k) { try { localStorage.removeItem(k); } catch {} }
+    function normalizePassword(v) { const bn = "০১২৩৪৫৬৭৮৯"; return String(v||"").trim().replace(/[০-৯]/g, d => String(bn.indexOf(d))); }
+    function cloneValue(v) { if (v===null||v===undefined) return v; if (typeof structuredClone==="function") return structuredClone(v); return JSON.parse(JSON.stringify(v)); }
+    function buildDefaultBank() { const b = { __subjects__: defaultSubjects.map((s,i)=>({...s, num:i+1})) }; for (const s of b.__subjects__) b[s.key] = seedQuestions[s.key] ? cloneValue(seedQuestions[s.key]) : []; return b; }
+    function normalizeBank(bank) {
+      if (!bank || typeof bank !== "object") bank = buildDefaultBank();
+      if (!Array.isArray(bank.__subjects__)) bank.__subjects__ = defaultSubjects.map((s,i)=>({...s, num:i+1}));
+      bank.__subjects__ = bank.__subjects__.map((s,i)=>({ key: String(s.key||("custom_"+i)), group: s.group||"science", name: String(s.name||("Chapter "+(i+1))), num: Number(s.num||i+1) }));
+      for (const s of bank.__subjects__) { if (!Array.isArray(bank[s.key])) bank[s.key] = []; bank[s.key] = bank[s.key].map(normalizeQuestion).filter(Boolean); }
+      return bank;
+    }
+    function normalizeQuestion(q) {
+      if (!q) return null;
+      const opts = q.o || q.options || q.opts, ans = q.a !== undefined ? q.a : q.correct, txt = q.q || q.question || q.text;
+      if (!txt || !Array.isArray(opts) || opts.length !== 4) return null;
+      const c = Number(ans); if (!Number.isInteger(c) || c < 0 || c > 3) return null;
+      return { q: String(txt), o: opts.map(String), a: c, note: String(q.note||q.explanation||"") };
+    }
+    function loadJson(key, fb) { try { const r = safeGet(key); return r === null ? cloneValue(fb) : JSON.parse(r); } catch { return cloneValue(fb); } }
+    function saveBank() { safeSet(BANK_KEY, JSON.stringify(questionBank)); updateAllCounters(); populateSubjectsUI(); renderSubjectEditList(); }
+    function saveSelection() { safeSet(SELECTED_KEY, JSON.stringify([...selectedKeys])); }
+    function saveQuizState() { safeSet(SESSION_KEY, JSON.stringify({ questions: currentQuestions, answers: userAnswers, status: answerStatus, index: currentIndex, total: totalQuestions, quizSize: $("quizSize").value })); saveSelection(); }
+    function loadQuizState() {
+      const st = loadJson(SESSION_KEY, null); if (!st || !st.questions?.length) return false;
+      currentQuestions = st.questions; userAnswers = st.answers||[]; answerStatus = st.status||[];
+      currentIndex = Math.min(st.index||0, currentQuestions.length-1); totalQuestions = st.total||currentQuestions.length;
+      $("quizSize").value = st.quizSize||20; renderQuiz(); renderNav(); updateScore(); return true;
+    }
+    function getSubjects() { return questionBank.__subjects__||[]; }
+    function getCount(k) { return questionBank[k]?.length||0; }
+    function groupLabel(gk) { return subjectGroups.find(g=>g.key===gk)?.name.replace(/^[^\s]+ /,"")||gk; }
+    function getQuestionRef(sk, idx) { const s = getSubjects().find(x=>x.key===sk), q = questionBank[sk]?.[idx]; if (!s||!q) return null; return {...q, _subject:sk, _index:idx, _chapterName:s.name, _groupName:groupLabel(s.group)}; }
+    function populateSubjectsUI() {
+      $("subjectAccordions").innerHTML = subjectGroups.map((g,gi) => {
+        const chs = getSubjects().filter(s=>s.group===g.key);
+        return `<div class="subject-accordion ${gi===0?"open":""}"><div class="subject-header ${g.className}" data-group="${g.key}"><span>${g.name}</span><span class="subject-arrow">▼</span></div><div class="subject-chapters ${gi===0?"open":""}"><div class="subject-chapters-inner">${chs.map(s=>`<label class="chapter-item"><input type="checkbox" class="chapter-cb" value="${escapeAttr(s.key)}" ${selectedKeys.has(s.key)?"checked":""}><span>${escapeHtml(s.name)}</span><span class="q-count">[${getCount(s.key)}]</span></label>`).join("")||"<span style='font-size:13px;color:#64748b;'>এই subject-এ chapter নেই।</span>"}</div></div></div>`;
+      }).join("");
+      document.querySelectorAll(".subject-header").forEach(h=>{ h.onclick=()=>{ const a=h.closest(".subject-accordion"), b=a.querySelector(".subject-chapters"); a.classList.toggle("open"); b.classList.toggle("open"); }; });
+      document.querySelectorAll(".chapter-cb").forEach(cb=>{ cb.onchange=()=>{ cb.checked?selectedKeys.add(cb.value):selectedKeys.delete(cb.value); saveSelection(); }; });
+    }
+    function updateAllCounters() {
+      const cs = $("targetChapterSimple"); if (cs) { const cv=cs.value; cs.innerHTML=getSubjects().map(s=>`<option value="${escapeAttr(s.key)}">${escapeHtml(groupLabel(s.group))} - ${escapeHtml(s.name)} [${getCount(s.key)}]</option>`).join(""); if (cv&&getSubjects().some(s=>s.key===cv)) cs.value=cv; }
+      const as = $("appendSubjectSelect"); if (as) { const cv=as.value; as.innerHTML='<option value="">-- Choose chapter --</option>'+getSubjects().map(s=>`<option value="${escapeAttr(s.key)}">${escapeHtml(groupLabel(s.group))} - ${escapeHtml(s.name)} (${getCount(s.key)} questions)</option>`).join(""); if (cv&&getSubjects().some(s=>s.key===cv)) as.value=cv; }
+      $("previewStats").innerHTML = getSubjects().map(s=>`<div class="stat-item"><strong>${escapeHtml(groupLabel(s.group))}</strong><br>${escapeHtml(s.name)}: <strong>${getCount(s.key)}</strong></div>`).join("");
+      renderSubjectEditList();
+    }
+    function renderSubjectEditList() {
+      const c = $("subjectListForEdit"); if (!c) return;
+      c.innerHTML = getSubjects().map((s,i)=>`<div class="subject-editor-row"><span style="font-weight:600;text-align:center;">${i+1}.</span><input type="text" value="${escapeAttr(s.name)}" data-key="${escapeAttr(s.key)}" class="edit-subject-name"><select data-key="${escapeAttr(s.key)}" class="edit-subject-group">${subjectGroups.map(g=>`<option value="${g.key}" ${s.group===g.key?"selected":""}>${escapeHtml(groupLabel(g.key))}</option>`).join("")}</select><button class="btn-danger delete-subject-btn" data-key="${escapeAttr(s.key)}">🗑️ Delete</button></div>`).join("");
+      document.querySelectorAll(".edit-subject-name").forEach(inp=>{ inp.onchange=()=>{ const sub=getSubjects().find(x=>x.key===inp.dataset.key), v=inp.value.trim(); if(!sub||!v){if(sub)inp.value=sub.name;return;} sub.name=v; afterChapterStructureChanged(); }; });
+      document.querySelectorAll(".edit-subject-group").forEach(sel=>{ sel.onchange=()=>{ const sub=getSubjects().find(x=>x.key===sel.dataset.key); if(!sub)return; sub.group=sel.value; afterChapterStructureChanged(); }; });
+      document.querySelectorAll(".delete-subject-btn").forEach(btn=>{ btn.onclick=()=>{ const sub=getSubjects().find(x=>x.key===btn.dataset.key); if(!sub||!confirm(`"${sub.name}" chapter এবং এর ${getCount(sub.key)}টি প্রশ্ন delete করবেন?`))return; questionBank.__subjects__=getSubjects().filter(x=>x.key!==sub.key); delete questionBank[sub.key]; selectedKeys.delete(sub.key); afterChapterStructureChanged(); showSuccess("Chapter deleted."); }; });
+    }
+    function afterChapterStructureChanged() { questionBank=normalizeBank(questionBank); saveBank(); saveSelection(); }
+    function addNewSubject() { const n=$("newSubjectName").value.trim(), g=$("newSubjectGroup").value; if(!n)return showError("Chapter name লিখুন।"); const k="custom_"+Date.now(); questionBank.__subjects__.push({key:k,name:n,group:g,num:questionBank.__subjects__.length+1}); questionBank[k]=[]; selectedKeys.add(k); $("newSubjectName").value=""; afterChapterStructureChanged(); showSuccess("নতুন chapter যোগ হয়েছে।"); }
+    function deleteAllExceptFirst() { const subs=getSubjects(); if(subs.length<=1)return showError("শুধু একটি chapter আছে।"); const f=subs[0]; if(!confirm(`সব chapter মুছে যাবে, শুধু "${f.name}" থাকবে। নিশ্চিত?`))return; const nb={__subjects__:[f],[f.key]:questionBank[f.key]||[]}; questionBank=normalizeBank(nb); selectedKeys=new Set([f.key]); currentQuestions=[];userAnswers=[];answerStatus=[];totalQuestions=0;currentIndex=0; saveBank(); saveSelection(); renderQuiz(); renderNav(); updateScore(); showSuccess("শুধু প্রথম chapter রাখা হয়েছে।"); }
+    function getSelectedKeys() { const ks=[]; document.querySelectorAll(".chapter-cb:checked").forEach(cb=>ks.push(cb.value)); return ks; }
+    function shuffle(arr) { const c=[...arr]; for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];} return c; }
+    function shuffleOptions(q) { const o=shuffle([0,1,2,3]); return {...q, o:o.map(i=>q.o[i]), a:o.indexOf(q.a)}; }
+    function collectQuestions(ks) { const all=[]; for(const k of ks) (questionBank[k]||[]).forEach((_,i)=>{const r=getQuestionRef(k,i);if(r)all.push(r);}); return all; }
+    function generateQuiz(ks, sz, rnd=false) { if(!ks.length)ks=getSubjects().map(s=>s.key); let sel=collectQuestions(ks); if(!sel.length){alert("No questions! Edit panel থেকে প্রশ্ন যোগ করুন।");return;} if(rnd)sel=shuffle(sel); currentQuestions=sel.slice(0,Math.max(1,sz||20)).map(shuffleOptions); totalQuestions=currentQuestions.length; userAnswers=new Array(totalQuestions).fill(null); answerStatus=new Array(totalQuestions).fill(false); currentIndex=0; renderQuiz(); renderNav(); updateScore(); saveQuizState(); }
+    function renderQuiz() {
+      if(!currentQuestions.length){$("questionsArea").innerHTML="<div class='question-card' style='text-align:center;padding:45px;'>⬆️ Select chapters and click Generate</div>";return;}
+      currentIndex=Math.max(0,Math.min(currentIndex,currentQuestions.length-1)); const q=currentQuestions[currentIndex];
+      const answered=userAnswers[currentIndex]!==null, noteVisible=answered||$("showNoteBeforeAnswer").checked, allAnswered=userAnswers.every(a=>a!==null);
+      const optHtml=q.o.map((opt,i)=>{let cls="option";if(answered&&i===q.a)cls+=" correct-answer";if(answered&&userAnswers[currentIndex]===i&&!answerStatus[currentIndex])cls+=" wrong-feedback";return`<div class="${cls}" data-opt="${i}"><span class="key">${i+1}</span><span>${String.fromCharCode(65+i)}. ${escapeHtml(opt)}</span></div>`;}).join("");
+      $("questionsArea").innerHTML=`<div class="question-card"><button class="btn-icon master-edit-toggle ${questionEditUnlocked?"unlocked":"locked"}" id="masterEditToggle" title="${questionEditUnlocked?"Lock edit mode":"Unlock question edit"}">✏️</button>${questionEditUnlocked?`<button class="edit-q-btn" id="editQuestionBtn" title="Edit this question">✏️</button>`:""}<div class="question-meta"><span class="pill">${currentIndex+1}/${totalQuestions}</span><span class="pill">${escapeHtml(q._groupName||"")}</span><span class="pill">${escapeHtml(q._chapterName||"")}</span></div><div class="question-text">${currentIndex+1}. ${escapeHtml(q.q)}</div><div class="options">${optHtml}</div><div class="info ${noteVisible?"show":""}" id="noteBox">📖 ${escapeHtml(q.note||"No explanation")}</div><div class="inline-editor" id="inlineEditor"><strong>প্রশ্ন এডিট করুন</strong><textarea id="editQ">${escapeHtml(q.q)}</textarea><div class="inline-grid"><input id="editA" value="${escapeAttr(q.o[0])}" placeholder="A"><input id="editB" value="${escapeAttr(q.o[1])}" placeholder="B"><input id="editC" value="${escapeAttr(q.o[2])}" placeholder="C"><input id="editD" value="${escapeAttr(q.o[3])}" placeholder="D"><select id="editCorrect">${[0,1,2,3].map(i=>`<option value="${i}" ${i===q.a?"selected":""}>Correct ${String.fromCharCode(65+i)}</option>`).join("")}</select><input id="editNote" value="${escapeAttr(q.note||"")}" placeholder="Explanation"></div><div class="flex-row" style="margin-top:8px;"><button id="saveQuestionEdit" class="btn-success">সংরক্ষণ</button><button id="cancelQuestionEdit" class="btn-muted">বন্ধ</button></div></div><div class="nav-buttons-large"><button id="prevQ" class="btn-muted" ${currentIndex===0?"disabled":""}>◀ Previous</button><button id="nextQ" class="btn-muted" ${currentIndex===totalQuestions-1?"disabled":""}>Next ▶</button></div>${allAnswered?`<div class="restart-area"><button class="btn-success" id="restartAfterFinish">🔄 আবার শুরু</button></div>`:""}</div>`;
+      $("masterEditToggle").onclick=toggleMasterEdit; const eb=$("editQuestionBtn"); if(eb)eb.onclick=()=>$("inlineEditor").classList.add("open");
+      const sb=$("saveQuestionEdit"); if(sb)sb.onclick=saveInlineQuestion; const cb=$("cancelQuestionEdit"); if(cb)cb.onclick=()=>$("inlineEditor").classList.remove("open");
+      document.querySelectorAll(".option").forEach(el=>{el.onclick=()=>{if(userAnswers[currentIndex]!==null)return;const sel=Number(el.dataset.opt);userAnswers[currentIndex]=sel;answerStatus[currentIndex]=sel===q.a;if(answerStatus[currentIndex]&&confettiEnabled)fireConfetti();renderQuiz();renderNav();updateScore();saveQuizState();};});
+      $("prevQ").onclick=()=>moveQuestion(-1); $("nextQ").onclick=()=>moveQuestion(1); const rst=$("restartAfterFinish"); if(rst)rst.onclick=resetAnswers;
+    }
+    function saveInlineQuestion() { const q=currentQuestions[currentIndex]; const u=normalizeQuestion({q:$("editQ").value.trim(),o:[$("editA").value,$("editB").value,$("editC").value,$("editD").value].map(v=>v.trim()),a:Number($("editCorrect").value),note:$("editNote").value.trim()}); if(!u)return showError("সব field ঠিকভাবে পূরণ করুন।"); if(!questionBank[q._subject]?.[q._index])return showError("Original question পাওয়া যায়নি।"); questionBank[q._subject][q._index]=u; currentQuestions[currentIndex]={...u,_subject:q._subject,_index:q._index,_chapterName:q._chapterName,_groupName:q._groupName}; saveBank(); renderQuiz(); saveQuizState(); showSuccess("প্রশ্ন আপডেট হয়েছে।"); }
+    function moveQuestion(d) { const n=currentIndex+d; if(n<0||n>=totalQuestions)return; currentIndex=n; renderQuiz(); renderNav(); saveQuizState(); }
+    function renderNav() { let g=""; for(let i=0;i<totalQuestions;i++){let cls="q-num";if(userAnswers[i]!==null)cls+=answerStatus[i]?" answered-correct":" answered-wrong";if(i===currentIndex)cls+=" current";g+=`<div class="${cls}" data-idx="${i}">${i+1}</div>`;} $("navGrid").innerHTML=g; document.querySelectorAll(".q-num").forEach(el=>{el.onclick=()=>{currentIndex=Number(el.dataset.idx);renderQuiz();renderNav();saveQuizState();};}); }
+    function updateScore() { const c=answerStatus.filter(Boolean).length, a=userAnswers.filter(v=>v!==null).length; $("scoreBoard").innerHTML=`🎯 Score: ${c}/${totalQuestions}<br><span style="font-size:12px;color:#64748b;">Answered: ${a}/${totalQuestions}</span>`; }
+    function resetAnswers() { userAnswers=new Array(totalQuestions).fill(null); answerStatus=new Array(totalQuestions).fill(false); currentIndex=0; renderQuiz(); renderNav(); updateScore(); saveQuizState(); }
+    function resetQuiz() { if(!confirm("আপনি কি বর্তমান quiz progress reset করতে চান?"))return; safeRemove(SESSION_KEY); resetAnswers(); showSuccess("Quiz reset হয়েছে।"); }
+
+    function parseBulk(text) {
+      const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+      const questions = [], skipped = [];
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (!line.includes("||")) { skipped.push(i+1); continue; }
+        const parts = line.split("||").map(p=>p.trim());
+        if (parts.length < 3) { skipped.push(i+1); continue; }
+        const opts = parts[1].split(",").map(o=>o.trim()).filter(Boolean);
+        if (opts.length < 4) {
+          const altOpts = parts[1].split(/[,،]/).map(o=>o.trim()).filter(Boolean);
+          if (altOpts.length >= 4) {
+            const idx = parseInt(parts[2]);
+            if (!isNaN(idx) && idx >= 0 && idx <= 3) {
+              const q = normalizeQuestion({ q: parts[0], o: altOpts.slice(0,4), a: idx, note: parts[3]||"" });
+              if (q) { questions.push(q); continue; }
+            }
+          }
+          skipped.push(i+1); continue;
+        }
+        const idx = parseInt(parts[2]);
+        if (isNaN(idx) || idx < 0 || idx > 3) { skipped.push(i+1); continue; }
+        const q = normalizeQuestion({ q: parts[0], o: opts.slice(0,4), a: idx, note: parts[3]||"" });
+        if (q) { questions.push(q); } else { skipped.push(i+1); }
+      }
+      return { questions, skipped };
+    }
+
+    function bulkUpload() {
+      const chapter = $("targetChapterSimple").value;
+      if (!chapter) return showError("দয়া করে একটি chapter বেছে নিন।");
+      const raw = $("bulkQuestions").value;
+      if (!raw.trim()) return showError("Bulk text দিন।");
+      const { questions, skipped } = parseBulk(raw);
+      if (!questions.length) {
+        return showError(`কোন valid question পাওয়া যায়নি। ${skipped.length}টি line skip হয়েছে। Format: Question || Option1,Option2,Option3,Option4 || CorrectIndex(0-3) || Explanation`);
+      }
+      questionBank[chapter].push(...questions);
+      $("bulkQuestions").value = "";
+      saveBank();
+      let msg = `${questions.length}টি প্রশ্ন যোগ হয়েছে।`;
+      if (skipped.length > 0) msg += ` ${skipped.length}টি line skip হয়েছে (line: ${skipped.join(", ")})।`;
+      showSuccess(msg);
+    }
+
+    function addSingle() {
+      const chapter = $("targetChapterSimple").value;
+      const q = normalizeQuestion({ q: $("simpleQText").value.trim(), o: [$("optA").value,$("optB").value,$("optC").value,$("optD").value].map(v=>v.trim()), a: Number($("correctIndex").value), note: $("simpleNote").value.trim() });
+      if (!q) return showError("প্রশ্ন, ৪টি option এবং correct answer পূরণ করুন।");
+      questionBank[chapter].push(q); ["simpleQText","optA","optB","optC","optD","simpleNote"].forEach(id=>$(id).value="");
+      saveBank(); showSuccess("একটি প্রশ্ন যোগ হয়েছে।");
+    }
+    function handleRestoreFile(file) { const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); if(!d||typeof d!=="object"||Array.isArray(d))throw new Error("Full JSON expected."); questionBank=normalizeBank(d); selectedKeys=new Set(getSubjects().map(s=>s.key)); safeRemove(SESSION_KEY); currentQuestions=[];userAnswers=[];answerStatus=[];totalQuestions=0;currentIndex=0; saveBank(); renderQuiz();renderNav();updateScore(); showSuccess("পুরো bank replace হয়েছে।"); }catch(err){showError(err.message||"Invalid JSON file.");} }; r.readAsText(file); }
+    function handleAppendFile(file, sk) { const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result);let raw=null; if(Array.isArray(d))raw=d; else if(d&&Array.isArray(d.questions))raw=d.questions; else if(d&&typeof d==="object"){const km=Object.keys(d).find(k=>k!=="__subjects__"&&Array.isArray(d[k]));if(km)raw=d[km];} if(!raw||!Array.isArray(raw))throw new Error("No valid question array found."); const qs=raw.map(normalizeQuestion).filter(Boolean); if(!qs.length)throw new Error("No valid questions."); if(!questionBank[sk])questionBank[sk]=[]; questionBank[sk].push(...qs); saveBank(); showSuccess(`${qs.length}টি JSON প্রশ্ন যোগ হয়েছে।`); }catch(err){showError(err.message);} }; r.readAsText(file); }
+    function backupSelected() { const ks=getSelectedKeys(); if(!ks.length)return showError("No chapter selected!"); const bk={__subjects__:getSubjects().filter(s=>ks.includes(s.key))}; ks.forEach(k=>bk[k]=questionBank[k]||[]); download(`classVII_selected_backup_${stamp()}.json`,JSON.stringify(bk,null,2),"application/json"); showSuccess("Selected backup saved."); }
+    function backupFull() { download(`classVII_full_backup_${stamp()}.json`,JSON.stringify(questionBank,null,2),"application/json"); showSuccess("Full backup saved."); }
+    function downloadPermanentHtml() { const h="<!DOCTYPE html>\n"+document.documentElement.outerHTML.replace("const EMBEDDED_BANK = null;","const EMBEDDED_BANK = "+JSON.stringify(questionBank,null,2)+";"); download("dipayan_pathsala_classVII_permanent.html",h,"text/html"); showSuccess("Permanent HTML downloaded."); }
+    function clearSelectedSubjects() { if(!isEditUnlocked){const p=prompt("Clear Chapters করতে edit password দিন:");if(normalizePassword(p)!==EDIT_PASSWORD)return showError("Password ভুল।");isEditUnlocked=true;} const ks=getSelectedKeys(); if(!ks.length)return showError("No chapter selected!"); const t=ks.reduce((s,k)=>s+getCount(k),0); if(!t)return showError("Selected chapters already empty."); if(!confirm(`Tick করা chapter থেকে মোট ${t}টি প্রশ্ন মুছে যাবে। নিশ্চিত?`))return; ks.forEach(k=>questionBank[k]=[]); saveBank(); currentQuestions=[];totalQuestions=0; renderQuiz();renderNav();updateScore(); saveQuizState(); showSuccess(`${t}টি প্রশ্ন মুছে দেওয়া হয়েছে।`); }
+    function toggleMasterEdit() { if(questionEditUnlocked){questionEditUnlocked=false;renderQuiz();showSuccess("Question edit mode locked.");return;} const p=prompt("Question edit password দিন:"); if(normalizePassword(p)===EDIT_PASSWORD){questionEditUnlocked=true;renderQuiz();showSuccess("Question edit mode unlocked.");}else showError("Password ভুল।"); }
+    function fireConfetti() { if(typeof confetti!=="function")return; const c=800,d={spread:360,ticks:100,gravity:0.7,decay:0.85,startVelocity:45,colors:['#2563eb','#10b981','#f59e0b','#ef4444','#ec4899','#8b5cf6']}; const o=[{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1},{x:0.5,y:0},{x:0.5,y:1},{x:0,y:0.5},{x:1,y:0.5},{x:0.5,y:0.5}]; for(let og of o)confetti({...d,particleCount:Math.floor(c/o.length),origin:og}); confetti({...d,particleCount:200,origin:{x:0.5,y:0.4},spread:120,ticks:80,startVelocity:50}); }
+    function updateConfettiButtonUI() { $("confettiToggleBtn").style.opacity=confettiEnabled?"1":"0.42"; $("confettiToggleBtn").title=confettiEnabled?"Confetti ON":"Confetti OFF"; safeSet(CONFETTI_KEY,JSON.stringify(confettiEnabled)); }
+    function download(fn,d,tp) { const b=new Blob([d],{type:tp}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=fn;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u); }
+    function stamp() { return new Date().toISOString().slice(0,19).replace(/:/g,"-"); }
+    function showError(m) { $("uploadStatus").innerHTML=`<span style="color:#b91c1c;font-weight:600;">❌ ${escapeHtml(m)}</span>`; setTimeout(()=>$("uploadStatus").innerHTML="",3200); }
+    function showSuccess(m) { $("uploadStatus").innerHTML=`<span style="color:#15803d;font-weight:600;">✅ ${escapeHtml(m)}</span>`; setTimeout(()=>$("uploadStatus").innerHTML="",3200); }
+    function escapeHtml(v) { return String(v).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[ch])); }
+    function escapeAttr(v) { return escapeHtml(v).replace(/`/g,"&#096;"); }
+
+    function wireEvents() {
+      $("gateEnter").onclick=()=>{
+        if($("gatePassword").value.trim()===GATE_PASSWORD){
+          $("warningGate").classList.add("hidden");
+          setTimeout(()=>$("app").classList.add("visible"),60);
+        } else {
+          $("gateError").textContent="পাসওয়ার্ড ভুল।";
+          $("gatePassword").value="";
+        }
+      };
+      $("gatePassword").onkeydown=e=>{if(e.key==="Enter")$("gateEnter").click();};
+      $("chapterToggleBtn").onclick=()=>$("chapterPanel").classList.toggle("open");
+      $("selectAllBtn").onclick=()=>{selectedKeys=new Set(getSubjects().map(s=>s.key));populateSubjectsUI();saveSelection();};
+      $("deselectAllBtn").onclick=()=>{selectedKeys.clear();populateSubjectsUI();saveSelection();};
+      $("clearSelectedSubjectsBtn").onclick=clearSelectedSubjects;
+      $("generateBtn").onclick=()=>generateQuiz(getSelectedKeys(),Number($("quizSize").value),false);
+      $("randomBtn").onclick=()=>generateQuiz(getSelectedKeys(),Number($("quizSize").value),true);
+      $("resetAnswersBtn").onclick=resetAnswers;
+      $("resetHeaderBtn").onclick=resetQuiz;
+      $("showScoreBtn").onclick=()=>alert(`Your score: ${answerStatus.filter(Boolean).length}/${totalQuestions}`);
+      $("showNoteBeforeAnswer").onchange=renderQuiz;
+      $("confettiToggleBtn").onclick=()=>{confettiEnabled=!confettiEnabled;updateConfettiButtonUI();};
+      $("editHeaderBottom").onclick=()=>$("editBodyBottom").classList.toggle("open");
+      $("unlockEditBtn").onclick=()=>{if(normalizePassword($("adminPass").value)===EDIT_PASSWORD){isEditUnlocked=true;$("editContent").style.display="block";$("editLockRow").style.display="none";$("adminPass").value="";showSuccess("Edit section unlocked.");}else showError("Password ভুল।");};
+      $("bulkUploadBtn").onclick=bulkUpload;
+      $("simpleAddBtn").onclick=addSingle;
+      $("subjectMgmtHeader").onclick=()=>$("subjectMgmtBody").classList.toggle("open");
+      $("addSubjectBtn").onclick=addNewSubject;
+      $("deleteAllExceptFirstBtn").onclick=deleteAllExceptFirst;
+      $("restoreJsonBtn").onclick=()=>$("restoreFileInput").click();
+      $("restoreFileInput").onchange=e=>{if(e.target.files[0])handleRestoreFile(e.target.files[0]);e.target.value="";};
+      $("appendJsonBtn").onclick=()=>{const s=$("appendSubjectSelect").value;if(!s)return showError("দয়া করে একটি chapter বেছে নিন।");$("appendFileInput").click();};
+      $("appendFileInput").onchange=e=>{const s=$("appendSubjectSelect").value;if(e.target.files[0]&&s)handleAppendFile(e.target.files[0],s);e.target.value="";};
+      $("backupSelectedJsonBtn").onclick=backupSelected;
+      $("backupFullJsonBtn").onclick=backupFull;
+      $("downloadHtmlBtn").onclick=downloadPermanentHtml;
+      document.addEventListener("keydown",e=>{const t=document.activeElement?.tagName?.toLowerCase();if(["input","textarea","select"].includes(t))return;if(["1","2","3","4"].includes(e.key)){const o=document.querySelector(`.option[data-opt="${Number(e.key)-1}"]`);if(o)o.click();}if(e.key==="ArrowRight")moveQuestion(1);if(e.key==="ArrowLeft")moveQuestion(-1);});
+    }
+    function initCredits() { const n=[65,114,105,102,32,72,117,115,115,97,105,110].map(c=>String.fromCharCode(c)).join(""); const em=[97,114,105,102,98,101,108,100,97,110,103,97,64,103,109,97,105,108,46,99,111,109].map(c=>String.fromCharCode(c)).join(""); const tl=[64,98,101,108,100,97,110,103,97,49].map(c=>String.fromCharCode(c)).join(""); $("creditName").textContent="✨ By "+n; $("footerContact").innerHTML=`📧 ${em} &nbsp;|&nbsp; 💬 Telegram: ${tl}`; }
+    function init() {
+      // গেট সবসময় প্রথমে দেখাবে (hidden ক্লাস জোর করে মুছে দেওয়া)
+      $("warningGate").classList.remove("hidden");
+      $("app").classList.remove("visible");
+      initCredits(); updateAllCounters(); populateSubjectsUI(); updateConfettiButtonUI(); wireEvents();
+      if(!loadQuizState()){renderQuiz();renderNav();updateScore();}
+    }
+    init();
+  </script>
+</body></html>
