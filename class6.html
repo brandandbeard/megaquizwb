@@ -759,13 +759,13 @@
                 const pct = totalQuestions > 0 ? Math.round((c / totalQuestions) * 100) : 0;
 
                 let emoji, message;
-                if (pct === 100) { emoji = '🏆'; message = 'You are a legend! Keep it up!'; }
-                else if (pct >= 90) { emoji = '🥇'; message = 'Excellent! Very close to perfect.'; }
-                else if (pct >= 80) { emoji = '🎉'; message = 'Great job, almost there!'; }
-                else if (pct >= 60) { emoji = '👍'; message = 'Well done, you are getting there!'; }
-                else if (pct >= 45) { emoji = '🙂'; message = 'Nice try! Focus on your weak areas.'; }
-                else if (pct >= 35) { emoji = '😐'; message = 'Good start, more practice needed.'; }
-                else { emoji = '😢'; message = 'Keep practicing, you will improve!'; }
+                if (pct === 100) { emoji = '🏆'; message = 'তুমি তো মাস্টার! একেবারে আগুন! চলতে থাকুক!'; }
+                else if (pct >= 90) { emoji = '😱'; message = 'জস! একদম নিখুঁতের ধারেকাছে!'; }
+                else if (pct >= 80) { emoji = '🎉'; message = 'বাহ্‌, দারুণ! প্আর মাত্র একটু!'; }
+                else if (pct >= 60) { emoji = '👏'; message = 'সাবাশ, ভালোই এগোচ্ছো।'; }
+                else if (pct >= 45) { emoji = '😒'; message = 'শুরুটা ঠিক আছে, আরেকটু প্র্যাকটিস চাই।'; }
+                else if (pct >= 35) { emoji = '😐'; message = 'লেগে থাকো, ঠিকই পারবে!'; }
+                else { emoji = '😢'; message = 'লেগে থাকো, ঠিকই পারবে!'; }
 
                 document.getElementById('resultsEmoji').textContent = emoji;
                 document.getElementById('resultsMessage').textContent = message;
