@@ -7,151 +7,31 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&amp;display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js">
-    </script><style>body { margin: 0; }</style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script><style>body { margin: 0; }</style>
     <style>
         /* ---------- GATE STYLES ---------- */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: #f8fafc;
-        }
-        .gate-wrapper {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s ease;
-            pointer-events: auto;
-        }
-        .gate-wrapper.unlocked {
-            transform: translateY(-100%);
-            opacity: 0;
-            pointer-events: none;
-        }
-        .gate-lock-icon {
-            font-size: 4rem;
-            margin-bottom: 0.5rem;
-            line-height: 1;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
-            user-select: none;
-        }
-        .gate-title {
-            font-weight: 600;
-            font-size: 1.5rem;
-            color: #1e293b;
-            margin-bottom: 0.25rem;
-        }
-        .gate-subtitle {
-            font-weight: 400;
-            color: #64748b;
-            font-size: 0.95rem;
-            margin-bottom: 1.8rem;
-        }
-        .password-field {
-            width: 100%;
-            max-width: 300px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-        .password-field input {
-            padding: 0.85rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-family: inherit;
-            text-align: center;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            background: #f1f5f9;
-        }
-        .password-field input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-            background: #ffffff;
-        }
-        .password-field button {
-            padding: 0.85rem;
-            background: #1e293b;
-            color: #ffffff;
-            border: none;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            letter-spacing: 0.3px;
-        }
-        .password-field button:hover {
-            background: #0f172a;
-        }
-        .password-field button:active {
-            transform: scale(0.98);
-        }
-        .cat-popup {
-            position: absolute;
-            top: 1.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ffffff;
-            border-radius: 14px;
-            padding: 0.7rem 1.4rem;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.12);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            z-index: 10000;
-            opacity: 0;
-            pointer-events: none;
-            animation: catEntrance 2.4s ease forwards;
-            white-space: nowrap;
-        }
-        @keyframes catEntrance {
-            0%   { opacity: 0; transform: translateX(-50%) translateY(10px); }
-            20%  { opacity: 1; transform: translateX(-50%) translateY(0); }
-            80%  { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
-        }
+        body { margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #f8fafc; }
+        .gate-wrapper { position: fixed; inset: 0; z-index: 9999; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s ease; pointer-events: auto; }
+        .gate-wrapper.unlocked { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+        .gate-lock-icon { font-size: 4rem; margin-bottom: 0.5rem; line-height: 1; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); user-select: none; }
+        .gate-title { font-weight: 600; font-size: 1.5rem; color: #1e293b; margin-bottom: 0.25rem; }
+        .gate-subtitle { font-weight: 400; color: #64748b; font-size: 0.95rem; margin-bottom: 1.8rem; }
+        .password-field { width: 100%; max-width: 300px; display: flex; flex-direction: column; gap: 0.8rem; }
+        .password-field input { padding: 0.85rem 1rem; border: 2px solid #e2e8f0; border-radius: 14px; font-size: 1rem; font-family: inherit; text-align: center; outline: none; transition: border-color 0.2s, box-shadow 0.2s; background: #f1f5f9; }
+        .password-field input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); background: #ffffff; }
+        .password-field button { padding: 0.85rem; background: #1e293b; color: #ffffff; border: none; border-radius: 14px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s, transform 0.1s; letter-spacing: 0.3px; }
+        .password-field button:hover { background: #0f172a; }
+        .password-field button:active { transform: scale(0.98); }
+        .cat-popup { position: absolute; top: 1.5rem; left: 50%; transform: translateX(-50%); background: #ffffff; border-radius: 14px; padding: 0.7rem 1.4rem; box-shadow: 0 12px 28px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 0.5rem; z-index: 10000; opacity: 0; pointer-events: none; animation: catEntrance 2.4s ease forwards; white-space: nowrap; }
+        @keyframes catEntrance { 0% { opacity: 0; transform: translateX(-50%) translateY(10px); } 20% { opacity: 1; transform: translateX(-50%) translateY(0); } 80% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(-8px); } }
         .cat-popup .cat-emoji { font-size: 2rem; line-height: 1; }
         .cat-popup .paw { font-size: 1.5rem; display: inline-block; animation: pawWave 0.45s infinite alternate ease-in-out; transform-origin: 70% 70%; }
         @keyframes pawWave { 0% { transform: rotate(0deg); } 100% { transform: rotate(20deg); } }
         .cat-popup .msg { font-weight: 600; color: #dc2626; font-size: 0.95rem; }
 
         /* ---------- MAIN APP STYLES ---------- */
-        :root {
-            --bg: #f0f4fa;
-            --ink: #1a1e2b;
-            --muted: #5f6b7a;
-            --card: #ffffff;
-            --line: #dce3ed;
-            --primary: #1a56db;
-            --primary-dark: #1240a0;
-            --accent: #7c3aed;
-            --orange: #ea580c;
-            --green: #0d9488;
-            --red: #dc2626;
-            --gold: #f59e0b;
-            --slate: #475569;
-            --shadow: 0 18px 48px rgba(15, 23, 42, 0.13);
-            --radius: 20px;
-            --header-bg: linear-gradient(135deg, #1e293b, #1a1e2b);
-            --header-color: #fff;
-            --body-gradient: radial-gradient(circle at top left, rgba(26,86,219,0.10), transparent 30rem),
-                radial-gradient(circle at right 20%, rgba(124,58,237,0.09), transparent 24rem),
-                linear-gradient(135deg, rgba(26,86,219,0.04) 25%, transparent 25%) 0 0 / 32px 32px, var(--bg);
-        }
-        [data-theme="dark"] {
-            --bg: #0f172a; --ink: #e2e8f0; --muted: #94a3b8; --card: #1e293b; --line: #334155; --primary: #60a5fa;
-            --primary-dark: #3b82f6; --accent: #a78bfa; --orange: #f97316; --green: #2dd4bf; --red: #f87171; --gold: #fbbf24;
-            --slate: #94a3b8; --shadow: 0 18px 48px rgba(0,0,0,0.4); --header-bg: linear-gradient(135deg, #0f172a, #1e293b);
-            --header-color: #e2e8f0; --body-gradient: linear-gradient(145deg, #0f172a, #1e293b);
-        }
+        :root { --bg: #f0f4fa; --ink: #1a1e2b; --muted: #5f6b7a; --card: #ffffff; --line: #dce3ed; --primary: #1a56db; --primary-dark: #1240a0; --accent: #7c3aed; --orange: #ea580c; --green: #0d9488; --red: #dc2626; --gold: #f59e0b; --slate: #475569; --shadow: 0 18px 48px rgba(15, 23, 42, 0.13); --radius: 20px; --header-bg: linear-gradient(135deg, #1e293b, #1a1e2b); --header-color: #fff; --body-gradient: radial-gradient(circle at top left, rgba(26,86,219,0.10), transparent 30rem), radial-gradient(circle at right 20%, rgba(124,58,237,0.09), transparent 24rem), linear-gradient(135deg, rgba(26,86,219,0.04) 25%, transparent 25%) 0 0 / 32px 32px, var(--bg); }
+        [data-theme="dark"] { --bg: #0f172a; --ink: #e2e8f0; --muted: #94a3b8; --card: #1e293b; --line: #334155; --primary: #60a5fa; --primary-dark: #3b82f6; --accent: #a78bfa; --orange: #f97316; --green: #2dd4bf; --red: #f87171; --gold: #fbbf24; --slate: #94a3b8; --shadow: 0 18px 48px rgba(0,0,0,0.4); --header-bg: linear-gradient(135deg, #0f172a, #1e293b); --header-color: #e2e8f0; --body-gradient: linear-gradient(145deg, #0f172a, #1e293b); }
         * { box-sizing: border-box; letter-spacing: 0; margin: 0; padding: 0; }
         html, body { min-height: 100%; }
         body { margin: 0; padding: 16px; color: var(--ink); font-family: "Segoe UI", "Hind Siliguri", "Noto Sans Bengali", system-ui, sans-serif; background: var(--body-gradient); background-attachment: fixed; }
@@ -267,30 +147,8 @@
         [data-theme="dark"] .note-toggle { background:#334155; }
         .restart-area { text-align:center; margin-top:20px; }
         .edit-section-bottom { margin-top:28px; border-top:1px solid var(--line); padding-top:16px; }
-        /* Hidden edit button */
-        .edit-header-bottom {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            color: var(--muted);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 14px;
-            transition: all 0.25s;
-            border: none;
-            opacity: 0.25;
-            line-height: 1;
-            user-select: none;
-        }
-        .edit-header-bottom:hover {
-            opacity: 0.6;
-            background: rgba(148,163,184,0.15);
-            color: var(--slate);
-        }
+        .edit-header-bottom { display: inline-flex; align-items: center; justify-content: center; background: transparent; color: var(--muted); border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-weight: 700; font-size: 14px; transition: all 0.25s; border: none; opacity: 0.25; line-height: 1; user-select: none; }
+        .edit-header-bottom:hover { opacity: 0.6; background: rgba(148,163,184,0.15); color: var(--slate); }
         [data-theme="dark"] .edit-header-bottom:hover { background: rgba(255,255,255,0.1); }
         .edit-password-prompt { display:none; margin-top:8px; padding:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; }
         [data-theme="dark"] .edit-password-prompt { background:#1e293b; border-color:#334155; }
@@ -389,8 +247,8 @@
                     <div class="flex-row" style="gap:8px;">
                         <button style="background: var(--slate);" id="chapterToggleBtn">📂 Select Subjects</button>
                         <div class="mode-selector" id="modeSelector">
-                            <button class="mode-btn active" data-mode="practice">📝 Practice</button>
-                            <button class="mode-btn" data-mode="mock">⏱️ Mock Test</button>
+                            <button class="mode-btn" data-mode="practice">📝 Practice</button>
+                            <button class="mode-btn active" data-mode="mock">⏱️ Mock Test</button>
                         </div>
                     </div>
                     <div class="flex-row">
@@ -404,24 +262,24 @@
                     </div>
                 </div>
                 <div class="chapter-panel" id="chapterPanel">
-                    <div id="subjectAccordions"><div class="subject-accordion open"><div class="subject-header physics" data-group="physics"><span>🔵 পদার্থবিদ্যা</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_electrostatics" checked=""><span>স্থির তড়িৎ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_current" checked=""><span>চল তড়িৎ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_magnetism" checked=""><span>চুম্বকত্ব</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_emi" checked=""><span>তড়িৎচুম্বকীয় আবেশ</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header chemistry" data-group="chemistry"><span>🟢 রসায়ন</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_solidstate" checked=""><span>কঠিন অবস্থা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_solutions" checked=""><span>দ্রবণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_electrochem" checked=""><span>তড়িৎরসায়ন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_kinetics" checked=""><span>রাসায়নিক গতিবিদ্যা</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header biology" data-group="biology"><span>🟣 জীববিদ্যা</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="bio_sem1_reproduction" checked=""><span>জনন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="bio_sem1_genetics" checked=""><span>বংশগতি ও বিবর্তন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="bio_sem1_biotech" checked=""><span>জৈবপ্রযুক্তি</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header mathematics" data-group="mathematics"><span>🟣 গণিত</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="math_sem1_matrices" checked=""><span>ম্যাট্রিক্স ও নির্ণায়ক</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="math_sem1_calculus1" checked=""><span>অন্তরকলন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="math_sem1_vectors" checked=""><span>ভেক্টর ও ত্রিমাত্রিক জ্যামিতি</span><span class="q-count">[1]</span></label></div></div></div></div>
+                    <div id="subjectAccordions"><div class="subject-accordion open"><div class="subject-header physics" data-group="physics"><span>🔵 পদার্থবিদ্যা</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_electrostatics"><span>স্থির তড়িৎ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_current"><span>চল তড়িৎ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_magnetism"><span>চুম্বকত্ব</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_emi"><span>তড়িৎচুম্বকীয় আবেশ</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header chemistry" data-group="chemistry"><span>🟢 রসায়ন</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_solidstate"><span>কঠিন অবস্থা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_solutions"><span>দ্রবণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_electrochem"><span>তড়িৎরসায়ন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_kinetics"><span>রাসায়নিক গতিবিদ্যা</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header biology" data-group="biology"><span>🟣 জীববিদ্যা</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="bio_sem1_reproduction"><span>জনন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="bio_sem1_genetics"><span>বংশগতি ও বিবর্তন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="bio_sem1_biotech"><span>জৈবপ্রযুক্তি</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header mathematics" data-group="mathematics"><span>🟣 গণিত</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="math_sem1_matrices"><span>ম্যাট্রিক্স ও নির্ণায়ক</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="math_sem1_calculus1"><span>অন্তরকলন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="math_sem1_vectors"><span>ভেক্টর ও ত্রিমাত্রিক জ্যামিতি</span><span class="q-count">[1]</span></label></div></div></div></div>
                     <div class="subject-action-row">
                         <div class="flex-row">
                             <button id="selectAllBtn">Select All</button>
                             <button id="deselectAllBtn" style="background: var(--slate);">Deselect All</button>
                         </div>
-                        <button id="clearSelectedSubjectsBtn" style="background: var(--red);">🗑️ Clear Questions</button>
+                        <button id="clearSelectedSubjectsBtn" style="background: var(--red); display: none;">🗑️ Clear Questions</button>
                     </div>
                 </div>
             </section>
             <section class="quiz-panel">
                 <div class="questions-area" id="questionsArea"><div class="question-card" style="text-align:center;padding:50px;">⬆️ Select subjects and click Generate</div></div>
                 <aside class="sidebar">
-                    <div class="score-board" id="scoreBoard">🎯 Score: 0/0<br><span class="score-breakdown">✅0 | ❌0 | ⏭️0</span></div>
-                    <div id="timerDisplay" style="display: none;" class="timer-display">⏱️ Time: <strong>29:46</strong></div>
+                    <div class="score-board" id="scoreBoard">⏱️ Mock Test in Progress</div>
+                    <div id="timerDisplay" style="display: block;" class="timer-display">⏱️ Time: <strong>29:12</strong></div>
                     <div id="navGrid" class="nav-grid"></div>
-                    <button id="showScoreBtn" style="margin-top: 10px; width: 100%; background: var(--slate);">📊 Show Results</button>
-                    <div class="note-toggle" id="noteToggleRow" style=""><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answer</label></div>
+                    <button id="showScoreBtn" style="margin-top: 10px; width: 100%; background: var(--slate); display: none;">📊 Show Results</button>
+                    <div class="note-toggle" id="noteToggleRow" style="display: none;"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answer</label></div>
                     <button id="submitMockBtn" style="display: none; margin-top: 8px; width: 100%; background: var(--green);">✅ Submit Mock Test</button>
                 </aside>
             </section>
@@ -569,12 +427,12 @@
             <span class="results-emoji" id="resultsEmoji">😢</span>
             <div class="results-message" id="resultsMessage">Practice more.</div>
             <div class="results-stats">
-                <div class="stat correct-stat"><span class="stat-number" id="resCorrect">0</span><span class="stat-label">Correct</span></div>
+                <div class="stat correct-stat"><span class="stat-number" id="resCorrect">3</span><span class="stat-label">Correct</span></div>
                 <div class="stat wrong-stat"><span class="stat-number" id="resWrong">2</span><span class="stat-label">Wrong</span></div>
-                <div class="stat skipped-stat"><span class="stat-number" id="resSkipped">12</span><span class="stat-label">Skipped</span></div>
+                <div class="stat skipped-stat"><span class="stat-number" id="resSkipped">9</span><span class="stat-label">Skipped</span></div>
             </div>
-            <div class="percentage-bar"><div class="percentage-fill" id="percentageFill" style="width:0%"></div></div>
-            <p style="margin:8px 0; font-weight:600;" id="percentageText">0%</p>
+            <div class="percentage-bar"><div class="percentage-fill" id="percentageFill" style="width: 21%;"></div></div>
+            <p style="margin:8px 0; font-weight:600;" id="percentageText">21%</p>
             <button class="close-results-btn" id="closeResultsBtn">✅ Show Answers</button>
         </div>
     </div>
@@ -614,7 +472,6 @@
 
         (function() {
             const EDIT_PASSWORD = "Arif@956438?";
-            const INLINE_EDIT_PASSWORD = "Arif@956438?";
             const APP_VERSION = "class_12_science_sem12_v3";
             const BANK_KEY = "CLASS12_SCIENCE_QUIZ_BANK_" + APP_VERSION;
             const SESSION_KEY = "CLASS12_SCIENCE_QUIZ_SESSION_" + APP_VERSION;
@@ -845,10 +702,12 @@
             function hideResultsOverlay() { document.getElementById('resultsOverlay').classList.add('hidden'); }
 
             function toggleInlineEdit() {
-                if(isInlineEditUnlocked) { isInlineEditUnlocked=false; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(""); return; }
-                const pass = prompt("Enter edit password:"); if(pass===null) return;
-                if(normalizePassword(pass) !== INLINE_EDIT_PASSWORD) { alert("Wrong password!"); return; }
-                isInlineEditUnlocked=true; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus("Edit mode on.");
+                if (!isEditUnlocked) return;
+                isInlineEditUnlocked = !isInlineEditUnlocked;
+                renderQuiz();
+                renderNav();
+                updateScore();
+                showInlineEditStatus(isInlineEditUnlocked ? "Edit mode on." : "");
             }
             function showInlineEditStatus(msg) { const el = document.getElementById('inlineEditStatusMsg'); if(el) el.textContent = msg; }
 
@@ -888,12 +747,13 @@
                 const answered = userAnswers[currentIndex] !== null;
                 const showResult = quizSubmitted || (quizMode === "practice" && answered);
                 const noteVisible = quizSubmitted || (quizMode==="practice" && answered) || (quizMode!=="mock" && $("showNoteBeforeAnswer").checked);
-                const iconClass = isInlineEditUnlocked ? 'inline-edit-icon unlocked' : 'inline-edit-icon';
+                const showPencil = isEditUnlocked;
+                const iconClass = showPencil ? (isInlineEditUnlocked ? 'inline-edit-icon unlocked' : 'inline-edit-icon') : '';
                 const iconTitle = isInlineEditUnlocked ? 'Edit mode on' : 'Click to edit question';
                 const diffClass = 'pill difficulty-' + (q.difficulty||'medium');
                 const diffLabel = {easy:'🟢 Easy', medium:'🟠 Medium', hard:'🔴 Hard'}[q.difficulty||'medium'] || 'Medium';
 
-                const editPanelHtml = isInlineEditUnlocked ? `
+                const editPanelHtml = (showPencil && isInlineEditUnlocked) ? `
                 <div class="inline-edit-panel open" id="inlineEditPanel">
                     <label>Question:</label><textarea id="ieQText">${escapeHtml(q.q)}</textarea>
                     <label>Options:</label>
@@ -937,7 +797,7 @@
                         ${quizMode==="mock"&&timerActive?`<span class="timer-display" id="timerPill">⏱️ <span id="timerPillText">--:--</span></span>`:""}
                     </div>
                     <div class="question-text">${currentIndex+1}. ${escapeHtml(q.q)}</div>
-                    <div class="${iconClass}" id="inlineEditIcon" title="${iconTitle}">✏️</div>
+                    ${showPencil ? `<div class="${iconClass}" id="inlineEditIcon" title="${iconTitle}">✏️</div>` : ''}
                     <div class="options">${optHtml}</div>
                     <div class="info ${noteVisible?"show":""}" id="noteBox">📖 ${escapeHtml(q.note||"No explanation")}</div>
                     ${editPanelHtml}
@@ -951,7 +811,7 @@
                 document.querySelectorAll(".option").forEach(el => { el.onclick = () => {
                     if (quizSubmitted) return;
                     if (quizMode === "mock") {
-                        if (userAnswers[currentIndex] !== null) return; // lock in mock after first attempt
+                        if (userAnswers[currentIndex] !== null) return;
                     } else {
                         if (userAnswers[currentIndex] !== null) return;
                     }
@@ -963,10 +823,15 @@
                 }; });
                 const prevBtn = document.getElementById('prevQ'), nextBtn = document.getElementById('nextQ'); if(prevBtn) prevBtn.onclick = ()=>moveQuestion(-1); if(nextBtn) nextBtn.onclick = ()=>moveQuestion(1);
                 const rstBtn = document.getElementById('restartAfterFinish'); if(rstBtn) rstBtn.onclick = resetAnswers;
-                const editIcon = document.getElementById('inlineEditIcon'); if(editIcon) editIcon.onclick = (e)=>{ e.stopPropagation(); toggleInlineEdit(); };
-                if(isInlineEditUnlocked) {
+                if (showPencil) {
+                    const editIcon = document.getElementById('inlineEditIcon');
+                    if(editIcon) editIcon.onclick = (e)=>{ e.stopPropagation(); toggleInlineEdit(); };
+                }
+                if(showPencil && isInlineEditUnlocked) {
                     const updateBtn = document.getElementById('ieUpdateBtn'), deleteBtn = document.getElementById('ieDeleteBtn'), lockBtn = document.getElementById('ieLockBtn');
-                    if(updateBtn) updateBtn.onclick = updateCurrentQuestionFromPanel; if(deleteBtn) deleteBtn.onclick = deleteCurrentQuestionFromPanel; if(lockBtn) lockBtn.onclick = ()=>{ isInlineEditUnlocked=false; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(""); };
+                    if(updateBtn) updateBtn.onclick = updateCurrentQuestionFromPanel;
+                    if(deleteBtn) deleteBtn.onclick = deleteCurrentQuestionFromPanel;
+                    if(lockBtn) lockBtn.onclick = ()=>{ isInlineEditUnlocked=false; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(""); };
                 }
                 updateTimerDisplay();
             }
@@ -998,7 +863,6 @@
                 } else {
                     $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`;
                 }
-                // Hide/show elements based on mode
                 const noteRow = $("noteToggleRow");
                 const showScoreBtn = $("showScoreBtn");
                 if (quizMode === "mock" && !quizSubmitted) {
@@ -1008,6 +872,9 @@
                     if(noteRow) noteRow.style.display = '';
                     if(showScoreBtn) showScoreBtn.style.display = '';
                 }
+                // Only show Clear Questions button when edit is unlocked
+                const clearBtn = $("clearSelectedSubjectsBtn");
+                if(clearBtn) clearBtn.style.display = isEditUnlocked ? '' : 'none';
             }
             function resetAnswers() { quizSubmitted = false; userAnswers.fill(null); answerStatus.fill(false); currentIndex=0; stopTimer(); timeRemaining=null; timerActive=false; if(quizMode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState(); }
             function resetQuiz() { if(!confirm("Reset current quiz progress?")) return; safeRemove(SESSION_KEY); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; resetAnswers(); showSuccess("Quiz reset."); }
@@ -1061,7 +928,27 @@
                 URL.revokeObjectURL(url);
                 showSuccess("Permanent HTML downloaded. Quiz has been reset.");
             }
-            function clearSelectedSubjects() { if(!isEditUnlocked){ const p=prompt("Enter edit password to clear questions:"); if(normalizePassword(p)!==EDIT_PASSWORD) return showError("Wrong password."); isEditUnlocked=true; } const ks=getSelectedKeys(); if(!ks.length) return showError("No chapter selected!"); const t=ks.reduce((s,k)=>s+getCount(k),0); if(!t) return showError("Selected chapters already empty."); if(!confirm(`Delete all ${t} questions from selected chapters?`)) return; ks.forEach(k=>questionBank[k]=[]); saveBank(); currentQuestions=[]; totalQuestions=0; stopTimer(); quizSubmitted = false; renderQuiz(); renderNav(); updateScore(); saveQuizState(); showSuccess(`${t} questions deleted.`); }
+
+            // Enhanced Clear Selected Subjects with detailed chapter list
+            function clearSelectedSubjects() {
+                if(!isEditUnlocked) return showError("Unlock edit first.");
+                const ks = getSelectedKeys();
+                if(!ks.length) return showError("No chapter selected!");
+                const t = ks.reduce((s,k) => s + getCount(k), 0);
+                if(!t) return showError("Selected chapters already empty.");
+                const names = ks.map(k => {
+                    const sub = getSubjects().find(s => s.key === k);
+                    return sub ? `${groupLabel(sub.group)} - ${sub.name}` : k;
+                }).join("\n");
+                if(!confirm(`Delete all questions from the following chapters?\n\n${names}\n\nTotal questions: ${t}`)) return;
+                ks.forEach(k => questionBank[k] = []);
+                saveBank();
+                currentQuestions = []; totalQuestions = 0;
+                stopTimer(); quizSubmitted = false;
+                renderQuiz(); renderNav(); updateScore(); saveQuizState();
+                showSuccess(`${t} questions deleted.`);
+            }
+
             function download(fn,d,tp){ const b=new Blob([d],{type:tp}), u=URL.createObjectURL(b), a=document.createElement("a"); a.href=u; a.download=fn; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(u); }
             function stamp(){ return new Date().toISOString().slice(0,19).replace(/:/g,"-"); }
             function showError(m){ $("uploadStatus").innerHTML=`<span style="color:#dc2626;font-weight:600;">❌ ${escapeHtml(m)}</span>`; setTimeout(()=>$("uploadStatus").innerHTML="",3500); }
@@ -1154,8 +1041,10 @@
                         $("editBodyBottom").classList.remove("open");
                         if ($("editContent")) $("editContent").style.display = "none";
                         isEditUnlocked = false;
+                        isInlineEditUnlocked = false;
                         $("editPasswordPrompt").style.display = "none";
                         if ($("editPasswordInput")) $("editPasswordInput").value = "";
+                        renderQuiz(); renderNav(); updateScore();
                     } else {
                         $("editPasswordPrompt").style.display = "block";
                         if ($("editPasswordInput")) $("editPasswordInput").focus();
@@ -1170,6 +1059,7 @@
                         isEditUnlocked = true;
                         $("editBodyBottom").classList.add("open");
                         if ($("editContent")) $("editContent").style.display = "block";
+                        renderQuiz(); renderNav(); updateScore();
                     } else {
                         alert("Wrong password!");
                         if ($("editPasswordInput")) { $("editPasswordInput").value = ""; $("editPasswordInput").focus(); }
