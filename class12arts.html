@@ -1,158 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
+<html lang="en" data-theme="light"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class XII Arts || Semester 1 & 2 || WBCHSE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Class XII Arts || Semester 1 &amp; 2 || WBCHSE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js">
-    </script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script><style>body { margin: 0; }</style>
+    <style>body { margin: 0; }</style>
     <style>
         /* ---------- GATE STYLES ---------- */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: #f8fafc;
-        }
-        .gate-wrapper {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s ease;
-            pointer-events: auto;
-        }
-        .gate-wrapper.unlocked {
-            transform: translateY(-100%);
-            opacity: 0;
-            pointer-events: none;
-        }
-        .gate-lock-icon {
-            font-size: 4rem;
-            margin-bottom: 0.5rem;
-            line-height: 1;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
-            user-select: none;
-        }
-        .gate-title {
-            font-weight: 600;
-            font-size: 1.5rem;
-            color: #1e293b;
-            margin-bottom: 0.25rem;
-        }
-        .gate-subtitle {
-            font-weight: 400;
-            color: #64748b;
-            font-size: 0.95rem;
-            margin-bottom: 1.8rem;
-        }
-        .password-field {
-            width: 100%;
-            max-width: 300px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-        .password-field input {
-            padding: 0.85rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-family: inherit;
-            text-align: center;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            background: #f1f5f9;
-        }
-        .password-field input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-            background: #ffffff;
-        }
-        .password-field button {
-            padding: 0.85rem;
-            background: #1e293b;
-            color: #ffffff;
-            border: none;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            letter-spacing: 0.3px;
-        }
-        .password-field button:hover {
-            background: #0f172a;
-        }
-        .password-field button:active {
-            transform: scale(0.98);
-        }
-        .cat-popup {
-            position: absolute;
-            top: 1.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ffffff;
-            border-radius: 14px;
-            padding: 0.7rem 1.4rem;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.12);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            z-index: 10000;
-            opacity: 0;
-            pointer-events: none;
-            animation: catEntrance 2.4s ease forwards;
-            white-space: nowrap;
-        }
-        @keyframes catEntrance {
-            0%   { opacity: 0; transform: translateX(-50%) translateY(10px); }
-            20%  { opacity: 1; transform: translateX(-50%) translateY(0); }
-            80%  { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
-        }
+        body { margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #f8fafc; }
+        .gate-wrapper { position: fixed; inset: 0; z-index: 9999; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s ease; pointer-events: auto; }
+        .gate-wrapper.unlocked { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+        .gate-lock-icon { font-size: 4rem; margin-bottom: 0.5rem; line-height: 1; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); user-select: none; }
+        .gate-title { font-weight: 600; font-size: 1.5rem; color: #1e293b; margin-bottom: 0.25rem; }
+        .gate-subtitle { font-weight: 400; color: #64748b; font-size: 0.95rem; margin-bottom: 1.8rem; }
+        .password-field { width: 100%; max-width: 300px; display: flex; flex-direction: column; gap: 0.8rem; }
+        .password-field input { padding: 0.85rem 1rem; border: 2px solid #e2e8f0; border-radius: 14px; font-size: 1rem; font-family: inherit; text-align: center; outline: none; transition: border-color 0.2s, box-shadow 0.2s; background: #f1f5f9; }
+        .password-field input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); background: #ffffff; }
+        .password-field button { padding: 0.85rem; background: #1e293b; color: #ffffff; border: none; border-radius: 14px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s, transform 0.1s; letter-spacing: 0.3px; }
+        .password-field button:hover { background: #0f172a; }
+        .password-field button:active { transform: scale(0.98); }
+        .cat-popup { position: absolute; top: 1.5rem; left: 50%; transform: translateX(-50%); background: #ffffff; border-radius: 14px; padding: 0.7rem 1.4rem; box-shadow: 0 12px 28px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 0.5rem; z-index: 10000; opacity: 0; pointer-events: none; animation: catEntrance 2.4s ease forwards; white-space: nowrap; }
+        @keyframes catEntrance { 0% { opacity: 0; transform: translateX(-50%) translateY(10px); } 20% { opacity: 1; transform: translateX(-50%) translateY(0); } 80% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(-8px); } }
         .cat-popup .cat-emoji { font-size: 2rem; line-height: 1; }
         .cat-popup .paw { font-size: 1.5rem; display: inline-block; animation: pawWave 0.45s infinite alternate ease-in-out; transform-origin: 70% 70%; }
         @keyframes pawWave { 0% { transform: rotate(0deg); } 100% { transform: rotate(20deg); } }
         .cat-popup .msg { font-weight: 600; color: #dc2626; font-size: 0.95rem; }
 
         /* ---------- MAIN APP STYLES ---------- */
-        :root {
-            --bg: #f0f4fa;
-            --ink: #1a1e2b;
-            --muted: #5f6b7a;
-            --card: #ffffff;
-            --line: #dce3ed;
-            --primary: #1a56db;
-            --primary-dark: #1240a0;
-            --accent: #7c3aed;
-            --orange: #ea580c;
-            --green: #0d9488;
-            --red: #dc2626;
-            --gold: #f59e0b;
-            --slate: #475569;
-            --shadow: 0 18px 48px rgba(15, 23, 42, 0.13);
-            --radius: 20px;
-            --header-bg: linear-gradient(135deg, #1e293b, #1a1e2b);
-            --header-color: #fff;
-            --body-gradient: radial-gradient(circle at top left, rgba(26,86,219,0.10), transparent 30rem),
-                radial-gradient(circle at right 20%, rgba(124,58,237,0.09), transparent 24rem),
-                linear-gradient(135deg, rgba(26,86,219,0.04) 25%, transparent 25%) 0 0 / 32px 32px, var(--bg);
-        }
-        [data-theme="dark"] {
-            --bg: #0f172a; --ink: #e2e8f0; --muted: #94a3b8; --card: #1e293b; --line: #334155; --primary: #60a5fa;
-            --primary-dark: #3b82f6; --accent: #a78bfa; --orange: #f97316; --green: #2dd4bf; --red: #f87171; --gold: #fbbf24;
-            --slate: #94a3b8; --shadow: 0 18px 48px rgba(0,0,0,0.4); --header-bg: linear-gradient(135deg, #0f172a, #1e293b);
-            --header-color: #e2e8f0; --body-gradient: linear-gradient(145deg, #0f172a, #1e293b);
-        }
+        :root { --bg: #f0f4fa; --ink: #1a1e2b; --muted: #5f6b7a; --card: #ffffff; --line: #dce3ed; --primary: #1a56db; --primary-dark: #1240a0; --accent: #7c3aed; --orange: #ea580c; --green: #0d9488; --red: #dc2626; --gold: #f59e0b; --slate: #475569; --shadow: 0 18px 48px rgba(15, 23, 42, 0.13); --radius: 20px; --header-bg: linear-gradient(135deg, #1e293b, #1a1e2b); --header-color: #fff; --body-gradient: radial-gradient(circle at top left, rgba(26,86,219,0.10), transparent 30rem), radial-gradient(circle at right 20%, rgba(124,58,237,0.09), transparent 24rem), linear-gradient(135deg, rgba(26,86,219,0.04) 25%, transparent 25%) 0 0 / 32px 32px, var(--bg); }
+        [data-theme="dark"] { --bg: #0f172a; --ink: #e2e8f0; --muted: #94a3b8; --card: #1e293b; --line: #334155; --primary: #60a5fa; --primary-dark: #3b82f6; --accent: #a78bfa; --orange: #f97316; --green: #2dd4bf; --red: #f87171; --gold: #fbbf24; --slate: #94a3b8; --shadow: 0 18px 48px rgba(0,0,0,0.4); --header-bg: linear-gradient(135deg, #0f172a, #1e293b); --header-color: #e2e8f0; --body-gradient: linear-gradient(145deg, #0f172a, #1e293b); }
         * { box-sizing: border-box; letter-spacing: 0; margin: 0; padding: 0; }
         html, body { min-height: 100%; }
         body { margin: 0; padding: 16px; color: var(--ink); font-family: "Segoe UI", "Hind Siliguri", "Noto Sans Bengali", system-ui, sans-serif; background: var(--body-gradient); background-attachment: fixed; }
@@ -240,6 +120,8 @@
         [data-theme="dark"] .option:hover { background:#475569; }
         .option.correct-answer { background:#0d9488; color:#fff; border-color:#0d9488; font-weight:600; }
         .option.wrong-feedback { background:#dc2626; color:#fff; border-color:#dc2626; font-weight:600; }
+        .option.selected-mock { border-color:#a5b4fc; background:#eef2ff; box-shadow:0 4px 12px rgba(26,86,219,0.15); }
+        [data-theme="dark"] .option.selected-mock { background:#3b4a6b; border-color:#60a5fa; }
         .key { width:30px; height:30px; display:inline-grid; place-items:center; border-radius:50%; background:rgba(255,255,255,0.8); color:#1a1e2b; font-weight:700; font-size:13px; flex-shrink:0; }
         [data-theme="dark"] .key { background:rgba(255,255,255,0.15); color:#e2e8f0; }
         .info { display:none; margin-top:12px; padding:12px 14px; border:1px solid #fed7aa; border-radius:14px; background:#fff7ed; color:#7c2d12; line-height:1.7; font-size:14px; }
@@ -260,14 +142,15 @@
         .q-num.current { background:#f59e0b; color:#fff; border-color:#d97706; animation:pulseCurrent 1.2s ease-in-out infinite; }
         @keyframes pulseCurrent { 50%{ box-shadow:0 0 0 6px rgba(245,158,11,0.3); } }
         .q-num.skipped { border-color:#f59e0b; border-style:dashed; }
+        .q-num.attempted-mock { background:#3b82f6; color:#fff; border-color:#2563eb; }
+        [data-theme="dark"] .q-num.attempted-mock { background:#2563eb; border-color:#1d4ed8; }
         .note-toggle { display:flex; align-items:center; justify-content:center; background:#f1f5f9; padding:8px 10px; border-radius:999px; margin-top:10px; font-size:12px; gap:6px; }
         [data-theme="dark"] .note-toggle { background:#334155; }
         .restart-area { text-align:center; margin-top:20px; }
         .edit-section-bottom { margin-top:28px; border-top:1px solid var(--line); padding-top:16px; }
-        .edit-header-bottom { display:inline-flex; align-items:center; gap:8px; background:#e2e8f0; color:#94a3b8; border-radius:999px; padding:6px 16px; cursor:pointer; font-weight:500; font-size:12px; transition:all 0.25s; border:1px solid transparent; }
-        [data-theme="dark"] .edit-header-bottom { background:#334155; color:#94a3b8; }
-        .edit-header-bottom:hover { background:#cbd5e1; color:#64748b; }
-        [data-theme="dark"] .edit-header-bottom:hover { background:#475569; }
+        .edit-header-bottom { display: inline-flex; align-items: center; justify-content: center; background: transparent; color: var(--muted); border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-weight: 700; font-size: 14px; transition: all 0.25s; border: none; opacity: 0.25; line-height: 1; user-select: none; }
+        .edit-header-bottom:hover { opacity: 0.6; background: rgba(148,163,184,0.15); color: var(--slate); }
+        [data-theme="dark"] .edit-header-bottom:hover { background: rgba(255,255,255,0.1); }
         .edit-password-prompt { display:none; margin-top:8px; padding:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; }
         [data-theme="dark"] .edit-password-prompt { background:#1e293b; border-color:#334155; }
         .edit-body-bottom { display:none; margin-top:12px; padding:14px; background:#fff7ed; border:1px solid #fed7aa; border-radius:18px; }
@@ -335,10 +218,10 @@
 </head>
 <body>
     <!-- ========== GATE ========== -->
-    <div class="gate-wrapper" id="gateWrapper">
+    <div class="gate-wrapper" id="gateWrapper" style="display: flex;">
         <div class="gate-lock-icon">🔒</div>
-        <div class="gate-title">Class XII Arts · Semester 1 & 2</div>
-        <div class="gate-subtitle">WBCHSE · History · Political Science · Philosophy · Geography</div>
+        <div class="gate-title">Class XII Arts · Semester 1 &amp; 2</div>
+        <div class="gate-subtitle">WBCHSE · ইতিহাস · রাষ্ট্রবিজ্ঞান · দর্শন · ভূগোল</div>
         <div class="password-field">
             <input type="password" id="passwordInput" placeholder="Password" autocomplete="off">
             <button id="unlockBtn">Unlock Gate</button>
@@ -352,7 +235,7 @@
                 <div class="main-title">🏆 Class XII <small>| Arts · Semester <span id="semesterBadge">1</span> |</small></div>
                 <div class="flex-row" style="gap:8px;">
                     <button id="themeToggleBtn" class="theme-toggle-btn" title="Dark/Light Mode">🌙</button>
-                    <div class="credit" id="creditName"></div>
+                    <div class="credit" id="creditName">✨ Arif Hussain</div>
                     <button style="background: var(--slate);" id="resetHeaderBtn" title="Reset Quiz">🔄</button>
                 </div>
             </div>
@@ -380,32 +263,31 @@
                     </div>
                 </div>
                 <div class="chapter-panel" id="chapterPanel">
-                    <div id="subjectAccordions"></div>
+                    <div id="subjectAccordions"><div class="subject-accordion open"><div class="subject-header history" data-group="history"><span>📚 ইতিহাস</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="hist_sem1_historiography" checked=""><span>ইতিহাস চর্চার ধারণা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="hist_sem1_modern_india" checked=""><span>আধুনিক ভারতের ইতিহাস</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="hist_sem1_colonialism" checked=""><span>উপনিবেশবাদ ও সাম্রাজ্যবাদ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="hist_sem1_nationalism" checked=""><span>ভারতীয় জাতীয় আন্দোলন</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header polsc" data-group="polsc"><span>🗳️ রাষ্ট্রবিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="polsc_sem1_intro" checked=""><span>রাষ্ট্রবিজ্ঞানের মৌলিক ধারণা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="polsc_sem1_state" checked=""><span>রাষ্ট্র ও সরকার</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="polsc_sem1_constitution" checked=""><span>ভারতীয় সংবিধান</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="polsc_sem1_rights" checked=""><span>মৌলিক অধিকার ও DPSP</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header philosophy" data-group="philosophy"><span>🧠 দর্শন</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phil_sem1_indian" checked=""><span>ভারতীয় দর্শন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phil_sem1_western" checked=""><span>পাশ্চাত্য দর্শন (প্লেটো, অ্যারিস্টটল)</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phil_sem1_epistemology" checked=""><span>জ্ঞানতত্ত্ব</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phil_sem1_metaphysics" checked=""><span>অধিবিদ্যা</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header geography" data-group="geography"><span>🌍 ভূগোল</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_sem1_intro" checked=""><span>ভূগোলের প্রকৃতি ও পরিধি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_sem1_geomorphology" checked=""><span>ভূমিরূপবিদ্যা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_sem1_river" checked=""><span>নদী ব্যবস্থা ও ভূমিরূপ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_sem1_climate" checked=""><span>জলবায়ুবিদ্যা ও আবহাওয়া</span><span class="q-count">[1]</span></label></div></div></div></div>
                     <div class="subject-action-row">
                         <div class="flex-row">
                             <button id="selectAllBtn">Select All</button>
                             <button id="deselectAllBtn" style="background: var(--slate);">Deselect All</button>
                         </div>
-                        <button id="clearSelectedSubjectsBtn" style="background: var(--red);">🗑️ Clear Questions</button>
+                        <button id="clearSelectedSubjectsBtn" style="background: var(--red); display: none;">🗑️ Clear Questions</button>
                     </div>
                 </div>
             </section>
             <section class="quiz-panel">
-                <div class="questions-area" id="questionsArea">⬆️ Select subjects and click Generate</div>
+                <div class="questions-area" id="questionsArea"><div class="question-card" style="text-align:center;padding:50px;">⬆️ Select subjects and click Generate</div></div>
                 <aside class="sidebar">
-                    <div class="score-board" id="scoreBoard">🎯 Score: 0/0</div>
+                    <div class="score-board" id="scoreBoard">🎯 Score: 0/0<br><span class="score-breakdown">✅0 | ❌0 | ⏭️0</span></div>
                     <div id="timerDisplay" style="display:none;"></div>
                     <div id="navGrid" class="nav-grid"></div>
                     <button id="showScoreBtn" style="margin-top:10px;width:100%; background:var(--slate);">📊 Show Results</button>
-                    <div class="note-toggle"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answer</label></div>
+                    <div class="note-toggle" id="noteToggleRow"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answer</label></div>
                     <button id="submitMockBtn" style="display:none; margin-top:8px; width:100%; background:var(--green);">✅ Submit Mock Test</button>
                 </aside>
             </section>
-            <div class="footer-contact" id="footerContact"></div>
+            <div class="footer-contact" id="footerContact">📧 arifbeldanga@gmail.com &nbsp;|&nbsp; 💬 Telegram: @beldanga1</div>
             <section class="edit-section-bottom">
-                <div class="edit-header-bottom" id="editHeaderBottom"><span>Edit</span><span>▼</span></div>
-                <!-- Inline password prompt -->
-                <div class="edit-password-prompt" id="editPasswordPrompt">
+                <div class="edit-header-bottom" id="editHeaderBottom" title="Edit quiz">·</div>
+                <div class="edit-password-prompt" id="editPasswordPrompt" style="display: none;">
                     <div class="flex-row" style="gap:8px; justify-content:flex-start;">
                         <input type="password" id="editPasswordInput" placeholder="Enter edit password" style="flex:1; max-width:300px;">
                         <button id="editPasswordSubmitBtn" style="background:var(--green);">🔓 Unlock Edit</button>
@@ -413,37 +295,88 @@
                     </div>
                     <div style="margin-top:4px; font-size:11px; color:var(--muted);">Enter password to access edit features.</div>
                 </div>
-                <!-- Edit content (hidden until unlocked) -->
                 <div class="edit-body-bottom" id="editBodyBottom">
-                    <div id="editContent" style="display:none;margin-top:12px;">
+                    <div id="editContent" style="display: none; margin-top: 12px;">
                         <div class="subject-mgmt-header" id="subjectGroupMgmtHeader"><span>📂 Manage Subject Groups</span><span>▼</span></div>
                         <div class="subject-mgmt-body" id="subjectGroupMgmtBody">
-                            <div id="subjectGroupListForEdit"></div>
+                            <div id="subjectGroupListForEdit">
+                    <div class="subject-editor-row">
+                        <span style="font-weight:600;text-align:center;">1.</span>
+                        <input type="text" value="📚 ইতিহাস" data-key="history" class="edit-subject-group-name" style="flex:2;">
+                        <select data-key="history" class="edit-subject-group-style">
+                            <option value="">Default</option>
+                            <option value="history" selected="">📚 ইতিহাস (Yellow)</option>
+                            <option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান (Purple)</option>
+                            <option value="philosophy">🧠 দর্শন (Pink)</option>
+                            <option value="geography">🌍 ভূগোল (Green)</option>
+                        </select>
+                        <button class="delete-subject-group-btn" data-key="history" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button>
+                    </div>
+                
+                    <div class="subject-editor-row">
+                        <span style="font-weight:600;text-align:center;">2.</span>
+                        <input type="text" value="🗳️ রাষ্ট্রবিজ্ঞান" data-key="polsc" class="edit-subject-group-name" style="flex:2;">
+                        <select data-key="polsc" class="edit-subject-group-style">
+                            <option value="">Default</option>
+                            <option value="history">📚 ইতিহাস (Yellow)</option>
+                            <option value="polsc" selected="">🗳️ রাষ্ট্রবিজ্ঞান (Purple)</option>
+                            <option value="philosophy">🧠 দর্শন (Pink)</option>
+                            <option value="geography">🌍 ভূগোল (Green)</option>
+                        </select>
+                        <button class="delete-subject-group-btn" data-key="polsc" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button>
+                    </div>
+                
+                    <div class="subject-editor-row">
+                        <span style="font-weight:600;text-align:center;">3.</span>
+                        <input type="text" value="🧠 দর্শন" data-key="philosophy" class="edit-subject-group-name" style="flex:2;">
+                        <select data-key="philosophy" class="edit-subject-group-style">
+                            <option value="">Default</option>
+                            <option value="history">📚 ইতিহাস (Yellow)</option>
+                            <option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান (Purple)</option>
+                            <option value="philosophy" selected="">🧠 দর্শন (Pink)</option>
+                            <option value="geography">🌍 ভূগোল (Green)</option>
+                        </select>
+                        <button class="delete-subject-group-btn" data-key="philosophy" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button>
+                    </div>
+                
+                    <div class="subject-editor-row">
+                        <span style="font-weight:600;text-align:center;">4.</span>
+                        <input type="text" value="🌍 ভূগোল" data-key="geography" class="edit-subject-group-name" style="flex:2;">
+                        <select data-key="geography" class="edit-subject-group-style">
+                            <option value="">Default</option>
+                            <option value="history">📚 ইতিহাস (Yellow)</option>
+                            <option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান (Purple)</option>
+                            <option value="philosophy">🧠 দর্শন (Pink)</option>
+                            <option value="geography" selected="">🌍 ভূগোল (Green)</option>
+                        </select>
+                        <button class="delete-subject-group-btn" data-key="geography" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button>
+                    </div>
+                </div>
                             <div class="flex-row" style="margin-top:8px; gap:8px;">
                                 <input type="text" id="newSubjectKey" placeholder="Group key (e.g. hist)" style="flex:1;">
                                 <input type="text" id="newSubjectNameInput" placeholder="New group name" style="flex:2;">
                                 <select id="newSubjectGroupStyle" style="flex:1;">
                                     <option value="">Default (no color)</option>
-                                    <option value="history">📚 History (Yellow)</option>
-                                    <option value="polsc">🗳️ Political Science (Purple)</option>
-                                    <option value="philosophy">🧠 Philosophy (Pink)</option>
-                                    <option value="geography">🌍 Geography (Green)</option>
+                                    <option value="history">📚 ইতিহাস (Yellow)</option>
+                                    <option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান (Purple)</option>
+                                    <option value="philosophy">🧠 দর্শন (Pink)</option>
+                                    <option value="geography">🌍 ভূগোল (Green)</option>
                                 </select>
                                 <button id="addSubjectGroupBtn" style="background: var(--green);">➕ Add Group</button>
                             </div>
                         </div>
                         <div class="subject-mgmt-header" id="subjectMgmtHeader"><span>📌 Manage Chapters/Topics</span><span>▼</span></div>
                         <div class="subject-mgmt-body" id="subjectMgmtBody">
-                            <div id="subjectListForEdit"></div>
+                            <div id="subjectListForEdit"><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">1.</span><input type="text" value="ইতিহাস চর্চার ধারণা" data-key="hist_sem1_historiography" class="edit-subject-name"><select data-key="hist_sem1_historiography" class="edit-subject-group"><option value="history" selected="">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="hist_sem1_historiography" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">2.</span><input type="text" value="আধুনিক ভারতের ইতিহাস" data-key="hist_sem1_modern_india" class="edit-subject-name"><select data-key="hist_sem1_modern_india" class="edit-subject-group"><option value="history" selected="">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="hist_sem1_modern_india" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">3.</span><input type="text" value="উপনিবেশবাদ ও সাম্রাজ্যবাদ" data-key="hist_sem1_colonialism" class="edit-subject-name"><select data-key="hist_sem1_colonialism" class="edit-subject-group"><option value="history" selected="">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="hist_sem1_colonialism" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">4.</span><input type="text" value="ভারতীয় জাতীয় আন্দোলন" data-key="hist_sem1_nationalism" class="edit-subject-name"><select data-key="hist_sem1_nationalism" class="edit-subject-group"><option value="history" selected="">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="hist_sem1_nationalism" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">5.</span><input type="text" value="দ্বিতীয় বিশ্বযুদ্ধ ও পরবর্তী অবস্থা" data-key="hist_sem2_ww2" class="edit-subject-name"><select data-key="hist_sem2_ww2" class="edit-subject-group"><option value="history" selected="">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="hist_sem2_ww2" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">6.</span><input type="text" value="স্নায়ুযুদ্ধের ইতিহাস" data-key="hist_sem2_coldwar" class="edit-subject-name"><select data-key="hist_sem2_coldwar" class="edit-subject-group"><option value="history" selected="">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="hist_sem2_coldwar" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">7.</span><input type="text" value="পরিবেশগত ইতিহাস" data-key="hist_sem2_environment" class="edit-subject-name"><select data-key="hist_sem2_environment" class="edit-subject-group"><option value="history" selected="">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="hist_sem2_environment" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">8.</span><input type="text" value="স্বাধীনোত্তর ভারত" data-key="hist_sem2_india_after" class="edit-subject-name"><select data-key="hist_sem2_india_after" class="edit-subject-group"><option value="history" selected="">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="hist_sem2_india_after" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">9.</span><input type="text" value="রাষ্ট্রবিজ্ঞানের মৌলিক ধারণা" data-key="polsc_sem1_intro" class="edit-subject-name"><select data-key="polsc_sem1_intro" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc" selected="">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="polsc_sem1_intro" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">10.</span><input type="text" value="রাষ্ট্র ও সরকার" data-key="polsc_sem1_state" class="edit-subject-name"><select data-key="polsc_sem1_state" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc" selected="">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="polsc_sem1_state" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">11.</span><input type="text" value="ভারতীয় সংবিধান" data-key="polsc_sem1_constitution" class="edit-subject-name"><select data-key="polsc_sem1_constitution" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc" selected="">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="polsc_sem1_constitution" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">12.</span><input type="text" value="মৌলিক অধিকার ও DPSP" data-key="polsc_sem1_rights" class="edit-subject-name"><select data-key="polsc_sem1_rights" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc" selected="">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="polsc_sem1_rights" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">13.</span><input type="text" value="কেন্দ্রীয় ও রাজ্য সরকারের অঙ্গসমূহ" data-key="polsc_sem2_organs" class="edit-subject-name"><select data-key="polsc_sem2_organs" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc" selected="">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="polsc_sem2_organs" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">14.</span><input type="text" value="পঞ্চায়েতি রাজ" data-key="polsc_sem2_panchayat" class="edit-subject-name"><select data-key="polsc_sem2_panchayat" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc" selected="">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="polsc_sem2_panchayat" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">15.</span><input type="text" value="আন্তর্জাতিক সম্পর্ক" data-key="polsc_sem2_international" class="edit-subject-name"><select data-key="polsc_sem2_international" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc" selected="">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="polsc_sem2_international" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">16.</span><input type="text" value="জাতিসংঘ ও শান্তিরক্ষা" data-key="polsc_sem2_un" class="edit-subject-name"><select data-key="polsc_sem2_un" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc" selected="">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="polsc_sem2_un" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">17.</span><input type="text" value="ভারতীয় দর্শন" data-key="phil_sem1_indian" class="edit-subject-name"><select data-key="phil_sem1_indian" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy" selected="">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="phil_sem1_indian" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">18.</span><input type="text" value="পাশ্চাত্য দর্শন (প্লেটো, অ্যারিস্টটল)" data-key="phil_sem1_western" class="edit-subject-name"><select data-key="phil_sem1_western" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy" selected="">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="phil_sem1_western" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">19.</span><input type="text" value="জ্ঞানতত্ত্ব" data-key="phil_sem1_epistemology" class="edit-subject-name"><select data-key="phil_sem1_epistemology" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy" selected="">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="phil_sem1_epistemology" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">20.</span><input type="text" value="অধিবিদ্যা" data-key="phil_sem1_metaphysics" class="edit-subject-name"><select data-key="phil_sem1_metaphysics" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy" selected="">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="phil_sem1_metaphysics" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">21.</span><input type="text" value="নীতিবিদ্যা" data-key="phil_sem2_ethics" class="edit-subject-name"><select data-key="phil_sem2_ethics" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy" selected="">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="phil_sem2_ethics" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">22.</span><input type="text" value="সৌন্দর্যবিদ্যা" data-key="phil_sem2_aesthetics" class="edit-subject-name"><select data-key="phil_sem2_aesthetics" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy" selected="">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="phil_sem2_aesthetics" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">23.</span><input type="text" value="ধর্মের দর্শন" data-key="phil_sem2_religion" class="edit-subject-name"><select data-key="phil_sem2_religion" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy" selected="">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="phil_sem2_religion" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">24.</span><input type="text" value="সমসাময়িক দর্শন" data-key="phil_sem2_contemporary" class="edit-subject-name"><select data-key="phil_sem2_contemporary" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy" selected="">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="phil_sem2_contemporary" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">25.</span><input type="text" value="ভূগোলের প্রকৃতি ও পরিধি" data-key="geo_sem1_intro" class="edit-subject-name"><select data-key="geo_sem1_intro" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography" selected="">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="geo_sem1_intro" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">26.</span><input type="text" value="ভূমিরূপবিদ্যা" data-key="geo_sem1_geomorphology" class="edit-subject-name"><select data-key="geo_sem1_geomorphology" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography" selected="">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="geo_sem1_geomorphology" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">27.</span><input type="text" value="নদী ব্যবস্থা ও ভূমিরূপ" data-key="geo_sem1_river" class="edit-subject-name"><select data-key="geo_sem1_river" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography" selected="">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="geo_sem1_river" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">28.</span><input type="text" value="জলবায়ুবিদ্যা ও আবহাওয়া" data-key="geo_sem1_climate" class="edit-subject-name"><select data-key="geo_sem1_climate" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography" selected="">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="geo_sem1_climate" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">29.</span><input type="text" value="মহাসাগর ও জলরাশি" data-key="geo_sem2_ocean" class="edit-subject-name"><select data-key="geo_sem2_ocean" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography" selected="">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="geo_sem2_ocean" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">30.</span><input type="text" value="পরিবেশ ও দুর্যোগ" data-key="geo_sem2_environment" class="edit-subject-name"><select data-key="geo_sem2_environment" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography" selected="">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="geo_sem2_environment" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">31.</span><input type="text" value="ভারতের প্রাকৃতিক ভূগোল" data-key="geo_sem2_india_physical" class="edit-subject-name"><select data-key="geo_sem2_india_physical" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography" selected="">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="geo_sem2_india_physical" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">32.</span><input type="text" value="জনসংখ্যা ও বসতি" data-key="geo_sem2_population" class="edit-subject-name"><select data-key="geo_sem2_population" class="edit-subject-group"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography" selected="">🌍 ভূগোল</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="geo_sem2_population" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div></div>
                             <div class="flex-row" style="margin-top:8px;">
                                 <input type="text" id="newSubjectName" placeholder="New chapter/topic name" style="flex:2;">
-                                <select id="newSubjectGroup"><option value="history">📚 History</option><option value="polsc">🗳️ Political Science</option><option value="philosophy">🧠 Philosophy</option><option value="geography">🌍 Geography</option></select>
-                                <select id="newSubjectSemester"><option value="1" selected>Semester 1</option><option value="2">Semester 2</option></select>
+                                <select id="newSubjectGroup"><option value="history">📚 ইতিহাস</option><option value="polsc">🗳️ রাষ্ট্রবিজ্ঞান</option><option value="philosophy">🧠 দর্শন</option><option value="geography">🌍 ভূগোল</option></select>
+                                <select id="newSubjectSemester"><option value="1" selected="">Semester 1</option><option value="2">Semester 2</option></select>
                                 <button id="addSubjectBtn" style="background: var(--green);">➕ Add Chapter</button>
                             </div>
                             <div class="flex-row" style="margin-top:8px;"><button id="deleteAllExceptFirstBtn" style="background: var(--red);">🗑️ Delete All Except First</button></div>
                         </div>
-                        <div class="edit-card"><h3>Chapter selector</h3><select id="targetChapterSimple"></select></div>
+                        <div class="edit-card"><h3>Chapter selector</h3><select id="targetChapterSimple"><option value="hist_sem1_historiography">ইতিহাস - ইতিহাস চর্চার ধারণা [1] (Sem 1)</option><option value="hist_sem1_modern_india">ইতিহাস - আধুনিক ভারতের ইতিহাস [1] (Sem 1)</option><option value="hist_sem1_colonialism">ইতিহাস - উপনিবেশবাদ ও সাম্রাজ্যবাদ [1] (Sem 1)</option><option value="hist_sem1_nationalism">ইতিহাস - ভারতীয় জাতীয় আন্দোলন [1] (Sem 1)</option><option value="hist_sem2_ww2">ইতিহাস - দ্বিতীয় বিশ্বযুদ্ধ ও পরবর্তী অবস্থা [1] (Sem 2)</option><option value="hist_sem2_coldwar">ইতিহাস - স্নায়ুযুদ্ধের ইতিহাস [1] (Sem 2)</option><option value="hist_sem2_environment">ইতিহাস - পরিবেশগত ইতিহাস [1] (Sem 2)</option><option value="hist_sem2_india_after">ইতিহাস - স্বাধীনোত্তর ভারত [1] (Sem 2)</option><option value="polsc_sem1_intro">রাষ্ট্রবিজ্ঞান - রাষ্ট্রবিজ্ঞানের মৌলিক ধারণা [1] (Sem 1)</option><option value="polsc_sem1_state">রাষ্ট্রবিজ্ঞান - রাষ্ট্র ও সরকার [1] (Sem 1)</option><option value="polsc_sem1_constitution">রাষ্ট্রবিজ্ঞান - ভারতীয় সংবিধান [1] (Sem 1)</option><option value="polsc_sem1_rights">রাষ্ট্রবিজ্ঞান - মৌলিক অধিকার ও DPSP [1] (Sem 1)</option><option value="polsc_sem2_organs">রাষ্ট্রবিজ্ঞান - কেন্দ্রীয় ও রাজ্য সরকারের অঙ্গসমূহ [1] (Sem 2)</option><option value="polsc_sem2_panchayat">রাষ্ট্রবিজ্ঞান - পঞ্চায়েতি রাজ [1] (Sem 2)</option><option value="polsc_sem2_international">রাষ্ট্রবিজ্ঞান - আন্তর্জাতিক সম্পর্ক [1] (Sem 2)</option><option value="polsc_sem2_un">রাষ্ট্রবিজ্ঞান - জাতিসংঘ ও শান্তিরক্ষা [1] (Sem 2)</option><option value="phil_sem1_indian">দর্শন - ভারতীয় দর্শন [1] (Sem 1)</option><option value="phil_sem1_western">দর্শন - পাশ্চাত্য দর্শন (প্লেটো, অ্যারিস্টটল) [1] (Sem 1)</option><option value="phil_sem1_epistemology">দর্শন - জ্ঞানতত্ত্ব [1] (Sem 1)</option><option value="phil_sem1_metaphysics">দর্শন - অধিবিদ্যা [1] (Sem 1)</option><option value="phil_sem2_ethics">দর্শন - নীতিবিদ্যা [1] (Sem 2)</option><option value="phil_sem2_aesthetics">দর্শন - সৌন্দর্যবিদ্যা [1] (Sem 2)</option><option value="phil_sem2_religion">দর্শন - ধর্মের দর্শন [1] (Sem 2)</option><option value="phil_sem2_contemporary">দর্শন - সমসাময়িক দর্শন [1] (Sem 2)</option><option value="geo_sem1_intro">ভূগোল - ভূগোলের প্রকৃতি ও পরিধি [1] (Sem 1)</option><option value="geo_sem1_geomorphology">ভূগোল - ভূমিরূপবিদ্যা [1] (Sem 1)</option><option value="geo_sem1_river">ভূগোল - নদী ব্যবস্থা ও ভূমিরূপ [1] (Sem 1)</option><option value="geo_sem1_climate">ভূগোল - জলবায়ুবিদ্যা ও আবহাওয়া [1] (Sem 1)</option><option value="geo_sem2_ocean">ভূগোল - মহাসাগর ও জলরাশি [1] (Sem 2)</option><option value="geo_sem2_environment">ভূগোল - পরিবেশ ও দুর্যোগ [1] (Sem 2)</option><option value="geo_sem2_india_physical">ভূগোল - ভারতের প্রাকৃতিক ভূগোল [1] (Sem 2)</option><option value="geo_sem2_population">ভূগোল - জনসংখ্যা ও বসতি [1] (Sem 2)</option></select></div>
                         <div class="edit-grid" style="margin-top:14px;">
                             <div class="edit-card">
                                 <h3>⚡ Bulk Upload (Text)</h3>
@@ -457,7 +390,7 @@
                                     <input type="file" id="restoreFileInput" accept=".json" style="display:none">
                                 </div>
                                 <div class="flex-row" style="margin-top:8px;">
-                                    <select id="appendSubjectSelect" style="flex:1;"><option value="">-- Choose chapter --</option></select>
+                                    <select id="appendSubjectSelect" style="flex:1;"><option value="">-- Choose chapter --</option><option value="hist_sem1_historiography">ইতিহাস - ইতিহাস চর্চার ধারণা (1 questions, Sem 1)</option><option value="hist_sem1_modern_india">ইতিহাস - আধুনিক ভারতের ইতিহাস (1 questions, Sem 1)</option><option value="hist_sem1_colonialism">ইতিহাস - উপনিবেশবাদ ও সাম্রাজ্যবাদ (1 questions, Sem 1)</option><option value="hist_sem1_nationalism">ইতিহাস - ভারতীয় জাতীয় আন্দোলন (1 questions, Sem 1)</option><option value="hist_sem2_ww2">ইতিহাস - দ্বিতীয় বিশ্বযুদ্ধ ও পরবর্তী অবস্থা (1 questions, Sem 2)</option><option value="hist_sem2_coldwar">ইতিহাস - স্নায়ুযুদ্ধের ইতিহাস (1 questions, Sem 2)</option><option value="hist_sem2_environment">ইতিহাস - পরিবেশগত ইতিহাস (1 questions, Sem 2)</option><option value="hist_sem2_india_after">ইতিহাস - স্বাধীনোত্তর ভারত (1 questions, Sem 2)</option><option value="polsc_sem1_intro">রাষ্ট্রবিজ্ঞান - রাষ্ট্রবিজ্ঞানের মৌলিক ধারণা (1 questions, Sem 1)</option><option value="polsc_sem1_state">রাষ্ট্রবিজ্ঞান - রাষ্ট্র ও সরকার (1 questions, Sem 1)</option><option value="polsc_sem1_constitution">রাষ্ট্রবিজ্ঞান - ভারতীয় সংবিধান (1 questions, Sem 1)</option><option value="polsc_sem1_rights">রাষ্ট্রবিজ্ঞান - মৌলিক অধিকার ও DPSP (1 questions, Sem 1)</option><option value="polsc_sem2_organs">রাষ্ট্রবিজ্ঞান - কেন্দ্রীয় ও রাজ্য সরকারের অঙ্গসমূহ (1 questions, Sem 2)</option><option value="polsc_sem2_panchayat">রাষ্ট্রবিজ্ঞান - পঞ্চায়েতি রাজ (1 questions, Sem 2)</option><option value="polsc_sem2_international">রাষ্ট্রবিজ্ঞান - আন্তর্জাতিক সম্পর্ক (1 questions, Sem 2)</option><option value="polsc_sem2_un">রাষ্ট্রবিজ্ঞান - জাতিসংঘ ও শান্তিরক্ষা (1 questions, Sem 2)</option><option value="phil_sem1_indian">দর্শন - ভারতীয় দর্শন (1 questions, Sem 1)</option><option value="phil_sem1_western">দর্শন - পাশ্চাত্য দর্শন (প্লেটো, অ্যারিস্টটল) (1 questions, Sem 1)</option><option value="phil_sem1_epistemology">দর্শন - জ্ঞানতত্ত্ব (1 questions, Sem 1)</option><option value="phil_sem1_metaphysics">দর্শন - অধিবিদ্যা (1 questions, Sem 1)</option><option value="phil_sem2_ethics">দর্শন - নীতিবিদ্যা (1 questions, Sem 2)</option><option value="phil_sem2_aesthetics">দর্শন - সৌন্দর্যবিদ্যা (1 questions, Sem 2)</option><option value="phil_sem2_religion">দর্শন - ধর্মের দর্শন (1 questions, Sem 2)</option><option value="phil_sem2_contemporary">দর্শন - সমসাময়িক দর্শন (1 questions, Sem 2)</option><option value="geo_sem1_intro">ভূগোল - ভূগোলের প্রকৃতি ও পরিধি (1 questions, Sem 1)</option><option value="geo_sem1_geomorphology">ভূগোল - ভূমিরূপবিদ্যা (1 questions, Sem 1)</option><option value="geo_sem1_river">ভূগোল - নদী ব্যবস্থা ও ভূমিরূপ (1 questions, Sem 1)</option><option value="geo_sem1_climate">ভূগোল - জলবায়ুবিদ্যা ও আবহাওয়া (1 questions, Sem 1)</option><option value="geo_sem2_ocean">ভূগোল - মহাসাগর ও জলরাশি (1 questions, Sem 2)</option><option value="geo_sem2_environment">ভূগোল - পরিবেশ ও দুর্যোগ (1 questions, Sem 2)</option><option value="geo_sem2_india_physical">ভূগোল - ভারতের প্রাকৃতিক ভূগোল (1 questions, Sem 2)</option><option value="geo_sem2_population">ভূগোল - জনসংখ্যা ও বসতি (1 questions, Sem 2)</option></select>
                                     <button id="appendJsonBtn">📎 Append JSON</button>
                                     <input type="file" id="appendFileInput" accept=".json" style="display:none">
                                 </div>
@@ -470,7 +403,7 @@
                                 <input type="text" id="optA" placeholder="Option A"><input type="text" id="optB" placeholder="Option B">
                                 <input type="text" id="optC" placeholder="Option C"><input type="text" id="optD" placeholder="Option D">
                                 <select id="correctIndex"><option value="0">✅ Correct: A</option><option value="1">✅ Correct: B</option><option value="2">✅ Correct: C</option><option value="3">✅ Correct: D</option></select>
-                                <select id="difficultySelect"><option value="easy">🟢 Easy</option><option value="medium" selected>🟠 Medium</option><option value="hard">🔴 Hard</option></select>
+                                <select id="difficultySelect"><option value="easy">🟢 Easy</option><option value="medium" selected="">🟠 Medium</option><option value="hard">🔴 Hard</option></select>
                                 <input type="text" id="simpleNote" placeholder="Explanation" style="grid-column:1/-1;">
                             </div>
                             <div class="flex-row" style="margin-top:10px;"><button id="simpleAddBtn" style="background: var(--green);">➕ Add Question</button></div>
@@ -540,62 +473,61 @@
 
         (function() {
             const EDIT_PASSWORD = "Arif@956438?";
-            const INLINE_EDIT_PASSWORD = "Arif@956438?";
-            const APP_VERSION = "class_12_arts_sem12_v2";
+            const APP_VERSION = "class_12_arts_sem12_v3_bengali";
             const BANK_KEY = "CLASS12_ARTS_QUIZ_BANK_" + APP_VERSION;
             const SESSION_KEY = "CLASS12_ARTS_QUIZ_SESSION_" + APP_VERSION;
             const SELECTED_KEY = "CLASS12_ARTS_QUIZ_SELECTED_" + APP_VERSION;
-            const EMBEDDED_BANK = null;
+            const EMBEDDED_BANK = "eyJfX3N1YmplY3RHcm91cHNfXyI6W3sia2V5IjoiaGlzdG9yeSIsIm5hbWUiOiLwn5OaIOCmh+CmpOCmv+CmueCmvuCmuCIsImNsYXNzTmFtZSI6Imhpc3RvcnkifSx7ImtleSI6InBvbHNjIiwibmFtZSI6IvCfl7PvuI8g4Kaw4Ka+4Ka34KeN4Kaf4KeN4Kaw4Kas4Ka/4Kac4KeN4Kae4Ka+4KaoIiwiY2xhc3NOYW1lIjoicG9sc2MifSx7ImtleSI6InBoaWxvc29waHkiLCJuYW1lIjoi8J+noCDgpqbgprDgp43gprbgpqgiLCJjbGFzc05hbWUiOiJwaGlsb3NvcGh5In0seyJrZXkiOiJnZW9ncmFwaHkiLCJuYW1lIjoi8J+MjSDgpq3gp4Lgppfgp4vgprIiLCJjbGFzc05hbWUiOiJnZW9ncmFwaHkifV0sIl9fc3ViamVjdHNfXyI6W3sia2V5IjoiaGlzdF9zZW0xX2hpc3RvcmlvZ3JhcGh5IiwiZ3JvdXAiOiJoaXN0b3J5Iiwic2VtZXN0ZXIiOjEsIm5hbWUiOiLgpofgpqTgpr/gprngpr7gprgg4Kaa4Kaw4KeN4Kaa4Ka+4KawIOCmp+CmvuCmsOCmo+CmviIsIm51bSI6MX0seyJrZXkiOiJoaXN0X3NlbTFfbW9kZXJuX2luZGlhIiwiZ3JvdXAiOiJoaXN0b3J5Iiwic2VtZXN0ZXIiOjEsIm5hbWUiOiLgpobgpqfgp4Hgpqjgpr/gppUg4Kat4Ka+4Kaw4Kak4KeH4KawIOCmh+CmpOCmv+CmueCmvuCmuCIsIm51bSI6Mn0seyJrZXkiOiJoaXN0X3NlbTFfY29sb25pYWxpc20iLCJncm91cCI6Imhpc3RvcnkiLCJzZW1lc3RlciI6MSwibmFtZSI6IuCmieCmquCmqOCmv+CmrOCnh+CmtuCmrOCmvuCmpiDgppMg4Ka44Ka+4Kau4KeN4Kaw4Ka+4Kac4KeN4Kav4Kas4Ka+4KamIiwibnVtIjozfSx7ImtleSI6Imhpc3Rfc2VtMV9uYXRpb25hbGlzbSIsImdyb3VwIjoiaGlzdG9yeSIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4Kat4Ka+4Kaw4Kak4KeA4Kav4Ka8IOCmnOCmvuCmpOCngOCmr+CmvCDgpobgpqjgp43gpqbgp4vgprLgpqgiLCJudW0iOjR9LHsia2V5IjoiaGlzdF9zZW0yX3d3MiIsImdyb3VwIjoiaGlzdG9yeSIsInNlbWVzdGVyIjoyLCJuYW1lIjoi4Kam4KeN4Kas4Ka/4Kak4KeA4Kav4Ka8IOCmrOCmv+CmtuCnjeCmrOCmr+CngeCmpuCnjeCmpyDgppMg4Kaq4Kaw4Kas4Kaw4KeN4Kak4KeAIOCmheCmrOCmuOCnjeCmpeCmviIsIm51bSI6NX0seyJrZXkiOiJoaXN0X3NlbTJfY29sZHdhciIsImdyb3VwIjoiaGlzdG9yeSIsInNlbWVzdGVyIjoyLCJuYW1lIjoi4Ka44KeN4Kao4Ka+4Kav4Ka84KeB4Kav4KeB4Kam4KeN4Kan4KeH4KawIOCmh+CmpOCmv+CmueCmvuCmuCIsIm51bSI6Nn0seyJrZXkiOiJoaXN0X3NlbTJfZW52aXJvbm1lbnQiLCJncm91cCI6Imhpc3RvcnkiLCJzZW1lc3RlciI6MiwibmFtZSI6IuCmquCmsOCmv+CmrOCnh+CmtuCml+CmpCDgpofgpqTgpr/gprngpr7gprgiLCJudW0iOjd9LHsia2V5IjoiaGlzdF9zZW0yX2luZGlhX2FmdGVyIiwiZ3JvdXAiOiJoaXN0b3J5Iiwic2VtZXN0ZXIiOjIsIm5hbWUiOiLgprjgp43gpqzgpr7gpqfgp4Dgpqjgp4vgpqTgp43gpqTgprAg4Kat4Ka+4Kaw4KakIiwibnVtIjo4fSx7ImtleSI6InBvbHNjX3NlbTFfaW50cm8iLCJncm91cCI6InBvbHNjIiwic2VtZXN0ZXIiOjEsIm5hbWUiOiLgprDgpr7gprfgp43gpp/gp43gprDgpqzgpr/gppzgp43gpp7gpr7gpqjgp4fgprAg4Kau4KeM4Kay4Ka/4KaVIOCmp+CmvuCmsOCmo+CmviIsIm51bSI6OX0seyJrZXkiOiJwb2xzY19zZW0xX3N0YXRlIiwiZ3JvdXAiOiJwb2xzYyIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4Kaw4Ka+4Ka34KeN4Kaf4KeN4KawIOCmkyDgprjgprDgppXgpr7gprAiLCJudW0iOjEwfSx7ImtleSI6InBvbHNjX3NlbTFfY29uc3RpdHV0aW9uIiwiZ3JvdXAiOiJwb2xzYyIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4Kat4Ka+4Kaw4Kak4KeA4Kav4Ka8IOCmuOCmguCmrOCmv+Cmp+CmvuCmqCIsIm51bSI6MTF9LHsia2V5IjoicG9sc2Nfc2VtMV9yaWdodHMiLCJncm91cCI6InBvbHNjIiwic2VtZXN0ZXIiOjEsIm5hbWUiOiLgpq7gp4zgprLgpr/gppUg4KaF4Kan4Ka/4KaV4Ka+4KawIOCmkyBEUFNQIiwibnVtIjoxMn0seyJrZXkiOiJwb2xzY19zZW0yX29yZ2FucyIsImdyb3VwIjoicG9sc2MiLCJzZW1lc3RlciI6MiwibmFtZSI6IuCmleCnh+CmqOCnjeCmpuCnjeCmsOCngOCmr+CmvCDgppMg4Kaw4Ka+4Kac4KeN4KavIOCmuOCmsOCmleCmvuCmsOCnh+CmsCDgpoXgppngp43gppfgprjgpq7gp4LgprkiLCJudW0iOjEzfSx7ImtleSI6InBvbHNjX3NlbTJfcGFuY2hheWF0IiwiZ3JvdXAiOiJwb2xzYyIsInNlbWVzdGVyIjoyLCJuYW1lIjoi4Kaq4Kae4KeN4Kaa4Ka+4Kav4Ka84KeH4Kak4Ka/IOCmsOCmvuCmnCIsIm51bSI6MTR9LHsia2V5IjoicG9sc2Nfc2VtMl9pbnRlcm5hdGlvbmFsIiwiZ3JvdXAiOiJwb2xzYyIsInNlbWVzdGVyIjoyLCJuYW1lIjoi4KaG4Kao4KeN4Kak4Kaw4KeN4Kac4Ka+4Kak4Ka/4KaVIOCmuOCmruCnjeCmquCmsOCnjeCmlSIsIm51bSI6MTV9LHsia2V5IjoicG9sc2Nfc2VtMl91biIsImdyb3VwIjoicG9sc2MiLCJzZW1lc3RlciI6MiwibmFtZSI6IuCmnOCmvuCmpOCmv+CmuOCmguCmmCDgppMg4Ka24Ka+4Kao4KeN4Kak4Ka/4Kaw4KaV4KeN4Ka34Ka+IiwibnVtIjoxNn0seyJrZXkiOiJwaGlsX3NlbTFfaW5kaWFuIiwiZ3JvdXAiOiJwaGlsb3NvcGh5Iiwic2VtZXN0ZXIiOjEsIm5hbWUiOiLgpq3gpr7gprDgpqTgp4Dgpq/gprwg4Kam4Kaw4KeN4Ka24KaoIiwibnVtIjoxN30seyJrZXkiOiJwaGlsX3NlbTFfd2VzdGVybiIsImdyb3VwIjoicGhpbG9zb3BoeSIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4Kaq4Ka+4Ka24KeN4Kaa4Ka+4Kak4KeN4KavIOCmpuCmsOCnjeCmtuCmqCAo4Kaq4KeN4Kay4KeH4Kaf4KeLLCDgpoXgp43gpq/gpr7gprDgpr/gprjgp43gpp/gpp/gprIpIiwibnVtIjoxOH0seyJrZXkiOiJwaGlsX3NlbTFfZXBpc3RlbW9sb2d5IiwiZ3JvdXAiOiJwaGlsb3NvcGh5Iiwic2VtZXN0ZXIiOjEsIm5hbWUiOiLgppzgp43gpp7gpr7gpqjgpqTgpqTgp43gpqTgp43gpqwiLCJudW0iOjE5fSx7ImtleSI6InBoaWxfc2VtMV9tZXRhcGh5c2ljcyIsImdyb3VwIjoicGhpbG9zb3BoeSIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4KaF4Kan4Ka/4Kas4Ka/4Kam4KeN4Kav4Ka+IiwibnVtIjoyMH0seyJrZXkiOiJwaGlsX3NlbTJfZXRoaWNzIiwiZ3JvdXAiOiJwaGlsb3NvcGh5Iiwic2VtZXN0ZXIiOjIsIm5hbWUiOiLgpqjgp4DgpqTgpr/gpqzgpr/gpqbgp43gpq/gpr4iLCJudW0iOjIxfSx7ImtleSI6InBoaWxfc2VtMl9hZXN0aGV0aWNzIiwiZ3JvdXAiOiJwaGlsb3NvcGh5Iiwic2VtZXN0ZXIiOjIsIm5hbWUiOiLgprjgp4zgpqjgp43gpqbgprDgp43gpq/gpqzgpr/gpqbgp43gpq/gpr4iLCJudW0iOjIyfSx7ImtleSI6InBoaWxfc2VtMl9yZWxpZ2lvbiIsImdyb3VwIjoicGhpbG9zb3BoeSIsInNlbWVzdGVyIjoyLCJuYW1lIjoi4Kan4Kaw4KeN4Kau4KeH4KawIOCmpuCmsOCnjeCmtuCmqCIsIm51bSI6MjN9LHsia2V5IjoicGhpbF9zZW0yX2NvbnRlbXBvcmFyeSIsImdyb3VwIjoicGhpbG9zb3BoeSIsInNlbWVzdGVyIjoyLCJuYW1lIjoi4Ka44Kau4Ka44Ka+4Kau4Kav4Ka84Ka/4KaVIOCmpuCmsOCnjeCmtuCmqCIsIm51bSI6MjR9LHsia2V5IjoiZ2VvX3NlbTFfaW50cm8iLCJncm91cCI6Imdlb2dyYXBoeSIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4Kat4KeC4KaX4KeL4Kay4KeH4KawIOCmquCnjeCmsOCmleCng+CmpOCmvyDgppMg4Kaq4Kaw4Ka/4Kan4Ka/IiwibnVtIjoyNX0seyJrZXkiOiJnZW9fc2VtMV9nZW9tb3JwaG9sb2d5IiwiZ3JvdXAiOiJnZW9ncmFwaHkiLCJzZW1lc3RlciI6MSwibmFtZSI6IuCmreCnguCmruCmv+CmsOCnguCmquCmrOCmv+CmpuCnjeCmr+CmviIsIm51bSI6MjZ9LHsia2V5IjoiZ2VvX3NlbTFfcml2ZXIiLCJncm91cCI6Imdlb2dyYXBoeSIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4Kao4Kam4KeAIOCmrOCnjeCmr+CmrOCmuOCnjeCmpeCmviDgppMg4Kat4KeC4Kau4Ka/4Kaw4KeC4KaqIiwibnVtIjoyN30seyJrZXkiOiJnZW9fc2VtMV9jbGltYXRlIiwiZ3JvdXAiOiJnZW9ncmFwaHkiLCJzZW1lc3RlciI6MSwibmFtZSI6IuCmnOCmsuCmrOCmvuCmr+CmvOCngeCmrOCmv+CmpuCnjeCmr+CmviDgppMg4KaG4Kas4Ka54Ka+4KaT4Kav4Ka84Ka+IiwibnVtIjoyOH0seyJrZXkiOiJnZW9fc2VtMl9vY2VhbiIsImdyb3VwIjoiZ2VvZ3JhcGh5Iiwic2VtZXN0ZXIiOjIsIm5hbWUiOiLgpq7gprngpr7gprjgpr7gppfgprAg4KaTIOCmnOCmsuCmsOCmvuCmtuCmvyIsIm51bSI6Mjl9LHsia2V5IjoiZ2VvX3NlbTJfZW52aXJvbm1lbnQiLCJncm91cCI6Imdlb2dyYXBoeSIsInNlbWVzdGVyIjoyLCJuYW1lIjoi4Kaq4Kaw4Ka/4Kas4KeH4Ka2IOCmkyDgpqbgp4HgprDgp43gpq/gp4vgppciLCJudW0iOjMwfSx7ImtleSI6Imdlb19zZW0yX2luZGlhX3BoeXNpY2FsIiwiZ3JvdXAiOiJnZW9ncmFwaHkiLCJzZW1lc3RlciI6MiwibmFtZSI6IuCmreCmvuCmsOCmpOCnh+CmsCDgpqrgp43gprDgpr7gppXgp4PgpqTgpr/gppUg4Kat4KeC4KaX4KeL4KayIiwibnVtIjozMX0seyJrZXkiOiJnZW9fc2VtMl9wb3B1bGF0aW9uIiwiZ3JvdXAiOiJnZW9ncmFwaHkiLCJzZW1lc3RlciI6MiwibmFtZSI6IuCmnOCmqOCmuOCmguCmluCnjeCmr+CmviDgppMg4Kas4Ka44Kak4Ka/IiwibnVtIjozMn1dLCJoaXN0X3NlbTFfaGlzdG9yaW9ncmFwaHkiOlt7InEiOiJUaGUgd29yZCAnSGlzdG9yeScgb3JpZ2luYXRlcyBmcm9tIHdoaWNoIGxhbmd1YWdlPyIsIm8iOlsiU2Fuc2tyaXQiLCJHcmVlayIsIkxhdGluIiwiUGVyc2lhbiJdLCJhIjoxLCJub3RlIjoiRnJvbSBHcmVlayAnSGlzdG9yaWEnLiIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJoaXN0X3NlbTFfbW9kZXJuX2luZGlhIjpbeyJxIjoiV2hlbiB3YXMgdGhlIEJhdHRsZSBvZiBQbGFzc2V5IGZvdWdodD8iLCJvIjpbIjE3NTciLCIxNzY0IiwiMTg1NyIsIjE3NjEiXSwiYSI6MCwibm90ZSI6IjE3NTcsIG1hcmtpbmcgdGhlIGJlZ2lubmluZyBvZiBCcml0aXNoIHBvbGl0aWNhbCBwb3dlci4iLCJkaWZmaWN1bHR5IjoiZWFzeSJ9XSwiaGlzdF9zZW0xX2NvbG9uaWFsaXNtIjpbeyJxIjoiQ29sb25pYWxpc20gaW1wbGllczoiLCJvIjpbIk9ubHkgdHJhZGUiLCJQb2xpdGljYWwgZG9taW5hbmNlICYgZWNvbm9taWMgZXhwbG9pdGF0aW9uIiwiQ3VsdHVyYWwgZXhjaGFuZ2UiLCJSZWxpZ2lvdXMgaGFybW9ueSJdLCJhIjoxLCJub3RlIjoiUG9saXRpY2FsIGNvbnRyb2wgKyBlY29ub21pYyBleHBsb2l0YXRpb24uIiwiZGlmZmljdWx0eSI6Im1lZGl1bSJ9XSwiaGlzdF9zZW0xX25hdGlvbmFsaXNtIjpbeyJxIjoiV2hlbiB3YXMgdGhlIFF1aXQgSW5kaWEgTW92ZW1lbnQgbGF1bmNoZWQ/IiwibyI6WyIxOTQyIiwiMTkzMCIsIjE5MjAiLCIxOTQ1Il0sImEiOjAsIm5vdGUiOiJBdWd1c3QgMTk0Mi4iLCJkaWZmaWN1bHR5IjoiZWFzeSJ9XSwiaGlzdF9zZW0yX3d3MiI6W3sicSI6IldvcmxkIFdhciBJSSBiZWdhbiBpbiB3aGljaCB5ZWFyPyIsIm8iOlsiMTkzOSIsIjE5MTQiLCIxOTQ1IiwiMTkzNyJdLCJhIjowLCJub3RlIjoiU2VwdGVtYmVyIDE5Mzkgd2l0aCBHZXJtYW55J3MgaW52YXNpb24gb2YgUG9sYW5kLiIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJoaXN0X3NlbTJfY29sZHdhciI6W3sicSI6IlRoZSB0d28gbWFqb3IgYmxvY3Mgb2YgdGhlIENvbGQgV2FyIHdlcmU6IiwibyI6WyJVU0EgJiBHZXJtYW55IiwiVVNBICYgVVNTUiIsIlVTU1IgJiBDaGluYSIsIlVTQSAmIEphcGFuIl0sImEiOjEsIm5vdGUiOiJVU0EtbGVkIFdlc3QgdnMgU292aWV0LWxlZCBFYXN0LiIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJoaXN0X3NlbTJfZW52aXJvbm1lbnQiOlt7InEiOiJFbnZpcm9ubWVudGFsIGhpc3RvcnkgZm9jdXNlcyBvbjoiLCJvIjpbIk9ubHkgd2lsZGxpZmUiLCJIdW1hbi1uYXR1cmUgcmVsYXRpb25zaGlwIG92ZXIgdGltZSIsIlBvbGx1dGlvbiBvbmx5IiwiRm9yZXN0IG9ubHkiXSwiYSI6MSwibm90ZSI6IkNoYW5naW5nIGh1bWFuLW5hdHVyZSBpbnRlcmFjdGlvbnMuIiwiZGlmZmljdWx0eSI6Im1lZGl1bSJ9XSwiaGlzdF9zZW0yX2luZGlhX2FmdGVyIjpbeyJxIjoiSW5kaWEncyBmaXJzdCBnZW5lcmFsIGVsZWN0aW9uIHdhcyBoZWxkIGluOiIsIm8iOlsiMTk1MS01MiIsIjE5NDciLCIxOTUwIiwiMTk1NiJdLCJhIjowLCJub3RlIjoiMTk1MS01Mi4iLCJkaWZmaWN1bHR5IjoiZWFzeSJ9XSwicG9sc2Nfc2VtMV9pbnRybyI6W3sicSI6IldobyBpcyBjYWxsZWQgdGhlIGZhdGhlciBvZiBQb2xpdGljYWwgU2NpZW5jZT8iLCJvIjpbIlBsYXRvIiwiQXJpc3RvdGxlIiwiTWFjaGlhdmVsbGkiLCJIb2JiZXMiXSwiYSI6MSwibm90ZSI6IkFyaXN0b3RsZS4iLCJkaWZmaWN1bHR5IjoiZWFzeSJ9XSwicG9sc2Nfc2VtMV9zdGF0ZSI6W3sicSI6IldoaWNoIGlzIE5PVCBhbiBlc3NlbnRpYWwgZWxlbWVudCBvZiB0aGUgc3RhdGU/IiwibyI6WyJHb3Zlcm5tZW50IiwiU292ZXJlaWdudHkiLCJSZWxpZ2lvbiIsIlBvcHVsYXRpb24iXSwiYSI6Miwibm90ZSI6IlJlbGlnaW9uIGlzIG5vdCBhIG5lY2Vzc2FyeSBlbGVtZW50LiIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJwb2xzY19zZW0xX2NvbnN0aXR1dGlvbiI6W3sicSI6IldoZW4gZGlkIHRoZSBJbmRpYW4gQ29uc3RpdHV0aW9uIGNvbWUgaW50byBmb3JjZT8iLCJvIjpbIjI2IEphbiAxOTUwIiwiMTUgQXVnIDE5NDciLCIyNiBOb3YgMTk0OSIsIjEgSmFuIDE5NTAiXSwiYSI6MCwibm90ZSI6IjI2IEphbnVhcnkgMTk1MC4iLCJkaWZmaWN1bHR5IjoiZWFzeSJ9XSwicG9sc2Nfc2VtMV9yaWdodHMiOlt7InEiOiJIb3cgbWFueSBGdW5kYW1lbnRhbCBSaWdodHMgYXJlIGN1cnJlbnRseSBpbiB0aGUgSW5kaWFuIENvbnN0aXR1dGlvbj8iLCJvIjpbIjUiLCI2IiwiNyIsIjQiXSwiYSI6MSwibm90ZSI6IjYgKFJpZ2h0IHRvIHByb3BlcnR5IHdhcyByZW1vdmVkKS4iLCJkaWZmaWN1bHR5IjoibWVkaXVtIn1dLCJwb2xzY19zZW0yX29yZ2FucyI6W3sicSI6IlRoZSBVbmlvbiBMZWdpc2xhdHVyZSBvZiBJbmRpYSBpcyBjYWxsZWQ6IiwibyI6WyJMb2sgU2FiaGEiLCJSYWp5YSBTYWJoYSIsIlBhcmxpYW1lbnQiLCJWaWRoYW4gU2FiaGEiXSwiYSI6Miwibm90ZSI6IlBhcmxpYW1lbnQgPSBQcmVzaWRlbnQgKyBMb2sgU2FiaGEgKyBSYWp5YSBTYWJoYS4iLCJkaWZmaWN1bHR5IjoiZWFzeSJ9XSwicG9sc2Nfc2VtMl9wYW5jaGF5YXQiOlt7InEiOiJQYW5jaGF5YXRpIFJhaiBpcyBwbGFjZWQgaW4gd2hpY2ggU2NoZWR1bGU/IiwibyI6WyIxMHRoIiwiMTF0aCIsIjEydGgiLCI5dGgiXSwiYSI6MSwibm90ZSI6IjExdGggU2NoZWR1bGUgbGlzdHMgMjkgc3ViamVjdHMuIiwiZGlmZmljdWx0eSI6Im1lZGl1bSJ9XSwicG9sc2Nfc2VtMl9pbnRlcm5hdGlvbmFsIjpbeyJxIjoiVGhlIG1haW4gZHJpdmluZyBmb3JjZSBvZiBpbnRlcm5hdGlvbmFsIHJlbGF0aW9ucyBpczoiLCJvIjpbIkNvb3BlcmF0aW9uIiwiTmF0aW9uYWwgSW50ZXJlc3QiLCJSZWxpZ2lvbiIsIkxhbmd1YWdlIl0sImEiOjEsIm5vdGUiOiJOYXRpb25hbCBpbnRlcmVzdCBndWlkZXMgZm9yZWlnbiBwb2xpY3kuIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sInBvbHNjX3NlbTJfdW4iOlt7InEiOiJXaGVyZSBpcyB0aGUgaGVhZHF1YXJ0ZXJzIG9mIHRoZSBVbml0ZWQgTmF0aW9ucz8iLCJvIjpbIkdlbmV2YSIsIlBhcmlzIiwiTmV3IFlvcmsiLCJMb25kb24iXSwiYSI6Miwibm90ZSI6Ik5ldyBZb3JrIENpdHkuIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sInBoaWxfc2VtMV9pbmRpYW4iOlt7InEiOiJUaGUgQ2hhcnZha2Egc2Nob29sIGlzIGtub3duIGZvcjoiLCJvIjpbIlRoZWlzbSIsIk1hdGVyaWFsaXNtICYgSGVkb25pc20iLCJNb25pc20iLCJLYXJtYSB0aGVvcnkiXSwiYSI6MSwibm90ZSI6IkNoYXJ2YWthIGlzIGEgbWF0ZXJpYWxpc3RpYywgcGxlYXN1cmUtc2Vla2luZyBwaGlsb3NvcGh5LiIsImRpZmZpY3VsdHkiOiJtZWRpdW0ifV0sInBoaWxfc2VtMV93ZXN0ZXJuIjpbeyJxIjoiUGxhdG8ncyBpZGVhbCBzdGF0ZSBpcyBkZXNjcmliZWQgaW4gd2hpY2ggYm9vaz8iLCJvIjpbIlJlcHVibGljIiwiUG9saXRpY3MiLCJMYXdzIiwiQXBvbG9neSJdLCJhIjowLCJub3RlIjoiUmVwdWJsaWMuIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sInBoaWxfc2VtMV9lcGlzdGVtb2xvZ3kiOlt7InEiOiJFcGlzdGVtb2xvZ3kgZGVhbHMgd2l0aDoiLCJvIjpbIkJlYXV0eSIsIktub3dsZWRnZSAmIGl0cyBsaW1pdHMiLCJDcmVhdGlvbiIsIkxvZ2ljIl0sImEiOjEsIm5vdGUiOiJUaGVvcnkgb2Yga25vd2xlZGdlLiIsImRpZmZpY3VsdHkiOiJtZWRpdW0ifV0sInBoaWxfc2VtMV9tZXRhcGh5c2ljcyI6W3sicSI6IkFub3RoZXIgbmFtZSBmb3IgTWV0YXBoeXNpY3MgaXM6IiwibyI6WyJFdGhpY3MiLCJPbnRvbG9neSIsIkFlc3RoZXRpY3MiLCJMb2dpYyJdLCJhIjoxLCJub3RlIjoiU3R1ZHkgb2YgYmVpbmcgYW5kIHJlYWxpdHkuIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sInBoaWxfc2VtMl9ldGhpY3MiOlt7InEiOiJLYW50J3MgbW9yYWwgcGhpbG9zb3BoeSBpcyBiYXNlZCBvbjoiLCJvIjpbIkhhcHBpbmVzcyIsIlV0aWxpdHkiLCJEdXR5IiwiUGxlYXN1cmUiXSwiYSI6Miwibm90ZSI6IkNhdGVnb3JpY2FsIGltcGVyYXRpdmUsIGR1dHktYmFzZWQgZXRoaWNzLiIsImRpZmZpY3VsdHkiOiJtZWRpdW0ifV0sInBoaWxfc2VtMl9hZXN0aGV0aWNzIjpbeyJxIjoiQWVzdGhldGljcyBpcyB0aGUgcGhpbG9zb3BoeSBvZjoiLCJvIjpbIlRydXRoIiwiSnVzdGljZSIsIkJlYXV0eSAmIEFydCIsIlJlbGlnaW9uIl0sImEiOjIsIm5vdGUiOiJTdHVkeSBvZiBiZWF1dHkgYW5kIHRhc3RlLiIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJwaGlsX3NlbTJfcmVsaWdpb24iOlt7InEiOiJQaGlsb3NvcGh5IG9mIHJlbGlnaW9uIHByaW1hcmlseSBxdWVzdGlvbnM6IiwibyI6WyJFeGlzdGVuY2Ugb2YgR29kIiwiQmVhdXR5IiwiTGFuZ3VhZ2UiLCJLbm93bGVkZ2UgbGltaXRzIl0sImEiOjAsIm5vdGUiOiJHb2QsIGZhaXRoLCBhbmQgcmVsaWdpb3VzIGV4cGVyaWVuY2UuIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sInBoaWxfc2VtMl9jb250ZW1wb3JhcnkiOlt7InEiOiJXaG8gaXMgYSByZXByZXNlbnRhdGl2ZSBvZiBFeGlzdGVudGlhbGlzbT8iLCJvIjpbIlBsYXRvIiwiU2FydHJlIiwiRGVzY2FydGVzIiwiS2FudCJdLCJhIjoxLCJub3RlIjoiSmVhbi1QYXVsIFNhcnRyZS4iLCJkaWZmaWN1bHR5IjoibWVkaXVtIn1dLCJnZW9fc2VtMV9pbnRybyI6W3sicSI6IlRoZSB0d28gbWFpbiBicmFuY2hlcyBvZiBnZW9ncmFwaHkgYXJlOiIsIm8iOlsiUGh5c2ljYWwgJiBIdW1hbiIsIk1hdGhlbWF0aWNhbCAmIEVjb25vbWljIiwiSGlzdG9yaWNhbCAmIFBoeXNpY2FsIiwiQ2xpbWF0aWMgJiBQb3B1bGF0aW9uIl0sImEiOjAsIm5vdGUiOiJQaHlzaWNhbCBhbmQgSHVtYW4gZ2VvZ3JhcGh5LiIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJnZW9fc2VtMV9nZW9tb3JwaG9sb2d5IjpbeyJxIjoiVGhlIEhpbWFsYXlhcyBhcmUgd2hpY2ggdHlwZSBvZiBtb3VudGFpbnM/IiwibyI6WyJWb2xjYW5pYyIsIkZvbGQiLCJCbG9jayIsIlJlc2lkdWFsIl0sImEiOjEsIm5vdGUiOiJGb2xkIG1vdW50YWlucy4iLCJkaWZmaWN1bHR5IjoiZWFzeSJ9XSwiZ2VvX3NlbTFfcml2ZXIiOlt7InEiOiJBIGxhbmRmb3JtIGNyZWF0ZWQgaW4gdGhlIHVwcGVyIGNvdXJzZSBvZiBhIHJpdmVyIGlzOiIsIm8iOlsiRmxvb2RwbGFpbiIsIkdvcmdlIiwiRGVsdGEiLCJNZWFuZGVyIl0sImEiOjEsIm5vdGUiOiJHb3JnZXMgYW5kIGNhbnlvbnMgZHVlIHRvIHZlcnRpY2FsIGVyb3Npb24uIiwiZGlmZmljdWx0eSI6Im1lZGl1bSJ9XSwiZ2VvX3NlbTFfY2xpbWF0ZSI6W3sicSI6IlRoZSBsb3dlc3QgbGF5ZXIgb2YgdGhlIGF0bW9zcGhlcmUgaXM6IiwibyI6WyJTdHJhdG9zcGhlcmUiLCJUcm9wb3NwaGVyZSIsIk1lc29zcGhlcmUiLCJUaGVybW9zcGhlcmUiXSwiYSI6MSwibm90ZSI6IkFsbCB3ZWF0aGVyIHBoZW5vbWVuYSBvY2N1ciBoZXJlLiIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJnZW9fc2VtMl9vY2VhbiI6W3sicSI6IlRoZSBsYXJnZXN0IG9jZWFuIG9uIEVhcnRoIGlzOiIsIm8iOlsiQXRsYW50aWMiLCJJbmRpYW4iLCJBcmN0aWMiLCJQYWNpZmljIl0sImEiOjMsIm5vdGUiOiJQYWNpZmljIE9jZWFuLiIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJnZW9fc2VtMl9lbnZpcm9ubWVudCI6W3sicSI6IkVsIE5pw7FvIGlzIGFzc29jaWF0ZWQgd2l0aDoiLCJvIjpbIkN5Y2xvbmVzIiwiT2NlYW4gY3VycmVudCBjaGFuZ2VzIiwiRWFydGhxdWFrZXMiLCJWb2xjYW5vZXMiXSwiYSI6MSwibm90ZSI6Ildhcm0gY3VycmVudCBvZmYgUGVydS4iLCJkaWZmaWN1bHR5IjoibWVkaXVtIn1dLCJnZW9fc2VtMl9pbmRpYV9waHlzaWNhbCI6W3sicSI6IkluZGlhJ3MgbG9uZ2VzdCByaXZlciBpczoiLCJvIjpbIkdhbmdhIiwiR29kYXZhcmkiLCJCcmFobWFwdXRyYSIsIk5hcm1hZGEiXSwiYSI6MCwibm90ZSI6IkdhbmdhLiIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJnZW9fc2VtMl9wb3B1bGF0aW9uIjpbeyJxIjoiV2hpY2ggSW5kaWFuIHN0YXRlIGhhcyB0aGUgaGlnaGVzdCBwb3B1bGF0aW9uIGRlbnNpdHk/IiwibyI6WyJVdHRhciBQcmFkZXNoIiwiQmloYXIiLCJXZXN0IEJlbmdhbCIsIk1haGFyYXNodHJhIl0sImEiOjEsIm5vdGUiOiJCaWhhci4iLCJkaWZmaWN1bHR5IjoibWVkaXVtIn1dfQ=="; // using default Bengali bank
             const THEME_KEY = "CLASS12_ARTS_QUIZ_THEME";
 
             const defaultSubjectGroups = [
-                { key: "history", name: "📚 History", className: "history" },
-                { key: "polsc", name: "🗳️ Political Science", className: "polsc" },
-                { key: "philosophy", name: "🧠 Philosophy", className: "philosophy" },
-                { key: "geography", name: "🌍 Geography", className: "geography" }
+                { key: "history", name: "📚 ইতিহাস", className: "history" },
+                { key: "polsc", name: "🗳️ রাষ্ট্রবিজ্ঞান", className: "polsc" },
+                { key: "philosophy", name: "🧠 দর্শন", className: "philosophy" },
+                { key: "geography", name: "🌍 ভূগোল", className: "geography" }
             ];
 
             const defaultSubjects = [
                 // History Semester 1
-                { key: "hist_sem1_historiography", group: "history", semester: 1, name: "Concepts of Historiography" },
-                { key: "hist_sem1_modern_india", group: "history", semester: 1, name: "Modern Indian History" },
-                { key: "hist_sem1_colonialism", group: "history", semester: 1, name: "Colonialism & Imperialism" },
-                { key: "hist_sem1_nationalism", group: "history", semester: 1, name: "Indian National Movement" },
+                { key: "hist_sem1_historiography", group: "history", semester: 1, name: "ইতিহাস চর্চার ধারণা" },
+                { key: "hist_sem1_modern_india", group: "history", semester: 1, name: "আধুনিক ভারতের ইতিহাস" },
+                { key: "hist_sem1_colonialism", group: "history", semester: 1, name: "উপনিবেশবাদ ও সাম্রাজ্যবাদ" },
+                { key: "hist_sem1_nationalism", group: "history", semester: 1, name: "ভারতীয় জাতীয় আন্দোলন" },
                 // History Semester 2
-                { key: "hist_sem2_ww2", group: "history", semester: 2, name: "World War II & Aftermath" },
-                { key: "hist_sem2_coldwar", group: "history", semester: 2, name: "Cold War History" },
-                { key: "hist_sem2_environment", group: "history", semester: 2, name: "Environmental History" },
-                { key: "hist_sem2_india_after", group: "history", semester: 2, name: "Post-Independence India" },
+                { key: "hist_sem2_ww2", group: "history", semester: 2, name: "দ্বিতীয় বিশ্বযুদ্ধ ও পরবর্তী অবস্থা" },
+                { key: "hist_sem2_coldwar", group: "history", semester: 2, name: "স্নায়ুযুদ্ধের ইতিহাস" },
+                { key: "hist_sem2_environment", group: "history", semester: 2, name: "পরিবেশগত ইতিহাস" },
+                { key: "hist_sem2_india_after", group: "history", semester: 2, name: "স্বাধীনোত্তর ভারত" },
                 // Political Science Semester 1
-                { key: "polsc_sem1_intro", group: "polsc", semester: 1, name: "Basic Concepts of Political Science" },
-                { key: "polsc_sem1_state", group: "polsc", semester: 1, name: "State & Government" },
-                { key: "polsc_sem1_constitution", group: "polsc", semester: 1, name: "Indian Constitution" },
-                { key: "polsc_sem1_rights", group: "polsc", semester: 1, name: "Fundamental Rights & DPSP" },
+                { key: "polsc_sem1_intro", group: "polsc", semester: 1, name: "রাষ্ট্রবিজ্ঞানের মৌলিক ধারণা" },
+                { key: "polsc_sem1_state", group: "polsc", semester: 1, name: "রাষ্ট্র ও সরকার" },
+                { key: "polsc_sem1_constitution", group: "polsc", semester: 1, name: "ভারতীয় সংবিধান" },
+                { key: "polsc_sem1_rights", group: "polsc", semester: 1, name: "মৌলিক অধিকার ও DPSP" },
                 // Political Science Semester 2
-                { key: "polsc_sem2_organs", group: "polsc", semester: 2, name: "Union & State Government Organs" },
-                { key: "polsc_sem2_panchayat", group: "polsc", semester: 2, name: "Panchayati Raj" },
-                { key: "polsc_sem2_international", group: "polsc", semester: 2, name: "International Relations" },
-                { key: "polsc_sem2_un", group: "polsc", semester: 2, name: "United Nations & Peacekeeping" },
+                { key: "polsc_sem2_organs", group: "polsc", semester: 2, name: "কেন্দ্রীয় ও রাজ্য সরকারের অঙ্গসমূহ" },
+                { key: "polsc_sem2_panchayat", group: "polsc", semester: 2, name: "পঞ্চায়েতি রাজ" },
+                { key: "polsc_sem2_international", group: "polsc", semester: 2, name: "আন্তর্জাতিক সম্পর্ক" },
+                { key: "polsc_sem2_un", group: "polsc", semester: 2, name: "জাতিসংঘ ও শান্তিরক্ষা" },
                 // Philosophy Semester 1
-                { key: "phil_sem1_indian", group: "philosophy", semester: 1, name: "Indian Philosophy" },
-                { key: "phil_sem1_western", group: "philosophy", semester: 1, name: "Western Philosophy (Plato, Aristotle)" },
-                { key: "phil_sem1_epistemology", group: "philosophy", semester: 1, name: "Epistemology" },
-                { key: "phil_sem1_metaphysics", group: "philosophy", semester: 1, name: "Metaphysics" },
+                { key: "phil_sem1_indian", group: "philosophy", semester: 1, name: "ভারতীয় দর্শন" },
+                { key: "phil_sem1_western", group: "philosophy", semester: 1, name: "পাশ্চাত্য দর্শন (প্লেটো, অ্যারিস্টটল)" },
+                { key: "phil_sem1_epistemology", group: "philosophy", semester: 1, name: "জ্ঞানতত্ত্ব" },
+                { key: "phil_sem1_metaphysics", group: "philosophy", semester: 1, name: "অধিবিদ্যা" },
                 // Philosophy Semester 2
-                { key: "phil_sem2_ethics", group: "philosophy", semester: 2, name: "Ethics" },
-                { key: "phil_sem2_aesthetics", group: "philosophy", semester: 2, name: "Aesthetics" },
-                { key: "phil_sem2_religion", group: "philosophy", semester: 2, name: "Philosophy of Religion" },
-                { key: "phil_sem2_contemporary", group: "philosophy", semester: 2, name: "Contemporary Philosophy" },
+                { key: "phil_sem2_ethics", group: "philosophy", semester: 2, name: "নীতিবিদ্যা" },
+                { key: "phil_sem2_aesthetics", group: "philosophy", semester: 2, name: "সৌন্দর্যবিদ্যা" },
+                { key: "phil_sem2_religion", group: "philosophy", semester: 2, name: "ধর্মের দর্শন" },
+                { key: "phil_sem2_contemporary", group: "philosophy", semester: 2, name: "সমসাময়িক দর্শন" },
                 // Geography Semester 1
-                { key: "geo_sem1_intro", group: "geography", semester: 1, name: "Nature & Scope of Geography" },
-                { key: "geo_sem1_geomorphology", group: "geography", semester: 1, name: "Geomorphology" },
-                { key: "geo_sem1_river", group: "geography", semester: 1, name: "River Systems & Landforms" },
-                { key: "geo_sem1_climate", group: "geography", semester: 1, name: "Climatology & Weather" },
+                { key: "geo_sem1_intro", group: "geography", semester: 1, name: "ভূগোলের প্রকৃতি ও পরিধি" },
+                { key: "geo_sem1_geomorphology", group: "geography", semester: 1, name: "ভূমিরূপবিদ্যা" },
+                { key: "geo_sem1_river", group: "geography", semester: 1, name: "নদী ব্যবস্থা ও ভূমিরূপ" },
+                { key: "geo_sem1_climate", group: "geography", semester: 1, name: "জলবায়ুবিদ্যা ও আবহাওয়া" },
                 // Geography Semester 2
-                { key: "geo_sem2_ocean", group: "geography", semester: 2, name: "Oceans & Water Bodies" },
-                { key: "geo_sem2_environment", group: "geography", semester: 2, name: "Environment & Disasters" },
-                { key: "geo_sem2_india_physical", group: "geography", semester: 2, name: "Physical Geography of India" },
-                { key: "geo_sem2_population", group: "geography", semester: 2, name: "Population & Settlement" }
+                { key: "geo_sem2_ocean", group: "geography", semester: 2, name: "মহাসাগর ও জলরাশি" },
+                { key: "geo_sem2_environment", group: "geography", semester: 2, name: "পরিবেশ ও দুর্যোগ" },
+                { key: "geo_sem2_india_physical", group: "geography", semester: 2, name: "ভারতের প্রাকৃতিক ভূগোল" },
+                { key: "geo_sem2_population", group: "geography", semester: 2, name: "জনসংখ্যা ও বসতি" }
             ];
 
             const seedQuestions = {
@@ -687,7 +619,7 @@
                 const groups = getSubjectGroups();
                 $("subjectAccordions").innerHTML = groups.map((g,gi) => {
                     const chs = getSubjects().filter(s => s.group === g.key && s.semester === currentSemester);
-                    return `<div class="subject-accordion ${gi===0?"open":""}"><div class="subject-header ${g.className||''}" data-group="${g.key}"><span>${g.name}</span><span class="subject-arrow">▼</span></div><div class="subject-chapters ${gi===0?"open":""}"><div class="subject-chapters-inner">${chs.map(s=>`<label class="chapter-item"><input type="checkbox" class="chapter-cb" value="${escapeAttr(s.key)}" ${selectedKeys.has(s.key)?"checked":""}><span>${escapeHtml(s.name)}</span><span class="q-count">[${getCount(s.key)}]</span></label>`).join("")||"<span style='font-size:13px;color:#64748b;'>No chapters in this semester.</span>"}</div></div></div>`;
+                    return `<div class="subject-accordion ${gi===0?"open":""}"><div class="subject-header ${g.className||''}" data-group="${g.key}"><span>${g.name}</span><span class="subject-arrow">▼</span></div><div class="subject-chapters ${gi===0?"open":""}"><div class="subject-chapters-inner">${chs.map(s=>`<label class="chapter-item"><input type="checkbox" class="chapter-cb" value="${escapeAttr(s.key)}" ${selectedKeys.has(s.key)?"checked":""}><span>${escapeHtml(s.name)}</span><span class="q-count">[${getCount(s.key)}]</span></label>`).join("")||"<span style='font-size:13px;color:#64748b;'>এই সেমিস্টারে কোনো অধ্যায় নেই।</span>"}</div></div></div>`;
                 }).join("");
                 document.querySelectorAll(".subject-header").forEach(h => { h.onclick = () => { const a = h.closest(".subject-accordion"), b = a.querySelector(".subject-chapters"); a.classList.toggle("open"); b.classList.toggle("open"); }; });
                 document.querySelectorAll(".chapter-cb").forEach(cb => { cb.onchange = () => { cb.checked ? selectedKeys.add(cb.value) : selectedKeys.delete(cb.value); saveSelection(); }; });
@@ -714,10 +646,10 @@
                         <input type="text" value="${escapeAttr(g.name)}" data-key="${escapeAttr(g.key)}" class="edit-subject-group-name" style="flex:2;">
                         <select data-key="${escapeAttr(g.key)}" class="edit-subject-group-style">
                             <option value="">Default</option>
-                            <option value="history" ${g.className==="history"?"selected":""}>📚 History (Yellow)</option>
-                            <option value="polsc" ${g.className==="polsc"?"selected":""}>🗳️ Political Science (Purple)</option>
-                            <option value="philosophy" ${g.className==="philosophy"?"selected":""}>🧠 Philosophy (Pink)</option>
-                            <option value="geography" ${g.className==="geography"?"selected":""}>🌍 Geography (Green)</option>
+                            <option value="history" ${g.className==="history"?"selected":""}>📚 ইতিহাস (Yellow)</option>
+                            <option value="polsc" ${g.className==="polsc"?"selected":""}>🗳️ রাষ্ট্রবিজ্ঞান (Purple)</option>
+                            <option value="philosophy" ${g.className==="philosophy"?"selected":""}>🧠 দর্শন (Pink)</option>
+                            <option value="geography" ${g.className==="geography"?"selected":""}>🌍 ভূগোল (Green)</option>
                         </select>
                         <button class="delete-subject-group-btn" data-key="${escapeAttr(g.key)}" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button>
                     </div>
@@ -789,10 +721,11 @@
             function hideResultsOverlay() { document.getElementById('resultsOverlay').classList.add('hidden'); }
 
             function toggleInlineEdit() {
-                if(isInlineEditUnlocked) { isInlineEditUnlocked=false; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(""); return; }
-                const pass = prompt("Enter edit password:"); if(pass===null) return;
-                if(normalizePassword(pass) !== INLINE_EDIT_PASSWORD) { alert("Wrong password!"); return; }
-                isInlineEditUnlocked=true; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus("Edit mode on.");
+                if (!isEditUnlocked) return;
+                isInlineEditUnlocked = !isInlineEditUnlocked;
+                renderQuiz();
+                renderNav();
+                updateScore();
             }
             function showInlineEditStatus(msg) { const el = document.getElementById('inlineEditStatusMsg'); if(el) el.textContent = msg; }
 
@@ -830,13 +763,15 @@
                 currentIndex = Math.max(0, Math.min(currentIndex, currentQuestions.length-1));
                 const q = currentQuestions[currentIndex];
                 const answered = userAnswers[currentIndex] !== null;
-                const noteVisible = answered || quizSubmitted || $("showNoteBeforeAnswer").checked;
-                const iconClass = isInlineEditUnlocked ? 'inline-edit-icon unlocked' : 'inline-edit-icon';
+                const showResult = quizSubmitted || (quizMode === "practice" && answered);
+                const noteVisible = quizSubmitted || (quizMode==="practice" && answered) || (quizMode!=="mock" && $("showNoteBeforeAnswer").checked);
+                const showPencil = isEditUnlocked;
+                const iconClass = showPencil ? (isInlineEditUnlocked ? 'inline-edit-icon unlocked' : 'inline-edit-icon') : '';
                 const iconTitle = isInlineEditUnlocked ? 'Edit mode on' : 'Click to edit question';
                 const diffClass = 'pill difficulty-' + (q.difficulty||'medium');
                 const diffLabel = {easy:'🟢 Easy', medium:'🟠 Medium', hard:'🔴 Hard'}[q.difficulty||'medium'] || 'Medium';
 
-                const editPanelHtml = isInlineEditUnlocked ? `
+                const editPanelHtml = (showPencil && isInlineEditUnlocked) ? `
                 <div class="inline-edit-panel open" id="inlineEditPanel">
                     <label>Question:</label><textarea id="ieQText">${escapeHtml(q.q)}</textarea>
                     <label>Options:</label>
@@ -864,8 +799,9 @@
 
                 const optHtml = q.o.map((opt,i) => {
                     let cls = "option";
-                    if(answered && i===q.a) cls += " correct-answer";
-                    if(answered && userAnswers[currentIndex]===i && userAnswers[currentIndex]!== -1 && !answerStatus[currentIndex]) cls += " wrong-feedback";
+                    if (showResult && i === q.a) cls += " correct-answer";
+                    if (showResult && userAnswers[currentIndex] === i && userAnswers[currentIndex] !== -1 && !answerStatus[currentIndex]) cls += " wrong-feedback";
+                    if (quizMode === "mock" && !quizSubmitted && userAnswers[currentIndex] === i && answered) cls += " selected-mock";
                     return `<div class="${cls}" data-opt="${i}"><span class="key">${i+1}</span><span>${String.fromCharCode(65+i)}. ${escapeHtml(opt)}</span></div>`;
                 }).join("");
 
@@ -879,7 +815,7 @@
                         ${quizMode==="mock"&&timerActive?`<span class="timer-display" id="timerPill">⏱️ <span id="timerPillText">--:--</span></span>`:""}
                     </div>
                     <div class="question-text">${currentIndex+1}. ${escapeHtml(q.q)}</div>
-                    <div class="${iconClass}" id="inlineEditIcon" title="${iconTitle}">✏️</div>
+                    ${showPencil ? `<div class="${iconClass}" id="inlineEditIcon" title="${iconTitle}">✏️</div>` : ''}
                     <div class="options">${optHtml}</div>
                     <div class="info ${noteVisible?"show":""}" id="noteBox">📖 ${escapeHtml(q.note||"No explanation")}</div>
                     ${editPanelHtml}
@@ -890,20 +826,74 @@
                     ${userAnswers.every(a=>a!==null) && !quizSubmitted?`<div class="restart-area"><button id="restartAfterFinish">🔄 Restart</button></div>`:""}
                 </div>`;
 
-                document.querySelectorAll(".option").forEach(el => { el.onclick = () => { if(userAnswers[currentIndex]!==null || quizSubmitted) return; const sel = Number(el.dataset.opt); userAnswers[currentIndex]=sel; answerStatus[currentIndex]=sel===q.a; if(answerStatus[currentIndex]) fireConfetti(); renderQuiz(); renderNav(); updateScore(); saveQuizState(); }; });
+                document.querySelectorAll(".option").forEach(el => { el.onclick = () => {
+                    if (quizSubmitted) return;
+                    if (quizMode === "mock") {
+                        if (userAnswers[currentIndex] !== null) return;
+                    } else {
+                        if (userAnswers[currentIndex] !== null) return;
+                    }
+                    const sel = Number(el.dataset.opt);
+                    userAnswers[currentIndex] = sel;
+                    answerStatus[currentIndex] = (sel === q.a);
+                    if (answerStatus[currentIndex] && quizMode !== "mock") fireConfetti();
+                    renderQuiz(); renderNav(); updateScore(); saveQuizState();
+                }; });
                 const prevBtn = document.getElementById('prevQ'), nextBtn = document.getElementById('nextQ'); if(prevBtn) prevBtn.onclick = ()=>moveQuestion(-1); if(nextBtn) nextBtn.onclick = ()=>moveQuestion(1);
                 const rstBtn = document.getElementById('restartAfterFinish'); if(rstBtn) rstBtn.onclick = resetAnswers;
-                const editIcon = document.getElementById('inlineEditIcon'); if(editIcon) editIcon.onclick = (e)=>{ e.stopPropagation(); toggleInlineEdit(); };
-                if(isInlineEditUnlocked) {
+                if (showPencil) {
+                    const editIcon = document.getElementById('inlineEditIcon');
+                    if(editIcon) editIcon.onclick = (e)=>{ e.stopPropagation(); toggleInlineEdit(); };
+                }
+                if(showPencil && isInlineEditUnlocked) {
                     const updateBtn = document.getElementById('ieUpdateBtn'), deleteBtn = document.getElementById('ieDeleteBtn'), lockBtn = document.getElementById('ieLockBtn');
-                    if(updateBtn) updateBtn.onclick = updateCurrentQuestionFromPanel; if(deleteBtn) deleteBtn.onclick = deleteCurrentQuestionFromPanel; if(lockBtn) lockBtn.onclick = ()=>{ isInlineEditUnlocked=false; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(""); };
+                    if(updateBtn) updateBtn.onclick = updateCurrentQuestionFromPanel;
+                    if(deleteBtn) deleteBtn.onclick = deleteCurrentQuestionFromPanel;
+                    if(lockBtn) lockBtn.onclick = ()=>{ isInlineEditUnlocked=false; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(""); };
                 }
                 updateTimerDisplay();
             }
 
             function moveQuestion(d) { const n = currentIndex+d; if(n<0||n>=totalQuestions) return; currentIndex=n; renderQuiz(); renderNav(); saveQuizState(); }
-            function renderNav() { let g=""; for(let i=0;i<totalQuestions;i++) { let cls="q-num"; if(userAnswers[i]!==null && userAnswers[i]!== -1) cls += answerStatus[i]?" answered-correct":" answered-wrong"; else if(quizMode==="mock" && quizSubmitted && (userAnswers[i]===null || userAnswers[i]=== -1)) cls+=" skipped"; if(i===currentIndex) cls+=" current"; g+=`<div class="${cls}" data-idx="${i}">${i+1}</div>`; } $("navGrid").innerHTML=g; document.querySelectorAll(".q-num").forEach(el=>{ el.onclick=()=>{ currentIndex=Number(el.dataset.idx); renderQuiz(); renderNav(); saveQuizState(); }; }); }
-            function updateScore() { const c = answerStatus.filter(Boolean).length, a = userAnswers.filter(v=>v!==null && v!== -1).length, w = a-c, s = totalQuestions-a; $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`; }
+            function renderNav() {
+                let g="";
+                const isMockActive = (quizMode === "mock" && !quizSubmitted);
+                for(let i=0;i<totalQuestions;i++) {
+                    let cls="q-num";
+                    if (isMockActive) {
+                        if (userAnswers[i] !== null && userAnswers[i] !== -1) cls += " attempted-mock";
+                    } else {
+                        if(userAnswers[i]!==null && userAnswers[i]!== -1) cls += answerStatus[i]?" answered-correct":" answered-wrong";
+                        else if(quizMode==="mock" && quizSubmitted && (userAnswers[i]===null || userAnswers[i]=== -1)) cls+=" skipped";
+                    }
+                    if(i===currentIndex) cls+=" current";
+                    g+=`<div class="${cls}" data-idx="${i}">${i+1}</div>`;
+                }
+                $("navGrid").innerHTML=g;
+                document.querySelectorAll(".q-num").forEach(el=>{ el.onclick=()=>{ currentIndex=Number(el.dataset.idx); renderQuiz(); renderNav(); saveQuizState(); }; });
+            }
+            function updateScore() {
+                const c = answerStatus.filter(Boolean).length;
+                const a = userAnswers.filter(v=>v!==null && v!== -1).length;
+                const w = a-c; const s = totalQuestions-a;
+                if (quizMode === "mock" && !quizSubmitted) {
+                    $("scoreBoard").innerHTML = `⏱️ Mock Test in Progress`;
+                } else {
+                    $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`;
+                }
+                const noteRow = $("noteToggleRow");
+                const showScoreBtn = $("showScoreBtn");
+                if (quizMode === "mock" && !quizSubmitted) {
+                    if(noteRow) noteRow.style.display = 'none';
+                    if(showScoreBtn) showScoreBtn.style.display = 'none';
+                } else {
+                    if(noteRow) noteRow.style.display = '';
+                    if(showScoreBtn) showScoreBtn.style.display = '';
+                }
+                // Only show Clear Questions button when edit is unlocked
+                const clearBtn = $("clearSelectedSubjectsBtn");
+                if(clearBtn) clearBtn.style.display = isEditUnlocked ? '' : 'none';
+            }
             function resetAnswers() { quizSubmitted = false; userAnswers.fill(null); answerStatus.fill(false); currentIndex=0; stopTimer(); timeRemaining=null; timerActive=false; if(quizMode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState(); }
             function resetQuiz() { if(!confirm("Reset current quiz progress?")) return; safeRemove(SESSION_KEY); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; resetAnswers(); showSuccess("Quiz reset."); }
             function submitMockTest() { if(!confirm("Submit mock test? You cannot change answers.")) return; stopTimer(); quizSubmitted = true; renderQuiz(); renderNav(); updateScore(); saveQuizState(); fireConfetti(); showResultsOverlay(); }
@@ -915,17 +905,13 @@
             function backupSelected() { const ks=getSelectedKeys(); if(!ks.length) return showError("No chapter selected!"); const bk={ __subjectGroups__:cloneValue(getSubjectGroups()), __subjects__:getSubjects().filter(s=>ks.includes(s.key)) }; ks.forEach(k=>bk[k]=questionBank[k]||[]); download(`class12_arts_selected_backup_${stamp()}.json`,JSON.stringify(bk,null,2),"application/json"); showSuccess("Selected backup saved."); }
             function backupFull() { download(`class12_arts_full_backup_${stamp()}.json`,JSON.stringify(questionBank,null,2),"application/json"); showSuccess("Full backup saved."); }
 
-            // ---------- MODIFIED: Download permanent HTML with full reset ----------
             function downloadPermanentHtml() {
                 if(!confirm("This will reset the current quiz and save a fresh copy with the gate locked. Continue?")) return;
-                // 1. Stop timer and clear session
                 stopTimer();
                 safeRemove(SESSION_KEY);
-                // 2. Reset quiz variables to empty
                 currentQuestions = []; totalQuestions = 0;
                 userAnswers = []; answerStatus = []; currentIndex = 0;
                 quizSubmitted = false;
-                // 3. Hide the app and show the gate in locked state
                 const appEl = document.getElementById("app");
                 const gateEl = document.getElementById("gateWrapper");
                 if (appEl) appEl.style.display = "none";
@@ -933,7 +919,6 @@
                     gateEl.classList.remove("unlocked");
                     gateEl.style.display = "flex";
                 }
-                // 4. Close edit panel and hide password prompt
                 const editBody = $("editBodyBottom");
                 if (editBody) editBody.classList.remove("open");
                 if ($("editContent")) $("editContent").style.display = "none";
@@ -941,13 +926,10 @@
                 if (passwordPrompt) passwordPrompt.style.display = "none";
                 if ($("editPasswordInput")) $("editPasswordInput").value = "";
                 isEditUnlocked = false;
-                // 5. Save empty quiz state
                 saveQuizState();
-                // 6. Render empty UI
                 renderQuiz();
                 renderNav();
                 updateScore();
-                // 7. Build HTML with embedded bank
                 const bankJson = JSON.stringify(questionBank);
                 const base64Bank = btoa(unescape(encodeURIComponent(bankJson)));
                 let html = document.documentElement.outerHTML;
@@ -964,7 +946,27 @@
                 URL.revokeObjectURL(url);
                 showSuccess("Permanent HTML downloaded. Quiz has been reset.");
             }
-            function clearSelectedSubjects() { if(!isEditUnlocked){ const p=prompt("Enter edit password to clear questions:"); if(normalizePassword(p)!==EDIT_PASSWORD) return showError("Wrong password."); isEditUnlocked=true; } const ks=getSelectedKeys(); if(!ks.length) return showError("No chapter selected!"); const t=ks.reduce((s,k)=>s+getCount(k),0); if(!t) return showError("Selected chapters already empty."); if(!confirm(`Delete all ${t} questions from selected chapters?`)) return; ks.forEach(k=>questionBank[k]=[]); saveBank(); currentQuestions=[]; totalQuestions=0; stopTimer(); quizSubmitted = false; renderQuiz(); renderNav(); updateScore(); saveQuizState(); showSuccess(`${t} questions deleted.`); }
+
+            // Enhanced Clear Selected Subjects with detailed chapter list
+            function clearSelectedSubjects() {
+                if(!isEditUnlocked) return showError("Unlock edit first.");
+                const ks = getSelectedKeys();
+                if(!ks.length) return showError("No chapter selected!");
+                const t = ks.reduce((s,k) => s + getCount(k), 0);
+                if(!t) return showError("Selected chapters already empty.");
+                const names = ks.map(k => {
+                    const sub = getSubjects().find(s => s.key === k);
+                    return sub ? `${groupLabel(sub.group)} - ${sub.name}` : k;
+                }).join("\n");
+                if(!confirm(`Delete all questions from the following chapters?\n\n${names}\n\nTotal questions: ${t}`)) return;
+                ks.forEach(k => questionBank[k] = []);
+                saveBank();
+                currentQuestions = []; totalQuestions = 0;
+                stopTimer(); quizSubmitted = false;
+                renderQuiz(); renderNav(); updateScore(); saveQuizState();
+                showSuccess(`${t} questions deleted.`);
+            }
+
             function download(fn,d,tp){ const b=new Blob([d],{type:tp}), u=URL.createObjectURL(b), a=document.createElement("a"); a.href=u; a.download=fn; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(u); }
             function stamp(){ return new Date().toISOString().slice(0,19).replace(/:/g,"-"); }
             function showError(m){ $("uploadStatus").innerHTML=`<span style="color:#dc2626;font-weight:600;">❌ ${escapeHtml(m)}</span>`; setTimeout(()=>$("uploadStatus").innerHTML="",3500); }
@@ -1052,24 +1054,21 @@
                 $("themeToggleBtn").onclick = toggleTheme;
                 $("closeResultsBtn").onclick = hideResultsOverlay;
 
-                // ---------- EDIT HEADER (inline password) ----------
                 $("editHeaderBottom").onclick = () => {
                     if (isEditUnlocked) {
-                        // Close edit panel
                         $("editBodyBottom").classList.remove("open");
                         if ($("editContent")) $("editContent").style.display = "none";
                         isEditUnlocked = false;
-                        // Hide password prompt if visible
+                        isInlineEditUnlocked = false;
                         $("editPasswordPrompt").style.display = "none";
                         if ($("editPasswordInput")) $("editPasswordInput").value = "";
+                        renderQuiz(); renderNav(); updateScore();
                     } else {
-                        // Show password prompt
                         $("editPasswordPrompt").style.display = "block";
                         if ($("editPasswordInput")) $("editPasswordInput").focus();
                     }
                 };
 
-                // Password prompt buttons
                 $("editPasswordSubmitBtn").onclick = () => {
                     const pass = ($("editPasswordInput")?.value || "").trim();
                     if (normalizePassword(pass) === EDIT_PASSWORD) {
@@ -1078,6 +1077,7 @@
                         isEditUnlocked = true;
                         $("editBodyBottom").classList.add("open");
                         if ($("editContent")) $("editContent").style.display = "block";
+                        renderQuiz(); renderNav(); updateScore();
                     } else {
                         alert("Wrong password!");
                         if ($("editPasswordInput")) { $("editPasswordInput").value = ""; $("editPasswordInput").focus(); }
@@ -1124,5 +1124,5 @@
             init();
         })();
     </script>
-</body>
-</html>
+
+</body></html>
