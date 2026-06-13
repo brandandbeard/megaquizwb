@@ -5,7 +5,7 @@
     <title>Class VIII || Practice &amp; Mock Test</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js">
-    </script>
+    </script><style>body { margin: 0; }</style>
     <style>
         :root {
             --bg: #f0f4fa;
@@ -121,6 +121,8 @@
         [data-theme="dark"] .option:hover { background:#475569; }
         .option.correct-answer { background:#0d9488; color:#fff; border-color:#0d9488; font-weight:600; }
         .option.wrong-feedback { background:#dc2626; color:#fff; border-color:#dc2626; font-weight:600; }
+        .option.selected-mock { border-color:#a5b4fc; background:#eef2ff; box-shadow:0 4px 12px rgba(26,86,219,0.15); }
+        [data-theme="dark"] .option.selected-mock { background:#3b4a6b; border-color:#60a5fa; }
         .key { width:30px; height:30px; display:inline-grid; place-items:center; border-radius:50%; background:rgba(255,255,255,0.8); color:#1a1e2b; font-weight:700; font-size:13px; flex-shrink:0; }
         [data-theme="dark"] .key { background:rgba(255,255,255,0.15); color:#e2e8f0; }
         .info { display:none; margin-top:12px; padding:12px 14px; border:1px solid #fed7aa; border-radius:14px; background:#fff7ed; color:#7c2d12; line-height:1.7; font-size:14px; }
@@ -141,14 +143,38 @@
         .q-num.current { background:#f59e0b; color:#fff; border-color:#d97706; animation:pulseCurrent 1.2s ease-in-out infinite; }
         @keyframes pulseCurrent { 50%{ box-shadow:0 0 0 6px rgba(245,158,11,0.3); } }
         .q-num.skipped { border-color:#f59e0b; border-style:dashed; }
+        .q-num.attempted-mock { background:#3b82f6; color:#fff; border-color:#2563eb; }
+        [data-theme="dark"] .q-num.attempted-mock { background:#2563eb; border-color:#1d4ed8; }
         .note-toggle { display:flex; align-items:center; justify-content:center; background:#f1f5f9; padding:8px 10px; border-radius:999px; margin-top:10px; font-size:12px; gap:6px; }
         [data-theme="dark"] .note-toggle { background:#334155; }
         .restart-area { text-align:center; margin-top:20px; }
         .edit-section-bottom { margin-top:28px; border-top:1px solid var(--line); padding-top:16px; }
-        .edit-header-bottom { display:inline-flex; align-items:center; gap:8px; background:#e2e8f0; color:#94a3b8; border-radius:999px; padding:6px 16px; cursor:pointer; font-weight:500; font-size:12px; transition:all 0.25s; border:1px solid transparent; }
-        [data-theme="dark"] .edit-header-bottom { background:#334155; color:#94a3b8; }
-        .edit-header-bottom:hover { background:#cbd5e1; color:#64748b; }
-        [data-theme="dark"] .edit-header-bottom:hover { background:#475569; }
+        .edit-header-bottom {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            color: var(--muted);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.25s;
+            border: none;
+            opacity: 0.25;
+            line-height: 1;
+            user-select: none;
+        }
+        .edit-header-bottom:hover {
+            opacity: 0.6;
+            background: rgba(148,163,184,0.15);
+            color: var(--slate);
+        }
+        [data-theme="dark"] .edit-header-bottom:hover { background: rgba(255,255,255,0.1); }
+        .edit-password-prompt { display:none; margin-top:8px; padding:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; }
+        [data-theme="dark"] .edit-password-prompt { background:#1e293b; border-color:#334155; }
         .edit-body-bottom { display:none; margin-top:12px; padding:14px; background:#fff7ed; border:1px solid #fed7aa; border-radius:18px; }
         [data-theme="dark"] .edit-body-bottom { background:rgba(251,146,60,0.08); border-color:#d97706; }
         .edit-body-bottom.open { display:block; animation:fadeSlideIn 0.3s ease; }
@@ -292,7 +318,7 @@
                         <button id="resetAnswersBtn" style="background: var(--slate);">🔄 Reset Answer</button>
                     </div>
                 </div>
-                <div class="chapter-panel open" id="chapterPanel">
+                <div class="chapter-panel" id="chapterPanel">
                     <div id="subjectAccordions"><div class="subject-accordion open"><div class="subject-header aptitude" data-group="science"><span>🌿 পরিবেশ ও বিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch1" checked=""><span>বল ও চাপ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch2" checked=""><span>স্পর্শ ছাড়া ক্রিয়াশীল বল</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch3" checked=""><span>তাপ</span><span class="q-count">[56]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch4" checked=""><span>আলো</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch5" checked=""><span>পদার্থের প্রকৃতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch6" checked=""><span>পদার্থের গঠন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch7" checked=""><span>রাসায়নিক বিক্রিয়া</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch8" checked=""><span>তড়িতের রাসায়নিক প্রভাব</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch9" checked=""><span>কয়েকটি গ্যাসের পরিচিতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch10" checked=""><span>কার্বন ও কার্বনঘটিত যৌগ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch11" checked=""><span>প্রাকৃতিক ঘটনার বিশ্লেষণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch12" checked=""><span>জীবদেহের গঠন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch1" checked=""><span>অণুজীবের জগৎ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch2" checked=""><span>মানুষের খাদ্য উৎপাদন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch3" checked=""><span>অন্তঃক্ষরা তন্ত্র ও বয়ঃসন্ধি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch4" checked=""><span>জীববৈচিত্র্য, পরিবেশ সংকট ও বিপন্ন প্রাণীর সংরক্ষণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch5" checked=""><span>উদ্ভিদজগৎ ও পরিবেশ</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header current" data-group="history"><span>📜 ইতিহাস</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch6" checked=""><span>ইতিহাসের ধারণা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch7" checked=""><span>আঞ্চলিক শক্তির উত্থান</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch8" checked=""><span>ঔপনিবেশিক কর্তৃত্ব প্রতিষ্ঠা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch9" checked=""><span>ঔপনিবেশিক অর্থনীতির প্রকৃতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch1" checked=""><span>ঔপনিবেশিক শাসনের বিরুদ্ধে প্রতিক্রিয়া</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch2" checked=""><span>জাতীয়তাবাদের সূচনা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch3" checked=""><span>জাতীয় আন্দোলনের আদর্শ ও বিকাশ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch4" checked=""><span>সাম্প্রদায়িকতা থেকে দেশভাগ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch5" checked=""><span>গণতন্ত্রের কাঠামো ও মানুষের অধিকার</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header english" data-group="geography"><span>🌍 ভূগোল</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch6" checked=""><span>পৃথিবীর অভ্যন্তর</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch7" checked=""><span>অস্থির পৃথিবী</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch8" checked=""><span>শিলা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch9" checked=""><span>বায়ুচাপ বলয় ও বায়ুপ্রবাহ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch10" checked=""><span>মেঘ ও বৃষ্টিপাত</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch11" checked=""><span>জলবায়ু অঞ্চল</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132452393" checked=""><span>মানুষের অর্থনৈতিক কার্যকলাপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132461747" checked=""><span>দক্ষিণ ভারত</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132471251" checked=""><span>ভারতবর্ষের প্রতিবেশী দেশসমূহ</span><span class="q-count">[0]</span></label></div></div></div></div>
                     <div class="subject-action-row">
                         <div class="flex-row">
@@ -310,17 +336,25 @@
                     <div id="timerDisplay" style="display:none;"></div>
                     <div id="navGrid" class="nav-grid"></div>
                     <button id="showScoreBtn" style="margin-top:10px;width:100%; background:var(--slate);">📊 Show Results</button>
-                    <div class="note-toggle"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answering</label></div>
+                    <div class="note-toggle" id="noteToggleRow"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answering</label></div>
                     <button id="submitMockBtn" style="display:none; margin-top:8px; width:100%; background:var(--green);">✅ Submit Mock Test</button>
                 </aside>
             </section>
             <div class="footer-contact" id="footerContact">📧 arifbeldanga@gmail.com &nbsp;|&nbsp; 💬 Telegram: @beldanga1</div>
             <section class="edit-section-bottom">
-                <div class="edit-header-bottom" id="editHeaderBottom"><span>Edit</span><span>▼</span></div>
+                <div class="edit-header-bottom" id="editHeaderBottom" title="Edit quiz">·</div>
+                <div class="edit-password-prompt" id="editPasswordPrompt" style="display: none;">
+                    <div class="flex-row" style="gap:8px; justify-content:flex-start;">
+                        <input type="password" id="editPasswordInput" placeholder="Enter edit password" style="flex:1; max-width:300px;">
+                        <button id="editPasswordSubmitBtn" style="background:var(--green);">🔓 Unlock Edit</button>
+                        <button id="editPasswordCancelBtn" style="background:var(--slate);">✖ Cancel</button>
+                    </div>
+                    <div style="margin-top:4px; font-size:11px; color:var(--muted);">Enter password to access edit features.</div>
+                </div>
                 <div class="edit-body-bottom" id="editBodyBottom">
                     <div id="editContent" style="display: none; margin-top: 12px;">
                         <div class="subject-mgmt-header" id="subjectGroupMgmtHeader"><span>📂 Manage Subject Groups</span><span>▼</span></div>
-                        <div class="subject-mgmt-body open" id="subjectGroupMgmtBody">
+                        <div class="subject-mgmt-body" id="subjectGroupMgmtBody">
                             <div id="subjectGroupListForEdit">
                     <div class="subject-editor-row">
                         <span style="font-weight:600;text-align:center;">1.</span>
@@ -472,7 +506,6 @@
 
         (function() {
             const EDIT_PASSWORD = "Arif@956438?";
-            const INLINE_EDIT_PASSWORD = "Arif@956438?";
             const APP_VERSION = "class_viii_exam_quiz_v3";
             const BANK_KEY = "CLASS_VIII_QUIZ_BANK_" + APP_VERSION;
             const SESSION_KEY = "CLASS_VIII_QUIZ_SESSION_" + APP_VERSION;
@@ -659,13 +692,13 @@
                 const pct = totalQuestions > 0 ? Math.round((c / totalQuestions) * 100) : 0;
 
                 let emoji, message;
-                if (pct === 100) { emoji = '🏆'; message = 'তুমি তো মাস্টার! একেবারে আগুন! চলতে থাকুক!'; }
-                else if (pct >= 90) { emoji = '😱'; message = 'জস! একদম নিখুঁতের ধারেকাছে!'; }
-                else if (pct >= 80) { emoji = '🎉'; message = 'বাহ্‌, দারুণ! প্আর মাত্র একটু!'; }
-                else if (pct >= 60) { emoji = '👏'; message = 'সাবাশ, ভালোই এগোচ্ছো।'; }
-                else if (pct >= 45) { emoji = '😒'; message = 'শুরুটা ঠিক আছে, আরেকটু প্র্যাকটিস চাই।'; }
-                else if (pct >= 35) { emoji = '😐'; message = 'লেগে থাকো, ঠিকই পারবে!'; }
-                else { emoji = '😢'; message = 'লেগে থাকো, ঠিকই পারবে!'; }
+                if (pct === 100) { emoji = '🏆'; message = 'You are a legend! Keep it up!'; }
+                else if (pct >= 90) { emoji = '🥇'; message = 'Excellent! Very close to perfect.'; }
+                else if (pct >= 80) { emoji = '🎉'; message = 'Great job, almost there!'; }
+                else if (pct >= 60) { emoji = '👍'; message = 'Well done, you are getting there!'; }
+                else if (pct >= 45) { emoji = '🙂'; message = 'Nice try! Focus on your weak areas.'; }
+                else if (pct >= 35) { emoji = '😐'; message = 'Good start, more practice needed.'; }
+                else { emoji = '😢'; message = 'Keep practicing, you will improve!'; }
 
                 document.getElementById('resultsEmoji').textContent = emoji;
                 document.getElementById('resultsMessage').textContent = message;
@@ -680,10 +713,12 @@
             function hideResultsOverlay() { document.getElementById('resultsOverlay').classList.add('hidden'); }
 
             function toggleInlineEdit() {
-                if(isInlineEditUnlocked) { isInlineEditUnlocked=false; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(""); return; }
-                const pass = prompt("🔒 প্রশ্ন এডিট করতে পাসওয়ার্ড দিন :"); if(pass===null) return;
-                if(normalizePassword(pass) !== INLINE_EDIT_PASSWORD) { alert("❌ ভুল পাসওয়ার্ড!"); return; }
-                isInlineEditUnlocked=true; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus("✅ এডিট মোড খোলা আছে।");
+                if (!isEditUnlocked) return;
+                isInlineEditUnlocked = !isInlineEditUnlocked;
+                renderQuiz();
+                renderNav();
+                updateScore();
+                showInlineEditStatus(isInlineEditUnlocked ? "Edit mode on." : "");
             }
             function showInlineEditStatus(msg) { const el = document.getElementById('inlineEditStatusMsg'); if(el) el.textContent = msg; }
 
@@ -721,13 +756,15 @@
                 currentIndex = Math.max(0, Math.min(currentIndex, currentQuestions.length-1));
                 const q = currentQuestions[currentIndex];
                 const answered = userAnswers[currentIndex] !== null;
-                const noteVisible = answered || quizSubmitted || $("showNoteBeforeAnswer").checked;
-                const iconClass = isInlineEditUnlocked ? 'inline-edit-icon unlocked' : 'inline-edit-icon';
-                const iconTitle = isInlineEditUnlocked ? '✏️ এডিট মোড খোলা' : '✏️ প্রশ্ন এডিট করতে ক্লিক করুন';
+                const showResult = quizSubmitted || (quizMode === "practice" && answered);
+                const noteVisible = quizSubmitted || (quizMode==="practice" && answered) || (quizMode!=="mock" && $("showNoteBeforeAnswer").checked);
+                const showPencil = isEditUnlocked;
+                const iconClass = showPencil ? (isInlineEditUnlocked ? 'inline-edit-icon unlocked' : 'inline-edit-icon') : '';
+                const iconTitle = isInlineEditUnlocked ? 'Edit mode on' : 'Click to edit question';
                 const diffClass = 'pill difficulty-' + (q.difficulty||'medium');
                 const diffLabel = {easy:'🟢 Easy', medium:'🟠 Medium', hard:'🔴 Hard'}[q.difficulty||'medium'] || 'Medium';
 
-                const editPanelHtml = isInlineEditUnlocked ? `
+                const editPanelHtml = (showPencil && isInlineEditUnlocked) ? `
                 <div class="inline-edit-panel open" id="inlineEditPanel">
                     <label>📝 প্রশ্ন:</label><textarea id="ieQText">${escapeHtml(q.q)}</textarea>
                     <label>🔤 Options:</label>
@@ -755,8 +792,9 @@
 
                 const optHtml = q.o.map((opt,i) => {
                     let cls = "option";
-                    if(answered && i===q.a) cls += " correct-answer";
-                    if(answered && userAnswers[currentIndex]===i && userAnswers[currentIndex]!== -1 && !answerStatus[currentIndex]) cls += " wrong-feedback";
+                    if (showResult && i === q.a) cls += " correct-answer";
+                    if (showResult && userAnswers[currentIndex] === i && userAnswers[currentIndex] !== -1 && !answerStatus[currentIndex]) cls += " wrong-feedback";
+                    if (quizMode === "mock" && !quizSubmitted && userAnswers[currentIndex] === i && answered) cls += " selected-mock";
                     return `<div class="${cls}" data-opt="${i}"><span class="key">${i+1}</span><span>${String.fromCharCode(65+i)}. ${escapeHtml(opt)}</span></div>`;
                 }).join("");
 
@@ -770,7 +808,7 @@
                         ${quizMode==="mock"&&timerActive?`<span class="timer-display" id="timerPill">⏱️ <span id="timerPillText">--:--</span></span>`:""}
                     </div>
                     <div class="question-text">${currentIndex+1}. ${escapeHtml(q.q)}</div>
-                    <div class="${iconClass}" id="inlineEditIcon" title="${iconTitle}">✏️</div>
+                    ${showPencil ? `<div class="${iconClass}" id="inlineEditIcon" title="${iconTitle}">✏️</div>` : ''}
                     <div class="options">${optHtml}</div>
                     <div class="info ${noteVisible?"show":""}" id="noteBox">📖 ${escapeHtml(q.note||"No explanation")}</div>
                     ${editPanelHtml}
@@ -781,11 +819,26 @@
                     ${userAnswers.every(a=>a!==null) && !quizSubmitted?`<div class="restart-area"><button id="restartAfterFinish">🔄 আবার শুরু</button></div>`:""}
                 </div>`;
 
-                document.querySelectorAll(".option").forEach(el => { el.onclick = () => { if(userAnswers[currentIndex]!==null || quizSubmitted) return; const sel = Number(el.dataset.opt); userAnswers[currentIndex]=sel; answerStatus[currentIndex]=sel===q.a; if(answerStatus[currentIndex]) fireConfetti(); renderQuiz(); renderNav(); updateScore(); saveQuizState(); }; });
+                document.querySelectorAll(".option").forEach(el => { el.onclick = () => {
+                    if (quizSubmitted) return;
+                    if (quizMode === "mock") {
+                        if (userAnswers[currentIndex] !== null) return;
+                    } else {
+                        if (userAnswers[currentIndex] !== null) return;
+                    }
+                    const sel = Number(el.dataset.opt);
+                    userAnswers[currentIndex] = sel;
+                    answerStatus[currentIndex] = (sel === q.a);
+                    if (answerStatus[currentIndex] && quizMode !== "mock") fireConfetti();
+                    renderQuiz(); renderNav(); updateScore(); saveQuizState();
+                }; });
                 const prevBtn = document.getElementById('prevQ'), nextBtn = document.getElementById('nextQ'); if(prevBtn) prevBtn.onclick = ()=>moveQuestion(-1); if(nextBtn) nextBtn.onclick = ()=>moveQuestion(1);
                 const rstBtn = document.getElementById('restartAfterFinish'); if(rstBtn) rstBtn.onclick = resetAnswers;
-                const editIcon = document.getElementById('inlineEditIcon'); if(editIcon) editIcon.onclick = (e)=>{ e.stopPropagation(); toggleInlineEdit(); };
-                if(isInlineEditUnlocked) {
+                if (showPencil) {
+                    const editIcon = document.getElementById('inlineEditIcon');
+                    if(editIcon) editIcon.onclick = (e)=>{ e.stopPropagation(); toggleInlineEdit(); };
+                }
+                if(showPencil && isInlineEditUnlocked) {
                     const updateBtn = document.getElementById('ieUpdateBtn'), deleteBtn = document.getElementById('ieDeleteBtn'), lockBtn = document.getElementById('ieLockBtn');
                     if(updateBtn) updateBtn.onclick = updateCurrentQuestionFromPanel; if(deleteBtn) deleteBtn.onclick = deleteCurrentQuestionFromPanel; if(lockBtn) lockBtn.onclick = ()=>{ isInlineEditUnlocked=false; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(""); };
                 }
@@ -793,8 +846,44 @@
             }
 
             function moveQuestion(d) { const n = currentIndex+d; if(n<0||n>=totalQuestions) return; currentIndex=n; renderQuiz(); renderNav(); saveQuizState(); }
-            function renderNav() { let g=""; for(let i=0;i<totalQuestions;i++) { let cls="q-num"; if(userAnswers[i]!==null && userAnswers[i]!== -1) cls += answerStatus[i]?" answered-correct":" answered-wrong"; else if(quizMode==="mock" && quizSubmitted && (userAnswers[i]===null || userAnswers[i]=== -1)) cls+=" skipped"; if(i===currentIndex) cls+=" current"; g+=`<div class="${cls}" data-idx="${i}">${i+1}</div>`; } $("navGrid").innerHTML=g; document.querySelectorAll(".q-num").forEach(el=>{ el.onclick=()=>{ currentIndex=Number(el.dataset.idx); renderQuiz(); renderNav(); saveQuizState(); }; }); }
-            function updateScore() { const c = answerStatus.filter(Boolean).length, a = userAnswers.filter(v=>v!==null && v!== -1).length, w = a-c, s = totalQuestions-a; $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`; }
+            function renderNav() {
+                let g="";
+                const isMockActive = (quizMode === "mock" && !quizSubmitted);
+                for(let i=0;i<totalQuestions;i++) {
+                    let cls="q-num";
+                    if (isMockActive) {
+                        if (userAnswers[i] !== null && userAnswers[i] !== -1) cls += " attempted-mock";
+                    } else {
+                        if(userAnswers[i]!==null && userAnswers[i]!== -1) cls += answerStatus[i]?" answered-correct":" answered-wrong";
+                        else if(quizMode==="mock" && quizSubmitted && (userAnswers[i]===null || userAnswers[i]=== -1)) cls+=" skipped";
+                    }
+                    if(i===currentIndex) cls+=" current";
+                    g+=`<div class="${cls}" data-idx="${i}">${i+1}</div>`;
+                }
+                $("navGrid").innerHTML=g;
+                document.querySelectorAll(".q-num").forEach(el=>{ el.onclick=()=>{ currentIndex=Number(el.dataset.idx); renderQuiz(); renderNav(); saveQuizState(); }; });
+            }
+            function updateScore() {
+                const c = answerStatus.filter(Boolean).length;
+                const a = userAnswers.filter(v=>v!==null && v!== -1).length;
+                const w = a-c; const s = totalQuestions-a;
+                if (quizMode === "mock" && !quizSubmitted) {
+                    $("scoreBoard").innerHTML = `⏱️ Mock Test in Progress`;
+                } else {
+                    $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`;
+                }
+                const noteRow = $("noteToggleRow");
+                const showScoreBtn = $("showScoreBtn");
+                if (quizMode === "mock" && !quizSubmitted) {
+                    if(noteRow) noteRow.style.display = 'none';
+                    if(showScoreBtn) showScoreBtn.style.display = 'none';
+                } else {
+                    if(noteRow) noteRow.style.display = '';
+                    if(showScoreBtn) showScoreBtn.style.display = '';
+                }
+                const clearBtn = $("clearSelectedSubjectsBtn");
+                if(clearBtn) clearBtn.style.display = isEditUnlocked ? '' : 'none';
+            }
             function resetAnswers() { quizSubmitted = false; userAnswers.fill(null); answerStatus.fill(false); currentIndex=0; stopTimer(); timeRemaining=null; timerActive=false; if(quizMode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState(); }
             function resetQuiz() { if(!confirm("আপনি কি বর্তমান quiz progress reset করতে চান?")) return; safeRemove(SESSION_KEY); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; resetAnswers(); showSuccess("Quiz reset হয়েছে।"); }
             function submitMockTest() { if(!confirm("Mock test submit করবেন? এরপর আর উত্তর পরিবর্তন করতে পারবেন না।")) return; stopTimer(); quizSubmitted = true; renderQuiz(); renderNav(); updateScore(); saveQuizState(); fireConfetti(); showResultsOverlay(); }
@@ -806,54 +895,92 @@
             function backupSelected() { const ks=getSelectedKeys(); if(!ks.length) return showError("No chapter selected!"); const bk={ __subjectGroups__:cloneValue(getSubjectGroups()), __subjects__:getSubjects().filter(s=>ks.includes(s.key)) }; ks.forEach(k=>bk[k]=questionBank[k]||[]); download(`class_viii_selected_backup_${stamp()}.json`,JSON.stringify(bk,null,2),"application/json"); showSuccess("Selected backup saved."); }
             function backupFull() { download(`class_viii_full_backup_${stamp()}.json`,JSON.stringify(questionBank,null,2),"application/json"); showSuccess("Full backup saved."); }
             function downloadPermanentHtml() {
-                // Warning overlay-এর বর্তমান অবস্থা সংরক্ষণ ও রিসেট
                 const warningOverlay = document.getElementById('warningOverlay');
-                const passwordInput = document.getElementById('passwordInput');
                 const submitBtn = document.getElementById('submitBtn');
+                const pwdInput = document.getElementById('passwordInput');
                 const errorMsg = document.getElementById('errorMsg');
-                const wasHidden = warningOverlay.classList.contains('hidden');
-                const oldBtnText = submitBtn.textContent;
-                const oldBtnBg = submitBtn.style.background;
-                const oldBtnBorder = submitBtn.style.borderColor;
-                const oldInputBorder = passwordInput.style.borderColor;
-                const oldInputBoxShadow = passwordInput.style.boxShadow;
+
+                const wasWarningHidden = warningOverlay.classList.contains('hidden');
+                const wasEditUnlocked = isEditUnlocked;
+                const wasInlineEditUnlocked = isInlineEditUnlocked;
+                const editBody = $("editBodyBottom");
+                const wasEditBodyOpen = editBody.classList.contains('open');
+                const editContent = $("editContent");
+                const wasEditContentVisible = editContent.style.display === 'block';
+                const wasEditPasswordVisible = $("editPasswordPrompt").style.display === 'block';
+                const oldPwdValue = pwdInput.value;
+                const oldSubmitText = submitBtn.textContent;
+                const oldSubmitBg = submitBtn.style.background;
+                const oldSubmitBorder = submitBtn.style.borderColor;
+                const oldInputBorder = pwdInput.style.borderColor;
+                const oldInputBoxShadow = pwdInput.style.boxShadow;
                 const oldErrorText = errorMsg.textContent;
+                const oldPwdPlaceholder = pwdInput.placeholder;
 
-                // Edit panel হাইড করুন
-                const editBodyBottom=$('editBodyBottom'); const wasEditBodyOpen=editBodyBottom.classList.contains('open');
-                if(editBodyBottom) editBodyBottom.classList.remove('open'); if($('editContent')) $('editContent').style.display='none';
-                isEditUnlocked=false; isInlineEditUnlocked=false; stopTimer();
-
-                // Warning overlay-কে প্রাথমিক অবস্থায় ফিরিয়ে আনুন
+                isEditUnlocked = false;
+                isInlineEditUnlocked = false;
                 warningOverlay.classList.remove('hidden');
                 submitBtn.textContent = 'প্রবেশ করুন';
-                submitBtn.style.background = '';
+                submitBtn.style.background = ''; 
                 submitBtn.style.borderColor = '';
-                passwordInput.style.borderColor = '';
-                passwordInput.style.boxShadow = '';
-                passwordInput.value = '';
+                pwdInput.style.borderColor = ''; 
+                pwdInput.style.boxShadow = ''; 
+                pwdInput.value = '';
+                pwdInput.placeholder = '• • • • • •';
                 errorMsg.textContent = '';
+                editBody.classList.remove('open');
+                editContent.style.display = 'none';
+                $("editPasswordPrompt").style.display = 'none';
+                if ($("editPasswordInput")) $("editPasswordInput").value = '';
 
-                const bankJson=JSON.stringify(questionBank); const base64Bank=btoa(unescape(encodeURIComponent(bankJson)));
-                let html=document.documentElement.outerHTML;
-                html=html.replace(/const EMBEDDED_BANK\s*=\s*[^;]*;/, `const EMBEDDED_BANK = "${base64Bank}";`);
+                const bankJson = JSON.stringify(questionBank);
+                const base64Bank = btoa(unescape(encodeURIComponent(bankJson)));
+                let html = document.documentElement.outerHTML;
+                html = html.replace(/const EMBEDDED_BANK\s*=\s*[^;]*;/, `const EMBEDDED_BANK = "${base64Bank}";`);
+                if (!html.startsWith('<!DOCTYPE html>')) html = '<!DOCTYPE html>\n' + html;
 
-                // পূর্বের অবস্থা পুনরুদ্ধার
-                if (wasHidden) warningOverlay.classList.add('hidden');
-                submitBtn.textContent = oldBtnText;
-                submitBtn.style.background = oldBtnBg;
-                submitBtn.style.borderColor = oldBtnBorder;
-                passwordInput.style.borderColor = oldInputBorder;
-                passwordInput.style.boxShadow = oldInputBoxShadow;
+                const blob = new Blob([html], {type: "text/html"});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "class_viii_quiz_permanent.html";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                if (wasWarningHidden) warningOverlay.classList.add('hidden'); else warningOverlay.classList.remove('hidden');
+                isEditUnlocked = wasEditUnlocked;
+                isInlineEditUnlocked = wasInlineEditUnlocked;
+                if (wasEditBodyOpen) editBody.classList.add('open'); else editBody.classList.remove('open');
+                editContent.style.display = wasEditContentVisible ? 'block' : 'none';
+                $("editPasswordPrompt").style.display = wasEditPasswordVisible ? 'block' : 'none';
+                submitBtn.textContent = oldSubmitText;
+                submitBtn.style.background = oldSubmitBg;
+                submitBtn.style.borderColor = oldSubmitBorder;
+                pwdInput.style.borderColor = oldInputBorder;
+                pwdInput.style.boxShadow = oldInputBoxShadow;
+                pwdInput.value = oldPwdValue;
+                pwdInput.placeholder = oldPwdPlaceholder;
                 errorMsg.textContent = oldErrorText;
-                if(wasEditBodyOpen&&editBodyBottom) editBodyBottom.classList.add('open');
 
-                if(!html.startsWith('<!DOCTYPE html>')) html='<!DOCTYPE html>\n'+html;
-                const blob=new Blob([html],{type:"text/html"}); const url=URL.createObjectURL(blob); const a=document.createElement("a");
-                a.href=url; a.download="class_viii_quiz_bank_permanent.html"; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-                showSuccess("Permanent HTML downloaded!");
+                renderQuiz(); renderNav(); updateScore();
+                showSuccess("Permanent HTML downloaded! Edit and warning locked in file.");
             }
-            function clearSelectedSubjects() { if(!isEditUnlocked){ const p=prompt("Clear Questions করতে edit password দিন:"); if(normalizePassword(p)!==EDIT_PASSWORD) return showError("Password ভুল।"); isEditUnlocked=true; } const ks=getSelectedKeys(); if(!ks.length) return showError("No chapter selected!"); const t=ks.reduce((s,k)=>s+getCount(k),0); if(!t) return showError("Selected chapters already empty."); if(!confirm(`Tick করা chapter থেকে মোট ${t}টি প্রশ্ন মুছে যাবে। নিশ্চিত?`)) return; ks.forEach(k=>questionBank[k]=[]); saveBank(); currentQuestions=[]; totalQuestions=0; stopTimer(); quizSubmitted = false; renderQuiz(); renderNav(); updateScore(); saveQuizState(); showSuccess(`${t}টি প্রশ্ন মুছে দেওয়া হয়েছে।`); }
+            function clearSelectedSubjects() {
+                if(!isEditUnlocked) return showError("Unlock edit first.");
+                const ks = getSelectedKeys();
+                if(!ks.length) return showError("No chapter selected!");
+                const t = ks.reduce((s,k) => s + getCount(k), 0);
+                if(!t) return showError("Selected chapters already empty.");
+                if(!confirm(`Tick করা chapter থেকে মোট ${t}টি প্রশ্ন মুছে যাবে। নিশ্চিত?`)) return;
+                ks.forEach(k => questionBank[k] = []);
+                saveBank();
+                currentQuestions = []; totalQuestions = 0;
+                stopTimer(); quizSubmitted = false;
+                renderQuiz(); renderNav(); updateScore(); saveQuizState();
+                showSuccess(`${t} questions deleted.`);
+            }
             function download(fn,d,tp){ const b=new Blob([d],{type:tp}), u=URL.createObjectURL(b), a=document.createElement("a"); a.href=u; a.download=fn; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(u); }
             function stamp(){ return new Date().toISOString().slice(0,19).replace(/:/g,"-"); }
             function showError(m){ $("uploadStatus").innerHTML=`<span style="color:#dc2626;font-weight:600;">❌ ${escapeHtml(m)}</span>`; setTimeout(()=>$("uploadStatus").innerHTML="",3500); }
@@ -922,7 +1049,46 @@
                 document.querySelectorAll('.mode-btn').forEach(btn => { btn.addEventListener('click', () => setQuizMode(btn.dataset.mode)); });
                 $("themeToggleBtn").onclick = toggleTheme;
                 $("closeResultsBtn").onclick = hideResultsOverlay;
-                $("editHeaderBottom").onclick = () => { const body = $("editBodyBottom"); if (body.classList.contains("open")) { body.classList.remove("open"); isEditUnlocked = false; if ($("editContent")) $("editContent").style.display = "none"; } else { if (!isEditUnlocked) { const pass = prompt("🔒 সম্পাদনার জন্য পাসওয়ার্ড দিন:"); if (pass === null) return; if (normalizePassword(pass) !== EDIT_PASSWORD) { alert("❌ ভুল পাসওয়ার্ড!"); return; } isEditUnlocked = true; } body.classList.add("open"); if ($("editContent")) $("editContent").style.display = "block"; } };
+
+                $("editHeaderBottom").onclick = () => {
+                    if (isEditUnlocked) {
+                        $("editBodyBottom").classList.remove("open");
+                        if ($("editContent")) $("editContent").style.display = "none";
+                        isEditUnlocked = false;
+                        isInlineEditUnlocked = false;
+                        $("editPasswordPrompt").style.display = "none";
+                        if ($("editPasswordInput")) $("editPasswordInput").value = "";
+                        renderQuiz(); renderNav(); updateScore();
+                    } else {
+                        $("editPasswordPrompt").style.display = "block";
+                        if ($("editPasswordInput")) $("editPasswordInput").focus();
+                    }
+                };
+
+                $("editPasswordSubmitBtn").onclick = () => {
+                    const pass = ($("editPasswordInput")?.value || "").trim();
+                    if (normalizePassword(pass) === EDIT_PASSWORD) {
+                        $("editPasswordPrompt").style.display = "none";
+                        if ($("editPasswordInput")) $("editPasswordInput").value = "";
+                        isEditUnlocked = true;
+                        $("editBodyBottom").classList.add("open");
+                        if ($("editContent")) $("editContent").style.display = "block";
+                        renderQuiz(); renderNav(); updateScore();
+                    } else {
+                        alert("Wrong password!");
+                        if ($("editPasswordInput")) { $("editPasswordInput").value = ""; $("editPasswordInput").focus(); }
+                    }
+                };
+                $("editPasswordCancelBtn").onclick = () => {
+                    $("editPasswordPrompt").style.display = "none";
+                    if ($("editPasswordInput")) $("editPasswordInput").value = "";
+                };
+                if ($("editPasswordInput")) {
+                    $("editPasswordInput").addEventListener("keypress", (e) => {
+                        if (e.key === "Enter") $("editPasswordSubmitBtn").click();
+                    });
+                }
+
                 $("bulkUploadBtn").onclick = bulkUpload;
                 $("simpleAddBtn").onclick = addSingle;
                 $("subjectMgmtHeader").onclick = () => $("subjectMgmtBody").classList.toggle("open");
