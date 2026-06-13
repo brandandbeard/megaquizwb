@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
+<html lang="en" data-theme="light"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class XII Science || Semester 1 & 2 || WBCHSE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Class XII Science || Semester 1 &amp; 2 || WBCHSE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&amp;display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js">
-    </script>
+    </script><style>body { margin: 0; }</style>
     <style>
         /* ---------- GATE STYLES ---------- */
         body {
@@ -240,6 +239,8 @@
         [data-theme="dark"] .option:hover { background:#475569; }
         .option.correct-answer { background:#0d9488; color:#fff; border-color:#0d9488; font-weight:600; }
         .option.wrong-feedback { background:#dc2626; color:#fff; border-color:#dc2626; font-weight:600; }
+        .option.selected-mock { border-color:#a5b4fc; background:#eef2ff; box-shadow:0 4px 12px rgba(26,86,219,0.15); }
+        [data-theme="dark"] .option.selected-mock { background:#3b4a6b; border-color:#60a5fa; }
         .key { width:30px; height:30px; display:inline-grid; place-items:center; border-radius:50%; background:rgba(255,255,255,0.8); color:#1a1e2b; font-weight:700; font-size:13px; flex-shrink:0; }
         [data-theme="dark"] .key { background:rgba(255,255,255,0.15); color:#e2e8f0; }
         .info { display:none; margin-top:12px; padding:12px 14px; border:1px solid #fed7aa; border-radius:14px; background:#fff7ed; color:#7c2d12; line-height:1.7; font-size:14px; }
@@ -260,6 +261,8 @@
         .q-num.current { background:#f59e0b; color:#fff; border-color:#d97706; animation:pulseCurrent 1.2s ease-in-out infinite; }
         @keyframes pulseCurrent { 50%{ box-shadow:0 0 0 6px rgba(245,158,11,0.3); } }
         .q-num.skipped { border-color:#f59e0b; border-style:dashed; }
+        .q-num.attempted-mock { background:#3b82f6; color:#fff; border-color:#2563eb; }
+        [data-theme="dark"] .q-num.attempted-mock { background:#2563eb; border-color:#1d4ed8; }
         .note-toggle { display:flex; align-items:center; justify-content:center; background:#f1f5f9; padding:8px 10px; border-radius:999px; margin-top:10px; font-size:12px; gap:6px; }
         [data-theme="dark"] .note-toggle { background:#334155; }
         .restart-area { text-align:center; margin-top:20px; }
@@ -356,9 +359,9 @@
 </head>
 <body>
     <!-- ========== GATE ========== -->
-    <div class="gate-wrapper" id="gateWrapper">
+    <div class="gate-wrapper" id="gateWrapper" style="display: flex;">
         <div class="gate-lock-icon">🔒</div>
-        <div class="gate-title">Class XII Science · Semester 1 & 2</div>
+        <div class="gate-title">Class XII Science · Semester 1 &amp; 2</div>
         <div class="gate-subtitle">WBCHSE · পদার্থবিদ্যা · রসায়ন · জীববিদ্যা · গণিত</div>
         <div class="password-field">
             <input type="password" id="passwordInput" placeholder="Password" autocomplete="off">
@@ -373,7 +376,7 @@
                 <div class="main-title">🏆 Class XII <small>| Science · Semester <span id="semesterBadge">1</span> |</small></div>
                 <div class="flex-row" style="gap:8px;">
                     <button id="themeToggleBtn" class="theme-toggle-btn" title="Dark/Light Mode">🌙</button>
-                    <div class="credit" id="creditName"></div>
+                    <div class="credit" id="creditName">✨ Arif Hussain</div>
                     <button style="background: var(--slate);" id="resetHeaderBtn" title="Reset Quiz">🔄</button>
                 </div>
             </div>
@@ -401,7 +404,7 @@
                     </div>
                 </div>
                 <div class="chapter-panel" id="chapterPanel">
-                    <div id="subjectAccordions"></div>
+                    <div id="subjectAccordions"><div class="subject-accordion open"><div class="subject-header physics" data-group="physics"><span>🔵 পদার্থবিদ্যা</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_electrostatics" checked=""><span>স্থির তড়িৎ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_current" checked=""><span>চল তড়িৎ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_magnetism" checked=""><span>চুম্বকত্ব</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="phy_sem1_emi" checked=""><span>তড়িৎচুম্বকীয় আবেশ</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header chemistry" data-group="chemistry"><span>🟢 রসায়ন</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_solidstate" checked=""><span>কঠিন অবস্থা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_solutions" checked=""><span>দ্রবণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_electrochem" checked=""><span>তড়িৎরসায়ন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="chem_sem1_kinetics" checked=""><span>রাসায়নিক গতিবিদ্যা</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header biology" data-group="biology"><span>🟣 জীববিদ্যা</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="bio_sem1_reproduction" checked=""><span>জনন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="bio_sem1_genetics" checked=""><span>বংশগতি ও বিবর্তন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="bio_sem1_biotech" checked=""><span>জৈবপ্রযুক্তি</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header mathematics" data-group="mathematics"><span>🟣 গণিত</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="math_sem1_matrices" checked=""><span>ম্যাট্রিক্স ও নির্ণায়ক</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="math_sem1_calculus1" checked=""><span>অন্তরকলন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="math_sem1_vectors" checked=""><span>ভেক্টর ও ত্রিমাত্রিক জ্যামিতি</span><span class="q-count">[1]</span></label></div></div></div></div>
                     <div class="subject-action-row">
                         <div class="flex-row">
                             <button id="selectAllBtn">Select All</button>
@@ -412,22 +415,20 @@
                 </div>
             </section>
             <section class="quiz-panel">
-                <div class="questions-area" id="questionsArea">⬆️ Select subjects and click Generate</div>
+                <div class="questions-area" id="questionsArea"><div class="question-card" style="text-align:center;padding:50px;">⬆️ Select subjects and click Generate</div></div>
                 <aside class="sidebar">
-                    <div class="score-board" id="scoreBoard">🎯 Score: 0/0</div>
-                    <div id="timerDisplay" style="display:none;"></div>
+                    <div class="score-board" id="scoreBoard">🎯 Score: 0/0<br><span class="score-breakdown">✅0 | ❌0 | ⏭️0</span></div>
+                    <div id="timerDisplay" style="display: none;" class="timer-display">⏱️ Time: <strong>29:46</strong></div>
                     <div id="navGrid" class="nav-grid"></div>
-                    <button id="showScoreBtn" style="margin-top:10px;width:100%; background:var(--slate);">📊 Show Results</button>
-                    <div class="note-toggle"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answer</label></div>
-                    <button id="submitMockBtn" style="display:none; margin-top:8px; width:100%; background:var(--green);">✅ Submit Mock Test</button>
+                    <button id="showScoreBtn" style="margin-top: 10px; width: 100%; background: var(--slate);">📊 Show Results</button>
+                    <div class="note-toggle" id="noteToggleRow" style=""><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answer</label></div>
+                    <button id="submitMockBtn" style="display: none; margin-top: 8px; width: 100%; background: var(--green);">✅ Submit Mock Test</button>
                 </aside>
             </section>
-            <div class="footer-contact" id="footerContact"></div>
+            <div class="footer-contact" id="footerContact">📧 arifbeldanga@gmail.com &nbsp;|&nbsp; 💬 Telegram: @beldanga1</div>
             <section class="edit-section-bottom">
-                <!-- Hidden edit button -->
                 <div class="edit-header-bottom" id="editHeaderBottom" title="Edit quiz">·</div>
-                <!-- Inline password prompt -->
-                <div class="edit-password-prompt" id="editPasswordPrompt">
+                <div class="edit-password-prompt" id="editPasswordPrompt" style="display: none;">
                     <div class="flex-row" style="gap:8px; justify-content:flex-start;">
                         <input type="password" id="editPasswordInput" placeholder="Enter edit password" style="flex:1; max-width:300px;">
                         <button id="editPasswordSubmitBtn" style="background:var(--green);">🔓 Unlock Edit</button>
@@ -435,12 +436,63 @@
                     </div>
                     <div style="margin-top:4px; font-size:11px; color:var(--muted);">Enter password to access edit features.</div>
                 </div>
-                <!-- Edit content (hidden until unlocked) -->
                 <div class="edit-body-bottom" id="editBodyBottom">
-                    <div id="editContent" style="display:none;margin-top:12px;">
+                    <div id="editContent" style="display: none; margin-top: 12px;">
                         <div class="subject-mgmt-header" id="subjectGroupMgmtHeader"><span>📂 Manage Subject Groups</span><span>▼</span></div>
                         <div class="subject-mgmt-body" id="subjectGroupMgmtBody">
-                            <div id="subjectGroupListForEdit"></div>
+                            <div id="subjectGroupListForEdit">
+                    <div class="subject-editor-row">
+                        <span style="font-weight:600;text-align:center;">1.</span>
+                        <input type="text" value="🔵 পদার্থবিদ্যা" data-key="physics" class="edit-subject-group-name" style="flex:2;">
+                        <select data-key="physics" class="edit-subject-group-style">
+                            <option value="">Default</option>
+                            <option value="physics" selected="">🔵 পদার্থবিদ্যা (Blue)</option>
+                            <option value="chemistry">🟢 রসায়ন (Green)</option>
+                            <option value="biology">🟣 জীববিদ্যা (Pink)</option>
+                            <option value="mathematics">🟣 গণিত (Purple)</option>
+                        </select>
+                        <button class="delete-subject-group-btn" data-key="physics" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button>
+                    </div>
+                
+                    <div class="subject-editor-row">
+                        <span style="font-weight:600;text-align:center;">2.</span>
+                        <input type="text" value="🟢 রসায়ন" data-key="chemistry" class="edit-subject-group-name" style="flex:2;">
+                        <select data-key="chemistry" class="edit-subject-group-style">
+                            <option value="">Default</option>
+                            <option value="physics">🔵 পদার্থবিদ্যা (Blue)</option>
+                            <option value="chemistry" selected="">🟢 রসায়ন (Green)</option>
+                            <option value="biology">🟣 জীববিদ্যা (Pink)</option>
+                            <option value="mathematics">🟣 গণিত (Purple)</option>
+                        </select>
+                        <button class="delete-subject-group-btn" data-key="chemistry" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button>
+                    </div>
+                
+                    <div class="subject-editor-row">
+                        <span style="font-weight:600;text-align:center;">3.</span>
+                        <input type="text" value="🟣 জীববিদ্যা" data-key="biology" class="edit-subject-group-name" style="flex:2;">
+                        <select data-key="biology" class="edit-subject-group-style">
+                            <option value="">Default</option>
+                            <option value="physics">🔵 পদার্থবিদ্যা (Blue)</option>
+                            <option value="chemistry">🟢 রসায়ন (Green)</option>
+                            <option value="biology" selected="">🟣 জীববিদ্যা (Pink)</option>
+                            <option value="mathematics">🟣 গণিত (Purple)</option>
+                        </select>
+                        <button class="delete-subject-group-btn" data-key="biology" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button>
+                    </div>
+                
+                    <div class="subject-editor-row">
+                        <span style="font-weight:600;text-align:center;">4.</span>
+                        <input type="text" value="🟣 গণিত" data-key="mathematics" class="edit-subject-group-name" style="flex:2;">
+                        <select data-key="mathematics" class="edit-subject-group-style">
+                            <option value="">Default</option>
+                            <option value="physics">🔵 পদার্থবিদ্যা (Blue)</option>
+                            <option value="chemistry">🟢 রসায়ন (Green)</option>
+                            <option value="biology">🟣 জীববিদ্যা (Pink)</option>
+                            <option value="mathematics" selected="">🟣 গণিত (Purple)</option>
+                        </select>
+                        <button class="delete-subject-group-btn" data-key="mathematics" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button>
+                    </div>
+                </div>
                             <div class="flex-row" style="margin-top:8px; gap:8px;">
                                 <input type="text" id="newSubjectKey" placeholder="Group key (e.g. phy)" style="flex:1;">
                                 <input type="text" id="newSubjectNameInput" placeholder="New group name" style="flex:2;">
@@ -456,16 +508,16 @@
                         </div>
                         <div class="subject-mgmt-header" id="subjectMgmtHeader"><span>📌 Manage Chapters/Topics</span><span>▼</span></div>
                         <div class="subject-mgmt-body" id="subjectMgmtBody">
-                            <div id="subjectListForEdit"></div>
+                            <div id="subjectListForEdit"><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">1.</span><input type="text" value="স্থির তড়িৎ" data-key="phy_sem1_electrostatics" class="edit-subject-name"><select data-key="phy_sem1_electrostatics" class="edit-subject-group"><option value="physics" selected="">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="phy_sem1_electrostatics" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">2.</span><input type="text" value="চল তড়িৎ" data-key="phy_sem1_current" class="edit-subject-name"><select data-key="phy_sem1_current" class="edit-subject-group"><option value="physics" selected="">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="phy_sem1_current" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">3.</span><input type="text" value="চুম্বকত্ব" data-key="phy_sem1_magnetism" class="edit-subject-name"><select data-key="phy_sem1_magnetism" class="edit-subject-group"><option value="physics" selected="">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="phy_sem1_magnetism" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">4.</span><input type="text" value="তড়িৎচুম্বকীয় আবেশ" data-key="phy_sem1_emi" class="edit-subject-name"><select data-key="phy_sem1_emi" class="edit-subject-group"><option value="physics" selected="">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="phy_sem1_emi" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">5.</span><input type="text" value="আলোকবিজ্ঞান" data-key="phy_sem2_optics" class="edit-subject-name"><select data-key="phy_sem2_optics" class="edit-subject-group"><option value="physics" selected="">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="phy_sem2_optics" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">6.</span><input type="text" value="পরমাণু ও নিউক্লিয়াস" data-key="phy_sem2_atoms" class="edit-subject-name"><select data-key="phy_sem2_atoms" class="edit-subject-group"><option value="physics" selected="">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="phy_sem2_atoms" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">7.</span><input type="text" value="অর্ধপরিবাহী ইলেকট্রনিক্স" data-key="phy_sem2_semiconductor" class="edit-subject-name"><select data-key="phy_sem2_semiconductor" class="edit-subject-group"><option value="physics" selected="">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="phy_sem2_semiconductor" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">8.</span><input type="text" value="কঠিন অবস্থা" data-key="chem_sem1_solidstate" class="edit-subject-name"><select data-key="chem_sem1_solidstate" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry" selected="">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="chem_sem1_solidstate" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">9.</span><input type="text" value="দ্রবণ" data-key="chem_sem1_solutions" class="edit-subject-name"><select data-key="chem_sem1_solutions" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry" selected="">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="chem_sem1_solutions" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">10.</span><input type="text" value="তড়িৎরসায়ন" data-key="chem_sem1_electrochem" class="edit-subject-name"><select data-key="chem_sem1_electrochem" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry" selected="">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="chem_sem1_electrochem" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">11.</span><input type="text" value="রাসায়নিক গতিবিদ্যা" data-key="chem_sem1_kinetics" class="edit-subject-name"><select data-key="chem_sem1_kinetics" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry" selected="">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="chem_sem1_kinetics" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">12.</span><input type="text" value="d ও f ব্লক মৌল" data-key="chem_sem2_dblock" class="edit-subject-name"><select data-key="chem_sem2_dblock" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry" selected="">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="chem_sem2_dblock" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">13.</span><input type="text" value="সমন্বয় যৌগ" data-key="chem_sem2_coordination" class="edit-subject-name"><select data-key="chem_sem2_coordination" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry" selected="">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="chem_sem2_coordination" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">14.</span><input type="text" value="হ্যালোঅ্যালকেন ও হ্যালোঅ্যারিন" data-key="chem_sem2_haloalkanes" class="edit-subject-name"><select data-key="chem_sem2_haloalkanes" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry" selected="">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="chem_sem2_haloalkanes" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">15.</span><input type="text" value="অ্যালকোহল, ফেনল ও ইথার" data-key="chem_sem2_alcohols" class="edit-subject-name"><select data-key="chem_sem2_alcohols" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry" selected="">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="chem_sem2_alcohols" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">16.</span><input type="text" value="জনন" data-key="bio_sem1_reproduction" class="edit-subject-name"><select data-key="bio_sem1_reproduction" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology" selected="">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="bio_sem1_reproduction" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">17.</span><input type="text" value="বংশগতি ও বিবর্তন" data-key="bio_sem1_genetics" class="edit-subject-name"><select data-key="bio_sem1_genetics" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology" selected="">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="bio_sem1_genetics" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">18.</span><input type="text" value="জৈবপ্রযুক্তি" data-key="bio_sem1_biotech" class="edit-subject-name"><select data-key="bio_sem1_biotech" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology" selected="">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="bio_sem1_biotech" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">19.</span><input type="text" value="পরিবেশ ও বাস্তুতন্ত্র" data-key="bio_sem2_ecology" class="edit-subject-name"><select data-key="bio_sem2_ecology" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology" selected="">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="bio_sem2_ecology" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">20.</span><input type="text" value="জীববৈচিত্র্য ও সংরক্ষণ" data-key="bio_sem2_biodiversity" class="edit-subject-name"><select data-key="bio_sem2_biodiversity" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology" selected="">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="bio_sem2_biodiversity" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">21.</span><input type="text" value="মানবস্বাস্থ্য ও রোগ" data-key="bio_sem2_humanhealth" class="edit-subject-name"><select data-key="bio_sem2_humanhealth" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology" selected="">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="bio_sem2_humanhealth" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">22.</span><input type="text" value="ম্যাট্রিক্স ও নির্ণায়ক" data-key="math_sem1_matrices" class="edit-subject-name"><select data-key="math_sem1_matrices" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics" selected="">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="math_sem1_matrices" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">23.</span><input type="text" value="অন্তরকলন" data-key="math_sem1_calculus1" class="edit-subject-name"><select data-key="math_sem1_calculus1" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics" selected="">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="math_sem1_calculus1" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">24.</span><input type="text" value="ভেক্টর ও ত্রিমাত্রিক জ্যামিতি" data-key="math_sem1_vectors" class="edit-subject-name"><select data-key="math_sem1_vectors" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics" selected="">🟣 গণিত</option></select><span style="font-size:11px;">Sem 1</span><button class="delete-subject-btn" data-key="math_sem1_vectors" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">25.</span><input type="text" value="সমাকলন" data-key="math_sem2_integration" class="edit-subject-name"><select data-key="math_sem2_integration" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics" selected="">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="math_sem2_integration" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">26.</span><input type="text" value="সম্ভাবনা" data-key="math_sem2_probability" class="edit-subject-name"><select data-key="math_sem2_probability" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics" selected="">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="math_sem2_probability" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div><div class="subject-editor-row"><span style="font-weight:600;text-align:center;">27.</span><input type="text" value="রৈখিক প্রোগ্রামিং" data-key="math_sem2_lpp" class="edit-subject-name"><select data-key="math_sem2_lpp" class="edit-subject-group"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics" selected="">🟣 গণিত</option></select><span style="font-size:11px;">Sem 2</span><button class="delete-subject-btn" data-key="math_sem2_lpp" style="background:var(--red);color:#fff;border-radius:999px;padding:6px 12px;border:none;cursor:pointer;">🗑️ Delete</button></div></div>
                             <div class="flex-row" style="margin-top:8px;">
                                 <input type="text" id="newSubjectName" placeholder="New chapter/topic name" style="flex:2;">
                                 <select id="newSubjectGroup"><option value="physics">🔵 পদার্থবিদ্যা</option><option value="chemistry">🟢 রসায়ন</option><option value="biology">🟣 জীববিদ্যা</option><option value="mathematics">🟣 গণিত</option></select>
-                                <select id="newSubjectSemester"><option value="1" selected>Semester 1</option><option value="2">Semester 2</option></select>
+                                <select id="newSubjectSemester"><option value="1" selected="">Semester 1</option><option value="2">Semester 2</option></select>
                                 <button id="addSubjectBtn" style="background: var(--green);">➕ Add Chapter</button>
                             </div>
                             <div class="flex-row" style="margin-top:8px;"><button id="deleteAllExceptFirstBtn" style="background: var(--red);">🗑️ Delete All Except First</button></div>
                         </div>
-                        <div class="edit-card"><h3>Chapter selector</h3><select id="targetChapterSimple"></select></div>
+                        <div class="edit-card"><h3>Chapter selector</h3><select id="targetChapterSimple"><option value="phy_sem1_electrostatics">পদার্থবিদ্যা - স্থির তড়িৎ [1] (Sem 1)</option><option value="phy_sem1_current">পদার্থবিদ্যা - চল তড়িৎ [1] (Sem 1)</option><option value="phy_sem1_magnetism">পদার্থবিদ্যা - চুম্বকত্ব [1] (Sem 1)</option><option value="phy_sem1_emi">পদার্থবিদ্যা - তড়িৎচুম্বকীয় আবেশ [1] (Sem 1)</option><option value="phy_sem2_optics">পদার্থবিদ্যা - আলোকবিজ্ঞান [1] (Sem 2)</option><option value="phy_sem2_atoms">পদার্থবিদ্যা - পরমাণু ও নিউক্লিয়াস [1] (Sem 2)</option><option value="phy_sem2_semiconductor">পদার্থবিদ্যা - অর্ধপরিবাহী ইলেকট্রনিক্স [1] (Sem 2)</option><option value="chem_sem1_solidstate">রসায়ন - কঠিন অবস্থা [1] (Sem 1)</option><option value="chem_sem1_solutions">রসায়ন - দ্রবণ [1] (Sem 1)</option><option value="chem_sem1_electrochem">রসায়ন - তড়িৎরসায়ন [1] (Sem 1)</option><option value="chem_sem1_kinetics">রসায়ন - রাসায়নিক গতিবিদ্যা [1] (Sem 1)</option><option value="chem_sem2_dblock">রসায়ন - d ও f ব্লক মৌল [1] (Sem 2)</option><option value="chem_sem2_coordination">রসায়ন - সমন্বয় যৌগ [1] (Sem 2)</option><option value="chem_sem2_haloalkanes">রসায়ন - হ্যালোঅ্যালকেন ও হ্যালোঅ্যারিন [1] (Sem 2)</option><option value="chem_sem2_alcohols">রসায়ন - অ্যালকোহল, ফেনল ও ইথার [1] (Sem 2)</option><option value="bio_sem1_reproduction">জীববিদ্যা - জনন [1] (Sem 1)</option><option value="bio_sem1_genetics">জীববিদ্যা - বংশগতি ও বিবর্তন [1] (Sem 1)</option><option value="bio_sem1_biotech">জীববিদ্যা - জৈবপ্রযুক্তি [1] (Sem 1)</option><option value="bio_sem2_ecology">জীববিদ্যা - পরিবেশ ও বাস্তুতন্ত্র [1] (Sem 2)</option><option value="bio_sem2_biodiversity">জীববিদ্যা - জীববৈচিত্র্য ও সংরক্ষণ [1] (Sem 2)</option><option value="bio_sem2_humanhealth">জীববিদ্যা - মানবস্বাস্থ্য ও রোগ [1] (Sem 2)</option><option value="math_sem1_matrices">গণিত - ম্যাট্রিক্স ও নির্ণায়ক [1] (Sem 1)</option><option value="math_sem1_calculus1">গণিত - অন্তরকলন [1] (Sem 1)</option><option value="math_sem1_vectors">গণিত - ভেক্টর ও ত্রিমাত্রিক জ্যামিতি [1] (Sem 1)</option><option value="math_sem2_integration">গণিত - সমাকলন [1] (Sem 2)</option><option value="math_sem2_probability">গণিত - সম্ভাবনা [1] (Sem 2)</option><option value="math_sem2_lpp">গণিত - রৈখিক প্রোগ্রামিং [1] (Sem 2)</option></select></div>
                         <div class="edit-grid" style="margin-top:14px;">
                             <div class="edit-card">
                                 <h3>⚡ Bulk Upload (Text)</h3>
@@ -479,7 +531,7 @@
                                     <input type="file" id="restoreFileInput" accept=".json" style="display:none">
                                 </div>
                                 <div class="flex-row" style="margin-top:8px;">
-                                    <select id="appendSubjectSelect" style="flex:1;"><option value="">-- Choose chapter --</option></select>
+                                    <select id="appendSubjectSelect" style="flex:1;"><option value="">-- Choose chapter --</option><option value="phy_sem1_electrostatics">পদার্থবিদ্যা - স্থির তড়িৎ (1 questions, Sem 1)</option><option value="phy_sem1_current">পদার্থবিদ্যা - চল তড়িৎ (1 questions, Sem 1)</option><option value="phy_sem1_magnetism">পদার্থবিদ্যা - চুম্বকত্ব (1 questions, Sem 1)</option><option value="phy_sem1_emi">পদার্থবিদ্যা - তড়িৎচুম্বকীয় আবেশ (1 questions, Sem 1)</option><option value="phy_sem2_optics">পদার্থবিদ্যা - আলোকবিজ্ঞান (1 questions, Sem 2)</option><option value="phy_sem2_atoms">পদার্থবিদ্যা - পরমাণু ও নিউক্লিয়াস (1 questions, Sem 2)</option><option value="phy_sem2_semiconductor">পদার্থবিদ্যা - অর্ধপরিবাহী ইলেকট্রনিক্স (1 questions, Sem 2)</option><option value="chem_sem1_solidstate">রসায়ন - কঠিন অবস্থা (1 questions, Sem 1)</option><option value="chem_sem1_solutions">রসায়ন - দ্রবণ (1 questions, Sem 1)</option><option value="chem_sem1_electrochem">রসায়ন - তড়িৎরসায়ন (1 questions, Sem 1)</option><option value="chem_sem1_kinetics">রসায়ন - রাসায়নিক গতিবিদ্যা (1 questions, Sem 1)</option><option value="chem_sem2_dblock">রসায়ন - d ও f ব্লক মৌল (1 questions, Sem 2)</option><option value="chem_sem2_coordination">রসায়ন - সমন্বয় যৌগ (1 questions, Sem 2)</option><option value="chem_sem2_haloalkanes">রসায়ন - হ্যালোঅ্যালকেন ও হ্যালোঅ্যারিন (1 questions, Sem 2)</option><option value="chem_sem2_alcohols">রসায়ন - অ্যালকোহল, ফেনল ও ইথার (1 questions, Sem 2)</option><option value="bio_sem1_reproduction">জীববিদ্যা - জনন (1 questions, Sem 1)</option><option value="bio_sem1_genetics">জীববিদ্যা - বংশগতি ও বিবর্তন (1 questions, Sem 1)</option><option value="bio_sem1_biotech">জীববিদ্যা - জৈবপ্রযুক্তি (1 questions, Sem 1)</option><option value="bio_sem2_ecology">জীববিদ্যা - পরিবেশ ও বাস্তুতন্ত্র (1 questions, Sem 2)</option><option value="bio_sem2_biodiversity">জীববিদ্যা - জীববৈচিত্র্য ও সংরক্ষণ (1 questions, Sem 2)</option><option value="bio_sem2_humanhealth">জীববিদ্যা - মানবস্বাস্থ্য ও রোগ (1 questions, Sem 2)</option><option value="math_sem1_matrices">গণিত - ম্যাট্রিক্স ও নির্ণায়ক (1 questions, Sem 1)</option><option value="math_sem1_calculus1">গণিত - অন্তরকলন (1 questions, Sem 1)</option><option value="math_sem1_vectors">গণিত - ভেক্টর ও ত্রিমাত্রিক জ্যামিতি (1 questions, Sem 1)</option><option value="math_sem2_integration">গণিত - সমাকলন (1 questions, Sem 2)</option><option value="math_sem2_probability">গণিত - সম্ভাবনা (1 questions, Sem 2)</option><option value="math_sem2_lpp">গণিত - রৈখিক প্রোগ্রামিং (1 questions, Sem 2)</option></select>
                                     <button id="appendJsonBtn">📎 Append JSON</button>
                                     <input type="file" id="appendFileInput" accept=".json" style="display:none">
                                 </div>
@@ -492,7 +544,7 @@
                                 <input type="text" id="optA" placeholder="Option A"><input type="text" id="optB" placeholder="Option B">
                                 <input type="text" id="optC" placeholder="Option C"><input type="text" id="optD" placeholder="Option D">
                                 <select id="correctIndex"><option value="0">✅ Correct: A</option><option value="1">✅ Correct: B</option><option value="2">✅ Correct: C</option><option value="3">✅ Correct: D</option></select>
-                                <select id="difficultySelect"><option value="easy">🟢 Easy</option><option value="medium" selected>🟠 Medium</option><option value="hard">🔴 Hard</option></select>
+                                <select id="difficultySelect"><option value="easy">🟢 Easy</option><option value="medium" selected="">🟠 Medium</option><option value="hard">🔴 Hard</option></select>
                                 <input type="text" id="simpleNote" placeholder="Explanation" style="grid-column:1/-1;">
                             </div>
                             <div class="flex-row" style="margin-top:10px;"><button id="simpleAddBtn" style="background: var(--green);">➕ Add Question</button></div>
@@ -514,12 +566,12 @@
 
     <div class="results-overlay hidden" id="resultsOverlay">
         <div class="results-card">
-            <span class="results-emoji" id="resultsEmoji">🎉</span>
-            <div class="results-message" id="resultsMessage">Mock Test Complete!</div>
+            <span class="results-emoji" id="resultsEmoji">😢</span>
+            <div class="results-message" id="resultsMessage">Practice more.</div>
             <div class="results-stats">
                 <div class="stat correct-stat"><span class="stat-number" id="resCorrect">0</span><span class="stat-label">Correct</span></div>
-                <div class="stat wrong-stat"><span class="stat-number" id="resWrong">0</span><span class="stat-label">Wrong</span></div>
-                <div class="stat skipped-stat"><span class="stat-number" id="resSkipped">0</span><span class="stat-label">Skipped</span></div>
+                <div class="stat wrong-stat"><span class="stat-number" id="resWrong">2</span><span class="stat-label">Wrong</span></div>
+                <div class="stat skipped-stat"><span class="stat-number" id="resSkipped">12</span><span class="stat-label">Skipped</span></div>
             </div>
             <div class="percentage-bar"><div class="percentage-fill" id="percentageFill" style="width:0%"></div></div>
             <p style="margin:8px 0; font-weight:600;" id="percentageText">0%</p>
@@ -567,7 +619,7 @@
             const BANK_KEY = "CLASS12_SCIENCE_QUIZ_BANK_" + APP_VERSION;
             const SESSION_KEY = "CLASS12_SCIENCE_QUIZ_SESSION_" + APP_VERSION;
             const SELECTED_KEY = "CLASS12_SCIENCE_QUIZ_SELECTED_" + APP_VERSION;
-            const EMBEDDED_BANK = null;
+            const EMBEDDED_BANK = "eyJfX3N1YmplY3RHcm91cHNfXyI6W3sia2V5IjoicGh5c2ljcyIsIm5hbWUiOiLwn5S1IOCmquCmpuCmvuCmsOCnjeCmpeCmrOCmv+CmpuCnjeCmr+CmviIsImNsYXNzTmFtZSI6InBoeXNpY3MifSx7ImtleSI6ImNoZW1pc3RyeSIsIm5hbWUiOiLwn5+iIOCmsOCmuOCmvuCmr+CmvOCmqCIsImNsYXNzTmFtZSI6ImNoZW1pc3RyeSJ9LHsia2V5IjoiYmlvbG9neSIsIm5hbWUiOiLwn5+jIOCmnOCngOCmrOCmrOCmv+CmpuCnjeCmr+CmviIsImNsYXNzTmFtZSI6ImJpb2xvZ3kifSx7ImtleSI6Im1hdGhlbWF0aWNzIiwibmFtZSI6IvCfn6Mg4KaX4Kaj4Ka/4KakIiwiY2xhc3NOYW1lIjoibWF0aGVtYXRpY3MifV0sIl9fc3ViamVjdHNfXyI6W3sia2V5IjoicGh5X3NlbTFfZWxlY3Ryb3N0YXRpY3MiLCJncm91cCI6InBoeXNpY3MiLCJzZW1lc3RlciI6MSwibmFtZSI6IuCmuOCnjeCmpeCmv+CmsCDgpqTgpqHgprzgpr/gp44iLCJudW0iOjF9LHsia2V5IjoicGh5X3NlbTFfY3VycmVudCIsImdyb3VwIjoicGh5c2ljcyIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4Kaa4KayIOCmpOCmoeCmvOCmv+CnjiIsIm51bSI6Mn0seyJrZXkiOiJwaHlfc2VtMV9tYWduZXRpc20iLCJncm91cCI6InBoeXNpY3MiLCJzZW1lc3RlciI6MSwibmFtZSI6IuCmmuCngeCmruCnjeCmrOCmleCmpOCnjeCmrCIsIm51bSI6M30seyJrZXkiOiJwaHlfc2VtMV9lbWkiLCJncm91cCI6InBoeXNpY3MiLCJzZW1lc3RlciI6MSwibmFtZSI6IuCmpOCmoeCmvOCmv+CnjuCmmuCngeCmruCnjeCmrOCmleCngOCmr+CmvCDgpobgpqzgp4fgprYiLCJudW0iOjR9LHsia2V5IjoicGh5X3NlbTJfb3B0aWNzIiwiZ3JvdXAiOiJwaHlzaWNzIiwic2VtZXN0ZXIiOjIsIm5hbWUiOiLgpobgprLgp4vgppXgpqzgpr/gppzgp43gpp7gpr7gpqgiLCJudW0iOjV9LHsia2V5IjoicGh5X3NlbTJfYXRvbXMiLCJncm91cCI6InBoeXNpY3MiLCJzZW1lc3RlciI6MiwibmFtZSI6IuCmquCmsOCmruCmvuCmo+CngSDgppMg4Kao4Ka/4KaJ4KaV4KeN4Kay4Ka/4Kav4Ka84Ka+4Ka4IiwibnVtIjo2fSx7ImtleSI6InBoeV9zZW0yX3NlbWljb25kdWN0b3IiLCJncm91cCI6InBoeXNpY3MiLCJzZW1lc3RlciI6MiwibmFtZSI6IuCmheCmsOCnjeCmp+CmquCmsOCmv+CmrOCmvuCmueCngCDgpofgprLgp4fgppXgpp/gp43gprDgpqjgpr/gppXgp43gprgiLCJudW0iOjd9LHsia2V5IjoiY2hlbV9zZW0xX3NvbGlkc3RhdGUiLCJncm91cCI6ImNoZW1pc3RyeSIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4KaV4Kag4Ka/4KaoIOCmheCmrOCmuOCnjeCmpeCmviIsIm51bSI6OH0seyJrZXkiOiJjaGVtX3NlbTFfc29sdXRpb25zIiwiZ3JvdXAiOiJjaGVtaXN0cnkiLCJzZW1lc3RlciI6MSwibmFtZSI6IuCmpuCnjeCmsOCmrOCmoyIsIm51bSI6OX0seyJrZXkiOiJjaGVtX3NlbTFfZWxlY3Ryb2NoZW0iLCJncm91cCI6ImNoZW1pc3RyeSIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4Kak4Kah4Ka84Ka/4KeO4Kaw4Ka44Ka+4Kav4Ka84KaoIiwibnVtIjoxMH0seyJrZXkiOiJjaGVtX3NlbTFfa2luZXRpY3MiLCJncm91cCI6ImNoZW1pc3RyeSIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4Kaw4Ka+4Ka44Ka+4Kav4Ka84Kao4Ka/4KaVIOCml+CmpOCmv+CmrOCmv+CmpuCnjeCmr+CmviIsIm51bSI6MTF9LHsia2V5IjoiY2hlbV9zZW0yX2RibG9jayIsImdyb3VwIjoiY2hlbWlzdHJ5Iiwic2VtZXN0ZXIiOjIsIm5hbWUiOiJkIOCmkyBmIOCmrOCnjeCmsuCmlSDgpq7gp4zgprIiLCJudW0iOjEyfSx7ImtleSI6ImNoZW1fc2VtMl9jb29yZGluYXRpb24iLCJncm91cCI6ImNoZW1pc3RyeSIsInNlbWVzdGVyIjoyLCJuYW1lIjoi4Ka44Kau4Kao4KeN4Kas4Kav4Ka8IOCmr+CnjOCmlyIsIm51bSI6MTN9LHsia2V5IjoiY2hlbV9zZW0yX2hhbG9hbGthbmVzIiwiZ3JvdXAiOiJjaGVtaXN0cnkiLCJzZW1lc3RlciI6MiwibmFtZSI6IuCmueCnjeCmr+CmvuCmsuCni+CmheCnjeCmr+CmvuCmsuCmleCnh+CmqCDgppMg4Ka54KeN4Kav4Ka+4Kay4KeL4KaF4KeN4Kav4Ka+4Kaw4Ka/4KaoIiwibnVtIjoxNH0seyJrZXkiOiJjaGVtX3NlbTJfYWxjb2hvbHMiLCJncm91cCI6ImNoZW1pc3RyeSIsInNlbWVzdGVyIjoyLCJuYW1lIjoi4KaF4KeN4Kav4Ka+4Kay4KaV4KeL4Ka54KayLCDgpqvgp4fgpqjgprIg4KaTIOCmh+CmpeCmvuCmsCIsIm51bSI6MTV9LHsia2V5IjoiYmlvX3NlbTFfcmVwcm9kdWN0aW9uIiwiZ3JvdXAiOiJiaW9sb2d5Iiwic2VtZXN0ZXIiOjEsIm5hbWUiOiLgppzgpqjgpqgiLCJudW0iOjE2fSx7ImtleSI6ImJpb19zZW0xX2dlbmV0aWNzIiwiZ3JvdXAiOiJiaW9sb2d5Iiwic2VtZXN0ZXIiOjEsIm5hbWUiOiLgpqzgpoLgprbgppfgpqTgpr8g4KaTIOCmrOCmv+CmrOCmsOCnjeCmpOCmqCIsIm51bSI6MTd9LHsia2V5IjoiYmlvX3NlbTFfYmlvdGVjaCIsImdyb3VwIjoiYmlvbG9neSIsInNlbWVzdGVyIjoxLCJuYW1lIjoi4Kac4KeI4Kas4Kaq4KeN4Kaw4Kav4KeB4KaV4KeN4Kak4Ka/IiwibnVtIjoxOH0seyJrZXkiOiJiaW9fc2VtMl9lY29sb2d5IiwiZ3JvdXAiOiJiaW9sb2d5Iiwic2VtZXN0ZXIiOjIsIm5hbWUiOiLgpqrgprDgpr/gpqzgp4fgprYg4KaTIOCmrOCmvuCmuOCnjeCmpOCngeCmpOCmqOCnjeCmpOCnjeCmsCIsIm51bSI6MTl9LHsia2V5IjoiYmlvX3NlbTJfYmlvZGl2ZXJzaXR5IiwiZ3JvdXAiOiJiaW9sb2d5Iiwic2VtZXN0ZXIiOjIsIm5hbWUiOiLgppzgp4Dgpqzgpqzgp4jgpprgpr/gpqTgp43gprDgp43gpq8g4KaTIOCmuOCmguCmsOCmleCnjeCmt+CmoyIsIm51bSI6MjB9LHsia2V5IjoiYmlvX3NlbTJfaHVtYW5oZWFsdGgiLCJncm91cCI6ImJpb2xvZ3kiLCJzZW1lc3RlciI6MiwibmFtZSI6IuCmruCmvuCmqOCmrOCmuOCnjeCmrOCmvuCmuOCnjeCmpeCnjeCmryDgppMg4Kaw4KeL4KaXIiwibnVtIjoyMX0seyJrZXkiOiJtYXRoX3NlbTFfbWF0cmljZXMiLCJncm91cCI6Im1hdGhlbWF0aWNzIiwic2VtZXN0ZXIiOjEsIm5hbWUiOiLgpq7gp43gpq/gpr7gpp/gp43gprDgpr/gppXgp43gprgg4KaTIOCmqOCmv+CmsOCnjeCmo+CmvuCmr+CmvOCmlSIsIm51bSI6MjJ9LHsia2V5IjoibWF0aF9zZW0xX2NhbGN1bHVzMSIsImdyb3VwIjoibWF0aGVtYXRpY3MiLCJzZW1lc3RlciI6MSwibmFtZSI6IuCmheCmqOCnjeCmpOCmsOCmleCmsuCmqCIsIm51bSI6MjN9LHsia2V5IjoibWF0aF9zZW0xX3ZlY3RvcnMiLCJncm91cCI6Im1hdGhlbWF0aWNzIiwic2VtZXN0ZXIiOjEsIm5hbWUiOiLgpq3gp4fgppXgp43gpp/gprAg4KaTIOCmpOCnjeCmsOCmv+CmruCmvuCmpOCnjeCmsOCmv+CmlSDgppzgp43gpq/gpr7gpq7gpr/gpqTgpr8iLCJudW0iOjI0fSx7ImtleSI6Im1hdGhfc2VtMl9pbnRlZ3JhdGlvbiIsImdyb3VwIjoibWF0aGVtYXRpY3MiLCJzZW1lc3RlciI6MiwibmFtZSI6IuCmuOCmruCmvuCmleCmsuCmqCIsIm51bSI6MjV9LHsia2V5IjoibWF0aF9zZW0yX3Byb2JhYmlsaXR5IiwiZ3JvdXAiOiJtYXRoZW1hdGljcyIsInNlbWVzdGVyIjoyLCJuYW1lIjoi4Ka44Kau4KeN4Kat4Ka+4Kas4Kao4Ka+IiwibnVtIjoyNn0seyJrZXkiOiJtYXRoX3NlbTJfbHBwIiwiZ3JvdXAiOiJtYXRoZW1hdGljcyIsInNlbWVzdGVyIjoyLCJuYW1lIjoi4Kaw4KeI4KaW4Ka/4KaVIOCmquCnjeCmsOCni+Cml+CnjeCmsOCmvuCmruCmv+CmgiIsIm51bSI6Mjd9XSwicGh5X3NlbTFfZWxlY3Ryb3N0YXRpY3MiOlt7InEiOiLgppXgp4HgprLgpq7gp43gpqzgp4fgprAg4Ka44KeC4Kak4KeN4KawIOCmheCmqOCngeCmr+CmvuCmr+CmvOCngCDgpqbgp4Hgpp/gpr8g4Kas4Ka/4Kao4KeN4Kam4KeBIOCmhuCmp+CmvuCmqOCnh+CmsCDgpq7gpqfgp43gpq/gp4cg4Kas4KayIOCmleCni+CmqOCmn+Cmv+CmsCDgprjgpq7gpr7gpqjgp4Hgpqrgpr7gpqTgpr/gppU/IiwibyI6WyLgpqbgp4LgprDgpqTgp43gpqzgp4fgprAg4Kas4Kaw4KeN4KaXIiwi4KaG4Kan4Ka+4Kao4KeH4KawIOCml+CngeCmo+Cmq+CmsiIsIuCmhuCmp+CmvuCmqOCnh+CmsCDgpqzgprDgp43gppciLCLgpqbgp4LgprDgpqTgp43gpqwiXSwiYSI6MSwibm90ZSI6IkYg4oidIHHigoFx4oKCIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sInBoeV9zZW0xX2N1cnJlbnQiOlt7InEiOiLgppPgprngpq7gp4fgprAg4Ka44KeC4Kak4KeN4Kaw4KeHIFYsIEkg4KaTIFIt4KaP4KawIOCmuOCmruCnjeCmquCmsOCnjeCmlSDgppXgp4A/IiwibyI6WyJWID0gSS9SIiwiViA9IElSIiwiViA9IEkrUiIsIlYgPSBSL0kiXSwiYSI6MSwibm90ZSI6IlYgPSBJUiIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJwaHlfc2VtMV9tYWduZXRpc20iOlt7InEiOiLgpprgp4zgpq7gp43gpqzgppUg4KaV4KeN4Ka34KeH4Kak4KeN4Kaw4KeH4KawIOCmj+CmleCmlSDgppXgp4A/IiwibyI6WyLgpp/gp4fgprjgprLgpr4iLCLgppPgpq/gprzgp4fgpqzgpr7gprAiLCLgprngp4fgpqjgprDgpr8iLCLgppfgpr7gpongprgiXSwiYSI6MCwibm90ZSI6IkIt4KaP4KawIFNJIOCmj+CmleCmlSDgpp/gp4fgprjgprLgpr4iLCJkaWZmaWN1bHR5IjoiZWFzeSJ9XSwicGh5X3NlbTFfZW1pIjpbeyJxIjoi4Kar4KeN4Kav4Ka+4Kaw4Ka+4Kah4KeH4KawIOCmpOCmoeCmvOCmv+CnjuCmmuCngeCmruCnjeCmrOCmleCngOCmr+CmvCDgpobgpqzgp4fgprYg4Ka44KeC4Kak4KeN4Kaw4KeHIOCmhuCmrOCmv+Cmt+CnjeCmnyDgpqTgpqHgprzgpr/gpprgp43gpprgpr7gprLgppUg4Kas4KayIOCmleCngOCmuOCnh+CmsCDgprjgpq7gpr7gpqjgp4Hgpqrgpr7gpqTgpr/gppU/IiwibyI6WyLgpqTgpqHgprzgpr/gp47gpqrgp43gprDgpqzgpr7gprkiLCLgpprgp4zgpq7gp43gpqzgppUg4Kar4KeN4Kay4Ka+4KaV4KeN4Ka44KeH4KawIOCmquCmsOCmv+CmrOCmsOCnjeCmpOCmqOCnh+CmsCDgprngpr7gprAiLCLgprDgp4vgpqciLCLgpobgpqfgpr7gpqgiXSwiYSI6MSwibm90ZSI6Is61ID0gLWTOpi9kdCIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJwaHlfc2VtMl9vcHRpY3MiOlt7InEiOiLgpobgprLgp4vgprAg4Kaq4KeN4Kaw4Kak4Ka/4Ka44Kaw4Kaj4KeH4KawIOCmuOCnguCmpOCnjeCmsCDgppXgp4cg4Kam4KeH4KaoPyIsIm8iOlsi4Ka44KeN4Kao4KeH4KayIiwi4Ka54Ka+4KaH4KaX4KeH4Kao4Ka4Iiwi4Kao4Ka/4KaJ4Kaf4KaoIiwi4Kar4KeN4Kaw4KeH4Kao4KeH4KayIl0sImEiOjAsIm5vdGUiOiJu4oKBIHNpbiBpID0gbuKCgiBzaW4gciIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJwaHlfc2VtMl9hdG9tcyI6W3sicSI6IuCmueCmvuCmh+CmoeCnjeCmsOCni+CmnOCnh+CmqCDgpqrgprDgpq7gpr7gpqPgp4HgprAg4Kas4Kaw4KeN4Kaj4Ka+4Kay4KeA4KawIOCmnOCmqOCnjeCmryDgpqbgpr7gpq/gprzgp4Ag4Ka44Ka/4Kaw4Ka/4Kac4KaX4KeB4Kay4KeLIOCmleCngCDgppXgp4A/IiwibyI6WyLgprbgp4Hgpqfgp4Eg4Kay4Ka+4KaH4Kau4KeN4Kav4Ka+4KaoIiwi4Ka24KeB4Kan4KeBIOCmrOCmvuCmruCmvuCmsCIsIuCmsuCmvuCmh+CmruCnjeCmr+CmvuCmqCwg4Kas4Ka+4Kau4Ka+4KawLCDgpqrgp43gpq/gpr7gprbgp4fgpqgiLCLgprbgp4Hgpqfgp4Eg4Kaq4KeN4Kav4Ka+4Ka24KeH4KaoIl0sImEiOjIsIm5vdGUiOiLgprLgpr7gpofgpq7gp43gpq/gpr7gpqgsIOCmrOCmvuCmruCmvuCmsCwg4Kaq4KeN4Kav4Ka+4Ka24KeH4KaoIOCmh+CmpOCnjeCmr+CmvuCmpuCmv+ClpCIsImRpZmZpY3VsdHkiOiJtZWRpdW0ifV0sInBoeV9zZW0yX3NlbWljb25kdWN0b3IiOlt7InEiOiJwLW4g4Kac4KaC4Ka24KaoIOCmoeCmvuCmr+CmvOCni+CmoeCnh+CmsCDgpqrgp43gprDgpqfgpr7gpqgg4Kas4KeN4Kav4Kas4Ka54Ka+4KawIOCmleCngD8iLCJvIjpbIuCmquCmsOCmv+CmrOCmsOCnjeCmp+CmlSIsIuCmsOCnh+CmleCnjeCmn+Cmv+Cmq+CmvuCmr+CmvOCmvuCmsCIsIuCmheCmuOCmv+CmsuCnh+Cmn+CmsCIsIuCmruCmoeCngeCmsuCnh+Cmn+CmsCJdLCJhIjoxLCJub3RlIjoiQUMg4Kal4KeH4KaV4KeHIERDIOCmsOCnguCmquCmvuCmqOCnjeCmpOCmsOClpCIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJjaGVtX3NlbTFfc29saWRzdGF0ZSI6W3sicSI6IuCmrOCnjeCmsOCmvuCmreCmvuCmh+CmuCDgppzgpr7gpqvgprDgpr8g4KaF4Kao4KeB4Kav4Ka+4Kav4Ka84KeAIOCmleCmpCDgpqrgp43gprDgppXgpr7gprAg4Ka44KeN4Kar4Kaf4Ka/4KaVIOCmnOCmvuCmq+CmsOCmvyDgprjgpq7gp43gpq3gpqw/IiwibyI6WyLgp60iLCLgp6fgp6oiLCLgp6oiLCLgp6fgp6YiXSwiYSI6MSwibm90ZSI6IuCnp+CnqiDgpqrgp43gprDgppXgpr7gprAg4Kas4KeN4Kaw4Ka+4Kat4Ka+4KaH4Ka4IOCmnOCmvuCmq+CmsOCmv+ClpCIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJjaGVtX3NlbTFfc29sdXRpb25zIjpbeyJxIjoi4Kaw4Ka+4KaJ4Kay4KeN4Kaf4KeH4KawIOCmuOCnguCmpOCnjeCmsCDgppXgppbgpqgg4Kaq4KeN4Kaw4Kav4KeL4Kac4KeN4KavPyIsIm8iOlsi4KaG4Kam4Kaw4KeN4Ka2IOCmpuCnjeCmsOCmrOCmo+CnhyIsIuCmheCmqOCmvuCmpuCmsOCnjeCmtiDgpqbgp43gprDgpqzgpqPgp4ciLCLgppfgp43gpq/gpr7gprjgp4ciLCLgppXgpqDgpr/gpqjgp4ciXSwiYSI6MCwibm90ZSI6IuCmhuCmpuCmsOCnjeCmtiDgpqbgp43gprDgpqzgpqPgp4fgprAg4Kac4Kao4KeN4Kav4KWkIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sImNoZW1fc2VtMV9lbGVjdHJvY2hlbSI6W3sicSI6IuCml+CnjeCmr+CmvuCmsuCmreCmvuCmqOCmv+CmlSDgppXgp4vgprfgp4cg4KaF4KeN4Kav4Ka+4Kao4KeL4Kah4KeHIOCmleCngCDgppjgpp/gp4c/IiwibyI6WyLgppzgpr7gprDgpqMiLCLgpqzgpr/gppzgpr7gprDgpqMiLCLgpqrgp43gprDgpqTgpr/gprjgp43gpqXgpr7gpqrgpqgiLCLgpoXgpqfgpoPgppXgp43gprfgp4fgpqoiXSwiYSI6MCwibm90ZSI6IuCmheCnjeCmr+CmvuCmqOCni+CmoeCnhyDgppzgpr7gprDgpqMg4Kas4Ka/4KaV4KeN4Kaw4Ka/4Kav4Ka84Ka+4KWkIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sImNoZW1fc2VtMV9raW5ldGljcyI6W3sicSI6IuCmquCnjeCmsOCmpeCmriDgppXgp43gprDgpq4g4Kas4Ka/4KaV4KeN4Kaw4Ka/4Kav4Ka84Ka+4KawIOCmueCmvuCmsCDgpqfgp43gprDgp4HgpqzgppXgp4fgprAg4KaP4KaV4KaVIOCmleCngD8iLCJvIjpbIm1vbCBM4oG7wrkgc+KBu8K5Iiwic+KBu8K5IiwibW9s4oG7wrkgTCBz4oG7wrkiLCJMIG1vbOKBu8K5IHPigbvCuSJdLCJhIjoxLCJub3RlIjoi4KaP4KaV4KaVID0g4Ka44Kau4Kav4Ka84oG7wrkiLCJkaWZmaWN1bHR5IjoibWVkaXVtIn1dLCJjaGVtX3NlbTJfZGJsb2NrIjpbeyJxIjoiZC3gpqzgp43gprLgppUg4Kau4KeM4Kay4KaX4KeB4Kay4KeLIOCmleCngCDgpqjgpr7gpq7gp4cg4Kaq4Kaw4Ka/4Kaa4Ka/4KakPyIsIm8iOlsi4Ka44Kao4KeN4Kan4Ka/4KaX4KakIOCmruCnjOCmsiIsIuCmleCnjeCmt+CmvuCmsCDgpqfgpr7gpqTgp4EiLCLgprngp43gpq/gpr7gprLgp4vgppzgp4fgpqgiLCLgpqjgp4vgpqzgp4fgprIg4KaX4KeN4Kav4Ka+4Ka4Il0sImEiOjAsIm5vdGUiOiLgprjgpqjgp43gpqfgpr/gppfgpqQg4Kau4KeM4Kay4KWkIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sImNoZW1fc2VtMl9jb29yZGluYXRpb24iOlt7InEiOiJbRmUoQ04p4oKGXeKBtOKBuyDgppzgpp/gpr/gprIg4KaG4Kav4Ka84Kao4KeHIEZlLeCmj+CmsCDgppzgpr7gprDgpqMg4Ka44KaC4KaW4KeN4Kav4Ka+IOCmleCmpD8iLCJvIjpbIisyIiwiKzMiLCIrNCIsIis2Il0sImEiOjAsIm5vdGUiOiJDTuKBuyAtMSwgeCAtNiA9IC00IOKHkiB4ID0gKzIiLCJkaWZmaWN1bHR5IjoibWVkaXVtIn1dLCJjaGVtX3NlbTJfaGFsb2Fsa2FuZXMiOlt7InEiOiJTTjIg4Kas4Ka/4KaV4KeN4Kaw4Ka/4Kav4Ka84Ka+IOCmleCngOCmsOCnguCmqj8iLCJvIjpbIuCmj+CmlS3gpoXgpqPgp4HgppUiLCLgpqbgp43gpqzgpr8t4KaF4Kaj4KeB4KaVIiwi4Kak4KeN4Kaw4Ka/LeCmheCmo+CngeCmlSIsIuCmmuCmpOCngeCmsOCnjeCmruCngeCmluCngCJdLCJhIjoxLCJub3RlIjoiU04yIOCmpuCnjeCmrOCmvy3gpoXgpqPgp4HgppUg4Kaq4KeN4Kaw4Kak4Ka/4Ka44KeN4Kal4Ka+4Kaq4Kao4KWkIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sImNoZW1fc2VtMl9hbGNvaG9scyI6W3sicSI6IuCmruCmv+CmpeCmvuCmqOCmsiDgprbgpr/gprLgp43gpqrgp4cg4KaV4KeAIOCmqOCmvuCmruCnhyDgpqrgprDgpr/gpprgpr/gpqQ/IiwibyI6WyLgppXgpr7gpqAg4Ka44KeN4Kaq4Ka/4Kaw4Ka/4KafIiwi4KaX4KeN4Kaw4KeH4KaH4KaoIOCmheCnjeCmr+CmvuCmsuCmleCni+CmueCmsiIsIuCmsOCnh+CmleCnjeCmn+Cmv+Cmq+CmvuCmh+CmoSDgprjgp43gpqrgpr/gprDgpr/gpp8iLCLgpofgpqXgpr7gpqjgprIiXSwiYSI6MCwibm90ZSI6IuCmleCmvuCmoCDgprjgp43gpqrgpr/gprDgpr/gpp/gpaQiLCJkaWZmaWN1bHR5IjoiZWFzeSJ9XSwiYmlvX3NlbTFfcmVwcm9kdWN0aW9uIjpbeyJxIjoi4Kau4Ka+4Kao4KeB4Ka34KeH4KawIOCmoeCmv+CmruCnjeCmrOCmvuCmo+CngSDgpqjgpr/gprfgpr/gppXgp43gpqQg4Ka54Kav4Ka8IOCmleCni+CmpeCmvuCmr+CmvD8iLCJvIjpbIuCmnOCmsOCmvuCmr+CmvOCngSIsIuCmoeCmv+CmruCnjeCmrOCmqOCmvuCmsuCngCIsIuCmoeCmv+CmruCnjeCmrOCmvuCmtuCmr+CmvCIsIuCml+CmsOCnjeCmreCmvuCmtuCmr+CmvCJdLCJhIjoxLCJub3RlIjoi4Kar4KeN4Kav4Ka+4Kay4KeL4Kaq4Ka/4Kav4Ka84Ka+4KaoIOCmqOCmvuCmsuCngOCmpOCnh+ClpCIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJiaW9fc2VtMV9nZW5ldGljcyI6W3sicSI6IuCmruCnh+CmqOCnjeCmoeCnh+CmsuCnh+CmsCDgpqbgp43gpqzgpr/gpqTgp4Dgpq/gprwg4Ka44KeC4Kak4KeN4KawIOCmleCngD8iLCJvIjpbIuCmquCng+CmpeCmleCnjeCmleCmsOCmoyDgprjgp4LgpqTgp43gprAiLCLgprjgp43gpqzgpr7gpqfgp4Dgpqgg4Kas4Ka/4Kao4KeN4Kav4Ka+4Ka4IOCmuOCnguCmpOCnjeCmsCIsIuCmquCnjeCmsOCmleCmn+CmpOCmvuCmsCDgprjgp4LgpqTgp43gprAiLCLgprLgpr/gppngp43gppXgp4fgppwg4Ka44KeC4Kak4KeN4KawIl0sImEiOjEsIm5vdGUiOiLgprjgp43gpqzgpr7gpqfgp4Dgpqgg4Kas4Ka/4Kao4KeN4Kav4Ka+4Ka44KWkIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sImJpb19zZW0xX2Jpb3RlY2giOlt7InEiOiJQQ1It4KaP4KawIOCmquCngeCmsOCniyDgpqjgpr7gpq4g4KaV4KeAPyIsIm8iOlsiUG9seW1lcmFzZSBDaGFpbiBSZWFjdGlvbiIsIlByb3RlaW4gQ2hhaW4gUmVhY3Rpb24iLCJQb2x5bWVyIENyZWF0aW9uIFJlYWN0aW9uIiwiUHJpbWFyeSBDZWxsIFJlYWN0aW9uIl0sImEiOjAsIm5vdGUiOiLgpqrgprLgpr/gpq7gpr7gprDgp4fgppwg4Ka24KeD4KaZ4KeN4KaW4KayIOCmrOCmv+CmleCnjeCmsOCmv+Cmr+CmvOCmvuClpCIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJiaW9fc2VtMl9lY29sb2d5IjpbeyJxIjoi4KaW4Ka+4Kam4KeN4Kav4Ka24KeD4KaZ4KeN4KaW4Kay4KeH4KawIOCmquCnjeCmsOCmpeCmriDgprjgp43gpqTgprDgp4cg4KaV4Ka+4Kaw4Ka+IOCmpeCmvuCmleCnhz8iLCJvIjpbIuCmquCnjeCmsOCmvuCmh+CmruCmvuCmsOCmvyDgppXgpqjgppzgpr/gpongpq7gpr7gprAiLCLgpqrgp43gprDgpqHgpr/gpongprjgpr7gprAiLCLgprjgp4fgppXgp4fgpqjgp43gpqHgpr7gprDgpr8g4KaV4Kao4Kac4Ka/4KaJ4Kau4Ka+4KawIiwi4Kah4Ka/4KaV4Kau4KeN4Kaq4KeL4Kac4Ka+4KawIl0sImEiOjEsIm5vdGUiOiLgprjgpqzgp4Hgppwg4KaJ4Kam4KeN4Kat4Ka/4KamICjgpongp47gpqrgpr7gpqbgppUp4KWkIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sImJpb19zZW0yX2Jpb2RpdmVyc2l0eSI6W3sicSI6IuCmreCmvuCmsOCmpOCnhyDgppXgpqTgpp/gpr8g4Kac4KeA4Kas4Kas4KeI4Kaa4Ka/4Kak4KeN4Kaw4KeN4KavIOCmueCmn+CmuOCnjeCmquCmnyDgprDgpq/gprzgp4fgppvgp4c/IiwibyI6WyLgp6giLCLgp6oiLCLgp6wiLCLgp64iXSwiYSI6MSwibm90ZSI6IuCnquCmn+CmvyDgprngpp/gprjgp43gpqrgpp/gpaQiLCJkaWZmaWN1bHR5IjoibWVkaXVtIn1dLCJiaW9fc2VtMl9odW1hbmhlYWx0aCI6W3sicSI6IuCmj+Cmh+CmoeCmuCDgprDgp4vgppcg4Ka44KeD4Ka34KeN4Kaf4Ka/4KaV4Ka+4Kaw4KeAIOCmreCmvuCmh+CmsOCmvuCmuOCnh+CmsCDgpqjgpr7gpq4g4KaV4KeAPyIsIm8iOlsiSElWIiwiSEJWIiwiSFBWIiwiSENWIl0sImEiOjAsIm5vdGUiOiJISVYgKEh1bWFuIEltbXVub2RlZmljaWVuY3kgVmlydXMpIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sIm1hdGhfc2VtMV9tYXRyaWNlcyI6W3sicSI6IuCmj+CmleCmn+CmvyDgpqzgprDgp43gppcg4Kau4KeN4Kav4Ka+4Kaf4KeN4Kaw4Ka/4KaV4KeN4Ka44KeH4KawIOCmrOCmv+CmquCmsOCngOCmpCDgpq7gp43gpq/gpr7gpp/gp43gprDgpr/gppXgp43gprgg4Kaq4Ka+4KaT4Kav4Ka84Ka+4KawIOCmtuCmsOCnjeCmpCDgppXgp4A/IiwibyI6WyLgpqjgpr/gprDgp43gpqPgpr7gpq/gprzgppUg4omgIDAiLCLgpqjgpr/gprDgp43gpqPgpr7gpq/gprzgppUgPSAwIiwi4Kau4KeN4Kav4Ka+4Kaf4KeN4Kaw4Ka/4KaV4KeN4Ka4IOCmquCnjeCmsOCmpOCmv+CmuOCmriIsIuCmruCnjeCmr+CmvuCmn+CnjeCmsOCmv+CmleCnjeCmuCDgprbgp4Lgpqjgp43gpq8iXSwiYSI6MCwibm90ZSI6InxBfCDiiaAgMCDgprngprLgp4cgQeKBu8K5IOCmpeCmvuCmleCnh+ClpCIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJtYXRoX3NlbTFfY2FsY3VsdXMxIjpbeyJxIjoiZC9keCAoc2luIHgpID0gPyIsIm8iOlsiY29zIHgiLCItY29zIHgiLCJzaW4geCIsIi1zaW4geCJdLCJhIjowLCJub3RlIjoic2luIHgt4KaP4KawIOCmheCmqOCnjeCmpOCmsOCmleCmsuCmnCBjb3MgeOClpCIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJtYXRoX3NlbTFfdmVjdG9ycyI6W3sicSI6IuCmpuCngeCmn+CmvyDgpq3gp4fgppXgp43gpp/gprDgp4fgprAg4Kah4KafIOCml+CngeCmo+Cmq+CmsiDgprbgp4Lgpqjgp43gpq8g4Ka54Kay4KeHIOCmpOCmvuCmsOCmviDgppXgp4A/IiwibyI6WyLgpqrgprDgprjgp43gpqrgprAg4Kay4Kau4KeN4KasIiwi4Ka44Kau4Ka+4Kao4KeN4Kak4Kaw4Ka+4KayIiwi4Kas4Ka/4Kaq4Kaw4KeA4Kak4Kau4KeB4KaW4KeAIiwi4Ka44Kaw4Kay4Kaw4KeH4KaWIl0sImEiOjAsIm5vdGUiOiJhwrdiID0gMCDgpq/gppbgpqggzrggPSA5MMKwIiwiZGlmZmljdWx0eSI6ImVhc3kifV0sIm1hdGhfc2VtMl9pbnRlZ3JhdGlvbiI6W3sicSI6IuKIqyB4IGR4ID0gPyIsIm8iOlsieMKyLzIgKyBDIiwieMKyICsgQyIsIngvMiArIEMiLCIyeCArIEMiXSwiYSI6MCwibm90ZSI6InjCsi8yICsgQyIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJtYXRoX3NlbTJfcHJvYmFiaWxpdHkiOlt7InEiOiLgpo/gppXgpp/gpr8g4Kab4KaV4KeN4KaV4Ka+IOCmqOCmv+CmleCnjeCmt+Cnh+CmquCnhyDgppzgp4vgpqHgprwg4Ka44KaC4KaW4KeN4Kav4Ka+IOCmhuCmuOCmvuCmsCDgprjgpq7gp43gpq3gpr7gpqzgpqjgpr4g4KaV4KakPyIsIm8iOlsiMS8yIiwiMS8zIiwiMS82IiwiMi8zIl0sImEiOjAsIm5vdGUiOiLgppzgp4vgpqHgprwg4Ka44KaC4KaW4KeN4Kav4Ka+IHsyLDQsNn0g4oaSIDMvNiA9IDEvMiIsImRpZmZpY3VsdHkiOiJlYXN5In1dLCJtYXRoX3NlbTJfbHBwIjpbeyJxIjoi4Kaw4KeI4KaW4Ka/4KaVIOCmquCnjeCmsOCni+Cml+CnjeCmsOCmvuCmruCmv+CmgiDgprjgpq7gprjgp43gpq/gpr7gprAg4Ka44Kau4Ka+4Kan4Ka+4KaoIOCmheCmnuCnjeCmmuCmsiDgppXgp4fgpq7gpqgg4Ka54Kav4Ka8PyIsIm8iOlsi4Kas4Ka54KeB4Kat4KeB4KacIiwi4Kas4KeD4Kak4KeN4KakIiwi4Ka44Kaw4Kay4Kaw4KeH4KaW4Ka+Iiwi4Kaq4Kaw4Ka+4Kas4KeD4Kak4KeN4KakIl0sImEiOjAsIm5vdGUiOiLgprjgp4Dgpq7gpr7gpqzgpqbgp43gpqfgpqTgpr7gppfgp4HgprLgp4sg4KaP4KaV4Kaf4Ka/IOCmrOCmueCngeCmreCngeCmnCDgpqTgp4jgprDgpr8g4KaV4Kaw4KeH4KWkIiwiZGlmZmljdWx0eSI6ImVhc3kifV19";
             const THEME_KEY = "CLASS12_SCIENCE_QUIZ_THEME";
 
             const defaultSubjectGroups = [
@@ -578,38 +630,30 @@
             ];
 
             const defaultSubjects = [
-                // Physics Semester 1
                 { key: "phy_sem1_electrostatics", group: "physics", semester: 1, name: "স্থির তড়িৎ" },
                 { key: "phy_sem1_current", group: "physics", semester: 1, name: "চল তড়িৎ" },
                 { key: "phy_sem1_magnetism", group: "physics", semester: 1, name: "চুম্বকত্ব" },
                 { key: "phy_sem1_emi", group: "physics", semester: 1, name: "তড়িৎচুম্বকীয় আবেশ" },
-                // Physics Semester 2
                 { key: "phy_sem2_optics", group: "physics", semester: 2, name: "আলোকবিজ্ঞান" },
                 { key: "phy_sem2_atoms", group: "physics", semester: 2, name: "পরমাণু ও নিউক্লিয়াস" },
                 { key: "phy_sem2_semiconductor", group: "physics", semester: 2, name: "অর্ধপরিবাহী ইলেকট্রনিক্স" },
-                // Chemistry Semester 1
                 { key: "chem_sem1_solidstate", group: "chemistry", semester: 1, name: "কঠিন অবস্থা" },
                 { key: "chem_sem1_solutions", group: "chemistry", semester: 1, name: "দ্রবণ" },
                 { key: "chem_sem1_electrochem", group: "chemistry", semester: 1, name: "তড়িৎরসায়ন" },
                 { key: "chem_sem1_kinetics", group: "chemistry", semester: 1, name: "রাসায়নিক গতিবিদ্যা" },
-                // Chemistry Semester 2
                 { key: "chem_sem2_dblock", group: "chemistry", semester: 2, name: "d ও f ব্লক মৌল" },
                 { key: "chem_sem2_coordination", group: "chemistry", semester: 2, name: "সমন্বয় যৌগ" },
                 { key: "chem_sem2_haloalkanes", group: "chemistry", semester: 2, name: "হ্যালোঅ্যালকেন ও হ্যালোঅ্যারিন" },
                 { key: "chem_sem2_alcohols", group: "chemistry", semester: 2, name: "অ্যালকোহল, ফেনল ও ইথার" },
-                // Biology Semester 1
                 { key: "bio_sem1_reproduction", group: "biology", semester: 1, name: "জনন" },
                 { key: "bio_sem1_genetics", group: "biology", semester: 1, name: "বংশগতি ও বিবর্তন" },
                 { key: "bio_sem1_biotech", group: "biology", semester: 1, name: "জৈবপ্রযুক্তি" },
-                // Biology Semester 2
                 { key: "bio_sem2_ecology", group: "biology", semester: 2, name: "পরিবেশ ও বাস্তুতন্ত্র" },
                 { key: "bio_sem2_biodiversity", group: "biology", semester: 2, name: "জীববৈচিত্র্য ও সংরক্ষণ" },
                 { key: "bio_sem2_humanhealth", group: "biology", semester: 2, name: "মানবস্বাস্থ্য ও রোগ" },
-                // Mathematics Semester 1
                 { key: "math_sem1_matrices", group: "mathematics", semester: 1, name: "ম্যাট্রিক্স ও নির্ণায়ক" },
                 { key: "math_sem1_calculus1", group: "mathematics", semester: 1, name: "অন্তরকলন" },
                 { key: "math_sem1_vectors", group: "mathematics", semester: 1, name: "ভেক্টর ও ত্রিমাত্রিক জ্যামিতি" },
-                // Mathematics Semester 2
                 { key: "math_sem2_integration", group: "mathematics", semester: 2, name: "সমাকলন" },
                 { key: "math_sem2_probability", group: "mathematics", semester: 2, name: "সম্ভাবনা" },
                 { key: "math_sem2_lpp", group: "mathematics", semester: 2, name: "রৈখিক প্রোগ্রামিং" }
@@ -842,7 +886,8 @@
                 currentIndex = Math.max(0, Math.min(currentIndex, currentQuestions.length-1));
                 const q = currentQuestions[currentIndex];
                 const answered = userAnswers[currentIndex] !== null;
-                const noteVisible = answered || quizSubmitted || $("showNoteBeforeAnswer").checked;
+                const showResult = quizSubmitted || (quizMode === "practice" && answered);
+                const noteVisible = quizSubmitted || (quizMode==="practice" && answered) || (quizMode!=="mock" && $("showNoteBeforeAnswer").checked);
                 const iconClass = isInlineEditUnlocked ? 'inline-edit-icon unlocked' : 'inline-edit-icon';
                 const iconTitle = isInlineEditUnlocked ? 'Edit mode on' : 'Click to edit question';
                 const diffClass = 'pill difficulty-' + (q.difficulty||'medium');
@@ -876,8 +921,9 @@
 
                 const optHtml = q.o.map((opt,i) => {
                     let cls = "option";
-                    if(answered && i===q.a) cls += " correct-answer";
-                    if(answered && userAnswers[currentIndex]===i && userAnswers[currentIndex]!== -1 && !answerStatus[currentIndex]) cls += " wrong-feedback";
+                    if (showResult && i === q.a) cls += " correct-answer";
+                    if (showResult && userAnswers[currentIndex] === i && userAnswers[currentIndex] !== -1 && !answerStatus[currentIndex]) cls += " wrong-feedback";
+                    if (quizMode === "mock" && !quizSubmitted && userAnswers[currentIndex] === i && answered) cls += " selected-mock";
                     return `<div class="${cls}" data-opt="${i}"><span class="key">${i+1}</span><span>${String.fromCharCode(65+i)}. ${escapeHtml(opt)}</span></div>`;
                 }).join("");
 
@@ -902,7 +948,19 @@
                     ${userAnswers.every(a=>a!==null) && !quizSubmitted?`<div class="restart-area"><button id="restartAfterFinish">🔄 Restart</button></div>`:""}
                 </div>`;
 
-                document.querySelectorAll(".option").forEach(el => { el.onclick = () => { if(userAnswers[currentIndex]!==null || quizSubmitted) return; const sel = Number(el.dataset.opt); userAnswers[currentIndex]=sel; answerStatus[currentIndex]=sel===q.a; if(answerStatus[currentIndex]) fireConfetti(); renderQuiz(); renderNav(); updateScore(); saveQuizState(); }; });
+                document.querySelectorAll(".option").forEach(el => { el.onclick = () => {
+                    if (quizSubmitted) return;
+                    if (quizMode === "mock") {
+                        if (userAnswers[currentIndex] !== null) return; // lock in mock after first attempt
+                    } else {
+                        if (userAnswers[currentIndex] !== null) return;
+                    }
+                    const sel = Number(el.dataset.opt);
+                    userAnswers[currentIndex] = sel;
+                    answerStatus[currentIndex] = (sel === q.a);
+                    if (answerStatus[currentIndex] && quizMode !== "mock") fireConfetti();
+                    renderQuiz(); renderNav(); updateScore(); saveQuizState();
+                }; });
                 const prevBtn = document.getElementById('prevQ'), nextBtn = document.getElementById('nextQ'); if(prevBtn) prevBtn.onclick = ()=>moveQuestion(-1); if(nextBtn) nextBtn.onclick = ()=>moveQuestion(1);
                 const rstBtn = document.getElementById('restartAfterFinish'); if(rstBtn) rstBtn.onclick = resetAnswers;
                 const editIcon = document.getElementById('inlineEditIcon'); if(editIcon) editIcon.onclick = (e)=>{ e.stopPropagation(); toggleInlineEdit(); };
@@ -914,8 +972,43 @@
             }
 
             function moveQuestion(d) { const n = currentIndex+d; if(n<0||n>=totalQuestions) return; currentIndex=n; renderQuiz(); renderNav(); saveQuizState(); }
-            function renderNav() { let g=""; for(let i=0;i<totalQuestions;i++) { let cls="q-num"; if(userAnswers[i]!==null && userAnswers[i]!== -1) cls += answerStatus[i]?" answered-correct":" answered-wrong"; else if(quizMode==="mock" && quizSubmitted && (userAnswers[i]===null || userAnswers[i]=== -1)) cls+=" skipped"; if(i===currentIndex) cls+=" current"; g+=`<div class="${cls}" data-idx="${i}">${i+1}</div>`; } $("navGrid").innerHTML=g; document.querySelectorAll(".q-num").forEach(el=>{ el.onclick=()=>{ currentIndex=Number(el.dataset.idx); renderQuiz(); renderNav(); saveQuizState(); }; }); }
-            function updateScore() { const c = answerStatus.filter(Boolean).length, a = userAnswers.filter(v=>v!==null && v!== -1).length, w = a-c, s = totalQuestions-a; $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`; }
+            function renderNav() {
+                let g="";
+                const isMockActive = (quizMode === "mock" && !quizSubmitted);
+                for(let i=0;i<totalQuestions;i++) {
+                    let cls="q-num";
+                    if (isMockActive) {
+                        if (userAnswers[i] !== null && userAnswers[i] !== -1) cls += " attempted-mock";
+                    } else {
+                        if(userAnswers[i]!==null && userAnswers[i]!== -1) cls += answerStatus[i]?" answered-correct":" answered-wrong";
+                        else if(quizMode==="mock" && quizSubmitted && (userAnswers[i]===null || userAnswers[i]=== -1)) cls+=" skipped";
+                    }
+                    if(i===currentIndex) cls+=" current";
+                    g+=`<div class="${cls}" data-idx="${i}">${i+1}</div>`;
+                }
+                $("navGrid").innerHTML=g;
+                document.querySelectorAll(".q-num").forEach(el=>{ el.onclick=()=>{ currentIndex=Number(el.dataset.idx); renderQuiz(); renderNav(); saveQuizState(); }; });
+            }
+            function updateScore() {
+                const c = answerStatus.filter(Boolean).length;
+                const a = userAnswers.filter(v=>v!==null && v!== -1).length;
+                const w = a-c; const s = totalQuestions-a;
+                if (quizMode === "mock" && !quizSubmitted) {
+                    $("scoreBoard").innerHTML = `⏱️ Mock Test in Progress`;
+                } else {
+                    $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`;
+                }
+                // Hide/show elements based on mode
+                const noteRow = $("noteToggleRow");
+                const showScoreBtn = $("showScoreBtn");
+                if (quizMode === "mock" && !quizSubmitted) {
+                    if(noteRow) noteRow.style.display = 'none';
+                    if(showScoreBtn) showScoreBtn.style.display = 'none';
+                } else {
+                    if(noteRow) noteRow.style.display = '';
+                    if(showScoreBtn) showScoreBtn.style.display = '';
+                }
+            }
             function resetAnswers() { quizSubmitted = false; userAnswers.fill(null); answerStatus.fill(false); currentIndex=0; stopTimer(); timeRemaining=null; timerActive=false; if(quizMode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState(); }
             function resetQuiz() { if(!confirm("Reset current quiz progress?")) return; safeRemove(SESSION_KEY); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; resetAnswers(); showSuccess("Quiz reset."); }
             function submitMockTest() { if(!confirm("Submit mock test? You cannot change answers.")) return; stopTimer(); quizSubmitted = true; renderQuiz(); renderNav(); updateScore(); saveQuizState(); fireConfetti(); showResultsOverlay(); }
@@ -927,7 +1020,6 @@
             function backupSelected() { const ks=getSelectedKeys(); if(!ks.length) return showError("No chapter selected!"); const bk={ __subjectGroups__:cloneValue(getSubjectGroups()), __subjects__:getSubjects().filter(s=>ks.includes(s.key)) }; ks.forEach(k=>bk[k]=questionBank[k]||[]); download(`class12_sci_selected_backup_${stamp()}.json`,JSON.stringify(bk,null,2),"application/json"); showSuccess("Selected backup saved."); }
             function backupFull() { download(`class12_sci_full_backup_${stamp()}.json`,JSON.stringify(questionBank,null,2),"application/json"); showSuccess("Full backup saved."); }
 
-            // ---------- Download permanent HTML with full reset ----------
             function downloadPermanentHtml() {
                 if(!confirm("This will reset the current quiz and save a fresh copy with the gate locked. Continue?")) return;
                 stopTimer();
@@ -1057,7 +1149,6 @@
                 $("themeToggleBtn").onclick = toggleTheme;
                 $("closeResultsBtn").onclick = hideResultsOverlay;
 
-                // Hidden edit button with inline password
                 $("editHeaderBottom").onclick = () => {
                     if (isEditUnlocked) {
                         $("editBodyBottom").classList.remove("open");
@@ -1125,5 +1216,5 @@
             init();
         })();
     </script>
-</body>
-</html>
+
+</body></html>
