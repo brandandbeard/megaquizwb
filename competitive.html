@@ -57,7 +57,7 @@
 
         .main-title {
             position: absolute;
-            top: clamp(20px, 5vh, 50px);
+            top: clamp(12px, 5vh, 30px);
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
@@ -217,9 +217,9 @@
             <div class="title-sub">BY Arif Hussain</div>
         </div>
         <div class="nav-row">
-            <a class="nav-link ssc" href="ssc.html"><span class="emoji">📙</span> এস.এস.সি</a>
-            <a class="nav-link def" href="defence.html"><span class="emoji">📕</span> প্রতিরক্ষা</a>
-            <a class="nav-link wb" href="wbexam.html"><span class="emoji">📘</span> প.ব. পরীক্ষা</a>
+            <a class="nav-link ssc" href="ssc.html"><span class="emoji">📙</span> SSC</a>
+            <a class="nav-link def" href="defence.html"><span class="emoji">📕</span> Defence</a>
+            <a class="nav-link wb" href="wbpsc.html"><span class="emoji">📘</span> WBPSC</a>
         </div>
         <div class="contact-row">
             <a class="contact-item" href="mailto:arifbeldanga@gmail.com">
@@ -390,9 +390,9 @@
         const glowTexSSC = createGlowTexture('#ffb74d');
         const glowTexDefence = createGlowTexture('#ef5350');
         const glowTexWBExam = createGlowTexture('#4dd0e1');
-        const portalTexSSC = createDetailedPortalTexture('#ffe0b2','এস.এস.সি','#ff9800');
-        const portalTexDefence = createDetailedPortalTexture('#ffcdd2','প্রতিরক্ষা','#f44336');
-        const portalTexWBExam = createDetailedPortalTexture('#b2ebf2','প.ব. পরীক্ষা','#00bcd4');
+        const portalTexSSC = createDetailedPortalTexture('#ffe0b2','SSC','#ff9800');
+        const portalTexDefence = createDetailedPortalTexture('#ffcdd2','Defence','#f44336');
+        const portalTexWBExam = createDetailedPortalTexture('#b2ebf2','WBPSC','#00bcd4');
 
         const galaxyGroup = new THREE.Group(); galaxyGroup.rotation.x=-0.45; galaxyGroup.rotation.y=0.25; scene.add(galaxyGroup);
         const numArms=4, particlesPerArm=2800, galaxyRadius=13, armTightness=2.8;
