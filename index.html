@@ -43,49 +43,54 @@
             text-align: center;
             color: #fff;
             width: 90%;
-            max-width: 600px;
+            max-width: 650px;
             pointer-events: auto;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 12vh;
+            margin-top: clamp(35px, 10vh, 12vh);
+            padding: 0 clamp(4px, 1vw, 16px);
         }
+
         h1 {
-            font-size: 2.2rem;
+            font-size: clamp(1.3rem, 3.5vw, 2.4rem);
             font-weight: 800;
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.5), 0 0 60px rgba(180, 200, 255, 0.35);
             margin-bottom: 2px;
             letter-spacing: 1px;
             pointer-events: none;
+            line-height: 1.2;
         }
         .by-line {
-            font-size: 0.9rem;
+            font-size: clamp(0.65rem, 1.4vw, 0.95rem);
             font-weight: 600;
-            margin-bottom: 34px;
+            margin-bottom: clamp(20px, 4vw, 34px);
             opacity: 0.75;
             color: #ccc;
             letter-spacing: 0.5px;
             pointer-events: none;
         }
+
         .class-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(88px, 17vw, 125px), 1fr));
+            gap: clamp(9px, 1.8vw, 18px);
             justify-content: center;
             width: 100%;
-            margin-bottom: 18px;
+            margin-bottom: clamp(10px, 2vw, 18px);
         }
+
         .class-card {
             background: transparent;
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
             border: none;
             border-radius: 0;
-            padding: 8px 4px;
+            padding: clamp(6px, 1.3vw, 10px) clamp(2px, 0.6vw, 6px);
             color: #fff;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: clamp(0.68rem, 1.5vw, 0.98rem);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
@@ -93,6 +98,10 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
             letter-spacing: 0.5px;
             position: relative;
+            min-height: clamp(32px, 6vw, 42px);
+            white-space: nowrap;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
         .class-card::before {
             display: none;
@@ -105,50 +114,96 @@
             border: none;
             box-shadow: none;
         }
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.6rem;
-            }
+        .class-card:active {
+            transform: translateY(-2px) scale(0.96);
+            transition: all 0.12s ease;
+        }
+
+        /* ── Extra-small screens: ensure 2 columns max for very narrow devices ── */
+        @media (max-width: 350px) {
             .class-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 14px;
+                gap: 8px;
             }
             .class-card {
-                font-size: 0.8rem;
-                padding: 6px 2px;
+                font-size: 0.62rem;
+                padding: 5px 2px;
+                min-height: 28px;
+                letter-spacing: 0.1px;
+            }
+            h1 {
+                font-size: 1.1rem;
+                letter-spacing: 0.4px;
+            }
+            .by-line {
+                font-size: 0.58rem;
+                margin-bottom: 14px;
+            }
+            .container {
+                margin-top: 22px;
             }
         }
+
+        /* ── Wider phones (375-480px): allow natural auto-fit (usually 3 columns) ── */
+        @media (min-width: 351px) and (max-width: 480px) {
+            .class-grid {
+                gap: clamp(8px, 2.2vw, 14px);
+            }
+            .class-card {
+                font-size: clamp(0.66rem, 1.8vw, 0.78rem);
+                min-height: clamp(30px, 5.5vw, 36px);
+            }
+            h1 {
+                font-size: clamp(1.2rem, 3.8vw, 1.6rem);
+            }
+        }
+
+        /* ── Tablets ── */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .class-grid {
+                gap: clamp(10px, 2vw, 16px);
+            }
+            .class-card {
+                font-size: clamp(0.72rem, 1.4vw, 0.88rem);
+            }
+        }
+
         .install-btn {
-            margin-top: 4px;
+            margin-top: clamp(2px, 0.6vw, 6px);
             background: linear-gradient(135deg, #1e3a8a, #2563eb);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 11px 28px;
+            padding: clamp(9px, 1.6vw, 12px) clamp(20px, 3.5vw, 30px);
             color: #fff;
             border-radius: 50px;
             font-weight: 700;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: clamp(0.8rem, 1.5vw, 1.05rem);
             display: none;
             letter-spacing: 0.4px;
             transition: all 0.3s;
             box-shadow: 0 6px 20px rgba(30, 58, 138, 0.5);
+            -webkit-tap-highlight-color: transparent;
         }
         .install-btn:hover {
             background: linear-gradient(135deg, #2563eb, #3b82f6);
             box-shadow: 0 8px 28px rgba(37, 99, 235, 0.6);
             transform: translateY(-2px);
         }
+        .install-btn:active {
+            transform: translateY(0px) scale(0.96);
+            transition: all 0.12s ease;
+        }
 
         /* ========== Enhanced Footer Styles ========== */
         .footer-fixed {
             position: fixed;
-            bottom: 12px;
+            bottom: clamp(3px, 1.2vh, 14px);
             left: 0;
             width: 100%;
             text-align: center;
             z-index: 2;
             pointer-events: auto;
-            font-size: 0.7rem;
+            font-size: clamp(0.5rem, 1.1vw, 0.72rem);
             color: #ccc;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
             opacity: 0.85;
@@ -158,18 +213,18 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 2px;
-            padding: 0 10px;
+            gap: 1px;
+            padding: 0 clamp(4px, 1.5vw, 12px);
             pointer-events: auto;
         }
         .footer-item {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: clamp(2px, 0.5vw, 5px);
             color: #ddd;
             text-decoration: none;
             font-weight: 500;
-            padding: 4px 7px;
+            padding: clamp(2px, 0.5vw, 5px) clamp(4px, 0.8vw, 8px);
             border-radius: 20px;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
             white-space: nowrap;
@@ -180,8 +235,8 @@
         }
         .footer-item svg {
             flex-shrink: 0;
-            width: 18px;
-            height: 18px;
+            width: clamp(13px, 2.2vw, 18px);
+            height: clamp(13px, 2.2vw, 18px);
             transition: all 0.3s ease;
             filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.2));
         }
@@ -197,19 +252,20 @@
             transform: scale(1.1);
         }
         .footer-item:active {
-            transform: translateY(-1px);
+            transform: translateY(-1px) scale(0.94);
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.95), 0 0 38px rgba(200, 220, 255, 0.8);
+            transition: all 0.12s ease;
         }
         .footer-sep {
             display: inline-block;
-            margin: 0 5px;
+            margin: 0 clamp(1px, 0.4vw, 6px);
             opacity: 0.45;
             color: #999;
             pointer-events: none;
             font-weight: 300;
             user-select: none;
             -webkit-user-select: none;
-            font-size: 0.75rem;
+            font-size: clamp(0.45rem, 0.9vw, 0.78rem);
             line-height: 1;
         }
         .footer-item .upi-detail {
@@ -248,44 +304,48 @@
             filter: drop-shadow(0 0 8px rgba(150, 250, 170, 0.9)) drop-shadow(0 0 14px rgba(120, 230, 150, 0.6));
         }
 
-        @media (max-width: 520px) {
-            .footer-fixed {
-                font-size: 0.6rem;
-                bottom: 6px;
-                gap: 0px;
-                padding: 0 4px;
-                line-height: 1.5;
-            }
-            .footer-item {
-                padding: 3px 5px;
-                gap: 2px;
-            }
-            .footer-item svg {
-                width: 15px;
-                height: 15px;
-            }
-            .footer-sep {
-                margin: 0 2px;
-                font-size: 0.6rem;
-            }
-        }
+        /* ── Extra-small footer ── */
         @media (max-width: 380px) {
             .footer-fixed {
-                font-size: 0.52rem;
-                bottom: 4px;
+                font-size: 0.48rem;
+                bottom: 2px;
                 padding: 0 2px;
+                gap: 0px;
+                line-height: 1.4;
             }
             .footer-item {
-                padding: 2px 3px;
+                padding: 1px 3px;
                 gap: 1px;
+                letter-spacing: 0px;
             }
             .footer-item svg {
-                width: 13px;
-                height: 13px;
+                width: 12px;
+                height: 12px;
             }
             .footer-sep {
                 margin: 0 1px;
-                font-size: 0.5rem;
+                font-size: 0.45rem;
+            }
+        }
+        @media (min-width: 381px) and (max-width: 520px) {
+            .footer-fixed {
+                font-size: 0.55rem;
+                bottom: 4px;
+                padding: 0 4px;
+                gap: 0px;
+                line-height: 1.45;
+            }
+            .footer-item {
+                padding: 2px 4px;
+                gap: 2px;
+            }
+            .footer-item svg {
+                width: 14px;
+                height: 14px;
+            }
+            .footer-sep {
+                margin: 0 2px;
+                font-size: 0.52rem;
             }
         }
     </style>
@@ -391,7 +451,8 @@
             const DISK_VIEW_ANGLE = Math.PI / 3.2;
 
             const mouse = {
-                x: -9999, y: -9999
+                x: -9999,
+                y: -9999
             };
 
             let planets = [];
@@ -429,16 +490,20 @@
             function initPlanetsAndNebulae() {
                 planets = [
                     {
-                        relX: 0.18, relY: 0.22,
+                        relX: 0.18,
+                        relY: 0.22,
                         radius: 0,
-                        color1: '#d4a373', color2: '#b5835a',
+                        color1: '#d4a373',
+                        color2: '#b5835a',
                         ringColor: 'rgba(210,180,140,0.7)',
                         ringWidth: 0
                     },
                     {
-                        relX: 0.82, relY: 0.68,
+                        relX: 0.82,
+                        relY: 0.68,
                         radius: 0,
-                        color1: '#6d8aa3', color2: '#4a6274',
+                        color1: '#6d8aa3',
+                        color2: '#4a6274',
                         ringColor: null,
                         ringWidth: 0
                     }
@@ -520,7 +585,10 @@
 
                     const color = randomStarColor();
                     stars.push({
-                        x, y, vx, vy,
+                        x,
+                        y,
+                        vx,
+                        vy,
                         size,
                         color,
                         brightness: Math.random(),
@@ -537,8 +605,10 @@
                     const size = (Math.random() < 0.6) ? (0.1 + Math.random() * 0.4) : (0.5 + Math.random() * 1.2);
                     const color = randomStarColor();
                     stars.push({
-                        x, y,
-                        vx: 0, vy: 0,
+                        x,
+                        y,
+                        vx: 0,
+                        vy: 0,
                         size,
                         color,
                         brightness: Math.random(),
@@ -550,8 +620,10 @@
                 }
 
                 const cornerOffsets = [
-                    { cx: 30, cy: 30 }, { cx: w - 30, cy: 30 },
-                    { cx: 30, cy: h - 30 }, { cx: w - 30, cy: h - 30 }
+                    { cx: 30, cy: 30 },
+                    { cx: w - 30, cy: 30 },
+                    { cx: 30, cy: h - 30 },
+                    { cx: w - 30, cy: h - 30 }
                 ];
                 for (const corner of cornerOffsets) {
                     for (let i = 0; i < CORNER_STARS_COUNT / 4; i++) {
@@ -560,8 +632,10 @@
                         const size = 0.8 + Math.random() * 1.8;
                         const color = randomStarColor();
                         stars.push({
-                            x, y,
-                            vx: 0, vy: 0,
+                            x,
+                            y,
+                            vx: 0,
+                            vy: 0,
                             size,
                             color,
                             brightness: 0.6 + Math.random() * 0.4,
@@ -597,7 +671,9 @@
                     const baseSpeed = 0.022 / Math.sqrt((radius - bh.eventHorizonRadius * 0.7) / bh.eventHorizonRadius + 0.35);
                     const speed = baseSpeed * (0.8 + Math.random() * 0.35);
                     diskParticles.push({
-                        radius, angle, speed,
+                        radius,
+                        angle,
+                        speed,
                         size: Math.random() * 1.2 + 0.3,
                         brightness: 0.45 + Math.random() * 0.4,
                         colorShift: Math.random(),
@@ -715,7 +791,8 @@
                     ctx.fill();
                 }
                 for (const p of planets) {
-                    const grad = ctx.createRadialGradient(p.x - p.radius * 0.3, p.y - p.radius * 0.3, p.radius * 0.1, p.x, p.y, p.radius);
+                    const grad = ctx.createRadialGradient(p.x - p.radius * 0.3, p.y - p.radius * 0.3, p.radius * 0.1, p.x, p.y, p
+                        .radius);
                     grad.addColorStop(0, p.color1);
                     grad.addColorStop(1, p.color2);
                     ctx.beginPath();
@@ -875,8 +952,8 @@
 
             function render() {
                 ctx.clearRect(0, 0, w, h);
-                const bgGrad = ctx.createRadialGradient(mainBH.x, mainBH.y, mainBH.eventHorizonRadius * 0.4, w / 2, h / 2, Math.max(w,
-                    h));
+                const bgGrad = ctx.createRadialGradient(mainBH.x, mainBH.y, mainBH.eventHorizonRadius * 0.4, w / 2, h / 2, Math.max(
+                    w, h));
                 bgGrad.addColorStop(0, '#040a18');
                 bgGrad.addColorStop(0.5, '#010308');
                 bgGrad.addColorStop(1, '#000002');
