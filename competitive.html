@@ -2,18 +2,12 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>COMPETITIVE EXAMS</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #000010;
-            --portal-ssc: #FFB74D;
-            --portal-ssc-glow: #ff9800;
-            --portal-defence: #EF5350;
-            --portal-defence-glow: #f44336;
-            --portal-wbexam: #4DD0E1;
-            --portal-wbexam-glow: #00bcd4;
         }
 
         * {
@@ -26,11 +20,11 @@
             background: var(--bg);
             overflow: hidden;
             font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
-            cursor: default;
             -webkit-tap-highlight-color: transparent;
             -webkit-user-select: none;
             user-select: none;
             height: 100vh;
+            height: 100dvh;
             width: 100vw;
             position: relative;
         }
@@ -41,63 +35,60 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
+            z-index: 0;
             pointer-events: auto;
         }
 
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 10;
+        /* ========== MATCH INDEX'S CONTAINER STYLE ========== */
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: #fff;
+            width: 90%;
+            max-width: 600px;
+            pointer-events: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 12vh auto 0 auto;  /* same as index */
         }
 
-        .main-title {
-            position: absolute;
-            top: clamp(12px, 5vh, 30px);
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            pointer-events: none;
-            z-index: 20;
-        }
         .main-title .title-bengali {
             font-family: 'Hind Siliguri', sans-serif;
-            font-size: clamp(1.8rem, 3.5vw, 3.2rem);
+            font-size: 2.2rem;
             font-weight: 700;
             color: #ffffff;
-            text-shadow: 0 0 40px rgba(180, 200, 255, 0.8), 0 0 80px rgba(140, 160, 255, 0.5), 0 0 120px rgba(100, 140, 255, 0.4);
-            letter-spacing: 0.04em;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5), 0 0 60px rgba(180, 200, 255, 0.35);
+            letter-spacing: 1px;
+            pointer-events: none;
             line-height: 1.3;
+            margin-bottom: 2px;
         }
+
         .main-title .title-sub {
             font-family: 'Orbitron', 'Hind Siliguri', sans-serif;
-            font-size: clamp(0.7rem, 1.2vw, 0.95rem);
-            font-weight: 400;
-            color: rgba(200, 210, 240, 0.85);
-            text-shadow: 0 0 20px rgba(150, 180, 240, 0.6);
-            letter-spacing: 0.15em;
-            margin-top: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 34px;
+            opacity: 0.75;
+            color: #ccc;
+            letter-spacing: 0.5px;
+            pointer-events: none;
         }
 
         .nav-row {
-            position: absolute;
-            bottom: 27%;
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
             gap: clamp(20px, 5vw, 50px);
             flex-wrap: nowrap;
             justify-content: center;
             pointer-events: auto;
-            z-index: 25;
+            margin-bottom: 18px;
         }
+
         .nav-link {
             font-family: 'Hind Siliguri', sans-serif;
-            font-size: clamp(1.1rem, 2.3vw, 1.7rem);
+            font-size: clamp(1rem, 2vw, 1.3rem);
             font-weight: 700;
             color: #fff;
             text-decoration: none;
@@ -114,23 +105,28 @@
             gap: 10px;
             white-space: nowrap;
         }
+
         .nav-link .emoji {
             font-size: 1.3em;
             display: inline-block;
             filter: drop-shadow(0 0 10px currentColor);
             transition: transform 0.3s ease;
         }
+
         .nav-link:hover .emoji {
             transform: scale(1.2) rotate(-5deg);
         }
+
         .nav-link.ssc { color: #FFB74D; text-shadow: 0 0 22px #ff9800; }
         .nav-link.def { color: #EF5350; text-shadow: 0 0 22px #f44336; }
         .nav-link.wb { color: #4DD0E1; text-shadow: 0 0 22px #00bcd4; }
+
         .nav-link:hover {
             transform: scale(1.1);
             text-shadow: 0 0 35px currentColor;
             filter: brightness(1.5);
         }
+
         .nav-link::after {
             content: '';
             position: absolute;
@@ -143,75 +139,187 @@
             transition: width 0.3s ease;
             border-radius: 3px;
         }
+
         .nav-link:hover::after { width: 90%; }
 
-        .contact-row {
-            position: absolute;
-            bottom: 2.5%;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: clamp(8px, 2vw, 16px);
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            font-size: clamp(0.65rem, 0.95vw, 0.8rem);
-            color: rgba(210, 220, 240, 0.9);
-            letter-spacing: 0.02em;
+        /* ========== EXACT COPY OF INDEX FOOTER ========== */
+        .footer-fixed {
+            position: fixed;
+            bottom: 12px;
+            left: 0;
+            width: 100%;
             text-align: center;
-            line-height: 1.6;
+            z-index: 2;
             pointer-events: auto;
-            z-index: 26;
-            padding: 6px 14px;
-            background: rgba(0, 0, 10, 0.5);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 30px;
-            white-space: nowrap;
-        }
-        .contact-item {
-            display: inline-flex;
+            font-size: 0.7rem;
+            color: #ccc;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+            opacity: 0.85;
+            letter-spacing: 0.3px;
+            line-height: 1.6;
+            display: flex;
+            flex-wrap: wrap;
             align-items: center;
-            gap: 5px;
-            color: rgba(230, 240, 255, 0.9);
-            text-decoration: none;
-            white-space: nowrap;
-            transition: color 0.3s, transform 0.2s, text-shadow 0.3s;
-        }
-        .contact-item:hover {
-            color: #ffffff;
-            text-shadow: 0 0 14px rgba(255, 255, 255, 0.7);
-            transform: translateY(-2px);
-        }
-        .contact-sep {
-            color: rgba(255, 255, 255, 0.25);
-            pointer-events: none;
-        }
-        .contact-icon {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-            fill: currentColor;
+            justify-content: center;
+            gap: 2px;
+            padding: 0 10px;
+            background: transparent;
+            backdrop-filter: none;
         }
 
-        @media (max-width: 768px) {
-            .nav-row { bottom: 32%; gap: 18px; }
-            .nav-link { font-size: 0.95rem; padding: 8px 10px; gap: 6px; }
-            .contact-row { bottom: 3%; gap: 6px; font-size: 0.55rem; padding: 4px 10px; }
-            .contact-icon { width: 15px; height: 15px; }
-            .main-title .title-bengali { font-size: 1.4rem; }
-            .main-title .title-sub { font-size: 0.65rem; }
+        .footer-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: #ddd;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 4px 7px;
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            white-space: nowrap;
+            cursor: pointer;
+            position: relative;
+            text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
+            letter-spacing: 0.2px;
         }
+
+        .footer-item svg {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.2));
+        }
+
+        .footer-item:hover {
+            color: #fff;
+            text-shadow: 0 0 16px rgba(255, 255, 255, 0.85), 0 0 32px rgba(180, 210, 255, 0.7), 0 0 48px rgba(150, 180, 255, 0.4);
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 20px rgba(180, 200, 255, 0.2);
+        }
+
+        .footer-item:hover svg {
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 14px rgba(180, 210, 255, 0.6));
+            transform: scale(1.1);
+        }
+
+        .footer-item:active {
+            transform: translateY(-1px);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.95), 0 0 38px rgba(200, 220, 255, 0.8);
+        }
+
+        .footer-sep {
+            display: inline-block;
+            margin: 0 5px;
+            opacity: 0.45;
+            color: #999;
+            pointer-events: none;
+            font-weight: 300;
+            user-select: none;
+            -webkit-user-select: none;
+            font-size: 0.75rem;
+            line-height: 1;
+        }
+
+        .footer-item .upi-detail {
+            letter-spacing: 0.1px;
+        }
+
+        /* Hover accent colours same as index */
+        .footer-item.ig-item:hover {
+            text-shadow: 0 0 16px rgba(255, 150, 180, 0.9), 0 0 32px rgba(255, 100, 150, 0.6), 0 0 48px rgba(255, 80, 130, 0.35);
+            box-shadow: 0 0 22px rgba(255, 130, 170, 0.25);
+        }
+        .footer-item.ig-item:hover svg {
+            filter: drop-shadow(0 0 8px rgba(255, 140, 170, 0.9)) drop-shadow(0 0 14px rgba(255, 100, 150, 0.6));
+        }
+        .footer-item.tg-item:hover {
+            text-shadow: 0 0 16px rgba(140, 200, 255, 0.9), 0 0 32px rgba(100, 180, 255, 0.6), 0 0 48px rgba(80, 160, 255, 0.35);
+            box-shadow: 0 0 22px rgba(120, 190, 255, 0.25);
+        }
+        .footer-item.tg-item:hover svg {
+            filter: drop-shadow(0 0 8px rgba(130, 200, 255, 0.9)) drop-shadow(0 0 14px rgba(100, 180, 255, 0.6));
+        }
+        .footer-item.email-item:hover {
+            text-shadow: 0 0 16px rgba(255, 220, 140, 0.9), 0 0 32px rgba(255, 200, 100, 0.6), 0 0 48px rgba(255, 180, 80, 0.35);
+            box-shadow: 0 0 22px rgba(255, 210, 130, 0.25);
+        }
+        .footer-item.email-item:hover svg {
+            filter: drop-shadow(0 0 8px rgba(255, 210, 130, 0.9)) drop-shadow(0 0 14px rgba(255, 190, 100, 0.6));
+        }
+        .footer-item.upi-item:hover {
+            text-shadow: 0 0 16px rgba(160, 255, 180, 0.9), 0 0 32px rgba(120, 240, 150, 0.6), 0 0 48px rgba(100, 220, 130, 0.35);
+            box-shadow: 0 0 22px rgba(140, 240, 170, 0.25);
+        }
+        .footer-item.upi-item:hover svg {
+            filter: drop-shadow(0 0 8px rgba(150, 250, 170, 0.9)) drop-shadow(0 0 14px rgba(120, 230, 150, 0.6));
+        }
+
+        /* Responsive footer same as index */
+        @media (max-width: 520px) {
+            .footer-fixed {
+                font-size: 0.6rem;
+                bottom: 6px;
+                gap: 0px;
+                padding: 0 4px;
+                line-height: 1.5;
+            }
+            .footer-item {
+                padding: 3px 5px;
+                gap: 2px;
+            }
+            .footer-item svg {
+                width: 15px;
+                height: 15px;
+            }
+            .footer-sep {
+                margin: 0 2px;
+                font-size: 0.6rem;
+            }
+        }
+        @media (max-width: 380px) {
+            .footer-fixed {
+                font-size: 0.52rem;
+                bottom: 4px;
+                padding: 0 2px;
+            }
+            .footer-item {
+                padding: 2px 3px;
+                gap: 1px;
+            }
+            .footer-item svg {
+                width: 13px;
+                height: 13px;
+            }
+            .footer-sep {
+                margin: 0 1px;
+                font-size: 0.5rem;
+            }
+        }
+
+        /* Mobile heading adjustment */
         @media (max-width: 480px) {
-            .nav-row { bottom: 36%; gap: 12px; }
-            .nav-link { font-size: 0.8rem; padding: 6px 8px; gap: 4px; }
-            .contact-row { font-size: 0.5rem; gap: 4px; }
+            .main-title .title-bengali {
+                font-size: 1.6rem;
+            }
+            .nav-row {
+                gap: 14px;
+            }
+            .nav-link {
+                font-size: 0.8rem;
+                padding: 6px 8px;
+                gap: 4px;
+            }
         }
     </style>
 </head>
 <body>
     <canvas id="galaxyCanvas"></canvas>
-    <div class="overlay" id="overlay">
+
+    <!-- Content container matching index layout -->
+    <div class="container">
         <div class="main-title">
             <div class="title-bengali">✨ COMPETITIVE EXAMS ✨</div>
             <div class="title-sub">BY Arif Hussain</div>
@@ -221,27 +329,40 @@
             <a class="nav-link def" href="defence.html"><span class="emoji">📕</span> Defence</a>
             <a class="nav-link wb" href="wbpsc.html"><span class="emoji">📘</span> WBPSC</a>
         </div>
-        <div class="contact-row">
-            <a class="contact-item" href="mailto:arifbeldanga@gmail.com">
-                <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                arifbeldanga@gmail.com
-            </a>
-            <span class="contact-sep">|</span>
-            <a class="contact-item" href="https://t.me/beldanga1" target="_blank">
-                <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
-                @beldanga1
-            </a>
-            <span class="contact-sep">|</span>
-            <a class="contact-item" href="https://instagram.com/arifhussain.x" target="_blank">
-                <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg>
-                arifhussain.x
-            </a>
-            <span class="contact-sep">|</span>
-            <a class="contact-item" href="upi://pay?pa=arho065-1@okicici&pn=Arif&cu=INR" target="_blank">
-                <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><text x="12" y="17" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">₹</text></svg>
-                UPI: arho065-1@okicici / 9564385573
-            </a>
-        </div>
+    </div>
+
+    <!-- Footer exactly as in index.html -->
+    <div class="footer-fixed">
+        <a href="mailto:arifbeldanga@gmail.com" class="footer-item email-item" title="ইমেইল করুন" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+                <polyline points="22,4 12,13.5 2,4"/>
+            </svg>
+            arifbeldanga@gmail.com
+        </a>
+        <span class="footer-sep">|</span>
+        <a href="https://t.me/beldanga1" target="_blank" class="footer-item tg-item" title="টেলিগ্রামে যুক্ত হন" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.87 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.938z"/>
+            </svg>
+            @beldanga1
+        </a>
+        <span class="footer-sep">|</span>
+        <a href="https://instagram.com/arifhussain.x" target="_blank" class="footer-item ig-item" title="ইনস্টাগ্রামে ফলো করুন" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            arifhussain.x
+        </a>
+        <span class="footer-sep">|</span>
+        <a href="upi://pay?pa=arho065-1@okicici&pn=ArifHussain&cu=INR" class="footer-item upi-item" title="সাপোর্ট করতে UPI পেমেন্ট করুন" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <span class="upi-detail">Support: UPI arho065-1@okicici / 9564385573</span>
+        </a>
     </div>
 
     <script type="importmap">
@@ -363,7 +484,6 @@
                     this.lineTo(x,y+r.tl); this.quadraticCurveTo(x,y,x+r.tl,y);
                 };
             }
-            // Banner (text box) is kept on texture, but no separate HTML label box
             const cx=size/2, bannerY=size*0.5, bannerHeight=size*0.18, bannerWidth=size*0.9, bannerRadius=bannerHeight*0.45;
             const bannerGrad=ctx.createLinearGradient(cx,bannerY-bannerHeight/2,cx,bannerY+bannerHeight/2);
             bannerGrad.addColorStop(0,'rgba(0,0,0,0.95)'); bannerGrad.addColorStop(0.5,'rgba(0,0,0,0.98)'); bannerGrad.addColorStop(1,'rgba(0,0,0,0.95)');
@@ -421,7 +541,6 @@
         const bgStarGeom=new THREE.BufferGeometry(); bgStarGeom.setAttribute('position',new THREE.BufferAttribute(bgStarPositions,3)); bgStarGeom.setAttribute('color',new THREE.BufferAttribute(bgStarColors,3));
         const bgStarMat=new THREE.PointsMaterial({size:0.08,map:starSpriteTex,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.7,sizeAttenuation:true}); const bgStars=new THREE.Points(bgStarGeom,bgStarMat); scene.add(bgStars);
 
-        // Planets without rings, size restored to original (scale 1.0)
         function createPortal(glowTex, mainColorHex, sphereTex){
             const g = new THREE.Group();
             const glow = new THREE.Sprite(new THREE.SpriteMaterial({
@@ -434,8 +553,6 @@
             }));
             glow.scale.set(6.5, 6.5, 1);
             g.add(glow);
-
-            // Planet sphere with original size (scale 1.0)
             const sphereG = new THREE.SphereGeometry(1.15, 64, 64);
             const sphereM = new THREE.MeshStandardMaterial({
                 map: sphereTex,
@@ -447,17 +564,13 @@
             });
             const sphere = new THREE.Mesh(sphereG, sphereM);
             sphere.name = 'portalSphere';
-            sphere.scale.set(1, 1, 1); // back to original size
+            sphere.scale.set(1, 1, 1);
             g.add(sphere);
-
-            // Small inner core
             const coreG = new THREE.SphereGeometry(0.35, 32, 32);
             const coreM = new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.85 });
             const core = new THREE.Mesh(coreG, coreM);
             core.scale.set(1, 1, 1);
             g.add(core);
-
-            // Orbiting particles
             const orbitPC = 120;
             const orbitPos = new Float32Array(orbitPC * 3);
             const orbitCol = new Float32Array(orbitPC * 3);
@@ -485,11 +598,9 @@
                 sizeAttenuation: true
             });
             g.add(new THREE.Points(orbitGeom, orbitMat));
-
             g.userData = {
                 orbitParticles: g.children[g.children.length - 1],
                 glowSprite: glow
-                // No rings
             };
             return g;
         }
@@ -588,19 +699,13 @@
             const dt = Math.min(clock.getDelta(), 0.1);
             const el = ts * 0.001;
             const sp = 0.12;
-
             pivSSC.rotation.y += sp * dt;
             pivDef.rotation.y += sp * 0.85 * dt;
             pivWB.rotation.y += sp * 0.92 * dt;
-
             portalData.forEach(p => {
                 const bob = Math.sin(el * 0.55 + p.bobOffset) * 0.7;
                 p.group.position.y = p.baseY + bob;
-
-                // Orbit particles rotation
                 if (p.group.userData.orbitParticles) p.group.userData.orbitParticles.rotation.y += 0.9 * dt;
-
-                // Glow animation
                 if (p.group.userData.glowSprite) {
                     const pulse = 1 + Math.sin(el * 1.8 + p.bobOffset) * 0.12;
                     const bs = (hovered === p) ? 7.5 : 6.5;
@@ -608,17 +713,14 @@
                     p.group.userData.glowSprite.material.opacity = (hovered === p) ? 0.85 : 0.6 + Math.sin(el * 1.8 + p.bobOffset) * 0.1;
                 }
             });
-
             galaxyGroup.rotation.y += 0.025 * dt;
             bgStars.rotation.y += 0.008 * dt;
             bgStars.rotation.x += 0.004 * dt;
             nebula1.rotation.z += 0.001 * dt;
             nebula2.rotation.z -= 0.001 * dt;
-
             const cp = 1 + Math.sin(el * 0.7) * 0.06;
             coreGlowSprite.scale.set(7 * cp, 7 * cp, 1);
             coreGlowSprite.material.opacity = 0.7 + Math.sin(el * 0.9) * 0.08;
-
             renderer.render(scene, camera);
         }
 
