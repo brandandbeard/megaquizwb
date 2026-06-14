@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>COMPETITIVE EXAMS</title>
+    <title>Competitive Exams</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -39,7 +39,6 @@
             pointer-events: auto;
         }
 
-        /* ========== MATCH INDEX'S CONTAINER STYLE ========== */
         .container {
             position: relative;
             z-index: 1;
@@ -51,7 +50,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 12vh auto 0 auto;  /* same as index */
+            margin: 12vh auto 0 auto;
         }
 
         .main-title .title-bengali {
@@ -117,9 +116,20 @@
             transform: scale(1.2) rotate(-5deg);
         }
 
-        .nav-link.ssc { color: #FFB74D; text-shadow: 0 0 22px #ff9800; }
-        .nav-link.def { color: #EF5350; text-shadow: 0 0 22px #f44336; }
-        .nav-link.wb { color: #4DD0E1; text-shadow: 0 0 22px #00bcd4; }
+        .nav-link.ssc {
+            color: #FFB74D;
+            text-shadow: 0 0 22px #ff9800;
+        }
+
+        .nav-link.def {
+            color: #EF5350;
+            text-shadow: 0 0 22px #f44336;
+        }
+
+        .nav-link.wb {
+            color: #4DD0E1;
+            text-shadow: 0 0 22px #00bcd4;
+        }
 
         .nav-link:hover {
             transform: scale(1.1);
@@ -140,9 +150,10 @@
             border-radius: 3px;
         }
 
-        .nav-link:hover::after { width: 90%; }
+        .nav-link:hover::after {
+            width: 90%;
+        }
 
-        /* ========== EXACT COPY OF INDEX FOOTER ========== */
         .footer-fixed {
             position: fixed;
             bottom: 12px;
@@ -227,37 +238,42 @@
             letter-spacing: 0.1px;
         }
 
-        /* Hover accent colours same as index */
         .footer-item.ig-item:hover {
             text-shadow: 0 0 16px rgba(255, 150, 180, 0.9), 0 0 32px rgba(255, 100, 150, 0.6), 0 0 48px rgba(255, 80, 130, 0.35);
             box-shadow: 0 0 22px rgba(255, 130, 170, 0.25);
         }
+
         .footer-item.ig-item:hover svg {
             filter: drop-shadow(0 0 8px rgba(255, 140, 170, 0.9)) drop-shadow(0 0 14px rgba(255, 100, 150, 0.6));
         }
+
         .footer-item.tg-item:hover {
             text-shadow: 0 0 16px rgba(140, 200, 255, 0.9), 0 0 32px rgba(100, 180, 255, 0.6), 0 0 48px rgba(80, 160, 255, 0.35);
             box-shadow: 0 0 22px rgba(120, 190, 255, 0.25);
         }
+
         .footer-item.tg-item:hover svg {
             filter: drop-shadow(0 0 8px rgba(130, 200, 255, 0.9)) drop-shadow(0 0 14px rgba(100, 180, 255, 0.6));
         }
+
         .footer-item.email-item:hover {
             text-shadow: 0 0 16px rgba(255, 220, 140, 0.9), 0 0 32px rgba(255, 200, 100, 0.6), 0 0 48px rgba(255, 180, 80, 0.35);
             box-shadow: 0 0 22px rgba(255, 210, 130, 0.25);
         }
+
         .footer-item.email-item:hover svg {
             filter: drop-shadow(0 0 8px rgba(255, 210, 130, 0.9)) drop-shadow(0 0 14px rgba(255, 190, 100, 0.6));
         }
+
         .footer-item.upi-item:hover {
             text-shadow: 0 0 16px rgba(160, 255, 180, 0.9), 0 0 32px rgba(120, 240, 150, 0.6), 0 0 48px rgba(100, 220, 130, 0.35);
             box-shadow: 0 0 22px rgba(140, 240, 170, 0.25);
         }
+
         .footer-item.upi-item:hover svg {
             filter: drop-shadow(0 0 8px rgba(150, 250, 170, 0.9)) drop-shadow(0 0 14px rgba(120, 230, 150, 0.6));
         }
 
-        /* Responsive footer same as index */
         @media (max-width: 520px) {
             .footer-fixed {
                 font-size: 0.6rem;
@@ -279,6 +295,7 @@
                 font-size: 0.6rem;
             }
         }
+
         @media (max-width: 380px) {
             .footer-fixed {
                 font-size: 0.52rem;
@@ -299,7 +316,6 @@
             }
         }
 
-        /* Mobile heading adjustment */
         @media (max-width: 480px) {
             .main-title .title-bengali {
                 font-size: 1.6rem;
@@ -318,11 +334,10 @@
 <body>
     <canvas id="galaxyCanvas"></canvas>
 
-    <!-- Content container matching index layout -->
     <div class="container">
         <div class="main-title">
-            <div class="title-bengali">✨ COMPETITIVE EXAMS ✨</div>
-            <div class="title-sub">BY Arif Hussain</div>
+            <div class="title-bengali">✨ Competitive Exams ✨</div>
+            <div class="title-sub">By Arif Hussain</div>
         </div>
         <div class="nav-row">
             <a class="nav-link ssc" href="ssc.html"><span class="emoji">📙</span> SSC</a>
@@ -331,7 +346,6 @@
         </div>
     </div>
 
-    <!-- Footer exactly as in index.html -->
     <div class="footer-fixed">
         <a href="mailto:arifbeldanga@gmail.com" class="footer-item email-item" title="ইমেইল করুন" rel="noopener">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -397,23 +411,6 @@
         pointLight2.position.set(-6, -2, -5);
         scene.add(pointLight2);
 
-        function createGlowTexture(hexColor, size = 256) {
-            const c = document.createElement('canvas');
-            c.width = size;
-            c.height = size;
-            const ctx = c.getContext('2d');
-            const half = size / 2;
-            const grad = ctx.createRadialGradient(half, half, half * 0.02, half, half, half);
-            grad.addColorStop(0, hexColor);
-            grad.addColorStop(0.08, hexColor);
-            grad.addColorStop(0.35, hexColor + '99');
-            grad.addColorStop(0.65, hexColor + '22');
-            grad.addColorStop(1, 'transparent');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, size, size);
-            return new THREE.CanvasTexture(c);
-        }
-
         function createStarSpriteTexture(size = 64) {
             const c = document.createElement('canvas');
             c.width = size;
@@ -451,276 +448,248 @@
             return new THREE.CanvasTexture(c);
         }
 
-        function createDetailedPortalTexture(baseColor, text, accentColor, size = 2048) {
-            const c = document.createElement('canvas');
-            c.width = size;
-            c.height = size;
-            const ctx = c.getContext('2d');
-            const baseGrad = ctx.createRadialGradient(size*0.35, size*0.3, size*0.05, size/2, size/2, size*0.75);
-            baseGrad.addColorStop(0, '#ffffff');
-            baseGrad.addColorStop(0.12, baseColor);
-            baseGrad.addColorStop(0.55, baseColor);
-            baseGrad.addColorStop(0.85, '#000000');
-            baseGrad.addColorStop(1, '#000000');
-            ctx.fillStyle = baseGrad;
-            ctx.fillRect(0,0,size,size);
-            ctx.fillStyle = 'rgba(255,255,255,0.03)';
-            for (let i=0;i<600;i++){ const dx=Math.random()*size,dy=Math.random()*size,dr=Math.random()*size*0.02+1; ctx.beginPath(); ctx.arc(dx,dy,dr,0,Math.PI*2); ctx.fill(); }
-            const shadeGrad = ctx.createRadialGradient(size/2,size/2,size*.06,size/2,size/2,size*.72);
-            shadeGrad.addColorStop(0,'rgba(255,255,255,0.35)');
-            shadeGrad.addColorStop(0.2,'rgba(255,255,255,0.1)');
-            shadeGrad.addColorStop(0.45,'rgba(0,0,0,0.0)');
-            shadeGrad.addColorStop(0.65,'rgba(0,0,0,0.15)');
-            shadeGrad.addColorStop(0.85,'rgba(0,0,0,0.5)');
-            shadeGrad.addColorStop(1,'rgba(0,0,0,0.75)');
-            ctx.fillStyle = shadeGrad;
-            ctx.fillRect(0,0,size,size);
-            if (!CanvasRenderingContext2D.prototype.roundRect) {
-                CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r){
-                    if(typeof r==='number') r={tl:r,tr:r,br:r,bl:r};
-                    this.moveTo(x+r.tl,y); this.lineTo(x+w-r.tr,y); this.quadraticCurveTo(x+w,y,x+w,y+r.tr);
-                    this.lineTo(x+w,y+h-r.br); this.quadraticCurveTo(x+w,y+h,x+w-r.br,y+h);
-                    this.lineTo(x+r.bl,y+h); this.quadraticCurveTo(x,y+h,x,y+h-r.bl);
-                    this.lineTo(x,y+r.tl); this.quadraticCurveTo(x,y,x+r.tl,y);
-                };
-            }
-            const cx=size/2, bannerY=size*0.5, bannerHeight=size*0.18, bannerWidth=size*0.9, bannerRadius=bannerHeight*0.45;
-            const bannerGrad=ctx.createLinearGradient(cx,bannerY-bannerHeight/2,cx,bannerY+bannerHeight/2);
-            bannerGrad.addColorStop(0,'rgba(0,0,0,0.95)'); bannerGrad.addColorStop(0.5,'rgba(0,0,0,0.98)'); bannerGrad.addColorStop(1,'rgba(0,0,0,0.95)');
-            ctx.fillStyle=bannerGrad; ctx.beginPath(); ctx.roundRect(cx-bannerWidth/2,bannerY-bannerHeight/2,bannerWidth,bannerHeight,bannerRadius); ctx.fill();
-            ctx.strokeStyle=accentColor; ctx.lineWidth=size*0.016; ctx.shadowColor=accentColor; ctx.shadowBlur=size*0.08;
-            ctx.stroke(); ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=size*0.006; ctx.shadowColor='rgba(255,255,255,0.6)'; ctx.shadowBlur=size*0.04;
-            const inset=size*0.015; ctx.beginPath(); ctx.roundRect(cx-bannerWidth/2+inset,bannerY-bannerHeight/2+inset,bannerWidth-inset*2,bannerHeight-inset*2,bannerRadius*0.75); ctx.stroke();
-            ctx.shadowColor='transparent'; ctx.shadowBlur=0;
-            const dotY=bannerY, dotSpacing=bannerHeight*0.4;
-            for(let side=-1;side<=1;side+=2){ const dotX=cx+side*(bannerWidth/2-bannerHeight*0.55); ctx.fillStyle=accentColor; ctx.shadowColor=accentColor; ctx.shadowBlur=size*0.04; ctx.beginPath(); ctx.arc(dotX,dotY-dotSpacing,size*0.016,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(dotX,dotY+dotSpacing,size*0.016,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.shadowColor='transparent'; }
-            const fontSize=Math.floor(size*0.14); ctx.font=`800 ${fontSize}px "Hind Siliguri","Noto Sans Bengali","Siyam Rupali","Bangla",sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
-            ctx.save(); ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.strokeStyle='#000000'; ctx.lineWidth=size*0.04; ctx.lineJoin='round'; ctx.miterLimit=2; ctx.strokeText(text,cx,bannerY); ctx.restore();
-            ctx.shadowColor=accentColor; ctx.shadowBlur=size*0.06; ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.fillText(text,cx+size*0.005,bannerY+size*0.005); ctx.shadowBlur=0; ctx.shadowColor='transparent';
-            ctx.fillStyle='#ffffff'; ctx.fillText(text,cx,bannerY); ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.fillText(text,cx-size*0.004,bannerY-size*0.006);
-            const subFontSize=Math.floor(size*0.055); ctx.font=`600 ${subFontSize}px "Orbitron","Hind Siliguri",sans-serif`; const subY=bannerY+bannerHeight*0.38;
-            ctx.save(); ctx.strokeStyle='#000000'; ctx.lineWidth=size*0.015; ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.strokeText('●  CLICK TO ENTER  ●',cx,subY); ctx.restore();
-            ctx.fillStyle=accentColor; ctx.shadowColor=accentColor; ctx.shadowBlur=size*0.03; ctx.fillText('●  CLICK TO ENTER  ●',cx,subY); ctx.shadowBlur=0; ctx.shadowColor='transparent';
-            ctx.fillStyle='#ffffff'; ctx.fillText('●  CLICK TO ENTER  ●',cx-size*0.002,subY-size*0.003);
-            const tex = new THREE.CanvasTexture(c); tex.minFilter=THREE.LinearMipmapLinearFilter; tex.magFilter=THREE.LinearFilter; tex.generateMipmaps=true; tex.colorSpace=THREE.SRGBColorSpace; tex.anisotropy=4; return tex;
-        }
-
         const starSpriteTex = createStarSpriteTexture();
         const coreGlowTex = createCoreGlowTexture();
-        const glowTexSSC = createGlowTexture('#ffb74d');
-        const glowTexDefence = createGlowTexture('#ef5350');
-        const glowTexWBExam = createGlowTexture('#4dd0e1');
-        const portalTexSSC = createDetailedPortalTexture('#ffe0b2','SSC','#ff9800');
-        const portalTexDefence = createDetailedPortalTexture('#ffcdd2','Defence','#f44336');
-        const portalTexWBExam = createDetailedPortalTexture('#b2ebf2','WBPSC','#00bcd4');
 
-        const galaxyGroup = new THREE.Group(); galaxyGroup.rotation.x=-0.45; galaxyGroup.rotation.y=0.25; scene.add(galaxyGroup);
-        const numArms=4, particlesPerArm=2800, galaxyRadius=13, armTightness=2.8;
-        const armParticlesTotal=numArms*particlesPerArm; const armPositions=new Float32Array(armParticlesTotal*3), armColors=new Float32Array(armParticlesTotal*3), armSizesArr=new Float32Array(armParticlesTotal);
-        for(let arm=0;arm<numArms;arm++){ const baseAngle=arm*Math.PI*2/numArms; for(let i=0;i<particlesPerArm;i++){ const idx=arm*particlesPerArm+i, t=i/particlesPerArm, r=t*galaxyRadius, spiralAngle=baseAngle+t*armTightness*Math.PI, spreadAngle=(0.15+t*1.1)*0.9, angle=spiralAngle+(Math.random()-0.5)*spreadAngle*2; armPositions[idx*3]=Math.cos(angle)*r; armPositions[idx*3+1]=(Math.random()-0.5)*(0.35+t*0.9)*(1+t*1.5); armPositions[idx*3+2]=Math.sin(angle)*r; const wm=Math.max(0,1-t*1.3), cm=Math.max(0,(t-0.25)*1.4); armColors[idx*3]=Math.min(1,0.85*wm+0.35*cm+0.15*Math.random()); armColors[idx*3+1]=Math.min(1,0.7*wm+0.4*cm+0.2*(1-Math.abs(t-0.5)*2)+0.1*Math.random()); armColors[idx*3+2]=Math.min(1,0.4*wm+0.85*cm+0.2*Math.random()); armSizesArr[idx]=(0.03+Math.random()*0.09)*(1-t*0.5); } }
-        const armGeom=new THREE.BufferGeometry(); armGeom.setAttribute('position',new THREE.BufferAttribute(armPositions,3)); armGeom.setAttribute('color',new THREE.BufferAttribute(armColors,3)); armGeom.setAttribute('size',new THREE.BufferAttribute(armSizesArr,1));
-        const armMat=new THREE.PointsMaterial({size:0.12,map:starSpriteTex,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.85,sizeAttenuation:true}); galaxyGroup.add(new THREE.Points(armGeom,armMat));
-        const bulgeCount=2200, bulgeRadius=2.8; const bulgePositions=new Float32Array(bulgeCount*3), bulgeColors=new Float32Array(bulgeCount*3);
-        for(let i=0;i<bulgeCount;i++){ const theta=Math.random()*Math.PI*2, phi=Math.acos(2*Math.random()-1), r=Math.pow(Math.random(),1.8)*bulgeRadius; bulgePositions[i*3]=Math.sin(phi)*Math.cos(theta)*r; bulgePositions[i*3+1]=Math.sin(phi)*Math.sin(theta)*r*0.35; bulgePositions[i*3+2]=Math.cos(phi)*r; const br=0.7+0.3*(1-r/bulgeRadius); bulgeColors[i*3]=br; bulgeColors[i*3+1]=br*0.9; bulgeColors[i*3+2]=br*0.7; }
-        const bulgeGeom=new THREE.BufferGeometry(); bulgeGeom.setAttribute('position',new THREE.BufferAttribute(bulgePositions,3)); bulgeGeom.setAttribute('color',new THREE.BufferAttribute(bulgeColors,3));
-        const bulgeMat=new THREE.PointsMaterial({size:0.16,map:starSpriteTex,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.9,sizeAttenuation:true}); galaxyGroup.add(new THREE.Points(bulgeGeom,bulgeMat));
-        const coreGlowSprite=new THREE.Sprite(new THREE.SpriteMaterial({map:coreGlowTex,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.75,color:new THREE.Color('#fffef0')})); coreGlowSprite.scale.set(7,7,1); galaxyGroup.add(coreGlowSprite);
-        const coreClusterCount=600; const coreClusterPositions=new Float32Array(coreClusterCount*3), coreClusterColors=new Float32Array(coreClusterCount*3);
-        for(let i=0;i<coreClusterCount;i++){ const theta=Math.random()*Math.PI*2, phi=Math.acos(2*Math.random()-1), r=Math.pow(Math.random(),3)*1.2; coreClusterPositions[i*3]=Math.sin(phi)*Math.cos(theta)*r; coreClusterPositions[i*3+1]=Math.sin(phi)*Math.sin(theta)*r*0.3; coreClusterPositions[i*3+2]=Math.cos(phi)*r; coreClusterColors[i*3]=1; coreClusterColors[i*3+1]=0.95; coreClusterColors[i*3+2]=0.8; }
-        const coreClusterGeom=new THREE.BufferGeometry(); coreClusterGeom.setAttribute('position',new THREE.BufferAttribute(coreClusterPositions,3)); coreClusterGeom.setAttribute('color',new THREE.BufferAttribute(coreClusterColors,3));
-        const coreClusterMat=new THREE.PointsMaterial({size:0.22,map:starSpriteTex,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.95,sizeAttenuation:true}); galaxyGroup.add(new THREE.Points(coreClusterGeom,coreClusterMat));
-        const brightStarCount=800; const brightStarPositions=new Float32Array(brightStarCount*3), brightStarColors=new Float32Array(brightStarCount*3);
-        for(let i=0;i<brightStarCount;i++){ const arm=Math.floor(Math.random()*numArms), baseAngle=arm*Math.PI*2/numArms, t=Math.random(), r=t*galaxyRadius, spiralAngle=baseAngle+t*armTightness*Math.PI, angle=spiralAngle+(Math.random()-0.5)*0.6; brightStarPositions[i*3]=Math.cos(angle)*r; brightStarPositions[i*3+1]=(Math.random()-0.5)*0.4; brightStarPositions[i*3+2]=Math.sin(angle)*r; const isBlue=Math.random()<0.35; brightStarColors[i*3]=isBlue?0.55+Math.random()*0.3:0.8+Math.random()*0.2; brightStarColors[i*3+1]=isBlue?0.65+Math.random()*0.25:0.75+Math.random()*0.2; brightStarColors[i*3+2]=isBlue?0.9+Math.random()*0.1:0.5+Math.random()*0.4; }
-        const brightStarGeom=new THREE.BufferGeometry(); brightStarGeom.setAttribute('position',new THREE.BufferAttribute(brightStarPositions,3)); brightStarGeom.setAttribute('color',new THREE.BufferAttribute(brightStarColors,3));
-        const brightStarMat=new THREE.PointsMaterial({size:0.28,map:starSpriteTex,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.8,sizeAttenuation:true}); galaxyGroup.add(new THREE.Points(brightStarGeom,brightStarMat));
-        function createNebulaSprite(c1,c2,size,op=0.4){ const c=document.createElement('canvas'); c.width=512; c.height=512; const ctx=c.getContext('2d'); const g=ctx.createRadialGradient(256,256,0,256,256,256); g.addColorStop(0,c1); g.addColorStop(0.5,c2); g.addColorStop(1,'transparent'); ctx.fillStyle=g; ctx.fillRect(0,0,512,512); ctx.globalCompositeOperation='overlay'; for(let i=0;i<100;i++){ ctx.fillStyle=`rgba(255,255,255,${Math.random()*0.05})`; ctx.beginPath(); ctx.arc(Math.random()*512,Math.random()*512,Math.random()*20,0,Math.PI*2); ctx.fill(); } const tex=new THREE.CanvasTexture(c); const mat=new THREE.SpriteMaterial({map:tex,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:op}); const s=new THREE.Sprite(mat); s.scale.set(size,size,1); return s; }
-        const nebula1=createNebulaSprite('#442288','#220066',35,0.25); nebula1.position.set(5,-2,-10); scene.add(nebula1);
-        const nebula2=createNebulaSprite('#882244','#440022',30,0.2); nebula2.position.set(-8,3,-12); scene.add(nebula2);
-        const bgStarCount=3000; const bgStarPositions=new Float32Array(bgStarCount*3), bgStarColors=new Float32Array(bgStarCount*3); const bgRadius=55;
-        for(let i=0;i<bgStarCount;i++){ const theta=Math.random()*Math.PI*2, phi=Math.acos(2*Math.random()-1), r=20+Math.random()*(bgRadius-20); bgStarPositions[i*3]=Math.sin(phi)*Math.cos(theta)*r; bgStarPositions[i*3+1]=Math.sin(phi)*Math.sin(theta)*r; bgStarPositions[i*3+2]=Math.cos(phi)*r; const br=0.4+Math.random()*0.6, tint=Math.random(); bgStarColors[i*3]=br*(0.7+tint*0.3); bgStarColors[i*3+1]=br*(0.7+tint*0.3); bgStarColors[i*3+2]=br*(0.8+tint*0.2); }
-        const bgStarGeom=new THREE.BufferGeometry(); bgStarGeom.setAttribute('position',new THREE.BufferAttribute(bgStarPositions,3)); bgStarGeom.setAttribute('color',new THREE.BufferAttribute(bgStarColors,3));
-        const bgStarMat=new THREE.PointsMaterial({size:0.08,map:starSpriteTex,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.7,sizeAttenuation:true}); const bgStars=new THREE.Points(bgStarGeom,bgStarMat); scene.add(bgStars);
+        const galaxyGroup = new THREE.Group();
+        galaxyGroup.rotation.x = -0.45;
+        galaxyGroup.rotation.y = 0.25;
+        scene.add(galaxyGroup);
 
-        function createPortal(glowTex, mainColorHex, sphereTex){
-            const g = new THREE.Group();
-            const glow = new THREE.Sprite(new THREE.SpriteMaterial({
-                map: glowTex,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false,
-                transparent: true,
-                opacity: 0.7,
-                color: new THREE.Color(mainColorHex)
-            }));
-            glow.scale.set(6.5, 6.5, 1);
-            g.add(glow);
-            const sphereG = new THREE.SphereGeometry(1.15, 64, 64);
-            const sphereM = new THREE.MeshStandardMaterial({
-                map: sphereTex,
-                color: new THREE.Color('#ffffff'),
-                emissive: new THREE.Color(mainColorHex),
-                emissiveIntensity: 0.5,
-                roughness: 0.28,
-                metalness: 0.05
-            });
-            const sphere = new THREE.Mesh(sphereG, sphereM);
-            sphere.name = 'portalSphere';
-            sphere.scale.set(1, 1, 1);
-            g.add(sphere);
-            const coreG = new THREE.SphereGeometry(0.35, 32, 32);
-            const coreM = new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.85 });
-            const core = new THREE.Mesh(coreG, coreM);
-            core.scale.set(1, 1, 1);
-            g.add(core);
-            const orbitPC = 120;
-            const orbitPos = new Float32Array(orbitPC * 3);
-            const orbitCol = new Float32Array(orbitPC * 3);
-            for (let i = 0; i < orbitPC; i++) {
-                const ang = (i / orbitPC) * Math.PI * 2;
-                const rad = 1.9 + (Math.random() - 0.5) * 0.35;
-                orbitPos[i * 3] = Math.cos(ang) * rad;
-                orbitPos[i * 3 + 1] = (Math.random() - 0.5) * 0.25;
-                orbitPos[i * 3 + 2] = Math.sin(ang) * rad;
-                orbitCol[i * 3] = 1;
-                orbitCol[i * 3 + 1] = 0.85;
-                orbitCol[i * 3 + 2] = 0.6;
+        const numArms = 4, particlesPerArm = 2800, galaxyRadius = 13, armTightness = 2.8;
+        const armParticlesTotal = numArms * particlesPerArm;
+        const armPositions = new Float32Array(armParticlesTotal * 3);
+        const armColors = new Float32Array(armParticlesTotal * 3);
+        const armSizesArr = new Float32Array(armParticlesTotal);
+
+        for (let arm = 0; arm < numArms; arm++) {
+            const baseAngle = arm * Math.PI * 2 / numArms;
+            for (let i = 0; i < particlesPerArm; i++) {
+                const idx = arm * particlesPerArm + i;
+                const t = i / particlesPerArm;
+                const r = t * galaxyRadius;
+                const spiralAngle = baseAngle + t * armTightness * Math.PI;
+                const spreadAngle = (0.15 + t * 1.1) * 0.9;
+                const angle = spiralAngle + (Math.random() - 0.5) * spreadAngle * 2;
+                armPositions[idx * 3] = Math.cos(angle) * r;
+                armPositions[idx * 3 + 1] = (Math.random() - 0.5) * (0.35 + t * 0.9) * (1 + t * 1.5);
+                armPositions[idx * 3 + 2] = Math.sin(angle) * r;
+                const wm = Math.max(0, 1 - t * 1.3);
+                const cm = Math.max(0, (t - 0.25) * 1.4);
+                armColors[idx * 3] = Math.min(1, 0.85 * wm + 0.35 * cm + 0.15 * Math.random());
+                armColors[idx * 3 + 1] = Math.min(1, 0.7 * wm + 0.4 * cm + 0.2 * (1 - Math.abs(t - 0.5) * 2) + 0.1 * Math.random());
+                armColors[idx * 3 + 2] = Math.min(1, 0.4 * wm + 0.85 * cm + 0.2 * Math.random());
+                armSizesArr[idx] = (0.03 + Math.random() * 0.09) * (1 - t * 0.5);
             }
-            const orbitGeom = new THREE.BufferGeometry();
-            orbitGeom.setAttribute('position', new THREE.BufferAttribute(orbitPos, 3));
-            orbitGeom.setAttribute('color', new THREE.BufferAttribute(orbitCol, 3));
-            const orbitMat = new THREE.PointsMaterial({
-                size: 0.06,
-                map: starSpriteTex,
-                vertexColors: true,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false,
-                transparent: true,
-                opacity: 0.75,
-                sizeAttenuation: true
-            });
-            g.add(new THREE.Points(orbitGeom, orbitMat));
-            g.userData = {
-                orbitParticles: g.children[g.children.length - 1],
-                glowSprite: glow
-            };
-            return g;
         }
 
-        const portalSSC = createPortal(glowTexSSC, '#ffb74d', portalTexSSC);
-        const portalDefence = createPortal(glowTexDefence, '#ef5350', portalTexDefence);
-        const portalWBExam = createPortal(glowTexWBExam, '#4dd0e1', portalTexWBExam);
+        const armGeom = new THREE.BufferGeometry();
+        armGeom.setAttribute('position', new THREE.BufferAttribute(armPositions, 3));
+        armGeom.setAttribute('color', new THREE.BufferAttribute(armColors, 3));
+        armGeom.setAttribute('size', new THREE.BufferAttribute(armSizesArr, 1));
+        const armMat = new THREE.PointsMaterial({
+            size: 0.12,
+            map: starSpriteTex,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            transparent: true,
+            opacity: 0.85,
+            sizeAttenuation: true
+        });
+        galaxyGroup.add(new THREE.Points(armGeom, armMat));
 
-        const pivSSC = new THREE.Group(), pivDef = new THREE.Group(), pivWB = new THREE.Group();
-        pivSSC.add(portalSSC); pivDef.add(portalDefence); pivWB.add(portalWBExam);
-        portalSSC.position.set(7.5, 4.2, 0);
-        portalDefence.position.set(8.2, 2.8, 0);
-        portalWBExam.position.set(7.8, 5.0, 0);
-        pivSSC.rotation.y = 0; pivDef.rotation.y = Math.PI * 2 / 3; pivWB.rotation.y = Math.PI * 4 / 3;
-        scene.add(pivSSC); scene.add(pivDef); scene.add(pivWB);
+        const bulgeCount = 2200, bulgeRadius = 2.8;
+        const bulgePositions = new Float32Array(bulgeCount * 3);
+        const bulgeColors = new Float32Array(bulgeCount * 3);
+        for (let i = 0; i < bulgeCount; i++) {
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const r = Math.pow(Math.random(), 1.8) * bulgeRadius;
+            bulgePositions[i * 3] = Math.sin(phi) * Math.cos(theta) * r;
+            bulgePositions[i * 3 + 1] = Math.sin(phi) * Math.sin(theta) * r * 0.35;
+            bulgePositions[i * 3 + 2] = Math.cos(phi) * r;
+            const br = 0.7 + 0.3 * (1 - r / bulgeRadius);
+            bulgeColors[i * 3] = br;
+            bulgeColors[i * 3 + 1] = br * 0.9;
+            bulgeColors[i * 3 + 2] = br * 0.7;
+        }
+        const bulgeGeom = new THREE.BufferGeometry();
+        bulgeGeom.setAttribute('position', new THREE.BufferAttribute(bulgePositions, 3));
+        bulgeGeom.setAttribute('color', new THREE.BufferAttribute(bulgeColors, 3));
+        const bulgeMat = new THREE.PointsMaterial({
+            size: 0.16,
+            map: starSpriteTex,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            transparent: true,
+            opacity: 0.9,
+            sizeAttenuation: true
+        });
+        galaxyGroup.add(new THREE.Points(bulgeGeom, bulgeMat));
 
-        const portalData = [
-            { pivot: pivSSC, group: portalSSC, url: 'ssc.html', baseY: 4.2, bobOffset: 0 },
-            { pivot: pivDef, group: portalDefence, url: 'defence.html', baseY: 2.8, bobOffset: Math.PI * 0.7 },
-            { pivot: pivWB, group: portalWBExam, url: 'wbpsc.html', baseY: 5.0, bobOffset: Math.PI * 1.4 }
-        ];
-
-        const clickable = [];
-        portalData.forEach(p => p.group.traverse(ch => {
-            if (ch.isMesh && ch.geometry.type === 'SphereGeometry') {
-                ch.userData.pd = p;
-                clickable.push(ch);
-            }
+        const coreGlowSprite = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: coreGlowTex,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            transparent: true,
+            opacity: 0.75,
+            color: new THREE.Color('#fffef0')
         }));
+        coreGlowSprite.scale.set(7, 7, 1);
+        galaxyGroup.add(coreGlowSprite);
 
-        const raycaster = new THREE.Raycaster();
-        raycaster.params.Points.threshold = 1.5;
-        const mouse = new THREE.Vector2();
-        let hovered = null;
-
-        function intersect(e) {
-            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-            raycaster.setFromCamera(mouse, camera);
-            return raycaster.intersectObjects(clickable, false);
+        const coreClusterCount = 600;
+        const coreClusterPositions = new Float32Array(coreClusterCount * 3);
+        const coreClusterColors = new Float32Array(coreClusterCount * 3);
+        for (let i = 0; i < coreClusterCount; i++) {
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const r = Math.pow(Math.random(), 3) * 1.2;
+            coreClusterPositions[i * 3] = Math.sin(phi) * Math.cos(theta) * r;
+            coreClusterPositions[i * 3 + 1] = Math.sin(phi) * Math.sin(theta) * r * 0.3;
+            coreClusterPositions[i * 3 + 2] = Math.cos(phi) * r;
+            coreClusterColors[i * 3] = 1;
+            coreClusterColors[i * 3 + 1] = 0.95;
+            coreClusterColors[i * 3 + 2] = 0.8;
         }
-
-        function applyHov(p, s) {
-            p.group.children.forEach(ch => {
-                if (ch.isMesh && ch.geometry.type === 'SphereGeometry') ch.scale.setScalar(s);
-            });
-            if (p.group.userData.glowSprite) p.group.userData.glowSprite.scale.set(7.5, 7.5, 1);
-        }
-
-        function resetHov() {
-            if (!hovered) return;
-            hovered.group.children.forEach(ch => {
-                if (ch.isMesh && ch.geometry.type === 'SphereGeometry') ch.scale.setScalar(1);
-            });
-            if (hovered.group.userData.glowSprite) hovered.group.userData.glowSprite.scale.set(6.5, 6.5, 1);
-        }
-
-        canvas.addEventListener('mousemove', e => {
-            const its = intersect(e);
-            if (its.length) {
-                const obj = its[0].object;
-                if (obj.userData.pd) {
-                    canvas.style.cursor = 'pointer';
-                    if (hovered !== obj.userData.pd) {
-                        resetHov();
-                        hovered = obj.userData.pd;
-                        applyHov(hovered, 1.18);
-                    }
-                    return;
-                }
-            }
-            canvas.style.cursor = 'default';
-            if (hovered) {
-                resetHov();
-                hovered = null;
-            }
+        const coreClusterGeom = new THREE.BufferGeometry();
+        coreClusterGeom.setAttribute('position', new THREE.BufferAttribute(coreClusterPositions, 3));
+        coreClusterGeom.setAttribute('color', new THREE.BufferAttribute(coreClusterColors, 3));
+        const coreClusterMat = new THREE.PointsMaterial({
+            size: 0.22,
+            map: starSpriteTex,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            transparent: true,
+            opacity: 0.95,
+            sizeAttenuation: true
         });
+        galaxyGroup.add(new THREE.Points(coreClusterGeom, coreClusterMat));
 
-        canvas.addEventListener('click', e => {
-            const its = intersect(e);
-            if (its.length && its[0].object.userData.pd) window.location.href = its[0].object.userData.pd.url;
+        const brightStarCount = 800;
+        const brightStarPositions = new Float32Array(brightStarCount * 3);
+        const brightStarColors = new Float32Array(brightStarCount * 3);
+        for (let i = 0; i < brightStarCount; i++) {
+            const arm = Math.floor(Math.random() * numArms);
+            const baseAngle = arm * Math.PI * 2 / numArms;
+            const t = Math.random();
+            const r = t * galaxyRadius;
+            const spiralAngle = baseAngle + t * armTightness * Math.PI;
+            const angle = spiralAngle + (Math.random() - 0.5) * 0.6;
+            brightStarPositions[i * 3] = Math.cos(angle) * r;
+            brightStarPositions[i * 3 + 1] = (Math.random() - 0.5) * 0.4;
+            brightStarPositions[i * 3 + 2] = Math.sin(angle) * r;
+            const isBlue = Math.random() < 0.35;
+            brightStarColors[i * 3] = isBlue ? 0.55 + Math.random() * 0.3 : 0.8 + Math.random() * 0.2;
+            brightStarColors[i * 3 + 1] = isBlue ? 0.65 + Math.random() * 0.25 : 0.75 + Math.random() * 0.2;
+            brightStarColors[i * 3 + 2] = isBlue ? 0.9 + Math.random() * 0.1 : 0.5 + Math.random() * 0.4;
+        }
+        const brightStarGeom = new THREE.BufferGeometry();
+        brightStarGeom.setAttribute('position', new THREE.BufferAttribute(brightStarPositions, 3));
+        brightStarGeom.setAttribute('color', new THREE.BufferAttribute(brightStarColors, 3));
+        const brightStarMat = new THREE.PointsMaterial({
+            size: 0.28,
+            map: starSpriteTex,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            transparent: true,
+            opacity: 0.8,
+            sizeAttenuation: true
         });
+        galaxyGroup.add(new THREE.Points(brightStarGeom, brightStarMat));
 
-        canvas.addEventListener('touchstart', e => {
-            if (e.touches.length === 1) {
-                const t = e.touches[0];
-                const fake = { clientX: t.clientX, clientY: t.clientY };
-                canvas.dispatchEvent(new MouseEvent('mousemove', fake));
-                canvas.dispatchEvent(new MouseEvent('click', fake));
+        function createNebulaSprite(c1, c2, size, op = 0.4) {
+            const c = document.createElement('canvas');
+            c.width = 512;
+            c.height = 512;
+            const ctx = c.getContext('2d');
+            const g = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
+            g.addColorStop(0, c1);
+            g.addColorStop(0.5, c2);
+            g.addColorStop(1, 'transparent');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, 512, 512);
+            ctx.globalCompositeOperation = 'overlay';
+            for (let i = 0; i < 100; i++) {
+                ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.05})`;
+                ctx.beginPath();
+                ctx.arc(Math.random() * 512, Math.random() * 512, Math.random() * 20, 0, Math.PI * 2);
+                ctx.fill();
             }
-        }, { passive: true });
+            const tex = new THREE.CanvasTexture(c);
+            const mat = new THREE.SpriteMaterial({
+                map: tex,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+                transparent: true,
+                opacity: op
+            });
+            const s = new THREE.Sprite(mat);
+            s.scale.set(size, size, 1);
+            return s;
+        }
+
+        const nebula1 = createNebulaSprite('#442288', '#220066', 35, 0.25);
+        nebula1.position.set(5, -2, -10);
+        scene.add(nebula1);
+        const nebula2 = createNebulaSprite('#882244', '#440022', 30, 0.2);
+        nebula2.position.set(-8, 3, -12);
+        scene.add(nebula2);
+
+        const bgStarCount = 3000;
+        const bgStarPositions = new Float32Array(bgStarCount * 3);
+        const bgStarColors = new Float32Array(bgStarCount * 3);
+        const bgRadius = 55;
+        for (let i = 0; i < bgStarCount; i++) {
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const r = 20 + Math.random() * (bgRadius - 20);
+            bgStarPositions[i * 3] = Math.sin(phi) * Math.cos(theta) * r;
+            bgStarPositions[i * 3 + 1] = Math.sin(phi) * Math.sin(theta) * r;
+            bgStarPositions[i * 3 + 2] = Math.cos(phi) * r;
+            const br = 0.4 + Math.random() * 0.6;
+            const tint = Math.random();
+            bgStarColors[i * 3] = br * (0.7 + tint * 0.3);
+            bgStarColors[i * 3 + 1] = br * (0.7 + tint * 0.3);
+            bgStarColors[i * 3 + 2] = br * (0.8 + tint * 0.2);
+        }
+        const bgStarGeom = new THREE.BufferGeometry();
+        bgStarGeom.setAttribute('position', new THREE.BufferAttribute(bgStarPositions, 3));
+        bgStarGeom.setAttribute('color', new THREE.BufferAttribute(bgStarColors, 3));
+        const bgStarMat = new THREE.PointsMaterial({
+            size: 0.08,
+            map: starSpriteTex,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            transparent: true,
+            opacity: 0.7,
+            sizeAttenuation: true
+        });
+        const bgStars = new THREE.Points(bgStarGeom, bgStarMat);
+        scene.add(bgStars);
 
         const clock = new THREE.Clock();
+
         function animate(ts) {
             requestAnimationFrame(animate);
             const dt = Math.min(clock.getDelta(), 0.1);
             const el = ts * 0.001;
-            const sp = 0.12;
-            pivSSC.rotation.y += sp * dt;
-            pivDef.rotation.y += sp * 0.85 * dt;
-            pivWB.rotation.y += sp * 0.92 * dt;
-            portalData.forEach(p => {
-                const bob = Math.sin(el * 0.55 + p.bobOffset) * 0.7;
-                p.group.position.y = p.baseY + bob;
-                if (p.group.userData.orbitParticles) p.group.userData.orbitParticles.rotation.y += 0.9 * dt;
-                if (p.group.userData.glowSprite) {
-                    const pulse = 1 + Math.sin(el * 1.8 + p.bobOffset) * 0.12;
-                    const bs = (hovered === p) ? 7.5 : 6.5;
-                    p.group.userData.glowSprite.scale.setScalar(bs * pulse);
-                    p.group.userData.glowSprite.material.opacity = (hovered === p) ? 0.85 : 0.6 + Math.sin(el * 1.8 + p.bobOffset) * 0.1;
-                }
-            });
+
             galaxyGroup.rotation.y += 0.025 * dt;
             bgStars.rotation.y += 0.008 * dt;
             bgStars.rotation.x += 0.004 * dt;
             nebula1.rotation.z += 0.001 * dt;
             nebula2.rotation.z -= 0.001 * dt;
+
             const cp = 1 + Math.sin(el * 0.7) * 0.06;
             coreGlowSprite.scale.set(7 * cp, 7 * cp, 1);
             coreGlowSprite.material.opacity = 0.7 + Math.sin(el * 0.9) * 0.08;
+
             renderer.render(scene, camera);
         }
 
@@ -729,16 +698,19 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
+
         window.addEventListener('resize', onResize, { passive: true });
         window.addEventListener('orientationchange', () => setTimeout(onResize, 200), { passive: true });
 
         requestAnimationFrame(animate);
+
         window.addEventListener('keydown', e => {
             if (e.key === '1') window.location.href = 'ssc.html';
             if (e.key === '2') window.location.href = 'defence.html';
             if (e.key === '3') window.location.href = 'wbpsc.html';
         });
-        console.log('%c🚀 মহাজাগতিক জ্ঞানের দ্বার প্রস্তুত! %c| Cosmic Knowledge Portal Ready', 'font-size:1.3em;color:#FFB74D;', 'color:#aaa;');
+
+        console.log('%c✨ মহাজাগতিক পটভূমি প্রস্তুত! %c| Cosmic background ready', 'font-size:1.3em;color:#FFB74D;', 'color:#aaa;');
     </script>
 </body>
 </html>
