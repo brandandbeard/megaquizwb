@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>COMPETITIVE EXAMS</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -45,7 +45,6 @@
             pointer-events: auto;
         }
 
-        /* Overlay container */
         .overlay {
             position: fixed;
             top: 0;
@@ -56,7 +55,6 @@
             z-index: 10;
         }
 
-        /* Main title */
         .main-title {
             position: absolute;
             top: clamp(20px, 5vh, 50px);
@@ -85,184 +83,167 @@
             margin-top: 4px;
         }
 
-        /* Portal labels */
-        .portal-label {
+        .nav-row {
             position: absolute;
-            pointer-events: auto;
-            cursor: pointer;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            transition: filter 0.3s ease, transform 0.15s ease;
-            z-index: 15;
-            will-change: left, top;
-        }
-        .portal-label .label-inner {
-            background: rgba(10, 12, 30, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 16px;
-            padding: clamp(8px, 1.5vh, 14px) clamp(14px, 2.5vw, 26px);
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
-            white-space: nowrap;
-        }
-        .portal-label:hover .label-inner {
-            transform: scale(1.12);
-            box-shadow: 0 12px 44px rgba(0, 0, 0, 0.7);
-        }
-        .portal-label .label-name {
-            font-family: 'Hind Siliguri', sans-serif;
-            font-size: clamp(1rem, 1.8vw, 1.5rem);
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 0.03em;
-            text-shadow: 0 0 18px currentColor;
-        }
-        .portal-label .label-file {
-            font-family: 'Orbitron', monospace;
-            font-size: clamp(0.55rem, 0.9vw, 0.75rem);
-            font-weight: 500;
-            letter-spacing: 0.08em;
-            opacity: 0.8;
-            margin-top: 2px;
-        }
-        /* Portal-specific label accents */
-        .portal-label.label-ssc .label-inner {
-            border-color: rgba(255, 183, 77, 0.5);
-            box-shadow: 0 8px 32px rgba(255, 152, 0, 0.25), 0 0 60px rgba(255, 152, 0, 0.1);
-        }
-        .portal-label.label-ssc .label-name {
-            color: #FFB74D;
-            text-shadow: 0 0 22px rgba(255, 152, 0, 0.8);
-        }
-        .portal-label.label-ssc:hover .label-inner {
-            border-color: rgba(255, 183, 77, 0.9);
-            box-shadow: 0 12px 44px rgba(255, 152, 0, 0.5), 0 0 90px rgba(255, 152, 0, 0.3);
-        }
-
-        .portal-label.label-defence .label-inner {
-            border-color: rgba(239, 83, 80, 0.5);
-            box-shadow: 0 8px 32px rgba(244, 67, 54, 0.25), 0 0 60px rgba(244, 67, 54, 0.1);
-        }
-        .portal-label.label-defence .label-name {
-            color: #EF5350;
-            text-shadow: 0 0 22px rgba(244, 67, 54, 0.8);
-        }
-        .portal-label.label-defence:hover .label-inner {
-            border-color: rgba(239, 83, 80, 0.9);
-            box-shadow: 0 12px 44px rgba(244, 67, 54, 0.5), 0 0 90px rgba(244, 67, 54, 0.3);
-        }
-
-        .portal-label.label-wbexam .label-inner {
-            border-color: rgba(77, 208, 225, 0.5);
-            box-shadow: 0 8px 32px rgba(0, 188, 212, 0.25), 0 0 60px rgba(0, 188, 212, 0.1);
-        }
-        .portal-label.label-wbexam .label-name {
-            color: #4DD0E1;
-            text-shadow: 0 0 22px rgba(0, 188, 212, 0.8);
-        }
-        .portal-label.label-wbexam:hover .label-inner {
-            border-color: rgba(77, 208, 225, 0.9);
-            box-shadow: 0 12px 44px rgba(0, 188, 212, 0.5), 0 0 90px rgba(0, 188, 212, 0.3);
-        }
-
-        /* Subtle hint at bottom */
-        .hint-text {
-            position: absolute;
-            bottom: clamp(16px, 3vh, 30px);
+            bottom: 27%;
             left: 50%;
             transform: translateX(-50%);
-            font-family: 'Hind Siliguri', sans-serif;
-            font-size: clamp(0.7rem, 1vw, 0.85rem);
-            color: rgba(180, 190, 220, 0.7);
-            text-shadow: 0 0 10px rgba(150, 170, 220, 0.4);
-            letter-spacing: 0.05em;
-            pointer-events: none;
-            text-align: center;
-            animation: hintPulse 3s ease-in-out infinite;
+            display: flex;
+            gap: clamp(20px, 5vw, 50px);
+            flex-wrap: nowrap;
+            justify-content: center;
+            pointer-events: auto;
+            z-index: 25;
         }
-        @keyframes hintPulse {
-            0%,
-            100% {
-                opacity: 0.5;
-            }
-            50% {
-                opacity: 0.9;
-            }
+        .nav-link {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: clamp(1.1rem, 2.3vw, 1.7rem);
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.06em;
+            background: none;
+            border: none;
+            padding: 10px 16px;
+            text-shadow: 0 0 20px currentColor;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+        .nav-link .emoji {
+            font-size: 1.3em;
+            display: inline-block;
+            filter: drop-shadow(0 0 10px currentColor);
+            transition: transform 0.3s ease;
+        }
+        .nav-link:hover .emoji {
+            transform: scale(1.2) rotate(-5deg);
+        }
+        .nav-link.ssc { color: #FFB74D; text-shadow: 0 0 22px #ff9800; }
+        .nav-link.def { color: #EF5350; text-shadow: 0 0 22px #f44336; }
+        .nav-link.wb { color: #4DD0E1; text-shadow: 0 0 22px #00bcd4; }
+        .nav-link:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 35px currentColor;
+            filter: brightness(1.5);
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2.5px;
+            background: currentColor;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+        .nav-link:hover::after { width: 90%; }
+
+        .contact-row {
+            position: absolute;
+            bottom: 2.5%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: clamp(8px, 2vw, 16px);
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(0.65rem, 0.95vw, 0.8rem);
+            color: rgba(210, 220, 240, 0.9);
+            letter-spacing: 0.02em;
+            text-align: center;
+            line-height: 1.6;
+            pointer-events: auto;
+            z-index: 26;
+            padding: 6px 14px;
+            background: rgba(0, 0, 10, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 30px;
+            white-space: nowrap;
+        }
+        .contact-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: rgba(230, 240, 255, 0.9);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.3s, transform 0.2s, text-shadow 0.3s;
+        }
+        .contact-item:hover {
+            color: #ffffff;
+            text-shadow: 0 0 14px rgba(255, 255, 255, 0.7);
+            transform: translateY(-2px);
+        }
+        .contact-sep {
+            color: rgba(255, 255, 255, 0.25);
+            pointer-events: none;
+        }
+        .contact-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            fill: currentColor;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
-            .portal-label .label-inner {
-                border-radius: 12px;
-                padding: 8px 16px;
-            }
-            .portal-label .label-name {
-                font-size: 0.9rem;
-            }
-            .portal-label .label-file {
-                font-size: 0.6rem;
-            }
-            .main-title .title-bengali {
-                font-size: 1.4rem;
-            }
-            .main-title .title-sub {
-                font-size: 0.65rem;
-            }
+            .nav-row { bottom: 32%; gap: 18px; }
+            .nav-link { font-size: 0.95rem; padding: 8px 10px; gap: 6px; }
+            .contact-row { bottom: 3%; gap: 6px; font-size: 0.55rem; padding: 4px 10px; }
+            .contact-icon { width: 15px; height: 15px; }
+            .main-title .title-bengali { font-size: 1.4rem; }
+            .main-title .title-sub { font-size: 0.65rem; }
         }
         @media (max-width: 480px) {
-            .portal-label .label-inner {
-                border-radius: 10px;
-                padding: 6px 12px;
-            }
-            .portal-label .label-name {
-                font-size: 0.78rem;
-            }
-            .portal-label .label-file {
-                font-size: 0.55rem;
-            }
+            .nav-row { bottom: 36%; gap: 12px; }
+            .nav-link { font-size: 0.8rem; padding: 6px 8px; gap: 4px; }
+            .contact-row { font-size: 0.5rem; gap: 4px; }
         }
     </style>
 </head>
 <body>
-
-    <!-- Three.js Canvas -->
     <canvas id="galaxyCanvas"></canvas>
-
-    <!-- Overlay -->
     <div class="overlay" id="overlay">
-        <!-- Main Title -->
         <div class="main-title">
             <div class="title-bengali">✨ COMPETITIVE EXAMS ✨</div>
             <div class="title-sub">BY Arif Hussain</div>
         </div>
-
-        <!-- Portal Labels (positioned by JS) -->
-        <div class="portal-label label-ssc" id="labelSSC" data-url="ssc.html">
-            <div class="label-inner">
-                <div class="label-name">🎓 SSC</div>
-                <div class="label-file"></div>
-            </div>
+        <div class="nav-row">
+            <a class="nav-link ssc" href="ssc.html"><span class="emoji">📙</span> এস.এস.সি</a>
+            <a class="nav-link def" href="defence.html"><span class="emoji">📕</span> প্রতিরক্ষা</a>
+            <a class="nav-link wb" href="wbexam.html"><span class="emoji">📘</span> প.ব. পরীক্ষা</a>
         </div>
-        <div class="portal-label label-defence" id="labelDefence" data-url="defence.html">
-            <div class="label-inner">
-                <div class="label-name">🛡️ প্রতিরক্ষা</div>
-                <div class="label-file"></div>
-            </div>
+        <div class="contact-row">
+            <a class="contact-item" href="mailto:arifbeldanga@gmail.com">
+                <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                arifbeldanga@gmail.com
+            </a>
+            <span class="contact-sep">|</span>
+            <a class="contact-item" href="https://t.me/beldanga1" target="_blank">
+                <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+                @beldanga1
+            </a>
+            <span class="contact-sep">|</span>
+            <a class="contact-item" href="https://instagram.com/arifhussain.x" target="_blank">
+                <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg>
+                arifhussain.x
+            </a>
+            <span class="contact-sep">|</span>
+            <a class="contact-item" href="upi://pay?pa=arho065-1@okicici&pn=Arif&cu=INR" target="_blank">
+                <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><text x="12" y="17" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">₹</text></svg>
+                UPI: arho065-1@okicici / 9564385573
+            </a>
         </div>
-        <div class="portal-label label-wbexam" id="labelWBExam" data-url="wbpsc.html">
-            <div class="label-inner">
-                <div class="label-name">📝WBPSC পরীক্ষা</div>
-                <div class="label-file"></div>
-            </div>
-        </div>
-
-        <!-- Hint -->
-        <div class="hint-text">📧 arifbeldanga@gmail.com &nbsp;|&nbsp; 💬 Telegram: @beldanga1 &nbsp;|&nbsp; If you want to support, UPI: arho065-1@okicici or 9564385573</div>
     </div>
 
-    <!-- Three.js Import Map -->
     <script type="importmap">
         {
             "imports": {
@@ -270,23 +251,10 @@
             }
         }
     </script>
-
     <script type="module">
         import * as THREE from 'three';
 
-        // ─────────────────────────────────────
-        // DOM REFERENCES
-        // ─────────────────────────────────────
         const canvas = document.getElementById('galaxyCanvas');
-        const overlay = document.getElementById('overlay');
-        const labelSSC = document.getElementById('labelSSC');
-        const labelDefence = document.getElementById('labelDefence');
-        const labelWBExam = document.getElementById('labelWBExam');
-        const allLabels = [labelSSC, labelDefence, labelWBExam];
-
-        // ─────────────────────────────────────
-        // THREE.JS SETUP
-        // ─────────────────────────────────────
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -299,9 +267,6 @@
         camera.position.set(0, 6.5, 17);
         camera.lookAt(0, 0.8, 0);
 
-        // ─────────────────────────────────────
-        // LIGHTING
-        // ─────────────────────────────────────
         const ambientLight = new THREE.AmbientLight(0x1a1a3a, 1.8);
         scene.add(ambientLight);
         const pointLight1 = new THREE.PointLight(0x8899cc, 25, 40, 1.5);
@@ -311,9 +276,6 @@
         pointLight2.position.set(-6, -2, -5);
         scene.add(pointLight2);
 
-        // ─────────────────────────────────────
-        // TEXTURE GENERATORS
-        // ─────────────────────────────────────
         function createGlowTexture(hexColor, size = 256) {
             const c = document.createElement('canvas');
             c.width = size;
@@ -368,319 +330,151 @@
             return new THREE.CanvasTexture(c);
         }
 
-        // Pre-generate textures
+        function createDetailedPortalTexture(baseColor, text, accentColor, size = 2048) {
+            const c = document.createElement('canvas');
+            c.width = size;
+            c.height = size;
+            const ctx = c.getContext('2d');
+            const baseGrad = ctx.createRadialGradient(size*0.35, size*0.3, size*0.05, size/2, size/2, size*0.75);
+            baseGrad.addColorStop(0, '#ffffff');
+            baseGrad.addColorStop(0.12, baseColor);
+            baseGrad.addColorStop(0.55, baseColor);
+            baseGrad.addColorStop(0.85, '#000000');
+            baseGrad.addColorStop(1, '#000000');
+            ctx.fillStyle = baseGrad;
+            ctx.fillRect(0,0,size,size);
+            ctx.fillStyle = 'rgba(255,255,255,0.03)';
+            for (let i=0;i<600;i++){ const dx=Math.random()*size,dy=Math.random()*size,dr=Math.random()*size*0.02+1; ctx.beginPath(); ctx.arc(dx,dy,dr,0,Math.PI*2); ctx.fill(); }
+            const shadeGrad = ctx.createRadialGradient(size/2,size/2,size*.06,size/2,size/2,size*.72);
+            shadeGrad.addColorStop(0,'rgba(255,255,255,0.35)');
+            shadeGrad.addColorStop(0.2,'rgba(255,255,255,0.1)');
+            shadeGrad.addColorStop(0.45,'rgba(0,0,0,0.0)');
+            shadeGrad.addColorStop(0.65,'rgba(0,0,0,0.15)');
+            shadeGrad.addColorStop(0.85,'rgba(0,0,0,0.5)');
+            shadeGrad.addColorStop(1,'rgba(0,0,0,0.75)');
+            ctx.fillStyle = shadeGrad;
+            ctx.fillRect(0,0,size,size);
+            if (!CanvasRenderingContext2D.prototype.roundRect) {
+                CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r){
+                    if(typeof r==='number') r={tl:r,tr:r,br:r,bl:r};
+                    this.moveTo(x+r.tl,y); this.lineTo(x+w-r.tr,y); this.quadraticCurveTo(x+w,y,x+w,y+r.tr);
+                    this.lineTo(x+w,y+h-r.br); this.quadraticCurveTo(x+w,y+h,x+w-r.br,y+h);
+                    this.lineTo(x+r.bl,y+h); this.quadraticCurveTo(x,y+h,x,y+h-r.bl);
+                    this.lineTo(x,y+r.tl); this.quadraticCurveTo(x,y,x+r.tl,y);
+                };
+            }
+            // Banner (text box) is kept on texture, but no separate HTML label box
+            const cx=size/2, bannerY=size*0.5, bannerHeight=size*0.18, bannerWidth=size*0.9, bannerRadius=bannerHeight*0.45;
+            const bannerGrad=ctx.createLinearGradient(cx,bannerY-bannerHeight/2,cx,bannerY+bannerHeight/2);
+            bannerGrad.addColorStop(0,'rgba(0,0,0,0.95)'); bannerGrad.addColorStop(0.5,'rgba(0,0,0,0.98)'); bannerGrad.addColorStop(1,'rgba(0,0,0,0.95)');
+            ctx.fillStyle=bannerGrad; ctx.beginPath(); ctx.roundRect(cx-bannerWidth/2,bannerY-bannerHeight/2,bannerWidth,bannerHeight,bannerRadius); ctx.fill();
+            ctx.strokeStyle=accentColor; ctx.lineWidth=size*0.016; ctx.shadowColor=accentColor; ctx.shadowBlur=size*0.08;
+            ctx.stroke(); ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=size*0.006; ctx.shadowColor='rgba(255,255,255,0.6)'; ctx.shadowBlur=size*0.04;
+            const inset=size*0.015; ctx.beginPath(); ctx.roundRect(cx-bannerWidth/2+inset,bannerY-bannerHeight/2+inset,bannerWidth-inset*2,bannerHeight-inset*2,bannerRadius*0.75); ctx.stroke();
+            ctx.shadowColor='transparent'; ctx.shadowBlur=0;
+            const dotY=bannerY, dotSpacing=bannerHeight*0.4;
+            for(let side=-1;side<=1;side+=2){ const dotX=cx+side*(bannerWidth/2-bannerHeight*0.55); ctx.fillStyle=accentColor; ctx.shadowColor=accentColor; ctx.shadowBlur=size*0.04; ctx.beginPath(); ctx.arc(dotX,dotY-dotSpacing,size*0.016,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(dotX,dotY+dotSpacing,size*0.016,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.shadowColor='transparent'; }
+            const fontSize=Math.floor(size*0.14); ctx.font=`800 ${fontSize}px "Hind Siliguri","Noto Sans Bengali","Siyam Rupali","Bangla",sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
+            ctx.save(); ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.strokeStyle='#000000'; ctx.lineWidth=size*0.04; ctx.lineJoin='round'; ctx.miterLimit=2; ctx.strokeText(text,cx,bannerY); ctx.restore();
+            ctx.shadowColor=accentColor; ctx.shadowBlur=size*0.06; ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.fillText(text,cx+size*0.005,bannerY+size*0.005); ctx.shadowBlur=0; ctx.shadowColor='transparent';
+            ctx.fillStyle='#ffffff'; ctx.fillText(text,cx,bannerY); ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.fillText(text,cx-size*0.004,bannerY-size*0.006);
+            const subFontSize=Math.floor(size*0.055); ctx.font=`600 ${subFontSize}px "Orbitron","Hind Siliguri",sans-serif`; const subY=bannerY+bannerHeight*0.38;
+            ctx.save(); ctx.strokeStyle='#000000'; ctx.lineWidth=size*0.015; ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.strokeText('●  CLICK TO ENTER  ●',cx,subY); ctx.restore();
+            ctx.fillStyle=accentColor; ctx.shadowColor=accentColor; ctx.shadowBlur=size*0.03; ctx.fillText('●  CLICK TO ENTER  ●',cx,subY); ctx.shadowBlur=0; ctx.shadowColor='transparent';
+            ctx.fillStyle='#ffffff'; ctx.fillText('●  CLICK TO ENTER  ●',cx-size*0.002,subY-size*0.003);
+            const tex = new THREE.CanvasTexture(c); tex.minFilter=THREE.LinearMipmapLinearFilter; tex.magFilter=THREE.LinearFilter; tex.generateMipmaps=true; tex.colorSpace=THREE.SRGBColorSpace; tex.anisotropy=4; return tex;
+        }
+
         const starSpriteTex = createStarSpriteTexture();
         const coreGlowTex = createCoreGlowTexture();
-        const glowTexSSC = createGlowTexture('#ffb74d', 256);
-        const glowTexDefence = createGlowTexture('#ef5350', 256);
-        const glowTexWBExam = createGlowTexture('#4dd0e1', 256);
+        const glowTexSSC = createGlowTexture('#ffb74d');
+        const glowTexDefence = createGlowTexture('#ef5350');
+        const glowTexWBExam = createGlowTexture('#4dd0e1');
+        const portalTexSSC = createDetailedPortalTexture('#ffe0b2','এস.এস.সি','#ff9800');
+        const portalTexDefence = createDetailedPortalTexture('#ffcdd2','প্রতিরক্ষা','#f44336');
+        const portalTexWBExam = createDetailedPortalTexture('#b2ebf2','প.ব. পরীক্ষা','#00bcd4');
 
-        // ─────────────────────────────────────
-        // GALAXY GROUP
-        // ─────────────────────────────────────
-        const galaxyGroup = new THREE.Group();
-        galaxyGroup.rotation.x = -0.45; // Tilt for 3D perspective
-        galaxyGroup.rotation.y = 0.25;
-        scene.add(galaxyGroup);
+        const galaxyGroup = new THREE.Group(); galaxyGroup.rotation.x=-0.45; galaxyGroup.rotation.y=0.25; scene.add(galaxyGroup);
+        const numArms=4, particlesPerArm=2800, galaxyRadius=13, armTightness=2.8;
+        const armParticlesTotal=numArms*particlesPerArm; const armPositions=new Float32Array(armParticlesTotal*3), armColors=new Float32Array(armParticlesTotal*3), armSizesArr=new Float32Array(armParticlesTotal);
+        for(let arm=0;arm<numArms;arm++){ const baseAngle=arm*Math.PI*2/numArms; for(let i=0;i<particlesPerArm;i++){ const idx=arm*particlesPerArm+i, t=i/particlesPerArm, r=t*galaxyRadius, spiralAngle=baseAngle+t*armTightness*Math.PI, spreadAngle=(0.15+t*1.1)*0.9, angle=spiralAngle+(Math.random()-0.5)*spreadAngle*2; armPositions[idx*3]=Math.cos(angle)*r; armPositions[idx*3+1]=(Math.random()-0.5)*(0.35+t*0.9)*(1+t*1.5); armPositions[idx*3+2]=Math.sin(angle)*r; const wm=Math.max(0,1-t*1.3), cm=Math.max(0,(t-0.25)*1.4); armColors[idx*3]=Math.min(1,0.85*wm+0.35*cm+0.15*Math.random()); armColors[idx*3+1]=Math.min(1,0.7*wm+0.4*cm+0.2*(1-Math.abs(t-0.5)*2)+0.1*Math.random()); armColors[idx*3+2]=Math.min(1,0.4*wm+0.85*cm+0.2*Math.random()); armSizesArr[idx]=(0.03+Math.random()*0.09)*(1-t*0.5); } }
+        const armGeom=new THREE.BufferGeometry(); armGeom.setAttribute('position',new THREE.BufferAttribute(armPositions,3)); armGeom.setAttribute('color',new THREE.BufferAttribute(armColors,3)); armGeom.setAttribute('size',new THREE.BufferAttribute(armSizesArr,1));
+        const armMat=new THREE.PointsMaterial({size:0.12,map:starSpriteTex,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.85,sizeAttenuation:true}); galaxyGroup.add(new THREE.Points(armGeom,armMat));
+        const bulgeCount=2200, bulgeRadius=2.8; const bulgePositions=new Float32Array(bulgeCount*3), bulgeColors=new Float32Array(bulgeCount*3);
+        for(let i=0;i<bulgeCount;i++){ const theta=Math.random()*Math.PI*2, phi=Math.acos(2*Math.random()-1), r=Math.pow(Math.random(),1.8)*bulgeRadius; bulgePositions[i*3]=Math.sin(phi)*Math.cos(theta)*r; bulgePositions[i*3+1]=Math.sin(phi)*Math.sin(theta)*r*0.35; bulgePositions[i*3+2]=Math.cos(phi)*r; const br=0.7+0.3*(1-r/bulgeRadius); bulgeColors[i*3]=br; bulgeColors[i*3+1]=br*0.9; bulgeColors[i*3+2]=br*0.7; }
+        const bulgeGeom=new THREE.BufferGeometry(); bulgeGeom.setAttribute('position',new THREE.BufferAttribute(bulgePositions,3)); bulgeGeom.setAttribute('color',new THREE.BufferAttribute(bulgeColors,3));
+        const bulgeMat=new THREE.PointsMaterial({size:0.16,map:starSpriteTex,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.9,sizeAttenuation:true}); galaxyGroup.add(new THREE.Points(bulgeGeom,bulgeMat));
+        const coreGlowSprite=new THREE.Sprite(new THREE.SpriteMaterial({map:coreGlowTex,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.75,color:new THREE.Color('#fffef0')})); coreGlowSprite.scale.set(7,7,1); galaxyGroup.add(coreGlowSprite);
+        const coreClusterCount=600; const coreClusterPositions=new Float32Array(coreClusterCount*3), coreClusterColors=new Float32Array(coreClusterCount*3);
+        for(let i=0;i<coreClusterCount;i++){ const theta=Math.random()*Math.PI*2, phi=Math.acos(2*Math.random()-1), r=Math.pow(Math.random(),3)*1.2; coreClusterPositions[i*3]=Math.sin(phi)*Math.cos(theta)*r; coreClusterPositions[i*3+1]=Math.sin(phi)*Math.sin(theta)*r*0.3; coreClusterPositions[i*3+2]=Math.cos(phi)*r; coreClusterColors[i*3]=1; coreClusterColors[i*3+1]=0.95; coreClusterColors[i*3+2]=0.8; }
+        const coreClusterGeom=new THREE.BufferGeometry(); coreClusterGeom.setAttribute('position',new THREE.BufferAttribute(coreClusterPositions,3)); coreClusterGeom.setAttribute('color',new THREE.BufferAttribute(coreClusterColors,3));
+        const coreClusterMat=new THREE.PointsMaterial({size:0.22,map:starSpriteTex,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.95,sizeAttenuation:true}); galaxyGroup.add(new THREE.Points(coreClusterGeom,coreClusterMat));
+        const brightStarCount=800; const brightStarPositions=new Float32Array(brightStarCount*3), brightStarColors=new Float32Array(brightStarCount*3);
+        for(let i=0;i<brightStarCount;i++){ const arm=Math.floor(Math.random()*numArms), baseAngle=arm*Math.PI*2/numArms, t=Math.random(), r=t*galaxyRadius, spiralAngle=baseAngle+t*armTightness*Math.PI, angle=spiralAngle+(Math.random()-0.5)*0.6; brightStarPositions[i*3]=Math.cos(angle)*r; brightStarPositions[i*3+1]=(Math.random()-0.5)*0.4; brightStarPositions[i*3+2]=Math.sin(angle)*r; const isBlue=Math.random()<0.35; brightStarColors[i*3]=isBlue?0.55+Math.random()*0.3:0.8+Math.random()*0.2; brightStarColors[i*3+1]=isBlue?0.65+Math.random()*0.25:0.75+Math.random()*0.2; brightStarColors[i*3+2]=isBlue?0.9+Math.random()*0.1:0.5+Math.random()*0.4; }
+        const brightStarGeom=new THREE.BufferGeometry(); brightStarGeom.setAttribute('position',new THREE.BufferAttribute(brightStarPositions,3)); brightStarGeom.setAttribute('color',new THREE.BufferAttribute(brightStarColors,3));
+        const brightStarMat=new THREE.PointsMaterial({size:0.28,map:starSpriteTex,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.8,sizeAttenuation:true}); galaxyGroup.add(new THREE.Points(brightStarGeom,brightStarMat));
+        function createNebulaSprite(c1,c2,size,op=0.4){ const c=document.createElement('canvas'); c.width=512; c.height=512; const ctx=c.getContext('2d'); const g=ctx.createRadialGradient(256,256,0,256,256,256); g.addColorStop(0,c1); g.addColorStop(0.5,c2); g.addColorStop(1,'transparent'); ctx.fillStyle=g; ctx.fillRect(0,0,512,512); ctx.globalCompositeOperation='overlay'; for(let i=0;i<100;i++){ ctx.fillStyle=`rgba(255,255,255,${Math.random()*0.05})`; ctx.beginPath(); ctx.arc(Math.random()*512,Math.random()*512,Math.random()*20,0,Math.PI*2); ctx.fill(); } const tex=new THREE.CanvasTexture(c); const mat=new THREE.SpriteMaterial({map:tex,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:op}); const s=new THREE.Sprite(mat); s.scale.set(size,size,1); return s; }
+        const nebula1=createNebulaSprite('#442288','#220066',35,0.25); nebula1.position.set(5,-2,-10); scene.add(nebula1);
+        const nebula2=createNebulaSprite('#882244','#440022',30,0.2); nebula2.position.set(-8,3,-12); scene.add(nebula2);
+        const bgStarCount=3000; const bgStarPositions=new Float32Array(bgStarCount*3), bgStarColors=new Float32Array(bgStarCount*3); const bgRadius=55;
+        for(let i=0;i<bgStarCount;i++){ const theta=Math.random()*Math.PI*2, phi=Math.acos(2*Math.random()-1), r=20+Math.random()*(bgRadius-20); bgStarPositions[i*3]=Math.sin(phi)*Math.cos(theta)*r; bgStarPositions[i*3+1]=Math.sin(phi)*Math.sin(theta)*r; bgStarPositions[i*3+2]=Math.cos(phi)*r; const br=0.4+Math.random()*0.6, tint=Math.random(); bgStarColors[i*3]=br*(0.7+tint*0.3); bgStarColors[i*3+1]=br*(0.7+tint*0.3); bgStarColors[i*3+2]=br*(0.8+tint*0.2); }
+        const bgStarGeom=new THREE.BufferGeometry(); bgStarGeom.setAttribute('position',new THREE.BufferAttribute(bgStarPositions,3)); bgStarGeom.setAttribute('color',new THREE.BufferAttribute(bgStarColors,3));
+        const bgStarMat=new THREE.PointsMaterial({size:0.08,map:starSpriteTex,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.7,sizeAttenuation:true}); const bgStars=new THREE.Points(bgStarGeom,bgStarMat); scene.add(bgStars);
 
-        // --- Spiral Arms ---
-        const numArms = 4;
-        const particlesPerArm = 2200;
-        const galaxyRadius = 13;
-        const armTightness = 2.8; // How many radians of spiral
-
-        const armParticlesTotal = numArms * particlesPerArm;
-        const armPositions = new Float32Array(armParticlesTotal * 3);
-        const armColors = new Float32Array(armParticlesTotal * 3);
-        const armSizesArr = new Float32Array(armParticlesTotal);
-
-        for (let arm = 0; arm < numArms; arm++) {
-            const baseAngle = arm * (Math.PI * 2) / numArms;
-            for (let i = 0; i < particlesPerArm; i++) {
-                const idx = arm * particlesPerArm + i;
-                const t = i / particlesPerArm;
-                const r = t * galaxyRadius;
-                const spiralAngle = baseAngle + t * armTightness * Math.PI;
-                const spreadAngle = (0.15 + t * 1.1) * 0.9;
-                const angle = spiralAngle + (Math.random() - 0.5) * spreadAngle * 2;
-                const x = Math.cos(angle) * r;
-                const z = Math.sin(angle) * r;
-                const thickness = 0.35 + t * 0.9;
-                const y = (Math.random() - 0.5) * thickness * (1.0 + t * 1.5);
-
-                armPositions[idx * 3] = x;
-                armPositions[idx * 3 + 1] = y;
-                armPositions[idx * 3 + 2] = z;
-
-                // Color: warm inner → cool outer
-                const warmMix = Math.max(0, 1 - t * 1.3);
-                const coolMix = Math.max(0, (t - 0.25) * 1.4);
-                const r_col = 0.85 * warmMix + 0.35 * coolMix + 0.15 * Math.random();
-                const g_col = 0.7 * warmMix + 0.4 * coolMix + 0.2 * (1 - Math.abs(t - 0.5) * 2) + 0.1 * Math.random();
-                const b_col = 0.4 * warmMix + 0.85 * coolMix + 0.2 * Math.random();
-                armColors[idx * 3] = Math.min(1, r_col);
-                armColors[idx * 3 + 1] = Math.min(1, g_col);
-                armColors[idx * 3 + 2] = Math.min(1, b_col);
-
-                armSizesArr[idx] = (0.03 + Math.random() * 0.09) * (1 - t * 0.5);
-            }
-        }
-
-        const armGeom = new THREE.BufferGeometry();
-        armGeom.setAttribute('position', new THREE.BufferAttribute(armPositions, 3));
-        armGeom.setAttribute('color', new THREE.BufferAttribute(armColors, 3));
-        armGeom.setAttribute('size', new THREE.BufferAttribute(armSizesArr, 1));
-        const armMat = new THREE.PointsMaterial({
-            size: 0.12,
-            map: starSpriteTex,
-            vertexColors: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-            transparent: true,
-            opacity: 0.85,
-            sizeAttenuation: true,
-        });
-        const armPoints = new THREE.Points(armGeom, armMat);
-        galaxyGroup.add(armPoints);
-
-        // --- Central Bulge ---
-        const bulgeCount = 1800;
-        const bulgeRadius = 2.8;
-        const bulgePositions = new Float32Array(bulgeCount * 3);
-        const bulgeColors = new Float32Array(bulgeCount * 3);
-        for (let i = 0; i < bulgeCount; i++) {
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos(2 * Math.random() - 1);
-            const r = Math.pow(Math.random(), 1.8) * bulgeRadius;
-            const x = Math.sin(phi) * Math.cos(theta) * r;
-            const y = Math.sin(phi) * Math.sin(theta) * r * 0.35;
-            const z = Math.cos(phi) * r;
-            bulgePositions[i * 3] = x;
-            bulgePositions[i * 3 + 1] = y;
-            bulgePositions[i * 3 + 2] = z;
-            const brightness = 0.7 + 0.3 * (1 - r / bulgeRadius);
-            bulgeColors[i * 3] = brightness;
-            bulgeColors[i * 3 + 1] = brightness * 0.9;
-            bulgeColors[i * 3 + 2] = brightness * 0.7;
-        }
-        const bulgeGeom = new THREE.BufferGeometry();
-        bulgeGeom.setAttribute('position', new THREE.BufferAttribute(bulgePositions, 3));
-        bulgeGeom.setAttribute('color', new THREE.BufferAttribute(bulgeColors, 3));
-        const bulgeMat = new THREE.PointsMaterial({
-            size: 0.16,
-            map: starSpriteTex,
-            vertexColors: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-            transparent: true,
-            opacity: 0.9,
-            sizeAttenuation: true,
-        });
-        const bulgePoints = new THREE.Points(bulgeGeom, bulgeMat);
-        galaxyGroup.add(bulgePoints);
-
-        // --- Core Glow Sprite ---
-        const coreGlowSprite = new THREE.Sprite(new THREE.SpriteMaterial({
-            map: coreGlowTex,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-            transparent: true,
-            opacity: 0.75,
-            color: new THREE.Color('#fffef0'),
-        }));
-        coreGlowSprite.scale.set(7, 7, 1);
-        coreGlowSprite.position.set(0, 0, 0);
-        galaxyGroup.add(coreGlowSprite);
-
-        // --- Bright Core Cluster ---
-        const coreClusterCount = 400;
-        const coreClusterPositions = new Float32Array(coreClusterCount * 3);
-        const coreClusterColors = new Float32Array(coreClusterCount * 3);
-        for (let i = 0; i < coreClusterCount; i++) {
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos(2 * Math.random() - 1);
-            const r = Math.pow(Math.random(), 3) * 1.2;
-            coreClusterPositions[i * 3] = Math.sin(phi) * Math.cos(theta) * r;
-            coreClusterPositions[i * 3 + 1] = Math.sin(phi) * Math.sin(theta) * r * 0.3;
-            coreClusterPositions[i * 3 + 2] = Math.cos(phi) * r;
-            coreClusterColors[i * 3] = 1;
-            coreClusterColors[i * 3 + 1] = 0.95;
-            coreClusterColors[i * 3 + 2] = 0.8;
-        }
-        const coreClusterGeom = new THREE.BufferGeometry();
-        coreClusterGeom.setAttribute('position', new THREE.BufferAttribute(coreClusterPositions, 3));
-        coreClusterGeom.setAttribute('color', new THREE.BufferAttribute(coreClusterColors, 3));
-        const coreClusterMat = new THREE.PointsMaterial({
-            size: 0.22,
-            map: starSpriteTex,
-            vertexColors: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-            transparent: true,
-            opacity: 0.95,
-            sizeAttenuation: true,
-        });
-        const coreClusterPoints = new THREE.Points(coreClusterGeom, coreClusterMat);
-        galaxyGroup.add(coreClusterPoints);
-
-        // --- Scattered Bright Stars in Arms ---
-        const brightStarCount = 600;
-        const brightStarPositions = new Float32Array(brightStarCount * 3);
-        const brightStarColors = new Float32Array(brightStarCount * 3);
-        for (let i = 0; i < brightStarCount; i++) {
-            const arm = Math.floor(Math.random() * numArms);
-            const baseAngle = arm * (Math.PI * 2) / numArms;
-            const t = Math.random();
-            const r = t * galaxyRadius;
-            const spiralAngle = baseAngle + t * armTightness * Math.PI;
-            const angle = spiralAngle + (Math.random() - 0.5) * 0.6;
-            brightStarPositions[i * 3] = Math.cos(angle) * r;
-            brightStarPositions[i * 3 + 1] = (Math.random() - 0.5) * 0.4;
-            brightStarPositions[i * 3 + 2] = Math.sin(angle) * r;
-            const isBlue = Math.random() < 0.35;
-            brightStarColors[i * 3] = isBlue ? 0.55 + Math.random() * 0.3 : 0.8 + Math.random() * 0.2;
-            brightStarColors[i * 3 + 1] = isBlue ? 0.65 + Math.random() * 0.25 : 0.75 + Math.random() * 0.2;
-            brightStarColors[i * 3 + 2] = isBlue ? 0.9 + Math.random() * 0.1 : 0.5 + Math.random() * 0.4;
-        }
-        const brightStarGeom = new THREE.BufferGeometry();
-        brightStarGeom.setAttribute('position', new THREE.BufferAttribute(brightStarPositions, 3));
-        brightStarGeom.setAttribute('color', new THREE.BufferAttribute(brightStarColors, 3));
-        const brightStarMat = new THREE.PointsMaterial({
-            size: 0.28,
-            map: starSpriteTex,
-            vertexColors: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-            transparent: true,
-            opacity: 0.8,
-            sizeAttenuation: true,
-        });
-        const brightStarPoints = new THREE.Points(brightStarGeom, brightStarMat);
-        galaxyGroup.add(brightStarPoints);
-
-        // ─────────────────────────────────────
-        // BACKGROUND STARS (large sphere)
-        // ─────────────────────────────────────
-        const bgStarCount = 2500;
-        const bgStarPositions = new Float32Array(bgStarCount * 3);
-        const bgStarColors = new Float32Array(bgStarCount * 3);
-        const bgRadius = 45;
-        for (let i = 0; i < bgStarCount; i++) {
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos(2 * Math.random() - 1);
-            const r = 20 + Math.random() * (bgRadius - 20);
-            bgStarPositions[i * 3] = Math.sin(phi) * Math.cos(theta) * r;
-            bgStarPositions[i * 3 + 1] = Math.sin(phi) * Math.sin(theta) * r;
-            bgStarPositions[i * 3 + 2] = Math.cos(phi) * r;
-            const brightness = 0.4 + Math.random() * 0.6;
-            const tint = Math.random();
-            bgStarColors[i * 3] = brightness * (0.7 + tint * 0.3);
-            bgStarColors[i * 3 + 1] = brightness * (0.7 + tint * 0.3);
-            bgStarColors[i * 3 + 2] = brightness * (0.8 + tint * 0.2);
-        }
-        const bgStarGeom = new THREE.BufferGeometry();
-        bgStarGeom.setAttribute('position', new THREE.BufferAttribute(bgStarPositions, 3));
-        bgStarGeom.setAttribute('color', new THREE.BufferAttribute(bgStarColors, 3));
-        const bgStarMat = new THREE.PointsMaterial({
-            size: 0.08,
-            map: starSpriteTex,
-            vertexColors: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-            transparent: true,
-            opacity: 0.7,
-            sizeAttenuation: true,
-        });
-        const bgStars = new THREE.Points(bgStarGeom, bgStarMat);
-        scene.add(bgStars);
-
-        // ─────────────────────────────────────
-        // PORTAL CREATION FUNCTION
-        // ─────────────────────────────────────
-        function createPortal(glowTex, mainColorHex, innerColorHex, ringColorHex) {
-            const portalGroup = new THREE.Group();
-
-            // Glow sprite (large, behind)
-            const glowSprite = new THREE.Sprite(new THREE.SpriteMaterial({
+        // Planets without rings, size restored to original (scale 1.0)
+        function createPortal(glowTex, mainColorHex, sphereTex){
+            const g = new THREE.Group();
+            const glow = new THREE.Sprite(new THREE.SpriteMaterial({
                 map: glowTex,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false,
                 transparent: true,
                 opacity: 0.7,
-                color: new THREE.Color(mainColorHex),
+                color: new THREE.Color(mainColorHex)
             }));
-            glowSprite.scale.set(6.5, 6.5, 1);
-            portalGroup.add(glowSprite);
+            glow.scale.set(6.5, 6.5, 1);
+            g.add(glow);
 
-            // Outer ring (torus)
-            const ringGeom = new THREE.TorusGeometry(1.5, 0.12, 32, 80);
-            const ringMat = new THREE.MeshStandardMaterial({
-                color: new THREE.Color(ringColorHex),
-                emissive: new THREE.Color(mainColorHex),
-                emissiveIntensity: 1.8,
-                roughness: 0.25,
-                metalness: 0.7,
-            });
-            const ring = new THREE.Mesh(ringGeom, ringMat);
-            ring.rotation.x = Math.PI * 0.45;
-            ring.rotation.y = Math.random() * Math.PI * 2;
-            portalGroup.add(ring);
-
-            // Second thinner ring
-            const ring2Geom = new THREE.TorusGeometry(1.65, 0.04, 24, 60);
-            const ring2Mat = new THREE.MeshStandardMaterial({
-                color: new THREE.Color(mainColorHex),
-                emissive: new THREE.Color(mainColorHex),
-                emissiveIntensity: 2.5,
-                roughness: 0.2,
-                metalness: 0.3,
-            });
-            const ring2 = new THREE.Mesh(ring2Geom, ring2Mat);
-            ring2.rotation.x = Math.PI * 0.6;
-            ring2.rotation.y = Math.random() * Math.PI * 2;
-            portalGroup.add(ring2);
-
-            // Main sphere (clickable)
-            const sphereGeom = new THREE.SphereGeometry(1.15, 48, 48);
-            const sphereMat = new THREE.MeshStandardMaterial({
-                color: new THREE.Color(innerColorHex),
-                emissive: new THREE.Color(mainColorHex),
-                emissiveIntensity: 2.2,
-                roughness: 0.18,
-                metalness: 0.15,
-            });
-            const sphere = new THREE.Mesh(sphereGeom, sphereMat);
-            sphere.name = 'portalSphere';
-            portalGroup.add(sphere);
-
-            // Inner bright core
-            const innerCoreGeom = new THREE.SphereGeometry(0.5, 32, 32);
-            const innerCoreMat = new THREE.MeshBasicMaterial({
+            // Planet sphere with original size (scale 1.0)
+            const sphereG = new THREE.SphereGeometry(1.15, 64, 64);
+            const sphereM = new THREE.MeshStandardMaterial({
+                map: sphereTex,
                 color: new THREE.Color('#ffffff'),
-                transparent: true,
-                opacity: 0.85,
+                emissive: new THREE.Color(mainColorHex),
+                emissiveIntensity: 0.5,
+                roughness: 0.28,
+                metalness: 0.05
             });
-            const innerCore = new THREE.Mesh(innerCoreGeom, innerCoreMat);
-            portalGroup.add(innerCore);
+            const sphere = new THREE.Mesh(sphereG, sphereM);
+            sphere.name = 'portalSphere';
+            sphere.scale.set(1, 1, 1); // back to original size
+            g.add(sphere);
 
-            // Tiny orbiting particles ring
-            const orbitParticleCount = 80;
-            const orbitParticlePositions = new Float32Array(orbitParticleCount * 3);
-            const orbitParticleColorsArr = new Float32Array(orbitParticleCount * 3);
-            for (let i = 0; i < orbitParticleCount; i++) {
-                const angle = (i / orbitParticleCount) * Math.PI * 2;
+            // Small inner core
+            const coreG = new THREE.SphereGeometry(0.35, 32, 32);
+            const coreM = new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.85 });
+            const core = new THREE.Mesh(coreG, coreM);
+            core.scale.set(1, 1, 1);
+            g.add(core);
+
+            // Orbiting particles
+            const orbitPC = 120;
+            const orbitPos = new Float32Array(orbitPC * 3);
+            const orbitCol = new Float32Array(orbitPC * 3);
+            for (let i = 0; i < orbitPC; i++) {
+                const ang = (i / orbitPC) * Math.PI * 2;
                 const rad = 1.9 + (Math.random() - 0.5) * 0.35;
-                orbitParticlePositions[i * 3] = Math.cos(angle) * rad;
-                orbitParticlePositions[i * 3 + 1] = (Math.random() - 0.5) * 0.25;
-                orbitParticlePositions[i * 3 + 2] = Math.sin(angle) * rad;
-                orbitParticleColorsArr[i * 3] = 1;
-                orbitParticleColorsArr[i * 3 + 1] = 0.85;
-                orbitParticleColorsArr[i * 3 + 2] = 0.6;
+                orbitPos[i * 3] = Math.cos(ang) * rad;
+                orbitPos[i * 3 + 1] = (Math.random() - 0.5) * 0.25;
+                orbitPos[i * 3 + 2] = Math.sin(ang) * rad;
+                orbitCol[i * 3] = 1;
+                orbitCol[i * 3 + 1] = 0.85;
+                orbitCol[i * 3 + 2] = 0.6;
             }
-            const orbitParticleGeom = new THREE.BufferGeometry();
-            orbitParticleGeom.setAttribute('position', new THREE.BufferAttribute(orbitParticlePositions, 3));
-            orbitParticleGeom.setAttribute('color', new THREE.BufferAttribute(orbitParticleColorsArr, 3));
-            const orbitParticleMat = new THREE.PointsMaterial({
+            const orbitGeom = new THREE.BufferGeometry();
+            orbitGeom.setAttribute('position', new THREE.BufferAttribute(orbitPos, 3));
+            orbitGeom.setAttribute('color', new THREE.BufferAttribute(orbitCol, 3));
+            const orbitMat = new THREE.PointsMaterial({
                 size: 0.06,
                 map: starSpriteTex,
                 vertexColors: true,
@@ -688,333 +482,161 @@
                 depthWrite: false,
                 transparent: true,
                 opacity: 0.75,
-                sizeAttenuation: true,
+                sizeAttenuation: true
             });
-            const orbitParticles = new THREE.Points(orbitParticleGeom, orbitParticleMat);
-            portalGroup.add(orbitParticles);
-            portalGroup.userData = { orbitParticles, ring, ring2, glowSprite };
+            g.add(new THREE.Points(orbitGeom, orbitMat));
 
-            return portalGroup;
+            g.userData = {
+                orbitParticles: g.children[g.children.length - 1],
+                glowSprite: glow
+                // No rings
+            };
+            return g;
         }
 
-        // ─────────────────────────────────────
-        // CREATE THREE PORTALS
-        // ─────────────────────────────────────
-        const portalSSC = createPortal(glowTexSSC, '#ffb74d', '#ffe0b2', '#ff9800');
-        const portalDefence = createPortal(glowTexDefence, '#ef5350', '#ffcdd2', '#f44336');
-        const portalWBExam = createPortal(glowTexWBExam, '#4dd0e1', '#b2ebf2', '#00bcd4');
+        const portalSSC = createPortal(glowTexSSC, '#ffb74d', portalTexSSC);
+        const portalDefence = createPortal(glowTexDefence, '#ef5350', portalTexDefence);
+        const portalWBExam = createPortal(glowTexWBExam, '#4dd0e1', portalTexWBExam);
 
-        // Orbit pivots
-        const orbitPivotSSC = new THREE.Group();
-        const orbitPivotDefence = new THREE.Group();
-        const orbitPivotWBExam = new THREE.Group();
-
-        orbitPivotSSC.add(portalSSC);
-        orbitPivotDefence.add(portalDefence);
-        orbitPivotWBExam.add(portalWBExam);
-
-        // Position portals within their pivots
+        const pivSSC = new THREE.Group(), pivDef = new THREE.Group(), pivWB = new THREE.Group();
+        pivSSC.add(portalSSC); pivDef.add(portalDefence); pivWB.add(portalWBExam);
         portalSSC.position.set(7.5, 4.2, 0);
         portalDefence.position.set(8.2, 2.8, 0);
         portalWBExam.position.set(7.8, 5.0, 0);
+        pivSSC.rotation.y = 0; pivDef.rotation.y = Math.PI * 2 / 3; pivWB.rotation.y = Math.PI * 4 / 3;
+        scene.add(pivSSC); scene.add(pivDef); scene.add(pivWB);
 
-        // Set initial pivot rotations (spread them out)
-        orbitPivotSSC.rotation.y = 0;
-        orbitPivotDefence.rotation.y = Math.PI * 2 / 3;
-        orbitPivotWBExam.rotation.y = Math.PI * 4 / 3;
-
-        scene.add(orbitPivotSSC);
-        scene.add(orbitPivotDefence);
-        scene.add(orbitPivotWBExam);
-
-        // Store references for animation & raycasting
         const portalData = [
-            { pivot: orbitPivotSSC, group: portalSSC, label: labelSSC, url: 'ssc.html', baseY: 4.2, bobOffset: 0 },
-            { pivot: orbitPivotDefence, group: portalDefence, label: labelDefence, url: 'defence.html', baseY: 2.8,
-                bobOffset: Math.PI * 0.7 },
-            { pivot: orbitPivotWBExam, group: portalWBExam, label: labelWBExam, url: 'wbpsc.html', baseY: 5.0,
-                bobOffset: Math.PI * 1.4 },
+            { pivot: pivSSC, group: portalSSC, url: 'ssc.html', baseY: 4.2, bobOffset: 0 },
+            { pivot: pivDef, group: portalDefence, url: 'defence.html', baseY: 2.8, bobOffset: Math.PI * 0.7 },
+            { pivot: pivWB, group: portalWBExam, url: 'wbpsc.html', baseY: 5.0, bobOffset: Math.PI * 1.4 }
         ];
 
-        // Collect all clickable meshes (spheres + rings)
-        const clickableObjects = [];
-        portalData.forEach(pd => {
-            pd.group.traverse(child => {
-                if (child.isMesh && (child.geometry.type === 'SphereGeometry' || child.geometry.type ===
-                        'TorusGeometry')) {
-                    child.userData.portalData = pd;
-                    clickableObjects.push(child);
-                }
-            });
-        });
+        const clickable = [];
+        portalData.forEach(p => p.group.traverse(ch => {
+            if (ch.isMesh && ch.geometry.type === 'SphereGeometry') {
+                ch.userData.pd = p;
+                clickable.push(ch);
+            }
+        }));
 
-        // ─────────────────────────────────────
-        // RAYCASTER
-        // ─────────────────────────────────────
         const raycaster = new THREE.Raycaster();
         raycaster.params.Points.threshold = 1.5;
-        raycaster.params.Line = { threshold: 0.5 };
         const mouse = new THREE.Vector2();
-        let hoveredPortal = null;
+        let hovered = null;
 
-        function getIntersections(event) {
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        function intersect(e) {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
-            return raycaster.intersectObjects(clickableObjects, false);
+            return raycaster.intersectObjects(clickable, false);
         }
 
-        function updateCursor(event) {
-            const intersects = getIntersections(event);
-            if (intersects.length > 0) {
-                const obj = intersects[0].object;
-                if (obj.userData.portalData) {
+        function applyHov(p, s) {
+            p.group.children.forEach(ch => {
+                if (ch.isMesh && ch.geometry.type === 'SphereGeometry') ch.scale.setScalar(s);
+            });
+            if (p.group.userData.glowSprite) p.group.userData.glowSprite.scale.set(7.5, 7.5, 1);
+        }
+
+        function resetHov() {
+            if (!hovered) return;
+            hovered.group.children.forEach(ch => {
+                if (ch.isMesh && ch.geometry.type === 'SphereGeometry') ch.scale.setScalar(1);
+            });
+            if (hovered.group.userData.glowSprite) hovered.group.userData.glowSprite.scale.set(6.5, 6.5, 1);
+        }
+
+        canvas.addEventListener('mousemove', e => {
+            const its = intersect(e);
+            if (its.length) {
+                const obj = its[0].object;
+                if (obj.userData.pd) {
                     canvas.style.cursor = 'pointer';
-                    if (hoveredPortal !== obj.userData.portalData) {
-                        resetHoverScale();
-                        hoveredPortal = obj.userData.portalData;
-                        applyHoverScale(hoveredPortal, 1.18);
+                    if (hovered !== obj.userData.pd) {
+                        resetHov();
+                        hovered = obj.userData.pd;
+                        applyHov(hovered, 1.18);
                     }
                     return;
                 }
             }
             canvas.style.cursor = 'default';
-            if (hoveredPortal) {
-                resetHoverScale();
-                hoveredPortal = null;
+            if (hovered) {
+                resetHov();
+                hovered = null;
             }
-        }
-
-        function applyHoverScale(pd, scale) {
-            pd.group.children.forEach(child => {
-                if (child.isMesh && child.geometry.type === 'SphereGeometry') {
-                    child.scale.setScalar(scale);
-                }
-            });
-            if (pd.group.userData.glowSprite) {
-                pd.group.userData.glowSprite.scale.set(7.5, 7.5, 1);
-            }
-        }
-
-        function resetHoverScale() {
-            if (!hoveredPortal) return;
-            hoveredPortal.group.children.forEach(child => {
-                if (child.isMesh && child.geometry.type === 'SphereGeometry') {
-                    child.scale.setScalar(1);
-                }
-            });
-            if (hoveredPortal.group.userData.glowSprite) {
-                hoveredPortal.group.userData.glowSprite.scale.set(6.5, 6.5, 1);
-            }
-        }
-
-        function handleClick(event) {
-            const intersects = getIntersections(event);
-            if (intersects.length > 0) {
-                const obj = intersects[0].object;
-                if (obj.userData.portalData) {
-                    const url = obj.userData.portalData.url;
-                    // Navigate to the URL
-                    window.location.href = url;
-                }
-            }
-        }
-
-        // Also handle clicks on the HTML labels
-        allLabels.forEach(label => {
-            label.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const url = label.getAttribute('data-url');
-                if (url) window.location.href = url;
-            });
-            label.addEventListener('mouseenter', () => {
-                const url = label.getAttribute('data-url');
-                const pd = portalData.find(p => p.url === url);
-                if (pd && hoveredPortal !== pd) {
-                    resetHoverScale();
-                    hoveredPortal = pd;
-                    applyHoverScale(pd, 1.18);
-                    canvas.style.cursor = 'pointer';
-                }
-            });
-            label.addEventListener('mouseleave', () => {
-                resetHoverScale();
-                hoveredPortal = null;
-                canvas.style.cursor = 'default';
-            });
         });
 
-        canvas.addEventListener('mousemove', updateCursor, { passive: true });
-        canvas.addEventListener('click', handleClick);
-        canvas.addEventListener('touchstart', (e) => {
+        canvas.addEventListener('click', e => {
+            const its = intersect(e);
+            if (its.length && its[0].object.userData.pd) window.location.href = its[0].object.userData.pd.url;
+        });
+
+        canvas.addEventListener('touchstart', e => {
             if (e.touches.length === 1) {
-                const touch = e.touches[0];
-                // Simulate mousemove + click
-                const fakeEvent = { clientX: touch.clientX, clientY: touch.clientY };
-                updateCursor(fakeEvent);
-                handleClick(fakeEvent);
+                const t = e.touches[0];
+                const fake = { clientX: t.clientX, clientY: t.clientY };
+                canvas.dispatchEvent(new MouseEvent('mousemove', fake));
+                canvas.dispatchEvent(new MouseEvent('click', fake));
             }
         }, { passive: true });
 
-        // ─────────────────────────────────────
-        // SCREEN PROJECTION HELPER
-        // ─────────────────────────────────────
-        const worldPos = new THREE.Vector3();
-        const projectedPos = new THREE.Vector3();
-
-        function getScreenPosition(worldPosition) {
-            projectedPos.copy(worldPosition).project(camera);
-            return {
-                x: (projectedPos.x * 0.5 + 0.5) * window.innerWidth,
-                y: (-projectedPos.y * 0.5 + 0.5) * window.innerHeight,
-                behindCamera: projectedPos.z > 1,
-            };
-        }
-
-        // ─────────────────────────────────────
-        // ANIMATION LOOP
-        // ─────────────────────────────────────
         const clock = new THREE.Clock();
-
-        function animate(timestamp) {
+        function animate(ts) {
             requestAnimationFrame(animate);
-
             const dt = Math.min(clock.getDelta(), 0.1);
-            const elapsed = timestamp * 0.001;
+            const el = ts * 0.001;
+            const sp = 0.12;
 
-            // Slow orbit of portals
-            const orbitSpeed = 0.12; // radians per second
-            orbitPivotSSC.rotation.y += orbitSpeed * dt;
-            orbitPivotDefence.rotation.y += orbitSpeed * 0.85 * dt;
-            orbitPivotWBExam.rotation.y += orbitSpeed * 0.92 * dt;
+            pivSSC.rotation.y += sp * dt;
+            pivDef.rotation.y += sp * 0.85 * dt;
+            pivWB.rotation.y += sp * 0.92 * dt;
 
-            // Gentle bob
-            portalData.forEach(pd => {
-                const bob = Math.sin(elapsed * 0.55 + pd.bobOffset) * 0.7;
-                pd.group.position.y = pd.baseY + bob;
-                // Rotate local rings
-                if (pd.group.userData.ring) {
-                    pd.group.userData.ring.rotation.z += 0.4 * dt;
-                    pd.group.userData.ring.rotation.x += 0.25 * dt;
-                }
-                if (pd.group.userData.ring2) {
-                    pd.group.userData.ring2.rotation.z -= 0.35 * dt;
-                    pd.group.userData.ring2.rotation.x -= 0.3 * dt;
-                }
-                if (pd.group.userData.orbitParticles) {
-                    pd.group.userData.orbitParticles.rotation.y += 0.9 * dt;
-                }
-                // Pulse glow
-                if (pd.group.userData.glowSprite) {
-                    const pulse = 1 + Math.sin(elapsed * 1.8 + pd.bobOffset) * 0.12;
-                    const baseScale = (hoveredPortal === pd) ? 7.5 : 6.5;
-                    pd.group.userData.glowSprite.scale.setScalar(baseScale * pulse);
-                    pd.group.userData.glowSprite.material.opacity = (hoveredPortal === pd) ? 0.85 : 0.6 + Math.sin(
-                        elapsed * 1.8 + pd.bobOffset) * 0.1;
+            portalData.forEach(p => {
+                const bob = Math.sin(el * 0.55 + p.bobOffset) * 0.7;
+                p.group.position.y = p.baseY + bob;
+
+                // Orbit particles rotation
+                if (p.group.userData.orbitParticles) p.group.userData.orbitParticles.rotation.y += 0.9 * dt;
+
+                // Glow animation
+                if (p.group.userData.glowSprite) {
+                    const pulse = 1 + Math.sin(el * 1.8 + p.bobOffset) * 0.12;
+                    const bs = (hovered === p) ? 7.5 : 6.5;
+                    p.group.userData.glowSprite.scale.setScalar(bs * pulse);
+                    p.group.userData.glowSprite.material.opacity = (hovered === p) ? 0.85 : 0.6 + Math.sin(el * 1.8 + p.bobOffset) * 0.1;
                 }
             });
 
-            // Subtle galaxy rotation
             galaxyGroup.rotation.y += 0.025 * dt;
-            // Subtle background star rotation
             bgStars.rotation.y += 0.008 * dt;
             bgStars.rotation.x += 0.004 * dt;
+            nebula1.rotation.z += 0.001 * dt;
+            nebula2.rotation.z -= 0.001 * dt;
 
-            // Core glow pulse
-            const corePulse = 1 + Math.sin(elapsed * 0.7) * 0.06;
-            coreGlowSprite.scale.set(7 * corePulse, 7 * corePulse, 1);
-            coreGlowSprite.material.opacity = 0.7 + Math.sin(elapsed * 0.9) * 0.08;
+            const cp = 1 + Math.sin(el * 0.7) * 0.06;
+            coreGlowSprite.scale.set(7 * cp, 7 * cp, 1);
+            coreGlowSprite.material.opacity = 0.7 + Math.sin(el * 0.9) * 0.08;
 
-            // Update label positions
-            portalData.forEach(pd => {
-                // Get world position of the portal's main sphere
-                const sphereMesh = pd.group.children.find(c => c.isMesh && c.geometry.type === 'SphereGeometry' &&
-                    c.geometry.parameters.radius > 0.8);
-                const targetMesh = sphereMesh || pd.group.children.find(c => c.isMesh && c.geometry.type ===
-                    'SphereGeometry');
-                if (targetMesh) {
-                    targetMesh.getWorldPosition(worldPos);
-                    const screen = getScreenPosition(worldPos);
-                    if (screen.behindCamera || screen.x < -100 || screen.x > window.innerWidth + 100 || screen.y < -100 ||
-                        screen.y > window.innerHeight + 100) {
-                        pd.label.style.opacity = '0';
-                        pd.label.style.pointerEvents = 'none';
-                    } else {
-                        pd.label.style.opacity = '1';
-                        pd.label.style.pointerEvents = 'auto';
-                        pd.label.style.left = screen.x + 'px';
-                        pd.label.style.top = (screen.y - 55) + 'px';
-                    }
-                }
-            });
-
-            // Render
             renderer.render(scene, camera);
         }
 
-        // ─────────────────────────────────────
-        // RESIZE HANDLER
-        // ─────────────────────────────────────
         function onResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
         window.addEventListener('resize', onResize, { passive: true });
-        window.addEventListener('orientationchange', () => {
-            setTimeout(onResize, 200);
-        }, { passive: true });
+        window.addEventListener('orientationchange', () => setTimeout(onResize, 200), { passive: true });
 
-        // ─────────────────────────────────────
-        // INITIAL LABEL POSITIONING
-        // ─────────────────────────────────────
-        function initialLabelPosition() {
-            portalData.forEach(pd => {
-                const sphereMesh = pd.group.children.find(c => c.isMesh && c.geometry.type === 'SphereGeometry' &&
-                    c.geometry.parameters.radius > 0.8);
-                const targetMesh = sphereMesh || pd.group.children.find(c => c.isMesh && c.geometry.type ===
-                    'SphereGeometry');
-                if (targetMesh) {
-                    targetMesh.getWorldPosition(worldPos);
-                    const screen = getScreenPosition(worldPos);
-                    pd.label.style.left = screen.x + 'px';
-                    pd.label.style.top = (screen.y - 55) + 'px';
-                    pd.label.style.opacity = '1';
-                }
-            });
-        }
-
-        // ─────────────────────────────────────
-        // START
-        // ─────────────────────────────────────
-        initialLabelPosition();
         requestAnimationFrame(animate);
-
-        // ─────────────────────────────────────
-        // KEYBOARD SHORTCUTS (optional)
-        // ─────────────────────────────────────
-        window.addEventListener('keydown', (e) => {
-            switch (e.key.toLowerCase()) {
-                case '1':
-                    window.location.href = 'ssc.html';
-                    break;
-                case '2':
-                    window.location.href = 'defence.html';
-                    break;
-                case '3':
-                    window.location.href = 'wbpsc.html';
-                    break;
-                default:
-                    break;
-            }
+        window.addEventListener('keydown', e => {
+            if (e.key === '1') window.location.href = 'ssc.html';
+            if (e.key === '2') window.location.href = 'defence.html';
+            if (e.key === '3') window.location.href = 'wbpsc.html';
         });
-
-        console.log('%c🚀 মহাজাগতিক জ্ঞানের দ্বার প্রস্তুত! %c| Cosmic Knowledge Portal Ready',
-            'font-size:1.3em;color:#FFB74D;', 'color:#aaa;');
-        console.log('%c🖱️ 3D পোর্টালে ক্লিক করুন অথবা লেবেলে ক্লিক করুন %c| Click 3D portals or labels',
-            'color:#4DD0E1;', 'color:#aaa;');
-        console.log('%c⌨️ কীবোর্ড শর্টকাট: 1=SSC, 2=Defence, 3=WBExam %c| Keyboard: 1,2,3',
-            'color:#EF5350;', 'color:#aaa;');
+        console.log('%c🚀 মহাজাগতিক জ্ঞানের দ্বার প্রস্তুত! %c| Cosmic Knowledge Portal Ready', 'font-size:1.3em;color:#FFB74D;', 'color:#aaa;');
     </script>
 </body>
 </html>
