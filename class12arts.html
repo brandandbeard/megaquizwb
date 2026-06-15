@@ -1396,6 +1396,7 @@
             font-size: 0.95rem;
         }
 
+        /* ============ RESPONSIVE FIX ============ */
         @media (max-width:960px) {
             .quiz-panel {
                 grid-template-columns: 1fr;
@@ -1412,6 +1413,37 @@
             .subject-editor-row {
                 grid-template-columns: 1fr;
                 border-radius: 16px;
+            }
+            .controls-outer {
+                gap: 8px;
+            }
+            .controls-left {
+                gap: 5px;
+            }
+            .controls-right {
+                gap: 4px;
+                flex-wrap: nowrap;
+            }
+            .controls-right button {
+                font-size: 10px;
+                padding: 5px 9px;
+            }
+            .controls-right input {
+                font-size: 10px;
+                padding: 5px 7px;
+                width: 45px !important;
+            }
+            .controls-right label {
+                font-size: 9px;
+                white-space: nowrap;
+            }
+            .mode-btn {
+                font-size: 10px;
+                padding: 4px 10px;
+            }
+            #chapterToggleBtn {
+                font-size: 10px;
+                padding: 5px 10px;
             }
             .footer-contact {
                 gap: 5px 8px;
@@ -1453,6 +1485,59 @@
                 right: 10px;
                 font-size: 17px;
             }
+            .controls {
+                padding: 8px 8px;
+            }
+            .controls-outer {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .controls-left {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: nowrap;
+                gap: 6px;
+            }
+            .controls-right {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: nowrap;
+                gap: 5px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 2px;
+            }
+            .controls-right button {
+                font-size: 10px;
+                padding: 5px 9px;
+                flex-shrink: 0;
+            }
+            .controls-right input {
+                font-size: 10px;
+                padding: 5px 6px;
+                width: 42px !important;
+                flex-shrink: 0;
+            }
+            .controls-right label {
+                font-size: 9px;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            .mode-btn {
+                font-size: 10px;
+                padding: 4px 9px;
+                white-space: nowrap;
+            }
+            #chapterToggleBtn {
+                font-size: 10px;
+                padding: 5px 10px;
+                white-space: nowrap;
+            }
+            .mode-selector {
+                gap: 3px;
+                padding: 2px;
+                flex-shrink: 0;
+            }
             .footer-contact {
                 border-radius: 20px;
                 gap: 4px 6px;
@@ -1461,6 +1546,34 @@
             }
             .footer-link {
                 padding: 4px 6px;
+            }
+        }
+        @media (max-width:380px) {
+            .controls-right button {
+                font-size: 9px;
+                padding: 4px 7px;
+            }
+            .controls-right input {
+                font-size: 9px;
+                padding: 4px 5px;
+                width: 36px !important;
+            }
+            .controls-right label {
+                font-size: 8px;
+            }
+            .mode-btn {
+                font-size: 9px;
+                padding: 3px 7px;
+            }
+            #chapterToggleBtn {
+                font-size: 9px;
+                padding: 4px 8px;
+            }
+            .controls-left {
+                gap: 3px;
+            }
+            .controls-right {
+                gap: 3px;
             }
         }
     </style>
@@ -1533,40 +1646,6 @@
                     <button id="submitMockBtn" style="display:none; margin-top:8px; width:100%; background:var(--green);">✅ Submit Mock Test</button>
                 </aside>
             </section>
-
-            <!-- Enhanced Footer (Class VI style) -->
-            <div class="footer-contact">
-                <a href="mailto:arifbeldanga@gmail.com" class="footer-link email-link" title="ইমেইল করুন">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
-                        <polyline points="22,4 12,13.5 2,4"/>
-                    </svg>
-                    arifbeldanga@gmail.com
-                </a>
-                <span class="footer-divider">|</span>
-                <a href="https://t.me/beldanga1" target="_blank" class="footer-link tg-link" title="টেলিগ্রামে যুক্ত হন" rel="noopener noreferrer">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.87 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.938z"/>
-                    </svg>
-                    @beldanga1
-                </a>
-                <span class="footer-divider">|</span>
-                <a href="https://instagram.com/arifhussain.x" target="_blank" class="footer-link ig-link" title="ইনস্টাগ্রামে ফলো করুন" rel="noopener noreferrer">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                        <circle cx="12" cy="12" r="5"/>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="3" stroke-linecap="round"/>
-                    </svg>
-                    arifhussain.x
-                </a>
-                <span class="footer-divider">|</span>
-                <a href="upi://pay?pa=arho065-1@okicici&pn=ArifHussain&cu=INR" class="footer-link upi-link" title="সাপোর্ট করতে UPI পেমেন্ট করুন" rel="noopener">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                    </svg>
-                    <span>Support & Motivate : UPI arho065-1@okicici / 9564385573</span>
-                </a>
-            </div>
 
             <section class="edit-section-bottom">
                 <div class="edit-header-bottom" id="editHeaderBottom" title="Edit quiz">·</div>
@@ -1651,6 +1730,40 @@
                     </div>
                 </div>
             </section>
+        </div><!-- end .container -->
+
+        <!-- ===== static footer with glowing heart ===== -->
+        <div class="footer-contact">
+            <a href="mailto:arifbeldanga@gmail.com" class="footer-link email-link" title="ইমেইল করুন">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+                    <polyline points="22,4 12,13.5 2,4"/>
+                </svg>
+                arifbeldanga@gmail.com
+            </a>
+            <span class="footer-divider">|</span>
+            <a href="https://t.me/beldanga1" target="_blank" class="footer-link tg-link" title="টেলিগ্রামে যুক্ত হন" rel="noopener noreferrer">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.87 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.938z"/>
+                </svg>
+                @beldanga1
+            </a>
+            <span class="footer-divider">|</span>
+            <a href="https://instagram.com/arifhussain.x" target="_blank" class="footer-link ig-link" title="ইনস্টাগ্রামে ফলো করুন" rel="noopener noreferrer">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+                arifhussain.x
+            </a>
+            <span class="footer-divider">|</span>
+            <a href="upi://pay?pa=arho065-1@okicici&pn=ArifHussain&cu=INR" class="footer-link upi-link" title="সাপোর্ট করতে UPI পেমেন্ট করুন" rel="noopener">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                <span>Support & Motivate : UPI arho065-1@okicici / 9564385573</span>
+            </a>
         </div>
     </main>
 
@@ -1926,11 +2039,13 @@
                 const s = totalQuestions - userAnswers.filter(a => a !== null).length;
                 const pct = totalQuestions > 0 ? Math.round((c / totalQuestions) * 100) : 0;
                 let emoji, message;
-                if (pct === 100) { emoji = '🏆'; message = 'Legendary!'; }
-                else if (pct >= 90) { emoji = '🥇'; message = 'Excellent!'; }
-                else if (pct >= 80) { emoji = '🎉'; message = 'Great job!'; }
-                else if (pct >= 60) { emoji = '👍'; message = 'Keep it up.'; }
-                else { emoji = '😢'; message = 'Practice more.'; }
+                if (pct === 100) { emoji = '🫡'; message = 'তুমি তো মাস্টার! একেবারে আগুন! চলতে থাকুক!'; }
+                else if (pct >= 90) { emoji = '😱'; message = 'জস! একদম নিখুঁতের ধারেকাছে!'; }
+                else if (pct >= 80) { emoji = '🎉'; message = 'বাহ্‌, দারুণ! আসাধারন!'; }
+                else if (pct >= 60) { emoji = '👏'; message = 'সাবাশ, ভালোই এগোচ্ছো।'; }
+                else if (pct >= 45) { emoji = '😒'; message = 'শুরুটা ঠিক আছে, আরেকটু প্র্যাকটিস চাই।'; }
+                else if (pct >= 35) { emoji = '😐'; message = 'লেগে থাকো, পরের বার এর থেকে ভালো রেজাল্ট চাই!'; }
+                else { emoji = '😢'; message = 'লেগে থাকো, ঠিকই পারবে!'; }
                 document.getElementById('resultsEmoji').textContent = emoji;
                 document.getElementById('resultsMessage').textContent = message;
                 document.getElementById('resCorrect').textContent = c;
