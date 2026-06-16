@@ -881,7 +881,7 @@
             font-weight: 500;
         }
 
-        /* ---------- Enhanced Footer (Class VI style) ---------- */
+        /* ---------- Enhanced Footer ---------- */
         .footer-contact {
             text-align: center;
             margin-top: 22px;
@@ -1396,6 +1396,19 @@
             font-size: 0.95rem;
         }
 
+        .toggle-options-btn {
+            cursor: pointer;
+            margin-left: auto;
+            font-size: 18px;
+            user-select: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+        .toggle-options-btn:hover {
+            opacity: 1;
+        }
+
         /* ============ RESPONSIVE FIX ============ */
         @media (max-width:960px) {
             .quiz-panel {
@@ -1598,7 +1611,7 @@
                 <div class="flex-row" style="gap:8px;">
                     <button id="themeToggleBtn" class="theme-toggle-btn" title="Dark/Light Mode">🌙</button>
                     <div class="credit" id="creditName">✨ Arif Hussain</div>
-                    <button style="background: var(--slate);" id="resetHeaderBtn" title="Reset Quiz">🔄</button>
+                    <button style="background: var(--slate);" id="resetHeaderBtn" title="Reset Answers">🔄</button>
                 </div>
             </div>
             <section class="controls">
@@ -1615,13 +1628,12 @@
                         </div>
                     </div>
                     <div class="controls-right">
-                        <label style="font-size:12px;">Questions:</label>
+                        <label style="font-size:12px;">Q :</label>
                         <input type="number" id="quizSize" value="25" min="1" max="5000" style="width:70px;">
                         <label style="font-size:12px;">Time(min):</label>
                         <input type="number" id="timeLimit" value="30" min="1" max="300" style="width:65px;">
-                        <button id="generateBtn">✅ Generate (Seq)</button>
-                        <button id="randomBtn" style="background: var(--orange);">🎲 Random</button>
-                        <button id="resetAnswersBtn" style="background: var(--slate);">🔄 Reset Answer</button>
+                        <button id="generateBtn">✅Generate(Seq)</button>
+                        <button id="randomBtn" style="background: var(--orange);">🎲Random</button>
                     </div>
                 </div>
                 <div class="chapter-panel" id="chapterPanel">
@@ -1937,12 +1949,12 @@
             function loadJson(key, fb) { try { const r = safeGet(key); return r === null ? cloneValue(fb) : JSON.parse(r); } catch { return cloneValue(fb); } }
             function saveBank() { safeSet(BANK_KEY, JSON.stringify(questionBank)); updateAllCounters(); populateSubjectsUI(); renderSubjectEditList(); renderSubjectGroupEditList(); }
             function saveSelection() { safeSet(SELECTED_KEY, JSON.stringify([...selectedKeys])); }
-            function saveQuizState() { safeSet(SESSION_KEY, JSON.stringify({ questions: currentQuestions, answers: userAnswers, status: answerStatus, index: currentIndex, total: totalQuestions, quizSize: $("quizSize").value, timeLimit: $("timeLimit").value, quizMode: quizMode, timeRemaining: timeRemaining, timerActive: timerActive, quizSubmitted: quizSubmitted, semester: currentSemester })); }
+            function saveQuizState() { safeSet(SESSION_KEY, JSON.stringify({ questions: currentQuestions, answers: userAnswers, status: answerStatus, index: currentIndex, total: totalQuestions, quizSize: $("quizSize").value, timeLimit: $("timeLimit").value, quizMode: quizMode, timeRemaining: timeRemaining, timerActive: timerActive, quizSubmitted: quizSubmitted, semester: currentSemester, optionsVisible: optionsVisible })); }
             function loadQuizState() { const st = loadJson(SESSION_KEY, null); if (!st || !st.questions?.length) return false;
                 currentSemester = st.semester || 1;
                 currentQuestions = st.questions; userAnswers = st.answers || []; answerStatus = st.status || []; currentIndex = Math.min(st.index||0, currentQuestions.length-1); totalQuestions = st.total || currentQuestions.length;
                 $("quizSize").value = st.quizSize || 25; $("timeLimit").value = st.timeLimit || 30; quizMode = st.quizMode || "practice"; timeRemaining = st.timeRemaining ?? null; timerActive = st.timerActive || false;
-                quizSubmitted = st.quizSubmitted || false; updateModeButtons(); updateSemesterButtons();
+                quizSubmitted = st.quizSubmitted || false; optionsVisible = st.optionsVisible !== undefined ? st.optionsVisible : true; updateModeButtons(); updateSemesterButtons();
                 if (quizMode === "mock" && timerActive && timeRemaining !== null && timeRemaining > 0) { startTimer(timeRemaining); }
                 renderQuiz(); renderNav(); updateScore(); return true;
             }
@@ -2026,6 +2038,7 @@
                 currentIndex = 0;
                 isInlineEditUnlocked = false;
                 quizSubmitted = false;
+                optionsVisible = true;
                 stopTimer(); timeRemaining = null; timerActive = false;
                 if(quizMode === "mock") { const tl = parseInt($("timeLimit").value) || 30; timeRemaining = tl*60; startTimer(timeRemaining); }
                 renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState();
@@ -2039,13 +2052,11 @@
                 const s = totalQuestions - userAnswers.filter(a => a !== null).length;
                 const pct = totalQuestions > 0 ? Math.round((c / totalQuestions) * 100) : 0;
                 let emoji, message;
-                if (pct === 100) { emoji = '🫡'; message = 'তুমি তো মাস্টার! একেবারে আগুন! চলতে থাকুক!'; }
-                else if (pct >= 90) { emoji = '😱'; message = 'জস! একদম নিখুঁতের ধারেকাছে!'; }
-                else if (pct >= 80) { emoji = '🎉'; message = 'বাহ্‌, দারুণ! আসাধারন!'; }
-                else if (pct >= 60) { emoji = '👏'; message = 'সাবাশ, ভালোই এগোচ্ছো।'; }
-                else if (pct >= 45) { emoji = '😒'; message = 'শুরুটা ঠিক আছে, আরেকটু প্র্যাকটিস চাই।'; }
-                else if (pct >= 35) { emoji = '😐'; message = 'লেগে থাকো, পরের বার এর থেকে ভালো রেজাল্ট চাই!'; }
-                else { emoji = '😢'; message = 'লেগে থাকো, ঠিকই পারবে!'; }
+                if (pct === 100) { emoji = '🏆'; message = 'Legendary!'; }
+                else if (pct >= 90) { emoji = '🥇'; message = 'Excellent!'; }
+                else if (pct >= 80) { emoji = '🎉'; message = 'Great job!'; }
+                else if (pct >= 60) { emoji = '👍'; message = 'Keep it up.'; }
+                else { emoji = '😢'; message = 'Practice more.'; }
                 document.getElementById('resultsEmoji').textContent = emoji;
                 document.getElementById('resultsMessage').textContent = message;
                 document.getElementById('resCorrect').textContent = c;
@@ -2058,7 +2069,7 @@
 
             function hideResultsOverlay() { document.getElementById('resultsOverlay').classList.add('hidden'); }
 
-            function toggleInlineEdit() { if (!isEditUnlocked) return; isInlineEditUnlocked = !isInlineEditUnlocked; renderQuiz(); renderNav(); updateScore(); }
+            function toggleInlineEdit() { if (!isEditUnlocked) return; isInlineEditUnlocked = !isInlineEditUnlocked; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(isInlineEditUnlocked ? "Edit mode on." : ""); }
             function showInlineEditStatus(msg) { const el = document.getElementById('inlineEditStatusMsg'); if(el) el.textContent = msg; }
 
             function updateCurrentQuestionFromPanel() {
@@ -2102,6 +2113,7 @@
                 const iconTitle = isInlineEditUnlocked ? 'Edit mode on' : 'Click to edit question';
                 const diffClass = 'pill difficulty-' + (q.difficulty||'medium');
                 const diffLabel = {easy:'🟢 Easy', medium:'🟠 Medium', hard:'🔴 Hard'}[q.difficulty||'medium'] || 'Medium';
+                const toggleIconHtml = `<span class="toggle-options-btn" id="toggleOptionsBtn" title="${optionsVisible?'Hide Options':'Show Options'}">${optionsVisible?'Hide':'Show'}</span>`;
 
                 const editPanelHtml = (showPencil && isInlineEditUnlocked) ? `
                 <div class="inline-edit-panel open" id="inlineEditPanel">
@@ -2145,10 +2157,11 @@
                         <span class="pill">${escapeHtml(q._chapterName||"")} (Sem ${q._semester||"?"})</span>
                         <span class="${diffClass}">${diffLabel}</span>
                         ${quizMode==="mock"&&timerActive?`<span class="timer-display" id="timerPill">⏱️ <span id="timerPillText">--:--</span></span>`:""}
+                        ${toggleIconHtml}
                     </div>
                     <div class="question-text">${currentIndex+1}. ${escapeHtml(q.q)}</div>
                     ${showPencil ? `<div class="${iconClass}" id="inlineEditIcon" title="${iconTitle}">✏️</div>` : ''}
-                    <div class="options">${optHtml}</div>
+                    <div class="options" id="optionsContainer" style="${optionsVisible?'':'display:none;'}">${optHtml}</div>
                     <div class="info ${noteVisible?"show":""}" id="noteBox">📖 ${escapeHtml(q.note||"No explanation")}</div>
                     ${editPanelHtml}
                     <div class="nav-buttons-large">
@@ -2160,6 +2173,7 @@
 
                 document.querySelectorAll(".option").forEach(el => { el.onclick = () => {
                     if (quizSubmitted) return;
+                    if (!optionsVisible) return;
                     if (quizMode === "mock") { if (userAnswers[currentIndex] !== null) return; }
                     else { if (userAnswers[currentIndex] !== null) return; }
                     const sel = Number(el.dataset.opt);
@@ -2176,6 +2190,17 @@
                     if(updateBtn) updateBtn.onclick = updateCurrentQuestionFromPanel;
                     if(deleteBtn) deleteBtn.onclick = deleteCurrentQuestionFromPanel;
                     if(lockBtn) lockBtn.onclick = ()=>{ isInlineEditUnlocked=false; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(""); };
+                }
+                const toggleBtn = document.getElementById('toggleOptionsBtn');
+                if(toggleBtn) {
+                    toggleBtn.onclick = () => {
+                        optionsVisible = !optionsVisible;
+                        const optsContainer = document.getElementById('optionsContainer');
+                        if(optsContainer) optsContainer.style.display = optionsVisible ? '' : 'none';
+                        toggleBtn.textContent = optionsVisible ? 'Hide' : 'Show';
+                        toggleBtn.title = optionsVisible ? 'Hide Options' : 'Show Options';
+                        saveQuizState();
+                    };
                 }
                 updateTimerDisplay();
             }
@@ -2206,13 +2231,13 @@
                 else { if(noteRow) noteRow.style.display = ''; if(showScoreBtn) showScoreBtn.style.display = ''; }
                 const clearBtn = $("clearSelectedSubjectsBtn"); if(clearBtn) clearBtn.style.display = isEditUnlocked ? '' : 'none';
             }
-            function resetAnswers() { quizSubmitted = false; userAnswers.fill(null); answerStatus.fill(false); currentIndex=0; stopTimer(); timeRemaining=null; timerActive=false; if(quizMode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState(); }
-            function resetQuiz() { if(!confirm("Reset current quiz progress?")) return; safeRemove(SESSION_KEY); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; resetAnswers(); showSuccess("Quiz reset."); }
+            function resetAnswers() { quizSubmitted = false; optionsVisible = true; userAnswers.fill(null); answerStatus.fill(false); currentIndex=0; stopTimer(); timeRemaining=null; timerActive=false; if(quizMode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState(); }
+            function resetQuiz() { if(!confirm("Reset current quiz progress?")) return; safeRemove(SESSION_KEY); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; optionsVisible = true; resetAnswers(); showSuccess("Quiz reset."); }
             function submitMockTest() { if(!confirm("Submit mock test? You cannot change answers.")) return; stopTimer(); quizSubmitted = true; renderQuiz(); renderNav(); updateScore(); saveQuizState(); fireConfetti(); showResultsOverlay(); }
             function parseBulk(text) { const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean); const questions=[], skipped=[]; for(let i=0;i<lines.length;i++){ const line=lines[i]; if(!line.includes("||")){skipped.push(i+1);continue;} const parts=line.split("||").map(p=>p.trim()); if(parts.length<3){skipped.push(i+1);continue;} const opts=parts[1].split(",").map(o=>o.trim()).filter(Boolean); if(opts.length<4){skipped.push(i+1);continue;} const idx=parseInt(parts[2]); if(isNaN(idx)||idx<0||idx>3){skipped.push(i+1);continue;} const diff=parts[4]?.trim()||"medium"; const q=normalizeQuestion({q:parts[0],o:opts.slice(0,4),a:idx,note:parts[3]||"",difficulty:diff}); if(q) questions.push(q); else skipped.push(i+1); } return {questions,skipped}; }
             function bulkUpload() { const chapter=$("targetChapterSimple").value; if(!chapter) return showError("Select a chapter."); const raw=$("bulkQuestions").value; if(!raw.trim()) return showError("Enter bulk text."); const {questions,skipped}=parseBulk(raw); if(!questions.length) return showError(`No valid questions. ${skipped.length} lines skipped.`); questionBank[chapter].push(...questions); $("bulkQuestions").value=""; saveBank(); let msg=`${questions.length} questions added.`; if(skipped.length>0) msg+=` ${skipped.length} lines skipped.`; showSuccess(msg); }
             function addSingle() { const chapter=$("targetChapterSimple").value; const q=normalizeQuestion({q:$("simpleQText").value.trim(),o:[$("optA").value,$("optB").value,$("optC").value,$("optD").value].map(v=>v.trim()),a:Number($("correctIndex").value),note:$("simpleNote").value.trim(),difficulty:$("difficultySelect").value}); if(!q) return showError("Fill question, 4 options, and correct answer."); questionBank[chapter].push(q); ["simpleQText","optA","optB","optC","optD","simpleNote"].forEach(id=>$(id).value=""); saveBank(); showSuccess("One question added."); }
-            function handleRestoreFile(file){ const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); if(!d||typeof d!=="object"||Array.isArray(d)) throw new Error("Full JSON expected."); questionBank=normalizeBank(d); selectedKeys=new Set(getSubjects().filter(s=>s.semester===currentSemester).map(s=>s.key)); safeRemove(SESSION_KEY); stopTimer(); currentQuestions=[]; totalQuestions=0; quizSubmitted = false; saveBank(); renderQuiz(); renderNav(); updateScore(); showSuccess("Bank replaced."); }catch(err){ showError(err.message||"Invalid JSON file."); } }; r.readAsText(file); }
+            function handleRestoreFile(file){ const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); if(!d||typeof d!=="object"||Array.isArray(d)) throw new Error("Full JSON expected."); questionBank=normalizeBank(d); selectedKeys=new Set(getSubjects().filter(s=>s.semester===currentSemester).map(s=>s.key)); safeRemove(SESSION_KEY); stopTimer(); currentQuestions=[]; totalQuestions=0; quizSubmitted = false; optionsVisible = true; saveBank(); renderQuiz(); renderNav(); updateScore(); showSuccess("Bank replaced."); }catch(err){ showError(err.message||"Invalid JSON file."); } }; r.readAsText(file); }
             function handleAppendFile(file,sk){ const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); let raw=null; if(Array.isArray(d)) raw=d; else if(d&&typeof d==="object"){ const km=Object.keys(d).find(k=>k!=="__subjects__"&&k!=="__subjectGroups__"&&Array.isArray(d[k])); if(km) raw=d[km]; } if(!raw||!Array.isArray(raw)) throw new Error("No valid question array found."); const qs=raw.map(normalizeQuestion).filter(Boolean); if(!qs.length) throw new Error("No valid questions."); if(!questionBank[sk]) questionBank[sk]=[]; questionBank[sk].push(...qs); saveBank(); showSuccess(`${qs.length} JSON questions added.`); }catch(err){ showError(err.message); } }; r.readAsText(file); }
             function backupSelected() { const ks=getSelectedKeys(); if(!ks.length) return showError("No chapter selected!"); const bk={ __subjectGroups__:cloneValue(getSubjectGroups()), __subjects__:getSubjects().filter(s=>ks.includes(s.key)) }; ks.forEach(k=>bk[k]=questionBank[k]||[]); download(`class12_arts_selected_backup_${stamp()}.json`,JSON.stringify(bk,null,2),"application/json"); showSuccess("Selected backup saved."); }
             function backupFull() { download(`class12_arts_full_backup_${stamp()}.json`,JSON.stringify(questionBank,null,2),"application/json"); showSuccess("Full backup saved."); }
@@ -2222,7 +2247,7 @@
                 safeRemove(SESSION_KEY);
                 currentQuestions = []; totalQuestions = 0;
                 userAnswers = []; answerStatus = []; currentIndex = 0;
-                quizSubmitted = false;
+                quizSubmitted = false; optionsVisible = true;
                 const appEl = document.getElementById("app");
                 const gateEl = document.getElementById("gateWrapper");
                 if (appEl) appEl.style.display = "none";
@@ -2257,7 +2282,7 @@
                 ks.forEach(k => questionBank[k] = []);
                 saveBank();
                 currentQuestions = []; totalQuestions = 0;
-                stopTimer(); quizSubmitted = false;
+                stopTimer(); quizSubmitted = false; optionsVisible = true;
                 renderQuiz(); renderNav(); updateScore(); saveQuizState();
                 showSuccess(`${t} questions deleted.`);
             }
@@ -2305,12 +2330,12 @@
                 document.querySelectorAll('.semester-btn').forEach(b=>{ b.classList.toggle('active', Number(b.dataset.sem)===currentSemester); });
                 document.getElementById('semesterBadge').textContent = currentSemester;
             }
-            function setQuizMode(mode) { quizMode=mode; updateModeButtons(); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; updateTimerDisplay(); if(currentQuestions.length>0 && mode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } saveQuizState(); }
+            function setQuizMode(mode) { quizMode=mode; updateModeButtons(); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; optionsVisible = true; updateTimerDisplay(); if(currentQuestions.length>0 && mode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } saveQuizState(); }
             function setSemester(sem) {
                 if (sem === currentSemester) return;
                 currentSemester = sem; updateSemesterButtons();
                 selectedKeys.clear(); saveSelection(); populateSubjectsUI();
-                currentQuestions = []; totalQuestions = 0; userAnswers = []; answerStatus = []; currentIndex = 0;
+                currentQuestions = []; totalQuestions = 0; userAnswers = []; answerStatus = []; currentIndex = 0; optionsVisible = true;
                 stopTimer(); quizSubmitted = false;
                 renderQuiz(); renderNav(); updateScore(); updateTimerDisplay();
                 safeRemove(SESSION_KEY);
@@ -2325,8 +2350,7 @@
                 $("clearSelectedSubjectsBtn").onclick = clearSelectedSubjects;
                 $("generateBtn").onclick = () => generateQuiz(getSelectedKeys(), Number($("quizSize").value), false);
                 $("randomBtn").onclick = () => generateQuiz(getSelectedKeys(), Number($("quizSize").value), true);
-                $("resetAnswersBtn").onclick = resetAnswers;
-                $("resetHeaderBtn").onclick = resetQuiz;
+                $("resetHeaderBtn").onclick = resetAnswers;
                 $("showScoreBtn").onclick = () => { const c = answerStatus.filter(Boolean).length, w = userAnswers.filter((a,i)=>a!==null&&a!== -1&&!answerStatus[i]).length, s = totalQuestions - userAnswers.filter(a=>a!==null&&a!== -1).length, pct = totalQuestions>0?Math.round((c/totalQuestions)*100):0; alert(`Results\n\nCorrect: ${c}\nWrong: ${w}\nSkipped: ${s}\nAccuracy: ${pct}%\nTotal: ${c}/${totalQuestions}`); };
                 $("showNoteBeforeAnswer").onchange = renderQuiz;
                 $("submitMockBtn").onclick = submitMockTest;
@@ -2373,7 +2397,7 @@
                 $("backupSelectedJsonBtn").onclick = backupSelected;
                 $("backupFullJsonBtn").onclick = backupFull;
                 $("downloadHtmlBtn").onclick = downloadPermanentHtml;
-                document.addEventListener("keydown", e => { const t = document.activeElement?.tagName?.toLowerCase(); if (["input","textarea","select"].includes(t)) return; if (["1","2","3","4"].includes(e.key)) { const o = document.querySelector(`.option[data-opt="${Number(e.key)-1}"]`); if (o) o.click(); } if (e.key === "ArrowRight") moveQuestion(1); if (e.key === "ArrowLeft") moveQuestion(-1); });
+                document.addEventListener("keydown", e => { const t = document.activeElement?.tagName?.toLowerCase(); if (["input","textarea","select"].includes(t)) return; if (["1","2","3","4"].includes(e.key) && optionsVisible) { const o = document.querySelector(`.option[data-opt="${Number(e.key)-1}"]`); if (o) o.click(); } if (e.key === "ArrowRight") moveQuestion(1); if (e.key === "ArrowLeft") moveQuestion(-1); });
             }
 
             function initCredits() {
@@ -2390,6 +2414,7 @@
             let isInlineEditUnlocked = false;
             let quizMode = "practice";
             let quizSubmitted = false;
+            let optionsVisible = true;
             init();
         })();
     </script>
