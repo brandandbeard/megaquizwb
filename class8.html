@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js">
     </script>
     <style>
+        /* (All the styles remain the same as in the provided Class VIII code up to the .toggle-options-btn addition) */
         :root {
             --bg: #f0f4fa;
             --ink: #1a1e2b;
@@ -985,6 +986,20 @@
         }
         /* =================================================== */
 
+        /* Toggle options button style */
+        .toggle-options-btn {
+            cursor: pointer;
+            margin-left: auto;
+            font-size: 14px;
+            user-select: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+        .toggle-options-btn:hover {
+            opacity: 1;
+        }
+
         @media (max-width:960px) {
             .quiz-panel {
                 grid-template-columns: 1fr;
@@ -1630,7 +1645,7 @@
                 <div class="flex-row" style="gap:8px;">
                     <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Dark/Light Mode">🌙</button>
                     <div class="credit" id="creditName">✨ By Arif Hussain</div>
-                    <button style="background: var(--slate);" id="resetHeaderBtn" title="Reset Quiz">🔄</button>
+                    <button style="background: var(--slate);" id="resetHeaderBtn" title="Reset Answers">🔄</button>
                 </div>
             </div>
             <section class="controls">
@@ -1638,22 +1653,21 @@
                     <div class="controls-left">
                         <button style="background: var(--slate);" id="chapterToggleBtn">📂 Select Subjects</button>
                         <div class="mode-selector" id="modeSelector">
-                            <button class="mode-btn active" data-mode="practice">📝 Practice</button>
-                            <button class="mode-btn" data-mode="mock">⏱️ Mock Test</button>
+                            <button class="mode-btn" data-mode="practice">📝 Practice</button>
+                            <button class="mode-btn active" data-mode="mock">⏱️ Mock Test</button>
                         </div>
                     </div>
                     <div class="controls-right">
-                        <label style="font-size:12px;">Questions:</label>
+                        <label style="font-size:12px;">Q :</label>
                         <input type="number" id="quizSize" value="25" min="1" max="5000" style="width:70px;">
                         <label style="font-size:12px;">Time(min):</label>
                         <input type="number" id="timeLimit" value="30" min="1" max="300" style="width:65px;">
-                        <button id="generateBtn">✅ Generate (Seq)</button>
-                        <button id="randomBtn" style="background: var(--orange);">🎲 Random</button>
-                        <button id="resetAnswersBtn" style="background: var(--slate);">🔄 Reset Answer</button>
+                        <button id="generateBtn">✅Generate(Seq)</button>
+                        <button id="randomBtn" style="background: var(--orange);">🎲Random</button>
                     </div>
                 </div>
                 <div class="chapter-panel open" id="chapterPanel">
-                    <div id="subjectAccordions"><div class="subject-accordion"><div class="subject-header aptitude" data-group="science"><span>🌿 পরিবেশ ও বিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch1" checked=""><span>বল ও চাপ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch2" checked=""><span>স্পর্শ ছাড়া ক্রিয়াশীল বল</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch3" checked=""><span>তাপ</span><span class="q-count">[56]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch4" checked=""><span>আলো</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch5" checked=""><span>পদার্থের প্রকৃতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch6" checked=""><span>পদার্থের গঠন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch7" checked=""><span>রাসায়নিক বিক্রিয়া</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch8" checked=""><span>তড়িতের রাসায়নিক প্রভাব</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch9" checked=""><span>কয়েকটি গ্যাসের পরিচিতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch10" checked=""><span>কার্বন ও কার্বনঘটিত যৌগ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch11" checked=""><span>প্রাকৃতিক ঘটনার বিশ্লেষণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch12" checked=""><span>জীবদেহের গঠন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch1" checked=""><span>অণুজীবের জগৎ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch2" checked=""><span>মানুষের খাদ্য উৎপাদন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch3" checked=""><span>অন্তঃক্ষরা তন্ত্র ও বয়ঃসন্ধি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch4" checked=""><span>জীববৈচিত্র্য, পরিবেশ সংকট ও বিপন্ন প্রাণীর সংরক্ষণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch5" checked=""><span>উদ্ভিদজগৎ ও পরিবেশ</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion"><div class="subject-header current" data-group="history"><span>📜 ইতিহাস</span><span class="subject-arrow">▼</span></div><div class="subject-chapters"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch6" checked=""><span>ইতিহাসের ধারণা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch7" checked=""><span>আঞ্চলিক শক্তির উত্থান</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch8" checked=""><span>ঔপনিবেশিক কর্তৃত্ব প্রতিষ্ঠা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch9" checked=""><span>ঔপনিবেশিক অর্থনীতির প্রকৃতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch1" checked=""><span>ঔপনিবেশিক শাসনের বিরুদ্ধে প্রতিক্রিয়া</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch2" checked=""><span>জাতীয়তাবাদের সূচনা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch3" checked=""><span>জাতীয় আন্দোলনের আদর্শ ও বিকাশ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch4" checked=""><span>সাম্প্রদায়িকতা থেকে দেশভাগ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch5" checked=""><span>গণতন্ত্রের কাঠামো ও মানুষের অধিকার</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion"><div class="subject-header english" data-group="geography"><span>🌍 ভূগোল</span><span class="subject-arrow">▼</span></div><div class="subject-chapters"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch6" checked=""><span>পৃথিবীর অভ্যন্তর</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch7" checked=""><span>অস্থির পৃথিবী</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch8" checked=""><span>শিলা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch9" checked=""><span>বায়ুচাপ বলয় ও বায়ুপ্রবাহ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch10" checked=""><span>মেঘ ও বৃষ্টিপাত</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch11" checked=""><span>জলবায়ু অঞ্চল</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132452393" checked=""><span>মানুষের অর্থনৈতিক কার্যকলাপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132461747" checked=""><span>দক্ষিণ ভারত</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132471251" checked=""><span>ভারতবর্ষের প্রতিবেশী দেশসমূহ</span><span class="q-count">[0]</span></label></div></div></div></div>
+                    <div id="subjectAccordions"><div class="subject-accordion open"><div class="subject-header aptitude" data-group="science"><span>🌿 পরিবেশ ও বিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch1" checked=""><span>বল ও চাপ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch2" checked=""><span>স্পর্শ ছাড়া ক্রিয়াশীল বল</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch3" checked=""><span>তাপ</span><span class="q-count">[56]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch4" checked=""><span>আলো</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch5" checked=""><span>পদার্থের প্রকৃতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch6" checked=""><span>পদার্থের গঠন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch7" checked=""><span>রাসায়নিক বিক্রিয়া</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch8" checked=""><span>তড়িতের রাসায়নিক প্রভাব</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch9" checked=""><span>কয়েকটি গ্যাসের পরিচিতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch10" checked=""><span>কার্বন ও কার্বনঘটিত যৌগ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch11" checked=""><span>প্রাকৃতিক ঘটনার বিশ্লেষণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch12" checked=""><span>জীবদেহের গঠন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch1" checked=""><span>অণুজীবের জগৎ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch2" checked=""><span>মানুষের খাদ্য উৎপাদন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch3" checked=""><span>অন্তঃক্ষরা তন্ত্র ও বয়ঃসন্ধি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch4" checked=""><span>জীববৈচিত্র্য, পরিবেশ সংকট ও বিপন্ন প্রাণীর সংরক্ষণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch5" checked=""><span>উদ্ভিদজগৎ ও পরিবেশ</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion open"><div class="subject-header current" data-group="history"><span>📜 ইতিহাস</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch6" checked=""><span>ইতিহাসের ধারণা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch7" checked=""><span>আঞ্চলিক শক্তির উত্থান</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch8" checked=""><span>ঔপনিবেশিক কর্তৃত্ব প্রতিষ্ঠা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch9" checked=""><span>ঔপনিবেশিক অর্থনীতির প্রকৃতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch1" checked=""><span>ঔপনিবেশিক শাসনের বিরুদ্ধে প্রতিক্রিয়া</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch2" checked=""><span>জাতীয়তাবাদের সূচনা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch3" checked=""><span>জাতীয় আন্দোলনের আদর্শ ও বিকাশ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch4" checked=""><span>সাম্প্রদায়িকতা থেকে দেশভাগ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch5" checked=""><span>গণতন্ত্রের কাঠামো ও মানুষের অধিকার</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion open"><div class="subject-header english" data-group="geography"><span>🌍 ভূগোল</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch6" checked=""><span>পৃথিবীর অভ্যন্তর</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch7" checked=""><span>অস্থির পৃথিবী</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch8" checked=""><span>শিলা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch9" checked=""><span>বায়ুচাপ বলয় ও বায়ুপ্রবাহ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch10" checked=""><span>মেঘ ও বৃষ্টিপাত</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch11" checked=""><span>জলবায়ু অঞ্চল</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132452393" checked=""><span>মানুষের অর্থনৈতিক কার্যকলাপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132461747" checked=""><span>দক্ষিণ ভারত</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132471251" checked=""><span>ভারতবর্ষের প্রতিবেশী দেশসমূহ</span><span class="q-count">[0]</span></label></div></div></div></div>
                     <div class="subject-action-row">
                         <div class="flex-row">
                             <button id="selectAllBtn">Select All</button>
@@ -1667,54 +1681,31 @@
                 <div class="questions-area" id="questionsArea">
                 <div class="question-card" id="questionCardEl">
                     <div class="question-meta">
-                        <span class="pill">84/87</span>
-                        <span class="pill">ভূগোল</span>
-                        <span class="pill">শিলা</span>
+                        <span class="pill">1/25</span>
+                        <span class="pill">পরিবেশ ও বিজ্ঞান</span>
+                        <span class="pill">বল ও চাপ</span>
                         <span class="pill difficulty-medium">🟠 Medium</span>
-                        
+                        <span class="timer-display" id="timerPill">⏱️ <span id="timerPillText">29:51</span></span>
+                        <span class="toggle-options-btn" id="toggleOptionsBtn" title="Hide Options">Hide</span>
                     </div>
-                    <div class="question-text">84. বায়ুদূষণের প্রধান কারণ কোনটি?</div>
-                    <div class="inline-edit-icon unlocked" id="inlineEditIcon" title="Edit mode on">✏️</div>
-                    <div class="options"><div class="option" data-opt="0"><span class="key">1</span><span>A. বৃষ্টিপাত</span></div><div class="option" data-opt="1"><span class="key">2</span><span>B. কলকারখানার ধোঁয়া</span></div><div class="option" data-opt="2"><span class="key">3</span><span>C. জলপ্রবাহ</span></div><div class="option" data-opt="3"><span class="key">4</span><span>D. বৃক্ষরোপণ</span></div></div>
-                    <div class="info show" id="noteBox">📖 কলকারখানা ও যানবাহনের ধোঁয়া বায়ুদূষণের প্রধান কারণ।</div>
+                    <div class="question-text">1. বাস্তুতন্ত্রে উৎপাদক কারা?</div>
+                    <div class="inline-edit-icon" id="inlineEditIcon" title="Click to edit question">✏️</div>
+                    <div class="options" id="optionsContainer" style=""><div class="option" data-opt="0"><span class="key">1</span><span>A. ছত্রাক</span></div><div class="option" data-opt="1"><span class="key">2</span><span>B. প্রাণী</span></div><div class="option selected-mock" data-opt="2"><span class="key">3</span><span>C. ব্যাকটেরিয়া</span></div><div class="option" data-opt="3"><span class="key">4</span><span>D. সবুজ উদ্ভিদ</span></div></div>
+                    <div class="info " id="noteBox">📖 সবুজ উদ্ভিদ সূর্যালোক ব্যবহার করে খাদ্য তৈরি করে।</div>
                     
-                <div class="inline-edit-panel open" id="inlineEditPanel">
-                    <label>📝 প্রশ্ন:</label><textarea id="ieQText">বায়ুদূষণের প্রধান কারণ কোনটি?</textarea>
-                    <label>🔤 Options:</label>
-                    <div class="inline-edit-options-grid">
-                        <input type="text" id="ieOpt0" value="বৃষ্টিপাত"><input type="text" id="ieOpt1" value="কলকারখানার ধোঁয়া">
-                        <input type="text" id="ieOpt2" value="জলপ্রবাহ"><input type="text" id="ieOpt3" value="বৃক্ষরোপণ">
-                    </div>
-                    <label>✅ সঠিক উত্তর:</label>
-                    <select id="ieCorrect">
-                        <option value="0">A. বৃষ্টিপাত</option>
-                        <option value="1" selected="">B. কলকারখানার ধোঁয়া</option>
-                        <option value="2">C. জলপ্রবাহ</option>
-                        <option value="3">D. বৃক্ষরোপণ</option>
-                    </select>
-                    <label>📊 Difficulty:</label>
-                    <select id="ieDifficulty"><option value="easy">🟢 Easy</option><option value="medium" selected="">🟠 Medium</option><option value="hard">🔴 Hard</option></select>
-                    <label>📖 ব্যাখ্যা:</label><textarea id="ieNote" style="min-height:48px;">কলকারখানা ও যানবাহনের ধোঁয়া বায়ুদূষণের প্রধান কারণ।</textarea>
-                    <div class="inline-edit-actions">
-                        <button class="btn-sm update-btn" id="ieUpdateBtn">✅ Update</button>
-                        <button class="btn-sm delete-btn" id="ieDeleteBtn">🗑️ Delete</button>
-                        <button class="btn-sm lock-btn" id="ieLockBtn">🔒 Lock Edit</button>
-                    </div>
-                    <div class="inline-edit-status" id="inlineEditStatusMsg"></div>
-                </div>
                     <div class="nav-buttons-large">
-                        <button id="prevQ">◀ Previous</button>
+                        <button id="prevQ" disabled="">◀ Previous</button>
                         <button id="nextQ">Next ▶</button>
                     </div>
                     
                 </div></div>
                 <aside class="sidebar">
-                    <div class="score-board" id="scoreBoard">🎯 Score: 0/87<br><span class="score-breakdown">✅0 | ❌0 | ⏭️87</span></div>
-                    <div id="timerDisplay" style="display:none;"></div>
-                    <div id="navGrid" class="nav-grid"><div class="q-num" data-idx="0">1</div><div class="q-num" data-idx="1">2</div><div class="q-num" data-idx="2">3</div><div class="q-num" data-idx="3">4</div><div class="q-num" data-idx="4">5</div><div class="q-num" data-idx="5">6</div><div class="q-num" data-idx="6">7</div><div class="q-num" data-idx="7">8</div><div class="q-num" data-idx="8">9</div><div class="q-num" data-idx="9">10</div><div class="q-num" data-idx="10">11</div><div class="q-num" data-idx="11">12</div><div class="q-num" data-idx="12">13</div><div class="q-num" data-idx="13">14</div><div class="q-num" data-idx="14">15</div><div class="q-num" data-idx="15">16</div><div class="q-num" data-idx="16">17</div><div class="q-num" data-idx="17">18</div><div class="q-num" data-idx="18">19</div><div class="q-num" data-idx="19">20</div><div class="q-num" data-idx="20">21</div><div class="q-num" data-idx="21">22</div><div class="q-num" data-idx="22">23</div><div class="q-num" data-idx="23">24</div><div class="q-num" data-idx="24">25</div><div class="q-num" data-idx="25">26</div><div class="q-num" data-idx="26">27</div><div class="q-num" data-idx="27">28</div><div class="q-num" data-idx="28">29</div><div class="q-num" data-idx="29">30</div><div class="q-num" data-idx="30">31</div><div class="q-num" data-idx="31">32</div><div class="q-num" data-idx="32">33</div><div class="q-num" data-idx="33">34</div><div class="q-num" data-idx="34">35</div><div class="q-num" data-idx="35">36</div><div class="q-num" data-idx="36">37</div><div class="q-num" data-idx="37">38</div><div class="q-num" data-idx="38">39</div><div class="q-num" data-idx="39">40</div><div class="q-num" data-idx="40">41</div><div class="q-num" data-idx="41">42</div><div class="q-num" data-idx="42">43</div><div class="q-num" data-idx="43">44</div><div class="q-num" data-idx="44">45</div><div class="q-num" data-idx="45">46</div><div class="q-num" data-idx="46">47</div><div class="q-num" data-idx="47">48</div><div class="q-num" data-idx="48">49</div><div class="q-num" data-idx="49">50</div><div class="q-num" data-idx="50">51</div><div class="q-num" data-idx="51">52</div><div class="q-num" data-idx="52">53</div><div class="q-num" data-idx="53">54</div><div class="q-num" data-idx="54">55</div><div class="q-num" data-idx="55">56</div><div class="q-num" data-idx="56">57</div><div class="q-num" data-idx="57">58</div><div class="q-num" data-idx="58">59</div><div class="q-num" data-idx="59">60</div><div class="q-num" data-idx="60">61</div><div class="q-num" data-idx="61">62</div><div class="q-num" data-idx="62">63</div><div class="q-num" data-idx="63">64</div><div class="q-num" data-idx="64">65</div><div class="q-num" data-idx="65">66</div><div class="q-num" data-idx="66">67</div><div class="q-num" data-idx="67">68</div><div class="q-num" data-idx="68">69</div><div class="q-num" data-idx="69">70</div><div class="q-num" data-idx="70">71</div><div class="q-num" data-idx="71">72</div><div class="q-num" data-idx="72">73</div><div class="q-num" data-idx="73">74</div><div class="q-num" data-idx="74">75</div><div class="q-num" data-idx="75">76</div><div class="q-num" data-idx="76">77</div><div class="q-num" data-idx="77">78</div><div class="q-num" data-idx="78">79</div><div class="q-num" data-idx="79">80</div><div class="q-num" data-idx="80">81</div><div class="q-num" data-idx="81">82</div><div class="q-num" data-idx="82">83</div><div class="q-num current" data-idx="83">84</div><div class="q-num" data-idx="84">85</div><div class="q-num" data-idx="85">86</div><div class="q-num" data-idx="86">87</div></div>
-                    <button id="showScoreBtn" style="margin-top:10px;width:100%; background:var(--slate);">📊 Show Results</button>
-                    <div class="note-toggle" id="noteToggleRow"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answering</label></div>
-                    <button id="submitMockBtn" style="display:none; margin-top:8px; width:100%; background:var(--green);">✅ Submit Mock Test</button>
+                    <div class="score-board" id="scoreBoard">⏱️ Mock Test in Progress</div>
+                    <div id="timerDisplay" style="display: block;" class="timer-display">⏱️ Time: <strong>29:51</strong></div>
+                    <div id="navGrid" class="nav-grid"><div class="q-num attempted-mock current" data-idx="0">1</div><div class="q-num" data-idx="1">2</div><div class="q-num" data-idx="2">3</div><div class="q-num" data-idx="3">4</div><div class="q-num" data-idx="4">5</div><div class="q-num" data-idx="5">6</div><div class="q-num" data-idx="6">7</div><div class="q-num" data-idx="7">8</div><div class="q-num" data-idx="8">9</div><div class="q-num" data-idx="9">10</div><div class="q-num" data-idx="10">11</div><div class="q-num" data-idx="11">12</div><div class="q-num" data-idx="12">13</div><div class="q-num" data-idx="13">14</div><div class="q-num" data-idx="14">15</div><div class="q-num" data-idx="15">16</div><div class="q-num" data-idx="16">17</div><div class="q-num" data-idx="17">18</div><div class="q-num" data-idx="18">19</div><div class="q-num" data-idx="19">20</div><div class="q-num" data-idx="20">21</div><div class="q-num" data-idx="21">22</div><div class="q-num" data-idx="22">23</div><div class="q-num" data-idx="23">24</div><div class="q-num" data-idx="24">25</div></div>
+                    <button id="showScoreBtn" style="margin-top: 10px; width: 100%; background: var(--slate); display: none;">📊 Show Results</button>
+                    <div class="note-toggle" id="noteToggleRow" style="display: none;"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answering</label></div>
+                    <button id="submitMockBtn" style="display: block; margin-top: 8px; width: 100%; background: var(--green);">✅ Submit Mock Test</button>
                 </aside>
             </section>
 
@@ -1917,7 +1908,7 @@
 
         (function() {
             const EDIT_PASSWORD = "Arif@956438?";
-            const APP_VERSION = "class_viii_exam_quiz_v4";
+            const APP_VERSION = "class_viii_exam_quiz_v5_toggle";
             const BANK_KEY = "CLASS_VIII_QUIZ_BANK_" + APP_VERSION;
             const SESSION_KEY = "CLASS_VIII_QUIZ_SESSION_" + APP_VERSION;
             const SELECTED_KEY = "CLASS_VIII_QUIZ_SELECTED_" + APP_VERSION;
@@ -2000,11 +1991,11 @@
             function loadJson(key, fb) { try { const r = safeGet(key); return r === null ? cloneValue(fb) : JSON.parse(r); } catch { return cloneValue(fb); } }
             function saveBank() { safeSet(BANK_KEY, JSON.stringify(questionBank)); updateAllCounters(); populateSubjectsUI(); renderSubjectEditList(); renderSubjectGroupEditList(); }
             function saveSelection() { safeSet(SELECTED_KEY, JSON.stringify([...selectedKeys])); }
-            function saveQuizState() { safeSet(SESSION_KEY, JSON.stringify({ questions: currentQuestions, answers: userAnswers, status: answerStatus, index: currentIndex, total: totalQuestions, quizSize: $("quizSize").value, timeLimit: $("timeLimit").value, quizMode: quizMode, timeRemaining: timeRemaining, timerActive: timerActive, quizSubmitted: quizSubmitted })); }
+            function saveQuizState() { safeSet(SESSION_KEY, JSON.stringify({ questions: currentQuestions, answers: userAnswers, status: answerStatus, index: currentIndex, total: totalQuestions, quizSize: $("quizSize").value, timeLimit: $("timeLimit").value, quizMode: quizMode, timeRemaining: timeRemaining, timerActive: timerActive, quizSubmitted: quizSubmitted, optionsVisible: optionsVisible })); }
             function loadQuizState() { const st = loadJson(SESSION_KEY, null); if (!st || !st.questions?.length) return false;
                 currentQuestions = st.questions; userAnswers = st.answers || []; answerStatus = st.status || []; currentIndex = Math.min(st.index||0, currentQuestions.length-1); totalQuestions = st.total || currentQuestions.length;
                 $("quizSize").value = st.quizSize || 25; $("timeLimit").value = st.timeLimit || 30; quizMode = st.quizMode || "practice"; timeRemaining = st.timeRemaining ?? null; timerActive = st.timerActive || false;
-                quizSubmitted = st.quizSubmitted || false; updateModeButtons(); if (quizMode === "mock" && timerActive && timeRemaining !== null && timeRemaining > 0) { startTimer(timeRemaining); }
+                quizSubmitted = st.quizSubmitted || false; optionsVisible = st.optionsVisible !== undefined ? st.optionsVisible : true; updateModeButtons(); if (quizMode === "mock" && timerActive && timeRemaining !== null && timeRemaining > 0) { startTimer(timeRemaining); }
                 renderQuiz(); renderNav(); updateScore(); return true; }
             function getSubjects() { return questionBank.__subjects__ || []; }
             function getCount(k) { return questionBank[k]?.length || 0; }
@@ -2065,8 +2056,7 @@
                 if(getSubjectGroups().some(g=>g.key===key)) return showError("এই key আগে থেকেই আছে।");
                 questionBank.__subjectGroups__.push({key, name, className: style || ""});
                 $("newSubjectKey").value=''; $("newSubjectNameInput").value=''; $("newSubjectGroupStyle").value='';
-                afterSubjectGroupChanged();
-                showSuccess("নতুন subject group যোগ হয়েছে।");
+                afterSubjectGroupChanged(); showSuccess("নতুন subject group যোগ হয়েছে।");
             }
             function afterSubjectGroupChanged() { saveBank(); populateSubjectsUI(); updateAllCounters(); }
             function afterChapterStructureChanged() { questionBank = normalizeBank(questionBank); saveBank(); saveSelection(); }
@@ -2089,6 +2079,7 @@
                 currentIndex = 0;
                 isInlineEditUnlocked = false;
                 quizSubmitted = false;
+                optionsVisible = true;
                 stopTimer(); timeRemaining = null; timerActive = false;
                 if(quizMode === "mock") { const tl = parseInt($("timeLimit").value) || 30; timeRemaining = tl*60; startTimer(timeRemaining); }
                 renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState();
@@ -2121,14 +2112,7 @@
 
             function hideResultsOverlay() { document.getElementById('resultsOverlay').classList.add('hidden'); }
 
-            function toggleInlineEdit() {
-                if (!isEditUnlocked) return;
-                isInlineEditUnlocked = !isInlineEditUnlocked;
-                renderQuiz();
-                renderNav();
-                updateScore();
-                showInlineEditStatus(isInlineEditUnlocked ? "Edit mode on." : "");
-            }
+            function toggleInlineEdit() { if (!isEditUnlocked) return; isInlineEditUnlocked = !isInlineEditUnlocked; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(isInlineEditUnlocked ? "Edit mode on." : ""); }
             function showInlineEditStatus(msg) { const el = document.getElementById('inlineEditStatusMsg'); if(el) el.textContent = msg; }
 
             function updateCurrentQuestionFromPanel() {
@@ -2172,6 +2156,7 @@
                 const iconTitle = isInlineEditUnlocked ? 'Edit mode on' : 'Click to edit question';
                 const diffClass = 'pill difficulty-' + (q.difficulty||'medium');
                 const diffLabel = {easy:'🟢 Easy', medium:'🟠 Medium', hard:'🔴 Hard'}[q.difficulty||'medium'] || 'Medium';
+                const toggleIconHtml = `<span class="toggle-options-btn" id="toggleOptionsBtn" title="${optionsVisible?'Hide Options':'Show Options'}">${optionsVisible?'Hide':'Show'}</span>`;
 
                 const editPanelHtml = (showPencil && isInlineEditUnlocked) ? `
                 <div class="inline-edit-panel open" id="inlineEditPanel">
@@ -2215,10 +2200,11 @@
                         <span class="pill">${escapeHtml(q._chapterName||"")}</span>
                         <span class="${diffClass}">${diffLabel}</span>
                         ${quizMode==="mock"&&timerActive?`<span class="timer-display" id="timerPill">⏱️ <span id="timerPillText">--:--</span></span>`:""}
+                        ${toggleIconHtml}
                     </div>
                     <div class="question-text">${currentIndex+1}. ${escapeHtml(q.q)}</div>
                     ${showPencil ? `<div class="${iconClass}" id="inlineEditIcon" title="${iconTitle}">✏️</div>` : ''}
-                    <div class="options">${optHtml}</div>
+                    <div class="options" id="optionsContainer" style="${optionsVisible?'':'display:none;'}">${optHtml}</div>
                     <div class="info ${noteVisible?"show":""}" id="noteBox">📖 ${escapeHtml(q.note||"No explanation")}</div>
                     ${editPanelHtml}
                     <div class="nav-buttons-large">
@@ -2230,11 +2216,8 @@
 
                 document.querySelectorAll(".option").forEach(el => { el.onclick = () => {
                     if (quizSubmitted) return;
-                    if (quizMode === "mock") {
-                        if (userAnswers[currentIndex] !== null) return;
-                    } else {
-                        if (userAnswers[currentIndex] !== null) return;
-                    }
+                    if (!optionsVisible) return;
+                    if (quizMode === "mock") { if (userAnswers[currentIndex] !== null) return; } else { if (userAnswers[currentIndex] !== null) return; }
                     const sel = Number(el.dataset.opt);
                     userAnswers[currentIndex] = sel;
                     answerStatus[currentIndex] = (sel === q.a);
@@ -2243,13 +2226,21 @@
                 }; });
                 const prevBtn = document.getElementById('prevQ'), nextBtn = document.getElementById('nextQ'); if(prevBtn) prevBtn.onclick = ()=>moveQuestion(-1); if(nextBtn) nextBtn.onclick = ()=>moveQuestion(1);
                 const rstBtn = document.getElementById('restartAfterFinish'); if(rstBtn) rstBtn.onclick = resetAnswers;
-                if (showPencil) {
-                    const editIcon = document.getElementById('inlineEditIcon');
-                    if(editIcon) editIcon.onclick = (e)=>{ e.stopPropagation(); toggleInlineEdit(); };
-                }
+                if (showPencil) { const editIcon = document.getElementById('inlineEditIcon'); if(editIcon) editIcon.onclick = (e)=>{ e.stopPropagation(); toggleInlineEdit(); }; }
                 if(showPencil && isInlineEditUnlocked) {
                     const updateBtn = document.getElementById('ieUpdateBtn'), deleteBtn = document.getElementById('ieDeleteBtn'), lockBtn = document.getElementById('ieLockBtn');
                     if(updateBtn) updateBtn.onclick = updateCurrentQuestionFromPanel; if(deleteBtn) deleteBtn.onclick = deleteCurrentQuestionFromPanel; if(lockBtn) lockBtn.onclick = ()=>{ isInlineEditUnlocked=false; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(""); };
+                }
+                const toggleBtn = document.getElementById('toggleOptionsBtn');
+                if(toggleBtn) {
+                    toggleBtn.onclick = () => {
+                        optionsVisible = !optionsVisible;
+                        const optsContainer = document.getElementById('optionsContainer');
+                        if(optsContainer) optsContainer.style.display = optionsVisible ? '' : 'none';
+                        toggleBtn.textContent = optionsVisible ? 'Hide' : 'Show';
+                        toggleBtn.title = optionsVisible ? 'Hide Options' : 'Show Options';
+                        saveQuizState();
+                    };
                 }
                 updateTimerDisplay();
             }
@@ -2260,12 +2251,9 @@
                 const isMockActive = (quizMode === "mock" && !quizSubmitted);
                 for(let i=0;i<totalQuestions;i++) {
                     let cls="q-num";
-                    if (isMockActive) {
-                        if (userAnswers[i] !== null && userAnswers[i] !== -1) cls += " attempted-mock";
-                    } else {
-                        if(userAnswers[i]!==null && userAnswers[i]!== -1) cls += answerStatus[i]?" answered-correct":" answered-wrong";
-                        else if(quizMode==="mock" && quizSubmitted && (userAnswers[i]===null || userAnswers[i]=== -1)) cls+=" skipped";
-                    }
+                    if (isMockActive) { if (userAnswers[i] !== null && userAnswers[i] !== -1) cls += " attempted-mock"; }
+                    else { if(userAnswers[i]!==null && userAnswers[i]!== -1) cls += answerStatus[i]?" answered-correct":" answered-wrong";
+                        else if(quizMode==="mock" && quizSubmitted && (userAnswers[i]===null || userAnswers[i]=== -1)) cls+=" skipped"; }
                     if(i===currentIndex) cls+=" current";
                     g+=`<div class="${cls}" data-idx="${i}">${i+1}</div>`;
                 }
@@ -2276,30 +2264,20 @@
                 const c = answerStatus.filter(Boolean).length;
                 const a = userAnswers.filter(v=>v!==null && v!== -1).length;
                 const w = a-c; const s = totalQuestions-a;
-                if (quizMode === "mock" && !quizSubmitted) {
-                    $("scoreBoard").innerHTML = `⏱️ Mock Test in Progress`;
-                } else {
-                    $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`;
-                }
-                const noteRow = $("noteToggleRow");
-                const showScoreBtn = $("showScoreBtn");
-                if (quizMode === "mock" && !quizSubmitted) {
-                    if(noteRow) noteRow.style.display = 'none';
-                    if(showScoreBtn) showScoreBtn.style.display = 'none';
-                } else {
-                    if(noteRow) noteRow.style.display = '';
-                    if(showScoreBtn) showScoreBtn.style.display = '';
-                }
-                const clearBtn = $("clearSelectedSubjectsBtn");
-                if(clearBtn) clearBtn.style.display = isEditUnlocked ? '' : 'none';
+                if (quizMode === "mock" && !quizSubmitted) { $("scoreBoard").innerHTML = `⏱️ Mock Test in Progress`; }
+                else { $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`; }
+                const noteRow = $("noteToggleRow"); const showScoreBtn = $("showScoreBtn");
+                if (quizMode === "mock" && !quizSubmitted) { if(noteRow) noteRow.style.display = 'none'; if(showScoreBtn) showScoreBtn.style.display = 'none'; }
+                else { if(noteRow) noteRow.style.display = ''; if(showScoreBtn) showScoreBtn.style.display = ''; }
+                const clearBtn = $("clearSelectedSubjectsBtn"); if(clearBtn) clearBtn.style.display = isEditUnlocked ? '' : 'none';
             }
-            function resetAnswers() { quizSubmitted = false; userAnswers.fill(null); answerStatus.fill(false); currentIndex=0; stopTimer(); timeRemaining=null; timerActive=false; if(quizMode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState(); }
-            function resetQuiz() { if(!confirm("আপনি কি বর্তমান quiz progress reset করতে চান?")) return; safeRemove(SESSION_KEY); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; resetAnswers(); showSuccess("Quiz reset হয়েছে।"); }
+            function resetAnswers() { quizSubmitted = false; optionsVisible = true; userAnswers.fill(null); answerStatus.fill(false); currentIndex=0; stopTimer(); timeRemaining=null; timerActive=false; if(quizMode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState(); }
+            function resetQuiz() { if(!confirm("আপনি কি বর্তমান quiz progress reset করতে চান?")) return; safeRemove(SESSION_KEY); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; optionsVisible = true; resetAnswers(); showSuccess("Quiz reset হয়েছে।"); }
             function submitMockTest() { if(!confirm("Mock test submit করবেন? এরপর আর উত্তর পরিবর্তন করতে পারবেন না।")) return; stopTimer(); quizSubmitted = true; renderQuiz(); renderNav(); updateScore(); saveQuizState(); fireConfetti(); showResultsOverlay(); }
             function parseBulk(text) { const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean); const questions=[], skipped=[]; for(let i=0;i<lines.length;i++){ const line=lines[i]; if(!line.includes("||")){skipped.push(i+1);continue;} const parts=line.split("||").map(p=>p.trim()); if(parts.length<3){skipped.push(i+1);continue;} const opts=parts[1].split(",").map(o=>o.trim()).filter(Boolean); if(opts.length<4){skipped.push(i+1);continue;} const idx=parseInt(parts[2]); if(isNaN(idx)||idx<0||idx>3){skipped.push(i+1);continue;} const diff=parts[4]?.trim()||"medium"; const q=normalizeQuestion({q:parts[0],o:opts.slice(0,4),a:idx,note:parts[3]||"",difficulty:diff}); if(q) questions.push(q); else skipped.push(i+1); } return {questions,skipped}; }
             function bulkUpload() { const chapter=$("targetChapterSimple").value; if(!chapter) return showError("দয়া করে একটি chapter বেছে নিন।"); const raw=$("bulkQuestions").value; if(!raw.trim()) return showError("Bulk text দিন।"); const {questions,skipped}=parseBulk(raw); if(!questions.length) return showError(`কোন valid question পাওয়া যায়নি। ${skipped.length}টি line skip হয়েছে।`); questionBank[chapter].push(...questions); $("bulkQuestions").value=""; saveBank(); let msg=`${questions.length}টি প্রশ্ন যোগ হয়েছে।`; if(skipped.length>0) msg+=` ${skipped.length}টি line skip হয়েছে।`; showSuccess(msg); }
             function addSingle() { const chapter=$("targetChapterSimple").value; const q=normalizeQuestion({q:$("simpleQText").value.trim(),o:[$("optA").value,$("optB").value,$("optC").value,$("optD").value].map(v=>v.trim()),a:Number($("correctIndex").value),note:$("simpleNote").value.trim(),difficulty:$("difficultySelect").value}); if(!q) return showError("প্রশ্ন, ৪টি option এবং correct answer পূরণ করুন।"); questionBank[chapter].push(q); ["simpleQText","optA","optB","optC","optD","simpleNote"].forEach(id=>$(id).value=""); saveBank(); showSuccess("একটি প্রশ্ন যোগ হয়েছে।"); }
-            function handleRestoreFile(file){ const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); if(!d||typeof d!=="object"||Array.isArray(d)) throw new Error("Full JSON expected."); questionBank=normalizeBank(d); selectedKeys=new Set(getSubjects().map(s=>s.key)); safeRemove(SESSION_KEY); stopTimer(); currentQuestions=[]; totalQuestions=0; quizSubmitted = false; saveBank(); renderQuiz(); renderNav(); updateScore(); showSuccess("পুরো bank replace হয়েছে।"); }catch(err){ showError(err.message||"Invalid JSON file."); } }; r.readAsText(file); }
+            function handleRestoreFile(file){ const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); if(!d||typeof d!=="object"||Array.isArray(d)) throw new Error("Full JSON expected."); questionBank=normalizeBank(d); selectedKeys=new Set(getSubjects().map(s=>s.key)); safeRemove(SESSION_KEY); stopTimer(); currentQuestions=[]; totalQuestions=0; quizSubmitted = false; optionsVisible = true; saveBank(); renderQuiz(); renderNav(); updateScore(); showSuccess("পুরো bank replace হয়েছে।"); }catch(err){ showError(err.message||"Invalid JSON file."); } }; r.readAsText(file); }
             function handleAppendFile(file,sk){ const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); let raw=null; if(Array.isArray(d)) raw=d; else if(d&&typeof d==="object"){ const km=Object.keys(d).find(k=>k!=="__subjects__"&&k!=="__subjectGroups__"&&Array.isArray(d[k])); if(km) raw=d[km]; } if(!raw||!Array.isArray(raw)) throw new Error("No valid question array found."); const qs=raw.map(normalizeQuestion).filter(Boolean); if(!qs.length) throw new Error("No valid questions."); if(!questionBank[sk]) questionBank[sk]=[]; questionBank[sk].push(...qs); saveBank(); showSuccess(`${qs.length}টি JSON প্রশ্ন যোগ হয়েছে।`); }catch(err){ showError(err.message); } }; r.readAsText(file); }
             function backupSelected() { const ks=getSelectedKeys(); if(!ks.length) return showError("No chapter selected!"); const bk={ __subjectGroups__:cloneValue(getSubjectGroups()), __subjects__:getSubjects().filter(s=>ks.includes(s.key)) }; ks.forEach(k=>bk[k]=questionBank[k]||[]); download(`class_viii_selected_backup_${stamp()}.json`,JSON.stringify(bk,null,2),"application/json"); showSuccess("Selected backup saved."); }
             function backupFull() { download(`class_viii_full_backup_${stamp()}.json`,JSON.stringify(questionBank,null,2),"application/json"); showSuccess("Full backup saved."); }
@@ -2380,7 +2358,7 @@
                 ks.forEach(k => questionBank[k] = []);
                 saveBank();
                 currentQuestions = []; totalQuestions = 0;
-                stopTimer(); quizSubmitted = false;
+                stopTimer(); quizSubmitted = false; optionsVisible = true;
                 renderQuiz(); renderNav(); updateScore(); saveQuizState();
                 showSuccess(`${t} questions deleted.`);
             }
@@ -2406,12 +2384,8 @@
                         stopTimer();
                         if (quizMode === "mock") {
                             quizSubmitted = true;
-                            renderQuiz();
-                            renderNav();
-                            updateScore();
-                            saveQuizState();
-                            fireConfetti();
-                            showResultsOverlay();
+                            renderQuiz(); renderNav(); updateScore(); saveQuizState();
+                            fireConfetti(); showResultsOverlay();
                         }
                     }
                 }, 1000);
@@ -2428,7 +2402,7 @@
                 if($("submitMockBtn")) $("submitMockBtn").style.display = (quizMode==="mock"&&timerActive)?'block':'none';
             }
             function updateModeButtons() { document.querySelectorAll('.mode-btn').forEach(b=>{ b.classList.toggle('active', b.dataset.mode===quizMode); }); }
-            function setQuizMode(mode) { quizMode=mode; updateModeButtons(); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; updateTimerDisplay(); if(currentQuestions.length>0 && mode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } saveQuizState(); }
+            function setQuizMode(mode) { quizMode=mode; updateModeButtons(); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; optionsVisible = true; updateTimerDisplay(); if(currentQuestions.length>0 && mode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } saveQuizState(); }
 
             function applyTheme(theme) { document.documentElement.setAttribute('data-theme', theme); const btn = $('themeToggleBtn'); if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙'; }
             function toggleTheme() { const current = document.documentElement.getAttribute('data-theme') || 'light'; const next = current === 'dark' ? 'light' : 'dark'; applyTheme(next); localStorage.setItem(THEME_KEY, next); }
@@ -2440,8 +2414,7 @@
                 $("clearSelectedSubjectsBtn").onclick = clearSelectedSubjects;
                 $("generateBtn").onclick = () => generateQuiz(getSelectedKeys(), Number($("quizSize").value), false);
                 $("randomBtn").onclick = () => generateQuiz(getSelectedKeys(), Number($("quizSize").value), true);
-                $("resetAnswersBtn").onclick = resetAnswers;
-                $("resetHeaderBtn").onclick = resetQuiz;
+                $("resetHeaderBtn").onclick = resetAnswers;
                 $("showScoreBtn").onclick = () => {
                     const c = answerStatus.filter(Boolean).length, w = userAnswers.filter((a,i)=>a!==null&&a!== -1&&!answerStatus[i]).length,
                     s = totalQuestions - userAnswers.filter(a=>a!==null&&a!== -1).length, pct = totalQuestions>0?Math.round((c/totalQuestions)*100):0;
@@ -2457,8 +2430,7 @@
                     if (isEditUnlocked) {
                         $("editBodyBottom").classList.remove("open");
                         if ($("editContent")) $("editContent").style.display = "none";
-                        isEditUnlocked = false;
-                        isInlineEditUnlocked = false;
+                        isEditUnlocked = false; isInlineEditUnlocked = false;
                         $("editPasswordPrompt").style.display = "none";
                         if ($("editPasswordInput")) $("editPasswordInput").value = "";
                         renderQuiz(); renderNav(); updateScore();
@@ -2506,7 +2478,7 @@
                 $("backupSelectedJsonBtn").onclick = backupSelected;
                 $("backupFullJsonBtn").onclick = backupFull;
                 $("downloadHtmlBtn").onclick = downloadPermanentHtml;
-                document.addEventListener("keydown", e => { const t = document.activeElement?.tagName?.toLowerCase(); if (["input","textarea","select"].includes(t)) return; if (["1","2","3","4"].includes(e.key)) { const o = document.querySelector(`.option[data-opt="${Number(e.key)-1}"]`); if (o) o.click(); } if (e.key === "ArrowRight") moveQuestion(1); if (e.key === "ArrowLeft") moveQuestion(-1); });
+                document.addEventListener("keydown", e => { const t = document.activeElement?.tagName?.toLowerCase(); if (["input","textarea","select"].includes(t)) return; if (["1","2","3","4"].includes(e.key) && optionsVisible) { const o = document.querySelector(`.option[data-opt="${Number(e.key)-1}"]`); if (o) o.click(); } if (e.key === "ArrowRight") moveQuestion(1); if (e.key === "ArrowLeft") moveQuestion(-1); });
             }
 
             function initCredits() { const n = [65,114,105,102,32,72,117,115,115,97,105,110].map(c => String.fromCharCode(c)).join(""); $("creditName").textContent = "✨ By " + n; }
@@ -2520,6 +2492,7 @@
             let isInlineEditUnlocked = false;
             let quizMode = "practice";
             let quizSubmitted = false;
+            let optionsVisible = true;
             init();
         })();
     </script>
