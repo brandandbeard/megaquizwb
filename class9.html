@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js">
     </script>
     <style>
+        /* (All the styles remain the same as in the provided Class IX code up to the .toggle-options-btn addition) */
         :root {
             --bg: #f0f4fa;
             --ink: #1a1e2b;
@@ -985,6 +986,20 @@
         }
         /* =================================================== */
 
+        /* Toggle options button style */
+        .toggle-options-btn {
+            cursor: pointer;
+            margin-left: auto;
+            font-size: 14px;
+            user-select: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+        .toggle-options-btn:hover {
+            opacity: 1;
+        }
+
         @media (max-width:960px) {
             .quiz-panel {
                 grid-template-columns: 1fr;
@@ -1626,11 +1641,11 @@
     <main class="app" id="app">
         <div class="container">
             <div class="main-header">
-                <div class="main-title">🏆 Class IX <small>| ভৌত বিজ্ঞান • জীবন বিজ্ঞান • ইতিহাস • ভূগোল |</small></div>
+                <div class="main-title">🏆 Class IX <small>| পরিবেশ ও বিজ্ঞান • ইতিহাস • ভূগোল |</small></div>
                 <div class="flex-row" style="gap:8px;">
                     <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Dark/Light Mode">🌙</button>
                     <div class="credit" id="creditName">✨ By Arif Hussain</div>
-                    <button style="background: var(--slate);" id="resetHeaderBtn" title="Reset Quiz">🔄</button>
+                    <button style="background: var(--slate);" id="resetHeaderBtn" title="Reset Answers">🔄</button>
                 </div>
             </div>
             <section class="controls">
@@ -1643,17 +1658,16 @@
                         </div>
                     </div>
                     <div class="controls-right">
-                        <label style="font-size:12px;">Questions:</label>
+                        <label style="font-size:12px;">Q :</label>
                         <input type="number" id="quizSize" value="25" min="1" max="5000" style="width:70px;">
                         <label style="font-size:12px;">Time(min):</label>
                         <input type="number" id="timeLimit" value="30" min="1" max="300" style="width:65px;">
-                        <button id="generateBtn">✅ Generate (Seq)</button>
-                        <button id="randomBtn" style="background: var(--orange);">🎲 Random</button>
-                        <button id="resetAnswersBtn" style="background: var(--slate);">🔄 Reset Answer</button>
+                        <button id="generateBtn">✅Generate(Seq)</button>
+                        <button id="randomBtn" style="background: var(--orange);">🎲Random</button>
                     </div>
                 </div>
-                <div class="chapter-panel" id="chapterPanel">
-                    <div id="subjectAccordions"><div class="subject-accordion open"><div class="subject-header aptitude" data-group="science"><span>🔬 ভৌত বিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch1" checked=""><span>1.পরিমাপ ও একক</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch2" checked=""><span>2.বল ও গতি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch3" checked=""><span>3.পদার্থের গঠন ও ধর্ম</span><span class="q-count">[101]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch4" checked=""><span>4.1 পরমাণুর গঠন</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch5" checked=""><span>4.2 মোলের ধারণা</span><span class="q-count">[60]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch6" checked=""><span>4.3 দ্রবণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch7" checked=""><span>4.4 অ্যাসিড, ক্ষার ও লবণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch8" checked=""><span>4.5 মিশ্রণের উপাদানের পৃথকীকরণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch9" checked=""><span>4.6 জল</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch10" checked=""><span>5.শক্তির ক্রিয়া :কার্য, ক্ষমতা ও শক্তি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch11" checked=""><span>6.তাপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch12" checked=""><span>7.শব্দ</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion open"><div class="subject-header current" data-group="history"><span>📜 ইতিহাস</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch1" checked=""><span>১. ফরাসি বিপ্লবের কয়েকটি দিক</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch2" checked=""><span>২. বিপ্লবী আদর্শ, নেপোলিয়নীয় সাম্রাজ্য ও জাতীয়তাবাদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch3" checked=""><span>৩. উনিশ শতকের ইউরোপ : জাতীয়তাবাদ ও রাজতান্ত্রিক ভাবধারার সংঘাত</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch4" checked=""><span>৪. শিল্পবিপ্লব, উপনিবেশবাদ ও সাম্রাজ্যবাদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch5" checked=""><span>৫. বিংশ শতকের ইউরোপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch6" checked=""><span>৬. দ্বিতীয় বিশ্বযুদ্ধ ও তার পরিণতি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch7" checked=""><span>৭. লীগ অব নেশনস ও রাষ্ট্রসংঘ</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion open"><div class="subject-header english" data-group="geography"><span>🌍 ভূগোল</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch8" checked=""><span>১. গ্রহরূপে পৃথিবী</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch9" checked=""><span>২. পৃথিবীর গতিবিধি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch1" checked=""><span>৩. ভূপৃষ্ঠে কোনো স্থানের অবস্থান নির্ণয়</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch2" checked=""><span>৪. পৃথিবীর ভূ-প্রাকৃতিক প্রক্রিয়া ও ভূমিরূপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch3" checked=""><span>৫. আবহবিকার</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch4" checked=""><span>৬. বিপর্যয় ও দুর্যোগ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch5" checked=""><span>৭. ভারতের সম্পদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch6" checked=""><span>৮. পশ্চিমবঙ্গ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch7" checked=""><span>৯. মানচিত্র ও স্কেল</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion open"><div class="subject-header science_comp" data-group="lifesc"><span>🧬 জীবনবিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch8" checked=""><span>১. জীবন ও তার বৈচিত্র্য</span><span class="q-count">[21]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch9" checked=""><span>২. জীবন সংগঠনের স্তর</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch10" checked=""><span>৩. জীবনধারণের জন্য শারীরবৃত্তীয় প্রক্রিয়া</span><span class="q-count">[105]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch11" checked=""><span>৪. জীববিদ্যা ও মানবকল্যাণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132452393" checked=""><span>৫. পরিবেশ ও তার সম্পদ</span><span class="q-count">[0]</span></label></div></div></div></div>
+                <div class="chapter-panel open" id="chapterPanel">
+                    <div id="subjectAccordions"><div class="subject-accordion open"><div class="subject-header aptitude" data-group="science"><span>🔬 ভৌত বিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch1" checked=""><span>1.পরিমাপ ও একক</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch2" checked=""><span>2.বল ও গতি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch3" checked=""><span>3.পদার্থের গঠন ও ধর্ম</span><span class="q-count">[101]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch4" checked=""><span>4.1 পরমাণুর গঠন</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch5" checked=""><span>4.2 মোলের ধারণা</span><span class="q-count">[60]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch6" checked=""><span>4.3 দ্রবণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch7" checked=""><span>4.4 অ্যাসিড, ক্ষার ও লবণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch8" checked=""><span>4.5 মিশ্রণের উপাদানের পৃথকীকরণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch9" checked=""><span>4.6 জল</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch10" checked=""><span>5.শক্তির ক্রিয়া :কার্য, ক্ষমতা ও শক্তি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch11" checked=""><span>6.তাপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch12" checked=""><span>7.শব্দ</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header current" data-group="history"><span>📜 ইতিহাস</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch1" checked=""><span>১. ফরাসি বিপ্লবের কয়েকটি দিক</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch2" checked=""><span>২. বিপ্লবী আদর্শ, নেপোলিয়নীয় সাম্রাজ্য ও জাতীয়তাবাদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch3" checked=""><span>৩. উনিশ শতকের ইউরোপ : জাতীয়তাবাদ ও রাজতান্ত্রিক ভাবধারার সংঘাত</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch4" checked=""><span>৪. শিল্পবিপ্লব, উপনিবেশবাদ ও সাম্রাজ্যবাদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch5" checked=""><span>৫. বিংশ শতকের ইউরোপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch6" checked=""><span>৬. দ্বিতীয় বিশ্বযুদ্ধ ও তার পরিণতি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch7" checked=""><span>৭. লীগ অব নেশনস ও রাষ্ট্রসংঘ</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header english" data-group="geography"><span>🌍 ভূগোল</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch8" checked=""><span>১. গ্রহরূপে পৃথিবী</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch9" checked=""><span>২. পৃথিবীর গতিবিধি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch1" checked=""><span>৩. ভূপৃষ্ঠে কোনো স্থানের অবস্থান নির্ণয়</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch2" checked=""><span>৪. পৃথিবীর ভূ-প্রাকৃতিক প্রক্রিয়া ও ভূমিরূপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch3" checked=""><span>৫. আবহবিকার</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch4" checked=""><span>৬. বিপর্যয় ও দুর্যোগ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch5" checked=""><span>৭. ভারতের সম্পদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch6" checked=""><span>৮. পশ্চিমবঙ্গ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch7" checked=""><span>৯. মানচিত্র ও স্কেল</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion open"><div class="subject-header science_comp" data-group="lifesc"><span>🧬 জীবনবিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch8" checked=""><span>১. জীবন ও তার বৈচিত্র্য</span><span class="q-count">[21]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch9" checked=""><span>২. জীবন সংগঠনের স্তর</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch10" checked=""><span>৩. জীবনধারণের জন্য শারীরবৃত্তীয় প্রক্রিয়া</span><span class="q-count">[105]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch11" checked=""><span>৪. জীববিদ্যা ও মানবকল্যাণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132452393" checked=""><span>৫. পরিবেশ ও তার সম্পদ</span><span class="q-count">[0]</span></label></div></div></div></div>
                     <div class="subject-action-row">
                         <div class="flex-row">
                             <button id="selectAllBtn">Select All</button>
@@ -1664,30 +1678,11 @@
                 </div>
             </section>
             <section class="quiz-panel">
-                <div class="questions-area" id="questionsArea">
-                <div class="question-card" id="questionCardEl">
-                    <div class="question-meta">
-                        <span class="pill">25/25</span>
-                        <span class="pill">ভৌত বিজ্ঞান</span>
-                        <span class="pill">3.পদার্থের গঠন ও ধর্ম</span>
-                        <span class="pill difficulty-medium">🟠 Medium</span>
-                        
-                    </div>
-                    <div class="question-text">25. যে রাশিটির উপর কোনো তরলের সান্দ্রতা নির্ভর করে না তা হলো -</div>
-                    <div class="inline-edit-icon" id="inlineEditIcon" title="Click to edit question">✏️</div>
-                    <div class="options"><div class="option" data-opt="0"><span class="key">1</span><span>A. তাপমাত্রা</span></div><div class="option" data-opt="1"><span class="key">2</span><span>B. কোনোটিই নয়</span></div><div class="option" data-opt="2"><span class="key">3</span><span>C. তরলের ঘনত্ব</span></div><div class="option" data-opt="3"><span class="key">4</span><span>D. গতিবেগের নতিমাত্রা</span></div></div>
-                    <div class="info " id="noteBox">📖 সান্দ্রতা তরলের প্রকৃতি ও তাপমাত্রার ওপর নির্ভর করে, গতিবেগের নতিমাত্রা সান্দ্র বলের সমীকরণে আসে কিন্তু সান্দ্রতাঙ্ক নির্ভর করে না</div>
-                    
-                    <div class="nav-buttons-large">
-                        <button id="prevQ">◀ Previous</button>
-                        <button id="nextQ" disabled="">Next ▶</button>
-                    </div>
-                    
-                </div></div>
+                <div class="questions-area" id="questionsArea"><div class="question-card" style="text-align:center;padding:50px;">⬆️ Select subjects and click Generate</div></div>
                 <aside class="sidebar">
-                    <div class="score-board" id="scoreBoard">🎯 Score: 0/25<br><span class="score-breakdown">✅0 | ❌0 | ⏭️25</span></div>
+                    <div class="score-board" id="scoreBoard">🎯 Score: 0/0<br><span class="score-breakdown">✅0 | ❌0 | ⏭️0</span></div>
                     <div id="timerDisplay" style="display:none;"></div>
-                    <div id="navGrid" class="nav-grid"><div class="q-num" data-idx="0">1</div><div class="q-num" data-idx="1">2</div><div class="q-num" data-idx="2">3</div><div class="q-num" data-idx="3">4</div><div class="q-num" data-idx="4">5</div><div class="q-num" data-idx="5">6</div><div class="q-num" data-idx="6">7</div><div class="q-num" data-idx="7">8</div><div class="q-num" data-idx="8">9</div><div class="q-num" data-idx="9">10</div><div class="q-num" data-idx="10">11</div><div class="q-num" data-idx="11">12</div><div class="q-num" data-idx="12">13</div><div class="q-num" data-idx="13">14</div><div class="q-num" data-idx="14">15</div><div class="q-num" data-idx="15">16</div><div class="q-num" data-idx="16">17</div><div class="q-num" data-idx="17">18</div><div class="q-num" data-idx="18">19</div><div class="q-num" data-idx="19">20</div><div class="q-num" data-idx="20">21</div><div class="q-num" data-idx="21">22</div><div class="q-num" data-idx="22">23</div><div class="q-num" data-idx="23">24</div><div class="q-num current" data-idx="24">25</div></div>
+                    <div id="navGrid" class="nav-grid"></div>
                     <button id="showScoreBtn" style="margin-top:10px;width:100%; background:var(--slate);">📊 Show Results</button>
                     <div class="note-toggle" id="noteToggleRow"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answering</label></div>
                     <button id="submitMockBtn" style="display:none; margin-top:8px; width:100%; background:var(--green);">✅ Submit Mock Test</button>
@@ -1908,7 +1903,7 @@
 
         (function() {
             const EDIT_PASSWORD = "Arif@956438?";
-            const APP_VERSION = "class_ix_exam_quiz_v4";
+            const APP_VERSION = "class_ix_exam_quiz_v5_toggle";
             const BANK_KEY = "CLASS_IX_QUIZ_BANK_" + APP_VERSION;
             const SESSION_KEY = "CLASS_IX_QUIZ_SESSION_" + APP_VERSION;
             const SELECTED_KEY = "CLASS_IX_QUIZ_SELECTED_" + APP_VERSION;
@@ -1991,11 +1986,11 @@
             function loadJson(key, fb) { try { const r = safeGet(key); return r === null ? cloneValue(fb) : JSON.parse(r); } catch { return cloneValue(fb); } }
             function saveBank() { safeSet(BANK_KEY, JSON.stringify(questionBank)); updateAllCounters(); populateSubjectsUI(); renderSubjectEditList(); renderSubjectGroupEditList(); }
             function saveSelection() { safeSet(SELECTED_KEY, JSON.stringify([...selectedKeys])); }
-            function saveQuizState() { safeSet(SESSION_KEY, JSON.stringify({ questions: currentQuestions, answers: userAnswers, status: answerStatus, index: currentIndex, total: totalQuestions, quizSize: $("quizSize").value, timeLimit: $("timeLimit").value, quizMode: quizMode, timeRemaining: timeRemaining, timerActive: timerActive, quizSubmitted: quizSubmitted })); }
+            function saveQuizState() { safeSet(SESSION_KEY, JSON.stringify({ questions: currentQuestions, answers: userAnswers, status: answerStatus, index: currentIndex, total: totalQuestions, quizSize: $("quizSize").value, timeLimit: $("timeLimit").value, quizMode: quizMode, timeRemaining: timeRemaining, timerActive: timerActive, quizSubmitted: quizSubmitted, optionsVisible: optionsVisible })); }
             function loadQuizState() { const st = loadJson(SESSION_KEY, null); if (!st || !st.questions?.length) return false;
                 currentQuestions = st.questions; userAnswers = st.answers || []; answerStatus = st.status || []; currentIndex = Math.min(st.index||0, currentQuestions.length-1); totalQuestions = st.total || currentQuestions.length;
                 $("quizSize").value = st.quizSize || 25; $("timeLimit").value = st.timeLimit || 30; quizMode = st.quizMode || "practice"; timeRemaining = st.timeRemaining ?? null; timerActive = st.timerActive || false;
-                quizSubmitted = st.quizSubmitted || false; updateModeButtons(); if (quizMode === "mock" && timerActive && timeRemaining !== null && timeRemaining > 0) { startTimer(timeRemaining); }
+                quizSubmitted = st.quizSubmitted || false; optionsVisible = st.optionsVisible !== undefined ? st.optionsVisible : true; updateModeButtons(); if (quizMode === "mock" && timerActive && timeRemaining !== null && timeRemaining > 0) { startTimer(timeRemaining); }
                 renderQuiz(); renderNav(); updateScore(); return true; }
             function getSubjects() { return questionBank.__subjects__ || []; }
             function getCount(k) { return questionBank[k]?.length || 0; }
@@ -2056,8 +2051,7 @@
                 if(getSubjectGroups().some(g=>g.key===key)) return showError("এই key আগে থেকেই আছে।");
                 questionBank.__subjectGroups__.push({key, name, className: style || ""});
                 $("newSubjectKey").value=''; $("newSubjectNameInput").value=''; $("newSubjectGroupStyle").value='';
-                afterSubjectGroupChanged();
-                showSuccess("নতুন subject group যোগ হয়েছে।");
+                afterSubjectGroupChanged(); showSuccess("নতুন subject group যোগ হয়েছে।");
             }
             function afterSubjectGroupChanged() { saveBank(); populateSubjectsUI(); updateAllCounters(); }
             function afterChapterStructureChanged() { questionBank = normalizeBank(questionBank); saveBank(); saveSelection(); }
@@ -2080,6 +2074,7 @@
                 currentIndex = 0;
                 isInlineEditUnlocked = false;
                 quizSubmitted = false;
+                optionsVisible = true;
                 stopTimer(); timeRemaining = null; timerActive = false;
                 if(quizMode === "mock") { const tl = parseInt($("timeLimit").value) || 30; timeRemaining = tl*60; startTimer(timeRemaining); }
                 renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState();
@@ -2112,14 +2107,7 @@
 
             function hideResultsOverlay() { document.getElementById('resultsOverlay').classList.add('hidden'); }
 
-            function toggleInlineEdit() {
-                if (!isEditUnlocked) return;
-                isInlineEditUnlocked = !isInlineEditUnlocked;
-                renderQuiz();
-                renderNav();
-                updateScore();
-                showInlineEditStatus(isInlineEditUnlocked ? "Edit mode on." : "");
-            }
+            function toggleInlineEdit() { if (!isEditUnlocked) return; isInlineEditUnlocked = !isInlineEditUnlocked; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(isInlineEditUnlocked ? "Edit mode on." : ""); }
             function showInlineEditStatus(msg) { const el = document.getElementById('inlineEditStatusMsg'); if(el) el.textContent = msg; }
 
             function updateCurrentQuestionFromPanel() {
@@ -2163,6 +2151,7 @@
                 const iconTitle = isInlineEditUnlocked ? 'Edit mode on' : 'Click to edit question';
                 const diffClass = 'pill difficulty-' + (q.difficulty||'medium');
                 const diffLabel = {easy:'🟢 Easy', medium:'🟠 Medium', hard:'🔴 Hard'}[q.difficulty||'medium'] || 'Medium';
+                const toggleIconHtml = `<span class="toggle-options-btn" id="toggleOptionsBtn" title="${optionsVisible?'Hide Options':'Show Options'}">${optionsVisible?'Hide':'Show'}</span>`;
 
                 const editPanelHtml = (showPencil && isInlineEditUnlocked) ? `
                 <div class="inline-edit-panel open" id="inlineEditPanel">
@@ -2206,10 +2195,11 @@
                         <span class="pill">${escapeHtml(q._chapterName||"")}</span>
                         <span class="${diffClass}">${diffLabel}</span>
                         ${quizMode==="mock"&&timerActive?`<span class="timer-display" id="timerPill">⏱️ <span id="timerPillText">--:--</span></span>`:""}
+                        ${toggleIconHtml}
                     </div>
                     <div class="question-text">${currentIndex+1}. ${escapeHtml(q.q)}</div>
                     ${showPencil ? `<div class="${iconClass}" id="inlineEditIcon" title="${iconTitle}">✏️</div>` : ''}
-                    <div class="options">${optHtml}</div>
+                    <div class="options" id="optionsContainer" style="${optionsVisible?'':'display:none;'}">${optHtml}</div>
                     <div class="info ${noteVisible?"show":""}" id="noteBox">📖 ${escapeHtml(q.note||"No explanation")}</div>
                     ${editPanelHtml}
                     <div class="nav-buttons-large">
@@ -2221,11 +2211,8 @@
 
                 document.querySelectorAll(".option").forEach(el => { el.onclick = () => {
                     if (quizSubmitted) return;
-                    if (quizMode === "mock") {
-                        if (userAnswers[currentIndex] !== null) return;
-                    } else {
-                        if (userAnswers[currentIndex] !== null) return;
-                    }
+                    if (!optionsVisible) return;
+                    if (quizMode === "mock") { if (userAnswers[currentIndex] !== null) return; } else { if (userAnswers[currentIndex] !== null) return; }
                     const sel = Number(el.dataset.opt);
                     userAnswers[currentIndex] = sel;
                     answerStatus[currentIndex] = (sel === q.a);
@@ -2234,13 +2221,21 @@
                 }; });
                 const prevBtn = document.getElementById('prevQ'), nextBtn = document.getElementById('nextQ'); if(prevBtn) prevBtn.onclick = ()=>moveQuestion(-1); if(nextBtn) nextBtn.onclick = ()=>moveQuestion(1);
                 const rstBtn = document.getElementById('restartAfterFinish'); if(rstBtn) rstBtn.onclick = resetAnswers;
-                if (showPencil) {
-                    const editIcon = document.getElementById('inlineEditIcon');
-                    if(editIcon) editIcon.onclick = (e)=>{ e.stopPropagation(); toggleInlineEdit(); };
-                }
+                if (showPencil) { const editIcon = document.getElementById('inlineEditIcon'); if(editIcon) editIcon.onclick = (e)=>{ e.stopPropagation(); toggleInlineEdit(); }; }
                 if(showPencil && isInlineEditUnlocked) {
                     const updateBtn = document.getElementById('ieUpdateBtn'), deleteBtn = document.getElementById('ieDeleteBtn'), lockBtn = document.getElementById('ieLockBtn');
                     if(updateBtn) updateBtn.onclick = updateCurrentQuestionFromPanel; if(deleteBtn) deleteBtn.onclick = deleteCurrentQuestionFromPanel; if(lockBtn) lockBtn.onclick = ()=>{ isInlineEditUnlocked=false; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(""); };
+                }
+                const toggleBtn = document.getElementById('toggleOptionsBtn');
+                if(toggleBtn) {
+                    toggleBtn.onclick = () => {
+                        optionsVisible = !optionsVisible;
+                        const optsContainer = document.getElementById('optionsContainer');
+                        if(optsContainer) optsContainer.style.display = optionsVisible ? '' : 'none';
+                        toggleBtn.textContent = optionsVisible ? 'Hide' : 'Show';
+                        toggleBtn.title = optionsVisible ? 'Hide Options' : 'Show Options';
+                        saveQuizState();
+                    };
                 }
                 updateTimerDisplay();
             }
@@ -2251,12 +2246,9 @@
                 const isMockActive = (quizMode === "mock" && !quizSubmitted);
                 for(let i=0;i<totalQuestions;i++) {
                     let cls="q-num";
-                    if (isMockActive) {
-                        if (userAnswers[i] !== null && userAnswers[i] !== -1) cls += " attempted-mock";
-                    } else {
-                        if(userAnswers[i]!==null && userAnswers[i]!== -1) cls += answerStatus[i]?" answered-correct":" answered-wrong";
-                        else if(quizMode==="mock" && quizSubmitted && (userAnswers[i]===null || userAnswers[i]=== -1)) cls+=" skipped";
-                    }
+                    if (isMockActive) { if (userAnswers[i] !== null && userAnswers[i] !== -1) cls += " attempted-mock"; }
+                    else { if(userAnswers[i]!==null && userAnswers[i]!== -1) cls += answerStatus[i]?" answered-correct":" answered-wrong";
+                        else if(quizMode==="mock" && quizSubmitted && (userAnswers[i]===null || userAnswers[i]=== -1)) cls+=" skipped"; }
                     if(i===currentIndex) cls+=" current";
                     g+=`<div class="${cls}" data-idx="${i}">${i+1}</div>`;
                 }
@@ -2267,30 +2259,20 @@
                 const c = answerStatus.filter(Boolean).length;
                 const a = userAnswers.filter(v=>v!==null && v!== -1).length;
                 const w = a-c; const s = totalQuestions-a;
-                if (quizMode === "mock" && !quizSubmitted) {
-                    $("scoreBoard").innerHTML = `⏱️ Mock Test in Progress`;
-                } else {
-                    $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`;
-                }
-                const noteRow = $("noteToggleRow");
-                const showScoreBtn = $("showScoreBtn");
-                if (quizMode === "mock" && !quizSubmitted) {
-                    if(noteRow) noteRow.style.display = 'none';
-                    if(showScoreBtn) showScoreBtn.style.display = 'none';
-                } else {
-                    if(noteRow) noteRow.style.display = '';
-                    if(showScoreBtn) showScoreBtn.style.display = '';
-                }
-                const clearBtn = $("clearSelectedSubjectsBtn");
-                if(clearBtn) clearBtn.style.display = isEditUnlocked ? '' : 'none';
+                if (quizMode === "mock" && !quizSubmitted) { $("scoreBoard").innerHTML = `⏱️ Mock Test in Progress`; }
+                else { $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`; }
+                const noteRow = $("noteToggleRow"); const showScoreBtn = $("showScoreBtn");
+                if (quizMode === "mock" && !quizSubmitted) { if(noteRow) noteRow.style.display = 'none'; if(showScoreBtn) showScoreBtn.style.display = 'none'; }
+                else { if(noteRow) noteRow.style.display = ''; if(showScoreBtn) showScoreBtn.style.display = ''; }
+                const clearBtn = $("clearSelectedSubjectsBtn"); if(clearBtn) clearBtn.style.display = isEditUnlocked ? '' : 'none';
             }
-            function resetAnswers() { quizSubmitted = false; userAnswers.fill(null); answerStatus.fill(false); currentIndex=0; stopTimer(); timeRemaining=null; timerActive=false; if(quizMode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState(); }
-            function resetQuiz() { if(!confirm("আপনি কি বর্তমান quiz progress reset করতে চান?")) return; safeRemove(SESSION_KEY); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; resetAnswers(); showSuccess("Quiz reset হয়েছে।"); }
+            function resetAnswers() { quizSubmitted = false; optionsVisible = true; userAnswers.fill(null); answerStatus.fill(false); currentIndex=0; stopTimer(); timeRemaining=null; timerActive=false; if(quizMode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState(); }
+            function resetQuiz() { if(!confirm("আপনি কি বর্তমান quiz progress reset করতে চান?")) return; safeRemove(SESSION_KEY); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; optionsVisible = true; resetAnswers(); showSuccess("Quiz reset হয়েছে।"); }
             function submitMockTest() { if(!confirm("Mock test submit করবেন? এরপর আর উত্তর পরিবর্তন করতে পারবেন না।")) return; stopTimer(); quizSubmitted = true; renderQuiz(); renderNav(); updateScore(); saveQuizState(); fireConfetti(); showResultsOverlay(); }
             function parseBulk(text) { const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean); const questions=[], skipped=[]; for(let i=0;i<lines.length;i++){ const line=lines[i]; if(!line.includes("||")){skipped.push(i+1);continue;} const parts=line.split("||").map(p=>p.trim()); if(parts.length<3){skipped.push(i+1);continue;} const opts=parts[1].split(",").map(o=>o.trim()).filter(Boolean); if(opts.length<4){skipped.push(i+1);continue;} const idx=parseInt(parts[2]); if(isNaN(idx)||idx<0||idx>3){skipped.push(i+1);continue;} const diff=parts[4]?.trim()||"medium"; const q=normalizeQuestion({q:parts[0],o:opts.slice(0,4),a:idx,note:parts[3]||"",difficulty:diff}); if(q) questions.push(q); else skipped.push(i+1); } return {questions,skipped}; }
             function bulkUpload() { const chapter=$("targetChapterSimple").value; if(!chapter) return showError("দয়া করে একটি chapter বেছে নিন।"); const raw=$("bulkQuestions").value; if(!raw.trim()) return showError("Bulk text দিন।"); const {questions,skipped}=parseBulk(raw); if(!questions.length) return showError(`কোন valid question পাওয়া যায়নি। ${skipped.length}টি line skip হয়েছে।`); questionBank[chapter].push(...questions); $("bulkQuestions").value=""; saveBank(); let msg=`${questions.length}টি প্রশ্ন যোগ হয়েছে।`; if(skipped.length>0) msg+=` ${skipped.length}টি line skip হয়েছে।`; showSuccess(msg); }
             function addSingle() { const chapter=$("targetChapterSimple").value; const q=normalizeQuestion({q:$("simpleQText").value.trim(),o:[$("optA").value,$("optB").value,$("optC").value,$("optD").value].map(v=>v.trim()),a:Number($("correctIndex").value),note:$("simpleNote").value.trim(),difficulty:$("difficultySelect").value}); if(!q) return showError("প্রশ্ন, ৪টি option এবং correct answer পূরণ করুন।"); questionBank[chapter].push(q); ["simpleQText","optA","optB","optC","optD","simpleNote"].forEach(id=>$(id).value=""); saveBank(); showSuccess("একটি প্রশ্ন যোগ হয়েছে।"); }
-            function handleRestoreFile(file){ const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); if(!d||typeof d!=="object"||Array.isArray(d)) throw new Error("Full JSON expected."); questionBank=normalizeBank(d); selectedKeys=new Set(getSubjects().map(s=>s.key)); safeRemove(SESSION_KEY); stopTimer(); currentQuestions=[]; totalQuestions=0; quizSubmitted = false; saveBank(); renderQuiz(); renderNav(); updateScore(); showSuccess("পুরো bank replace হয়েছে।"); }catch(err){ showError(err.message||"Invalid JSON file."); } }; r.readAsText(file); }
+            function handleRestoreFile(file){ const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); if(!d||typeof d!=="object"||Array.isArray(d)) throw new Error("Full JSON expected."); questionBank=normalizeBank(d); selectedKeys=new Set(getSubjects().map(s=>s.key)); safeRemove(SESSION_KEY); stopTimer(); currentQuestions=[]; totalQuestions=0; quizSubmitted = false; optionsVisible = true; saveBank(); renderQuiz(); renderNav(); updateScore(); showSuccess("পুরো bank replace হয়েছে।"); }catch(err){ showError(err.message||"Invalid JSON file."); } }; r.readAsText(file); }
             function handleAppendFile(file,sk){ const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); let raw=null; if(Array.isArray(d)) raw=d; else if(d&&typeof d==="object"){ const km=Object.keys(d).find(k=>k!=="__subjects__"&&k!=="__subjectGroups__"&&Array.isArray(d[k])); if(km) raw=d[km]; } if(!raw||!Array.isArray(raw)) throw new Error("No valid question array found."); const qs=raw.map(normalizeQuestion).filter(Boolean); if(!qs.length) throw new Error("No valid questions."); if(!questionBank[sk]) questionBank[sk]=[]; questionBank[sk].push(...qs); saveBank(); showSuccess(`${qs.length}টি JSON প্রশ্ন যোগ হয়েছে।`); }catch(err){ showError(err.message); } }; r.readAsText(file); }
             function backupSelected() { const ks=getSelectedKeys(); if(!ks.length) return showError("No chapter selected!"); const bk={ __subjectGroups__:cloneValue(getSubjectGroups()), __subjects__:getSubjects().filter(s=>ks.includes(s.key)) }; ks.forEach(k=>bk[k]=questionBank[k]||[]); download(`class_ix_selected_backup_${stamp()}.json`,JSON.stringify(bk,null,2),"application/json"); showSuccess("Selected backup saved."); }
             function backupFull() { download(`class_ix_full_backup_${stamp()}.json`,JSON.stringify(questionBank,null,2),"application/json"); showSuccess("Full backup saved."); }
@@ -2371,7 +2353,7 @@
                 ks.forEach(k => questionBank[k] = []);
                 saveBank();
                 currentQuestions = []; totalQuestions = 0;
-                stopTimer(); quizSubmitted = false;
+                stopTimer(); quizSubmitted = false; optionsVisible = true;
                 renderQuiz(); renderNav(); updateScore(); saveQuizState();
                 showSuccess(`${t} questions deleted.`);
             }
@@ -2397,12 +2379,8 @@
                         stopTimer();
                         if (quizMode === "mock") {
                             quizSubmitted = true;
-                            renderQuiz();
-                            renderNav();
-                            updateScore();
-                            saveQuizState();
-                            fireConfetti();
-                            showResultsOverlay();
+                            renderQuiz(); renderNav(); updateScore(); saveQuizState();
+                            fireConfetti(); showResultsOverlay();
                         }
                     }
                 }, 1000);
@@ -2419,7 +2397,7 @@
                 if($("submitMockBtn")) $("submitMockBtn").style.display = (quizMode==="mock"&&timerActive)?'block':'none';
             }
             function updateModeButtons() { document.querySelectorAll('.mode-btn').forEach(b=>{ b.classList.toggle('active', b.dataset.mode===quizMode); }); }
-            function setQuizMode(mode) { quizMode=mode; updateModeButtons(); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; updateTimerDisplay(); if(currentQuestions.length>0 && mode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } saveQuizState(); }
+            function setQuizMode(mode) { quizMode=mode; updateModeButtons(); stopTimer(); timeRemaining=null; timerActive=false; quizSubmitted = false; optionsVisible = true; updateTimerDisplay(); if(currentQuestions.length>0 && mode==="mock"){ const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining); } saveQuizState(); }
 
             function applyTheme(theme) { document.documentElement.setAttribute('data-theme', theme); const btn = $('themeToggleBtn'); if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙'; }
             function toggleTheme() { const current = document.documentElement.getAttribute('data-theme') || 'light'; const next = current === 'dark' ? 'light' : 'dark'; applyTheme(next); localStorage.setItem(THEME_KEY, next); }
@@ -2431,8 +2409,7 @@
                 $("clearSelectedSubjectsBtn").onclick = clearSelectedSubjects;
                 $("generateBtn").onclick = () => generateQuiz(getSelectedKeys(), Number($("quizSize").value), false);
                 $("randomBtn").onclick = () => generateQuiz(getSelectedKeys(), Number($("quizSize").value), true);
-                $("resetAnswersBtn").onclick = resetAnswers;
-                $("resetHeaderBtn").onclick = resetQuiz;
+                $("resetHeaderBtn").onclick = resetAnswers;
                 $("showScoreBtn").onclick = () => {
                     const c = answerStatus.filter(Boolean).length, w = userAnswers.filter((a,i)=>a!==null&&a!== -1&&!answerStatus[i]).length,
                     s = totalQuestions - userAnswers.filter(a=>a!==null&&a!== -1).length, pct = totalQuestions>0?Math.round((c/totalQuestions)*100):0;
@@ -2448,8 +2425,7 @@
                     if (isEditUnlocked) {
                         $("editBodyBottom").classList.remove("open");
                         if ($("editContent")) $("editContent").style.display = "none";
-                        isEditUnlocked = false;
-                        isInlineEditUnlocked = false;
+                        isEditUnlocked = false; isInlineEditUnlocked = false;
                         $("editPasswordPrompt").style.display = "none";
                         if ($("editPasswordInput")) $("editPasswordInput").value = "";
                         renderQuiz(); renderNav(); updateScore();
@@ -2497,7 +2473,7 @@
                 $("backupSelectedJsonBtn").onclick = backupSelected;
                 $("backupFullJsonBtn").onclick = backupFull;
                 $("downloadHtmlBtn").onclick = downloadPermanentHtml;
-                document.addEventListener("keydown", e => { const t = document.activeElement?.tagName?.toLowerCase(); if (["input","textarea","select"].includes(t)) return; if (["1","2","3","4"].includes(e.key)) { const o = document.querySelector(`.option[data-opt="${Number(e.key)-1}"]`); if (o) o.click(); } if (e.key === "ArrowRight") moveQuestion(1); if (e.key === "ArrowLeft") moveQuestion(-1); });
+                document.addEventListener("keydown", e => { const t = document.activeElement?.tagName?.toLowerCase(); if (["input","textarea","select"].includes(t)) return; if (["1","2","3","4"].includes(e.key) && optionsVisible) { const o = document.querySelector(`.option[data-opt="${Number(e.key)-1}"]`); if (o) o.click(); } if (e.key === "ArrowRight") moveQuestion(1); if (e.key === "ArrowLeft") moveQuestion(-1); });
             }
 
             function initCredits() { const n = [65,114,105,102,32,72,117,115,115,97,105,110].map(c => String.fromCharCode(c)).join(""); $("creditName").textContent = "✨ By " + n; }
@@ -2511,6 +2487,7 @@
             let isInlineEditUnlocked = false;
             let quizMode = "practice";
             let quizSubmitted = false;
+            let optionsVisible = true;
             init();
         })();
     </script>
