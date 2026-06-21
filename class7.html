@@ -2311,7 +2311,7 @@
                 const s = totalQuestions - userAnswers.filter(a => a !== null).length;
                 const pct = totalQuestions > 0 ? Math.round((c / totalQuestions) * 100) : 0;
                 let emoji, message;
-                if (pct === 100) { emoji = '🫡'; message = 'তুমি তো মাস্টার! একেবারে আগুন! এভাবেই চালিয়ে জাও!'; }
+                if (pct === 100) { emoji = '🫡'; message = 'তুমি তো মাস্টার! একেবারে আগুন! এভাবেই চালিয়ে যাও!'; }
                 else if (pct >= 90) { emoji = '😱'; message = 'জস! একদম নিখুঁতের ধারেকাছে!'; }
                 else if (pct >= 80) { emoji = '🎉'; message = 'বাহ্‌, দারুণ! আসাধারন!'; }
                 else if (pct >= 60) { emoji = '👏'; message = 'সাবাশ, ভালোই এগোচ্ছো।'; }
