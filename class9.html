@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light"><script src="chrome-extension://dlcobpjiigpikoobohmabehhmhfoodbb/inpage.js" id="argent-x-extension" data-extension-id="dlcobpjiigpikoobohmabehhmhfoodbb"></script><head><script src="chrome-extension://nebnhfamliijlghikdgcigoebonmoibm/addToWindow.js"></script><script src="chrome-extension://nebnhfamliijlghikdgcigoebonmoibm/addToWindow.js"></script>
+<html lang="bn" data-theme="light"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class IX || Practice &amp; Mock Test</title>
@@ -1000,6 +1000,15 @@
             opacity: 1;
         }
 
+        /* Big score in results overlay */
+        .results-score-big {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+            line-height: 1.2;
+        }
+
         @media (max-width:960px) {
             .quiz-panel {
                 grid-template-columns: 1fr;
@@ -1605,206 +1614,7 @@
             animation: shake 0.5s ease-in-out;
         }
     </style>
-<style>
-      @font-face {
-        font-display: swap;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        src: url(chrome-extension://inejiiekmjkmphgjjehhcmkpjncboodn/static/media/Inter-Regular.woff2) format('woff2');
-      }
-      @font-face {
-        font-display: swap;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 600;
-        src: url('chrome-extension://inejiiekmjkmphgjjehhcmkpjncboodn/static/media/Inter-SemiBold.woff2') format('woff2');
-      }
-      @font-face {
-        font-display: swap;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 800;
-        src: url('chrome-extension://inejiiekmjkmphgjjehhcmkpjncboodn/static/media/Inter-ExtraBold.woff2') format('woff2');
-      }
-  </style><style type="text/css" id="mytempCss">._8mqQwQ { display: none; } ._1TWLMK.icF5zO { opacity: 0.01; }</style><style>
-/* @font-face {
-  font-family: RR;
-  src: url(font/Roboto-Regular.ttf) format("truetype");
-  font-weight: normal;
-  font-style: normal;
-} */
-
-.peckshieldAlertSimulation {
-  z-index: 999999;
-  position: fixed;
-  top: 200px;
-  left: 20px;
-  width: 420px;
-  height: 66px;
-  /* border-radius: 8px; */
-}
-.aegisweb3-precheck {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 13px;
-  width: 420px;
-  height: 66px; 
-}
-.aegisweb3-precheck .content{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-.aegisweb3-precheck .content img{
-  width: 42px;
-  height: 42px;
-}
-.aegisweb3-precheck .content p {
-  font-size: 18px;
-  padding: 0 10px;
-  margin-top: 16px;
-}
-.aegisweb3-precheck .content .normal{
-  color: #000000;
-}
-.aegisweb3-precheck .content .safe{
-  color: #0BC677;
-}
-.aegisweb3-precheck .loading {
-  margin-top: 16px;
-  /* width: 48px; */
-  width: 17px;
-  height: 20px;
-  -webkit-animation: rotate 0.8s linear infinite;
-}
-@keyframes rotate {
-  to {
-    transform: rotate(360deg);
-  }
-}
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hc3NldHMvc3R5bGUvcG9wdXAuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFDQTs7Ozs7R0FLRzs7QUFFSDtFQUNFLGVBQWU7RUFDZixlQUFlO0VBQ2YsVUFBVTtFQUNWLFVBQVU7RUFDVixZQUFZO0VBQ1osWUFBWTtFQUNaLHdCQUF3QjtBQUMxQjtBQUNBO0VBQ0UsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQiw4QkFBOEI7RUFDOUIsbUJBQW1CO0VBQ25CLGVBQWU7RUFDZixZQUFZO0VBQ1osWUFBWTtBQUNkO0FBQ0E7RUFDRSxhQUFhO0VBQ2IsbUJBQW1CO0VBQ25CLHVCQUF1QjtFQUN2QixtQkFBbUI7QUFDckI7QUFDQTtFQUNFLFdBQVc7RUFDWCxZQUFZO0FBQ2Q7QUFDQTtFQUNFLGVBQWU7RUFDZixlQUFlO0VBQ2YsZ0JBQWdCO0FBQ2xCO0FBQ0E7RUFDRSxjQUFjO0FBQ2hCO0FBQ0E7RUFDRSxjQUFjO0FBQ2hCO0FBQ0E7RUFDRSxnQkFBZ0I7RUFDaEIsaUJBQWlCO0VBQ2pCLFdBQVc7RUFDWCxZQUFZO0VBQ1osOENBQThDO0FBQ2hEO0FBQ0E7RUFDRTtJQUNFLHlCQUF5QjtFQUMzQjtBQUNGIiwic291cmNlc0NvbnRlbnQiOlsiXHJcbi8qIEBmb250LWZhY2Uge1xyXG4gIGZvbnQtZmFtaWx5OiBSUjtcclxuICBzcmM6IHVybChmb250L1JvYm90by1SZWd1bGFyLnR0ZikgZm9ybWF0KFwidHJ1ZXR5cGVcIik7XHJcbiAgZm9udC13ZWlnaHQ6IG5vcm1hbDtcclxuICBmb250LXN0eWxlOiBub3JtYWw7XHJcbn0gKi9cclxuXHJcbi5wZWNrc2hpZWxkQWxlcnRTaW11bGF0aW9uIHtcclxuICB6LWluZGV4OiA5OTk5OTk7XHJcbiAgcG9zaXRpb246IGZpeGVkO1xyXG4gIHRvcDogMjAwcHg7XHJcbiAgbGVmdDogMjBweDtcclxuICB3aWR0aDogNDIwcHg7XHJcbiAgaGVpZ2h0OiA2NnB4O1xyXG4gIC8qIGJvcmRlci1yYWRpdXM6IDhweDsgKi9cclxufVxyXG4uYWVnaXN3ZWIzLXByZWNoZWNrIHtcclxuICBkaXNwbGF5OiBmbGV4O1xyXG4gIGZsZXgtZGlyZWN0aW9uOiByb3c7XHJcbiAganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuO1xyXG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XHJcbiAgcGFkZGluZzogMCAxM3B4O1xyXG4gIHdpZHRoOiA0MjBweDtcclxuICBoZWlnaHQ6IDY2cHg7IFxyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmNvbnRlbnR7XHJcbiAgZGlzcGxheTogZmxleDtcclxuICBmbGV4LWRpcmVjdGlvbjogcm93O1xyXG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xyXG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XHJcbn1cclxuLmFlZ2lzd2ViMy1wcmVjaGVjayAuY29udGVudCBpbWd7XHJcbiAgd2lkdGg6IDQycHg7XHJcbiAgaGVpZ2h0OiA0MnB4O1xyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmNvbnRlbnQgcCB7XHJcbiAgZm9udC1zaXplOiAxOHB4O1xyXG4gIHBhZGRpbmc6IDAgMTBweDtcclxuICBtYXJnaW4tdG9wOiAxNnB4O1xyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmNvbnRlbnQgLm5vcm1hbHtcclxuICBjb2xvcjogIzAwMDAwMDtcclxufVxyXG4uYWVnaXN3ZWIzLXByZWNoZWNrIC5jb250ZW50IC5zYWZle1xyXG4gIGNvbG9yOiAjMEJDNjc3O1xyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmxvYWRpbmcge1xyXG4gIG1hcmdpbi10b3A6IDE2cHg7XHJcbiAgLyogd2lkdGg6IDQ4cHg7ICovXHJcbiAgd2lkdGg6IDE3cHg7XHJcbiAgaGVpZ2h0OiAyMHB4O1xyXG4gIC13ZWJraXQtYW5pbWF0aW9uOiByb3RhdGUgMC44cyBsaW5lYXIgaW5maW5pdGU7XHJcbn1cclxuQGtleWZyYW1lcyByb3RhdGUge1xyXG4gIHRvIHtcclxuICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZyk7XHJcbiAgfVxyXG59Il0sInNvdXJjZVJvb3QiOiIifQ== */</style><style type="text/css" id="mytempCss">._8mqQwQ { display: none; } ._1TWLMK.icF5zO { opacity: 0.01; }</style><style>
-/* @font-face {
-  font-family: RR;
-  src: url(font/Roboto-Regular.ttf) format("truetype");
-  font-weight: normal;
-  font-style: normal;
-} */
-
-.peckshieldAlertSimulation {
-  z-index: 999999;
-  position: fixed;
-  top: 200px;
-  left: 20px;
-  width: 420px;
-  height: 66px;
-  /* border-radius: 8px; */
-}
-.aegisweb3-precheck {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 13px;
-  width: 420px;
-  height: 66px; 
-}
-.aegisweb3-precheck .content{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-.aegisweb3-precheck .content img{
-  width: 42px;
-  height: 42px;
-}
-.aegisweb3-precheck .content p {
-  font-size: 18px;
-  padding: 0 10px;
-  margin-top: 16px;
-}
-.aegisweb3-precheck .content .normal{
-  color: #000000;
-}
-.aegisweb3-precheck .content .safe{
-  color: #0BC677;
-}
-.aegisweb3-precheck .loading {
-  margin-top: 16px;
-  /* width: 48px; */
-  width: 17px;
-  height: 20px;
-  -webkit-animation: rotate 0.8s linear infinite;
-}
-@keyframes rotate {
-  to {
-    transform: rotate(360deg);
-  }
-}
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hc3NldHMvc3R5bGUvcG9wdXAuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFDQTs7Ozs7R0FLRzs7QUFFSDtFQUNFLGVBQWU7RUFDZixlQUFlO0VBQ2YsVUFBVTtFQUNWLFVBQVU7RUFDVixZQUFZO0VBQ1osWUFBWTtFQUNaLHdCQUF3QjtBQUMxQjtBQUNBO0VBQ0UsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQiw4QkFBOEI7RUFDOUIsbUJBQW1CO0VBQ25CLGVBQWU7RUFDZixZQUFZO0VBQ1osWUFBWTtBQUNkO0FBQ0E7RUFDRSxhQUFhO0VBQ2IsbUJBQW1CO0VBQ25CLHVCQUF1QjtFQUN2QixtQkFBbUI7QUFDckI7QUFDQTtFQUNFLFdBQVc7RUFDWCxZQUFZO0FBQ2Q7QUFDQTtFQUNFLGVBQWU7RUFDZixlQUFlO0VBQ2YsZ0JBQWdCO0FBQ2xCO0FBQ0E7RUFDRSxjQUFjO0FBQ2hCO0FBQ0E7RUFDRSxjQUFjO0FBQ2hCO0FBQ0E7RUFDRSxnQkFBZ0I7RUFDaEIsaUJBQWlCO0VBQ2pCLFdBQVc7RUFDWCxZQUFZO0VBQ1osOENBQThDO0FBQ2hEO0FBQ0E7RUFDRTtJQUNFLHlCQUF5QjtFQUMzQjtBQUNGIiwic291cmNlc0NvbnRlbnQiOlsiXHJcbi8qIEBmb250LWZhY2Uge1xyXG4gIGZvbnQtZmFtaWx5OiBSUjtcclxuICBzcmM6IHVybChmb250L1JvYm90by1SZWd1bGFyLnR0ZikgZm9ybWF0KFwidHJ1ZXR5cGVcIik7XHJcbiAgZm9udC13ZWlnaHQ6IG5vcm1hbDtcclxuICBmb250LXN0eWxlOiBub3JtYWw7XHJcbn0gKi9cclxuXHJcbi5wZWNrc2hpZWxkQWxlcnRTaW11bGF0aW9uIHtcclxuICB6LWluZGV4OiA5OTk5OTk7XHJcbiAgcG9zaXRpb246IGZpeGVkO1xyXG4gIHRvcDogMjAwcHg7XHJcbiAgbGVmdDogMjBweDtcclxuICB3aWR0aDogNDIwcHg7XHJcbiAgaGVpZ2h0OiA2NnB4O1xyXG4gIC8qIGJvcmRlci1yYWRpdXM6IDhweDsgKi9cclxufVxyXG4uYWVnaXN3ZWIzLXByZWNoZWNrIHtcclxuICBkaXNwbGF5OiBmbGV4O1xyXG4gIGZsZXgtZGlyZWN0aW9uOiByb3c7XHJcbiAganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuO1xyXG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XHJcbiAgcGFkZGluZzogMCAxM3B4O1xyXG4gIHdpZHRoOiA0MjBweDtcclxuICBoZWlnaHQ6IDY2cHg7IFxyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmNvbnRlbnR7XHJcbiAgZGlzcGxheTogZmxleDtcclxuICBmbGV4LWRpcmVjdGlvbjogcm93O1xyXG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xyXG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XHJcbn1cclxuLmFlZ2lzd2ViMy1wcmVjaGVjayAuY29udGVudCBpbWd7XHJcbiAgd2lkdGg6IDQycHg7XHJcbiAgaGVpZ2h0OiA0MnB4O1xyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmNvbnRlbnQgcCB7XHJcbiAgZm9udC1zaXplOiAxOHB4O1xyXG4gIHBhZGRpbmc6IDAgMTBweDtcclxuICBtYXJnaW4tdG9wOiAxNnB4O1xyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmNvbnRlbnQgLm5vcm1hbHtcclxuICBjb2xvcjogIzAwMDAwMDtcclxufVxyXG4uYWVnaXN3ZWIzLXByZWNoZWNrIC5jb250ZW50IC5zYWZle1xyXG4gIGNvbG9yOiAjMEJDNjc3O1xyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmxvYWRpbmcge1xyXG4gIG1hcmdpbi10b3A6IDE2cHg7XHJcbiAgLyogd2lkdGg6IDQ4cHg7ICovXHJcbiAgd2lkdGg6IDE3cHg7XHJcbiAgaGVpZ2h0OiAyMHB4O1xyXG4gIC13ZWJraXQtYW5pbWF0aW9uOiByb3RhdGUgMC44cyBsaW5lYXIgaW5maW5pdGU7XHJcbn1cclxuQGtleWZyYW1lcyByb3RhdGUge1xyXG4gIHRvIHtcclxuICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZyk7XHJcbiAgfVxyXG59Il0sInNvdXJjZVJvb3QiOiIifQ== */</style><style>
-/* @font-face {
-  font-family: RR;
-  src: url(font/Roboto-Regular.ttf) format("truetype");
-  font-weight: normal;
-  font-style: normal;
-} */
-
-.peckshieldAlertSimulation {
-  z-index: 999999;
-  position: fixed;
-  top: 200px;
-  left: 20px;
-  width: 420px;
-  height: 66px;
-  /* border-radius: 8px; */
-}
-.aegisweb3-precheck {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 13px;
-  width: 420px;
-  height: 66px; 
-}
-.aegisweb3-precheck .content{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-.aegisweb3-precheck .content img{
-  width: 42px;
-  height: 42px;
-}
-.aegisweb3-precheck .content p {
-  font-size: 18px;
-  padding: 0 10px;
-  margin-top: 16px;
-}
-.aegisweb3-precheck .content .normal{
-  color: #000000;
-}
-.aegisweb3-precheck .content .safe{
-  color: #0BC677;
-}
-.aegisweb3-precheck .loading {
-  margin-top: 16px;
-  /* width: 48px; */
-  width: 17px;
-  height: 20px;
-  -webkit-animation: rotate 0.8s linear infinite;
-}
-@keyframes rotate {
-  to {
-    transform: rotate(360deg);
-  }
-}
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hc3NldHMvc3R5bGUvcG9wdXAuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFDQTs7Ozs7R0FLRzs7QUFFSDtFQUNFLGVBQWU7RUFDZixlQUFlO0VBQ2YsVUFBVTtFQUNWLFVBQVU7RUFDVixZQUFZO0VBQ1osWUFBWTtFQUNaLHdCQUF3QjtBQUMxQjtBQUNBO0VBQ0UsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQiw4QkFBOEI7RUFDOUIsbUJBQW1CO0VBQ25CLGVBQWU7RUFDZixZQUFZO0VBQ1osWUFBWTtBQUNkO0FBQ0E7RUFDRSxhQUFhO0VBQ2IsbUJBQW1CO0VBQ25CLHVCQUF1QjtFQUN2QixtQkFBbUI7QUFDckI7QUFDQTtFQUNFLFdBQVc7RUFDWCxZQUFZO0FBQ2Q7QUFDQTtFQUNFLGVBQWU7RUFDZixlQUFlO0VBQ2YsZ0JBQWdCO0FBQ2xCO0FBQ0E7RUFDRSxjQUFjO0FBQ2hCO0FBQ0E7RUFDRSxjQUFjO0FBQ2hCO0FBQ0E7RUFDRSxnQkFBZ0I7RUFDaEIsaUJBQWlCO0VBQ2pCLFdBQVc7RUFDWCxZQUFZO0VBQ1osOENBQThDO0FBQ2hEO0FBQ0E7RUFDRTtJQUNFLHlCQUF5QjtFQUMzQjtBQUNGIiwic291cmNlc0NvbnRlbnQiOlsiXHJcbi8qIEBmb250LWZhY2Uge1xyXG4gIGZvbnQtZmFtaWx5OiBSUjtcclxuICBzcmM6IHVybChmb250L1JvYm90by1SZWd1bGFyLnR0ZikgZm9ybWF0KFwidHJ1ZXR5cGVcIik7XHJcbiAgZm9udC13ZWlnaHQ6IG5vcm1hbDtcclxuICBmb250LXN0eWxlOiBub3JtYWw7XHJcbn0gKi9cclxuXHJcbi5wZWNrc2hpZWxkQWxlcnRTaW11bGF0aW9uIHtcclxuICB6LWluZGV4OiA5OTk5OTk7XHJcbiAgcG9zaXRpb246IGZpeGVkO1xyXG4gIHRvcDogMjAwcHg7XHJcbiAgbGVmdDogMjBweDtcclxuICB3aWR0aDogNDIwcHg7XHJcbiAgaGVpZ2h0OiA2NnB4O1xyXG4gIC8qIGJvcmRlci1yYWRpdXM6IDhweDsgKi9cclxufVxyXG4uYWVnaXN3ZWIzLXByZWNoZWNrIHtcclxuICBkaXNwbGF5OiBmbGV4O1xyXG4gIGZsZXgtZGlyZWN0aW9uOiByb3c7XHJcbiAganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuO1xyXG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XHJcbiAgcGFkZGluZzogMCAxM3B4O1xyXG4gIHdpZHRoOiA0MjBweDtcclxuICBoZWlnaHQ6IDY2cHg7IFxyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmNvbnRlbnR7XHJcbiAgZGlzcGxheTogZmxleDtcclxuICBmbGV4LWRpcmVjdGlvbjogcm93O1xyXG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xyXG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XHJcbn1cclxuLmFlZ2lzd2ViMy1wcmVjaGVjayAuY29udGVudCBpbWd7XHJcbiAgd2lkdGg6IDQycHg7XHJcbiAgaGVpZ2h0OiA0MnB4O1xyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmNvbnRlbnQgcCB7XHJcbiAgZm9udC1zaXplOiAxOHB4O1xyXG4gIHBhZGRpbmc6IDAgMTBweDtcclxuICBtYXJnaW4tdG9wOiAxNnB4O1xyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmNvbnRlbnQgLm5vcm1hbHtcclxuICBjb2xvcjogIzAwMDAwMDtcclxufVxyXG4uYWVnaXN3ZWIzLXByZWNoZWNrIC5jb250ZW50IC5zYWZle1xyXG4gIGNvbG9yOiAjMEJDNjc3O1xyXG59XHJcbi5hZWdpc3dlYjMtcHJlY2hlY2sgLmxvYWRpbmcge1xyXG4gIG1hcmdpbi10b3A6IDE2cHg7XHJcbiAgLyogd2lkdGg6IDQ4cHg7ICovXHJcbiAgd2lkdGg6IDE3cHg7XHJcbiAgaGVpZ2h0OiAyMHB4O1xyXG4gIC13ZWJraXQtYW5pbWF0aW9uOiByb3RhdGUgMC44cyBsaW5lYXIgaW5maW5pdGU7XHJcbn1cclxuQGtleWZyYW1lcyByb3RhdGUge1xyXG4gIHRvIHtcclxuICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZyk7XHJcbiAgfVxyXG59Il0sInNvdXJjZVJvb3QiOiIifQ== */</style></head>
+</head>
 <body>
     <div class="warning-overlay" id="warningOverlay">
         <div class="siren-icon-wrapper"><span class="siren-emoji">🚨</span></div>
@@ -1826,6 +1636,8 @@
         <div class="results-card">
             <span class="results-emoji" id="resultsEmoji">🎉</span>
             <div class="results-message" id="resultsMessage">Mock Test Complete!</div>
+            <!-- BIG SCORE DISPLAY with negative marking -->
+            <div id="resultsScore" class="results-score-big"></div>
             <div class="results-stats">
                 <div class="stat correct-stat"><span class="stat-number" id="resCorrect">0</span><span class="stat-label">ঠিক</span></div>
                 <div class="stat wrong-stat"><span class="stat-number" id="resWrong">0</span><span class="stat-label">ভুল</span></div>
@@ -1840,7 +1652,7 @@
     <main class="app" id="app">
         <div class="container">
             <div class="main-header">
-                <div class="main-title">🏆 Class IX <small>| ভৌত বিজ্ঞান • জীবন বিজ্ঞান • ইতিহাস • ভূগোল  |</small></div>
+                <div class="main-title">🏆 Class IX <small>| ভৌত বিজ্ঞান • জীবন বিজ্ঞান • ইতিহাস • ভূগোল |</small></div>
                 <div class="flex-row" style="gap:8px;">
                     <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Dark/Light Mode">🌙</button>
                     <div class="credit" id="creditName">✨ By Arif Hussain</div>
@@ -1858,15 +1670,15 @@
                     </div>
                     <div class="controls-right">
                         <label style="font-size:12px;">Q :</label>
-                        <input type="number" id="quizSize" value="5000" min="1" max="10000" style="width:70px;">
+                        <input type="number" id="quizSize" value="25" min="1" max="5000" style="width:70px;">
                         <label style="font-size:12px;">Time(min):</label>
-                        <input type="number" id="timeLimit" value="60" min="1" max="300" style="width:65px;">
+                        <input type="number" id="timeLimit" value="30" min="1" max="300" style="width:65px;">
                         <button id="generateBtn">✅Generate(Seq)</button>
                         <button id="randomBtn" style="background: var(--orange);">🎲Random</button>
                     </div>
                 </div>
                 <div class="chapter-panel open" id="chapterPanel">
-                    <div id="subjectAccordions"><div class="subject-accordion open"><div class="subject-header aptitude" data-group="science"><span>🔬 ভৌত বিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch1"><span>1.পরিমাপ ও একক</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch2"><span>2.বল ও গতি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch3"><span>3.পদার্থের গঠন ও ধর্ম</span><span class="q-count">[101]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch4"><span>4.1 পরমাণুর গঠন</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch5"><span>4.2 মোলের ধারণা</span><span class="q-count">[60]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch6"><span>4.3 দ্রবণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch7"><span>4.4 অ্যাসিড, ক্ষার ও লবণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch8"><span>4.5 মিশ্রণের উপাদানের পৃথকীকরণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch9"><span>4.6 জল</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch10"><span>5.শক্তির ক্রিয়া :কার্য, ক্ষমতা ও শক্তি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch11"><span>6.তাপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch12"><span>7.শব্দ</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion open"><div class="subject-header current" data-group="history"><span>📜 ইতিহাস</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch1"><span> ফরাসি বিপ্লবের কয়েকটি দিক</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch2"><span> বিপ্লবী আদর্শ, নেপোলিয়নীয় সাম্রাজ্য ও জাতীয়তাবাদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch3"><span> উনিশ শতকের ইউরোপ : জাতীয়তাবাদ ও রাজতান্ত্রিক ভাবধারার সংঘাত</span><span class="q-count">[180]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch4"><span> শিল্পবিপ্লব, উপনিবেশবাদ ও সাম্রাজ্যবাদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch5"><span> বিংশ শতকের ইউরোপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch6"><span> দ্বিতীয় বিশ্বযুদ্ধ ও তার পরিণতি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch7"><span> লীগ অব নেশনস ও রাষ্ট্রসংঘ</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion open"><div class="subject-header english" data-group="geography"><span>🌍 ভূগোল</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch8"><span> গ্রহরূপে পৃথিবী</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch9"><span> পৃথিবীর গতিবিধি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch1"><span> ভূপৃষ্ঠে কোনো স্থানের অবস্থান নির্ণয়</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch2"><span> পৃথিবীর ভূ-প্রাকৃতিক প্রক্রিয়া ও ভূমিরূপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch3"><span> আবহবিকার</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch4"><span> বিপর্যয় ও দুর্যোগ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch5"><span> ভারতের সম্পদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch6"><span> পশ্চিমবঙ্গ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch7"><span> মানচিত্র ও স্কেল</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion open"><div class="subject-header science_comp" data-group="lifesc"><span>🧬 জীবনবিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch8"><span> জীবন ও তার বৈচিত্র্য</span><span class="q-count">[21]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch9"><span> জীবন সংগঠনের স্তর</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch10" checked=""><span>3.1 সালোকসংশ্লেষণ 3.2 খনিজ পুস্টি 3.3 বাষ্পমোচন 3.4 জল খনিজ পরিবহণ</span><span class="q-count">[143]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch11"><span>3.5 শ্বসন</span><span class="q-count">[106]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132452393" checked=""><span> পরিবেশ ও তার সম্পদ</span><span class="q-count">[0]</span></label></div></div></div></div>
+                    <div id="subjectAccordions"><div class="subject-accordion"><div class="subject-header aptitude" data-group="science"><span>🔬 ভৌত বিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch1" checked=""><span>1.পরিমাপ ও একক</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch2" checked=""><span>2.বল ও গতি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch3" checked=""><span>3.পদার্থের গঠন ও ধর্ম</span><span class="q-count">[101]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch4" checked=""><span>4.1 পরমাণুর গঠন</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch5" checked=""><span>4.2 মোলের ধারণা</span><span class="q-count">[60]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch6" checked=""><span>4.3 দ্রবণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch7" checked=""><span>4.4 অ্যাসিড, ক্ষার ও লবণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch8" checked=""><span>4.5 মিশ্রণের উপাদানের পৃথকীকরণ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch9" checked=""><span>4.6 জল</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch10" checked=""><span>5.শক্তির ক্রিয়া :কার্য, ক্ষমতা ও শক্তি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch11" checked=""><span>6.তাপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch12" checked=""><span>7.শব্দ</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion"><div class="subject-header current" data-group="history"><span>📜 ইতিহাস</span><span class="subject-arrow">▼</span></div><div class="subject-chapters"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch1" checked=""><span> ফরাসি বিপ্লবের কয়েকটি দিক</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch2" checked=""><span> বিপ্লবী আদর্শ, নেপোলিয়নীয় সাম্রাজ্য ও জাতীয়তাবাদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch3" checked=""><span> উনিশ শতকের ইউরোপ : জাতীয়তাবাদ ও রাজতান্ত্রিক ভাবধারার সংঘাত</span><span class="q-count">[180]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch4" checked=""><span> শিল্পবিপ্লব, উপনিবেশবাদ ও সাম্রাজ্যবাদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch5" checked=""><span> বিংশ শতকের ইউরোপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch6" checked=""><span> দ্বিতীয় বিশ্বযুদ্ধ ও তার পরিণতি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch7" checked=""><span> লীগ অব নেশনস ও রাষ্ট্রসংঘ</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion"><div class="subject-header english" data-group="geography"><span>🌍 ভূগোল</span><span class="subject-arrow">▼</span></div><div class="subject-chapters"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch8" checked=""><span> গ্রহরূপে পৃথিবী</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch9" checked=""><span> পৃথিবীর গতিবিধি</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch1" checked=""><span> ভূপৃষ্ঠে কোনো স্থানের অবস্থান নির্ণয়</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch2" checked=""><span> পৃথিবীর ভূ-প্রাকৃতিক প্রক্রিয়া ও ভূমিরূপ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch3" checked=""><span> আবহবিকার</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch4" checked=""><span> বিপর্যয় ও দুর্যোগ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch5" checked=""><span> ভারতের সম্পদ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch6" checked=""><span> পশ্চিমবঙ্গ</span><span class="q-count">[0]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch7" checked=""><span> মানচিত্র ও স্কেল</span><span class="q-count">[0]</span></label></div></div></div><div class="subject-accordion"><div class="subject-header science_comp" data-group="lifesc"><span>🧬 জীবনবিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch8" checked=""><span> জীবন ও তার বৈচিত্র্য</span><span class="q-count">[21]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch9" checked=""><span> জীবন সংগঠনের স্তর</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch10" checked=""><span>3.1 সালোকসংশ্লেষণ 3.2 খনিজ পুস্টি 3.3 বাষ্পমোচন 3.4 জল খনিজ পরিবহণ</span><span class="q-count">[143]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch11" checked=""><span>3.5 শ্বসন</span><span class="q-count">[106]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="custom_1780132452393" checked=""><span> পরিবেশ ও তার সম্পদ</span><span class="q-count">[0]</span></label></div></div></div></div>
                     <div class="subject-action-row">
                         <div class="flex-row">
                             <button id="selectAllBtn">Select All</button>
@@ -1877,31 +1689,11 @@
                 </div>
             </section>
             <section class="quiz-panel">
-                <div class="questions-area" id="questionsArea">
-                <div class="question-card" id="questionCardEl">
-                    <div class="question-meta">
-                        <span class="pill">143/143</span>
-                        <span class="pill">জীবনবিজ্ঞান</span>
-                        <span class="pill">3.1 সালোকসংশ্লেষণ 3.2 খনিজ পুস্টি 3.3 বাষ্পমোচন 3.4 জল খনিজ পরিবহণ</span>
-                        <span class="pill difficulty-medium">🟠 Medium</span>
-                        
-                        <span class="toggle-options-btn" id="toggleOptionsBtn" title="Hide Options">Hide</span>
-                    </div>
-                    <div class="question-text">143. ফ্লোয়েম কলায় খাবার স্রোত কোন দিকে চলে?</div>
-                    <div class="inline-edit-icon" id="inlineEditIcon" title="Click to edit question">✏️</div>
-                    <div class="options" id="optionsContainer" style=""><div class="option" data-opt="0"><span class="key">1</span><span>A. শুধু উপরের দিকে</span></div><div class="option" data-opt="1"><span class="key">2</span><span>B. ফল) অঞ্চলের দিকে উভমুখী</span></div><div class="option" data-opt="2"><span class="key">3</span><span>C. উৎস (পাতা) থেকে গ্রাহক (মূল</span></div><div class="option" data-opt="3"><span class="key">4</span><span>D. শুধু নিচের দিকে</span></div></div>
-                    <div class="info " id="noteBox">📖 ফ্লোয়েমের মাধ্যমে খাদ্য উৎস স্থান থেকে সিঙ্ক বা গ্রাহক অঞ্চলে পরিবাহিত হয়, যা উপরের ও নিচের উভয় দিকেই চলতে পারে।</div>
-                    
-                    <div class="nav-buttons-large">
-                        <button id="prevQ">◀ Previous</button>
-                        <button id="nextQ" disabled="">Next ▶</button>
-                    </div>
-                    
-                </div></div>
+                <div class="questions-area" id="questionsArea"><div class="question-card" style="text-align:center;padding:50px;">⬆️ Select subjects and click Generate</div></div>
                 <aside class="sidebar">
-                    <div class="score-board" id="scoreBoard">🎯 Score: 0/143<br><span class="score-breakdown">✅0 | ❌0 | ⏭️143</span></div>
+                    <div class="score-board" id="scoreBoard">🎯 Score: 0/0<br><span class="score-breakdown">✅0 | ❌0 | ⏭️0</span></div>
                     <div id="timerDisplay" style="display:none;"></div>
-                    <div id="navGrid" class="nav-grid"><div class="q-num" data-idx="0">1</div><div class="q-num" data-idx="1">2</div><div class="q-num" data-idx="2">3</div><div class="q-num" data-idx="3">4</div><div class="q-num" data-idx="4">5</div><div class="q-num" data-idx="5">6</div><div class="q-num" data-idx="6">7</div><div class="q-num" data-idx="7">8</div><div class="q-num" data-idx="8">9</div><div class="q-num" data-idx="9">10</div><div class="q-num" data-idx="10">11</div><div class="q-num" data-idx="11">12</div><div class="q-num" data-idx="12">13</div><div class="q-num" data-idx="13">14</div><div class="q-num" data-idx="14">15</div><div class="q-num" data-idx="15">16</div><div class="q-num" data-idx="16">17</div><div class="q-num" data-idx="17">18</div><div class="q-num" data-idx="18">19</div><div class="q-num" data-idx="19">20</div><div class="q-num" data-idx="20">21</div><div class="q-num" data-idx="21">22</div><div class="q-num" data-idx="22">23</div><div class="q-num" data-idx="23">24</div><div class="q-num" data-idx="24">25</div><div class="q-num" data-idx="25">26</div><div class="q-num" data-idx="26">27</div><div class="q-num" data-idx="27">28</div><div class="q-num" data-idx="28">29</div><div class="q-num" data-idx="29">30</div><div class="q-num" data-idx="30">31</div><div class="q-num" data-idx="31">32</div><div class="q-num" data-idx="32">33</div><div class="q-num" data-idx="33">34</div><div class="q-num" data-idx="34">35</div><div class="q-num" data-idx="35">36</div><div class="q-num" data-idx="36">37</div><div class="q-num" data-idx="37">38</div><div class="q-num" data-idx="38">39</div><div class="q-num" data-idx="39">40</div><div class="q-num" data-idx="40">41</div><div class="q-num" data-idx="41">42</div><div class="q-num" data-idx="42">43</div><div class="q-num" data-idx="43">44</div><div class="q-num" data-idx="44">45</div><div class="q-num" data-idx="45">46</div><div class="q-num" data-idx="46">47</div><div class="q-num" data-idx="47">48</div><div class="q-num" data-idx="48">49</div><div class="q-num" data-idx="49">50</div><div class="q-num" data-idx="50">51</div><div class="q-num" data-idx="51">52</div><div class="q-num" data-idx="52">53</div><div class="q-num" data-idx="53">54</div><div class="q-num" data-idx="54">55</div><div class="q-num" data-idx="55">56</div><div class="q-num" data-idx="56">57</div><div class="q-num" data-idx="57">58</div><div class="q-num" data-idx="58">59</div><div class="q-num" data-idx="59">60</div><div class="q-num" data-idx="60">61</div><div class="q-num" data-idx="61">62</div><div class="q-num" data-idx="62">63</div><div class="q-num" data-idx="63">64</div><div class="q-num" data-idx="64">65</div><div class="q-num" data-idx="65">66</div><div class="q-num" data-idx="66">67</div><div class="q-num" data-idx="67">68</div><div class="q-num" data-idx="68">69</div><div class="q-num" data-idx="69">70</div><div class="q-num" data-idx="70">71</div><div class="q-num" data-idx="71">72</div><div class="q-num" data-idx="72">73</div><div class="q-num" data-idx="73">74</div><div class="q-num" data-idx="74">75</div><div class="q-num" data-idx="75">76</div><div class="q-num" data-idx="76">77</div><div class="q-num" data-idx="77">78</div><div class="q-num" data-idx="78">79</div><div class="q-num" data-idx="79">80</div><div class="q-num" data-idx="80">81</div><div class="q-num" data-idx="81">82</div><div class="q-num" data-idx="82">83</div><div class="q-num" data-idx="83">84</div><div class="q-num" data-idx="84">85</div><div class="q-num" data-idx="85">86</div><div class="q-num" data-idx="86">87</div><div class="q-num" data-idx="87">88</div><div class="q-num" data-idx="88">89</div><div class="q-num" data-idx="89">90</div><div class="q-num" data-idx="90">91</div><div class="q-num" data-idx="91">92</div><div class="q-num" data-idx="92">93</div><div class="q-num" data-idx="93">94</div><div class="q-num" data-idx="94">95</div><div class="q-num" data-idx="95">96</div><div class="q-num" data-idx="96">97</div><div class="q-num" data-idx="97">98</div><div class="q-num" data-idx="98">99</div><div class="q-num" data-idx="99">100</div><div class="q-num" data-idx="100">101</div><div class="q-num" data-idx="101">102</div><div class="q-num" data-idx="102">103</div><div class="q-num" data-idx="103">104</div><div class="q-num" data-idx="104">105</div><div class="q-num" data-idx="105">106</div><div class="q-num" data-idx="106">107</div><div class="q-num" data-idx="107">108</div><div class="q-num" data-idx="108">109</div><div class="q-num" data-idx="109">110</div><div class="q-num" data-idx="110">111</div><div class="q-num" data-idx="111">112</div><div class="q-num" data-idx="112">113</div><div class="q-num" data-idx="113">114</div><div class="q-num" data-idx="114">115</div><div class="q-num" data-idx="115">116</div><div class="q-num" data-idx="116">117</div><div class="q-num" data-idx="117">118</div><div class="q-num" data-idx="118">119</div><div class="q-num" data-idx="119">120</div><div class="q-num" data-idx="120">121</div><div class="q-num" data-idx="121">122</div><div class="q-num" data-idx="122">123</div><div class="q-num" data-idx="123">124</div><div class="q-num" data-idx="124">125</div><div class="q-num" data-idx="125">126</div><div class="q-num" data-idx="126">127</div><div class="q-num" data-idx="127">128</div><div class="q-num" data-idx="128">129</div><div class="q-num" data-idx="129">130</div><div class="q-num" data-idx="130">131</div><div class="q-num" data-idx="131">132</div><div class="q-num" data-idx="132">133</div><div class="q-num" data-idx="133">134</div><div class="q-num" data-idx="134">135</div><div class="q-num" data-idx="135">136</div><div class="q-num" data-idx="136">137</div><div class="q-num" data-idx="137">138</div><div class="q-num" data-idx="138">139</div><div class="q-num" data-idx="139">140</div><div class="q-num" data-idx="140">141</div><div class="q-num" data-idx="141">142</div><div class="q-num current" data-idx="142">143</div></div>
+                    <div id="navGrid" class="nav-grid"></div>
                     <button id="showScoreBtn" style="margin-top:10px;width:100%; background:var(--slate);">📊 Show Results</button>
                     <div class="note-toggle" id="noteToggleRow"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answering</label></div>
                     <button id="submitMockBtn" style="display:none; margin-top:8px; width:100%; background:var(--green);">✅ Submit Mock Test</button>
@@ -2305,7 +2097,9 @@
                 const c = answerStatus.filter(Boolean).length;
                 const w = userAnswers.filter((a,i) => a !== null && a !== -1 && !answerStatus[i]).length;
                 const s = totalQuestions - userAnswers.filter(a => a !== null).length;
-                const pct = totalQuestions > 0 ? Math.round((c / totalQuestions) * 100) : 0;
+                // Negative marking: -0.5 per wrong answer
+                const score = Math.max(0, c - w * 0.5);
+                const pct = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
                 let emoji, message;
                 if (pct === 100) { emoji = '🫡'; message = 'তুমি তো মাস্টার! একেবারে আগুন! চলতে থাকুক!'; }
                 else if (pct >= 90) { emoji = '😱'; message = 'জস! একদম নিখুঁতের ধারেকাছে!'; }
@@ -2316,6 +2110,7 @@
                 else { emoji = '😢'; message = 'লেগে থাকো, ঠিকই পারবে!'; }
                 document.getElementById('resultsEmoji').textContent = emoji;
                 document.getElementById('resultsMessage').textContent = message;
+                document.getElementById('resultsScore').textContent = score + '/' + totalQuestions;
                 document.getElementById('resCorrect').textContent = c;
                 document.getElementById('resWrong').textContent = w;
                 document.getElementById('resSkipped').textContent = s;
@@ -2425,7 +2220,6 @@
                         <button id="prevQ" ${currentIndex===0?"disabled":""}>◀ Previous</button>
                         <button id="nextQ" ${currentIndex===totalQuestions-1?"disabled":""}>Next ▶</button>
                     </div>
-                    ${userAnswers.every(a=>a!==null) && !quizSubmitted?`<div class="restart-area"><button id="restartAfterFinish">🔄 আবার শুরু</button></div>`:""}
                 </div>`;
 
                 document.querySelectorAll(".option").forEach(el => { el.onclick = () => {
@@ -2478,8 +2272,16 @@
                 const c = answerStatus.filter(Boolean).length;
                 const a = userAnswers.filter(v=>v!==null && v!== -1).length;
                 const w = a-c; const s = totalQuestions-a;
-                if (quizMode === "mock" && !quizSubmitted) { $("scoreBoard").innerHTML = `⏱️ Mock Test in Progress`; }
-                else { $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`; }
+                if (quizMode === "mock" && !quizSubmitted) {
+                    $("scoreBoard").innerHTML = `⏱️ Mock Test in Progress`;
+                } else {
+                    if (quizMode === "mock" && quizSubmitted) {
+                        const score = Math.max(0, c - w * 0.5);
+                        $("scoreBoard").innerHTML = `🎯 Score: ${score}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} (×-0.5) | ⏭️${s}</span>`;
+                    } else {
+                        $("scoreBoard").innerHTML = `🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`;
+                    }
+                }
                 const noteRow = $("noteToggleRow"); const showScoreBtn = $("showScoreBtn");
                 if (quizMode === "mock" && !quizSubmitted) { if(noteRow) noteRow.style.display = 'none'; if(showScoreBtn) showScoreBtn.style.display = 'none'; }
                 else { if(noteRow) noteRow.style.display = ''; if(showScoreBtn) showScoreBtn.style.display = ''; }
@@ -2630,9 +2432,12 @@
                 $("randomBtn").onclick = () => generateQuiz(getSelectedKeys(), Number($("quizSize").value), true);
                 $("resetHeaderBtn").onclick = resetAnswers;
                 $("showScoreBtn").onclick = () => {
-                    const c = answerStatus.filter(Boolean).length, w = userAnswers.filter((a,i)=>a!==null&&a!== -1&&!answerStatus[i]).length,
-                    s = totalQuestions - userAnswers.filter(a=>a!==null&&a!== -1).length, pct = totalQuestions>0?Math.round((c/totalQuestions)*100):0;
-                    alert(`📊 Results Summary\n\n✅ Correct: ${c}\n❌ Wrong: ${w}\n⏭️ Skipped: ${s}\n📈 Accuracy: ${pct}%\n\nTotal: ${c}/${totalQuestions}`);
+                    const c = answerStatus.filter(Boolean).length;
+                    const w = userAnswers.filter((a,i)=>a!==null&&a!== -1&&!answerStatus[i]).length;
+                    const s = totalQuestions - userAnswers.filter(a=>a!==null&&a!== -1).length;
+                    const score = Math.max(0, c - w * 0.5);
+                    const pct = totalQuestions>0?Math.round((score/totalQuestions)*100):0;
+                    alert(`📊 Results Summary\n\n✅ Correct: ${c}\n❌ Wrong: ${w}\n⏭️ Skipped: ${s}\n📈 Score (with -0.5 negative marking): ${score}/${totalQuestions}\n📈 Accuracy: ${pct}%\n\nTotal: ${c}/${totalQuestions}`);
                 };
                 $("showNoteBeforeAnswer").onchange = renderQuiz;
                 $("submitMockBtn").onclick = submitMockTest;
@@ -2710,8 +2515,5 @@
             init();
         })();
     </script>
-
-
-<div id="web3-antivirus-host"></div>
 
 </body></html>
