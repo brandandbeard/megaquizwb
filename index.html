@@ -1254,10 +1254,10 @@
         }
 
         /* ═══ Improved Teleport: Touch & Wheel ═══ */
-        const SCROLL_TOP_TOLERANCE = 8; // px tolerance for "at top"
-        const GESTURE_MIN_DIST = 35; // minimum swipe distance in px
-        const GESTURE_MIN_VELOCITY = 0.25; // px/ms minimum velocity
-        const GESTURE_MAX_TIME = 600; // ms max for swipe
+        const SCROLL_TOP_TOLERANCE = 8;
+        const GESTURE_MIN_DIST = 35;
+        const GESTURE_MIN_VELOCITY = 0.25;
+        const GESTURE_MAX_TIME = 600;
 
         let gestureActive = false;
         let gestureStartY = 0;
@@ -1273,16 +1273,26 @@
             gestureHandled = false;
         }
 
-        // ── Touch handlers (non‑passive on page0 so we can prevent default) ──
+        function isAtBottom() {
+            const st = window.scrollY || document.documentElement.scrollTop || 0;
+            const sh = document.documentElement.scrollHeight;
+            const ch = document.documentElement.clientHeight;
+            return (st + ch) >= (sh - SCROLL_TOP_TOLERANCE);
+        }
+
+        function isAtTop() {
+            const st = window.scrollY || document.documentElement.scrollTop || 0;
+            return st <= SCROLL_TOP_TOLERANCE;
+        }
+
+        // ── Touch handlers ──
         document.addEventListener('touchstart', function(e) {
             if (teleporting) return;
             if (e.touches.length !== 1) { resetGesture(); return; }
 
             const t = e.touches[0];
-            // On page 1, only track if near the very top
             if (currentPage === 1) {
-                const st = window.scrollY || document.documentElement.scrollTop || 0;
-                if (st > SCROLL_TOP_TOLERANCE) { resetGesture(); return; }
+                if (!isAtTop() && !isAtBottom()) { resetGesture(); return; }
             }
 
             gestureActive = true;
@@ -1301,24 +1311,23 @@
             const dy = gestureLastY - gestureStartY;
             const dt = Date.now() - gestureStartTime;
 
-            if (dt < 30 || dt > GESTURE_MAX_TIME) return; // debounce / too slow
+            if (dt < 30 || dt > GESTURE_MAX_TIME) return;
             if (Math.abs(dy) < GESTURE_MIN_DIST) return;
 
             const velocity = Math.abs(dy) / dt;
 
             if (currentPage === 0 && dy < 0 && velocity > GESTURE_MIN_VELOCITY) {
-                // Swipe UP (finger moves up → dy negative) → teleport forward to page 1
                 gestureHandled = true;
                 if (e.cancelable) e.preventDefault();
                 triggerTeleport();
-            } else if (currentPage === 1 && dy > 0 && velocity > GESTURE_MIN_VELOCITY) {
-                // Swipe DOWN (finger moves down → dy positive) at top → reverse teleport
-                const st = window.scrollY || document.documentElement.scrollTop || 0;
-                if (st <= SCROLL_TOP_TOLERANCE) {
-                    gestureHandled = true;
-                    if (e.cancelable) e.preventDefault();
-                    reverseTeleport();
-                }
+            } else if (currentPage === 1 && dy > 0 && velocity > GESTURE_MIN_VELOCITY && isAtTop()) {
+                gestureHandled = true;
+                if (e.cancelable) e.preventDefault();
+                reverseTeleport();
+            } else if (currentPage === 1 && dy < 0 && velocity > GESTURE_MIN_VELOCITY && isAtBottom()) {
+                gestureHandled = true;
+                if (e.cancelable) e.preventDefault();
+                reverseTeleport({ fromBottom: true });
             }
         }, { passive: false });
 
@@ -1343,15 +1352,22 @@
                     triggerTeleport();
                 }
             } else if (currentPage === 1) {
-                const st = window.scrollY || document.documentElement.scrollTop || 0;
-                if (st <= SCROLL_TOP_TOLERANCE && e.deltaY < 0) {
-                    // Scrolling up at the very top → reverse
+                if (isAtTop() && e.deltaY < 0) {
                     e.preventDefault();
                     reverseTeleport();
+                } else if (isAtBottom() && e.deltaY > 0) {
+                    e.preventDefault();
+                    reverseTeleport({ fromBottom: true });
                 }
-                // Otherwise let the page scroll normally
             }
         }, { passive: false });
+
+        // ── Back button (popstate) handler ──
+        window.addEventListener('popstate', function(e) {
+            if (currentPage === 1 && !teleporting) {
+                reverseTeleport({ fromPopstate: true });
+            }
+        });
 
         /* ═══ Teleport (Forward) ═══ */
         function triggerTeleport() {
@@ -1360,6 +1376,8 @@
             teleportProg = 0;
             resetGesture();
             wheelAccum = 0;
+
+            history.pushState({ page: 'page1' }, '');
 
             const overlay = document.getElementById('teleportOverlay');
             overlay.classList.remove('active');
@@ -1384,7 +1402,6 @@
                     });
                 }, { threshold: .12 });
                 document.querySelectorAll('#page1 .fade-in').forEach(el => obs.observe(el));
-                // Scroll to top of page 1
                 window.scrollTo({ top: 0, behavior: 'instant' });
                 document.documentElement.scrollTop = 0;
             }, 550);
@@ -1392,10 +1409,18 @@
         }
 
         /* ═══ Reverse Teleport (back to Page 0) ═══ */
-        function reverseTeleport() {
+        function reverseTeleport(options = {}) {
+            const { fromPopstate = false, fromBottom = false } = options;
             if (teleporting || currentPage !== 1) return;
-            const st = window.scrollY || document.documentElement.scrollTop || 0;
-            if (st > SCROLL_TOP_TOLERANCE) return; // extra guard
+
+            if (!fromBottom && !fromPopstate) {
+                if (!isAtTop()) return;
+            }
+
+            if (!fromPopstate && history.state && history.state.page === 'page1') {
+                history.back();
+                return;
+            }
 
             teleporting = true;
             teleportProg = 0;
