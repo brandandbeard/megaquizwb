@@ -350,6 +350,17 @@
             }
         }
 
+        #page1.advice-only {
+            padding-top: 12px;
+            padding-bottom: 24px;
+        }
+        #page1.advice-only .about-card,
+        #page1.advice-only .info-card,
+        #page1.advice-only .section-title,
+        #page1.advice-only .coffee-qc {
+            display: none;
+        }
+
         .s-card {
             border-radius: 20px;
             padding: clamp(20px, 4vw, 32px);
@@ -1078,7 +1089,10 @@
             <button class="install-btn" id="installButton" style="display:none;">📲 অ্যাপ হিসেবে ইনস্টল করো</button>
         </div>
         <div class="footer-fixed" id="footer0">
-            <a href="mailto:arifbeldanga@gmail.com" class="footer-item email-item" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><polyline points="22,4 12,13.5 2,4"/></svg>arifbeldanga@gmail.com</a>
+            <a href="#" id="gotoAdvice" class="footer-item email-item" onclick="event.preventDefault(); goToAdvice();">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><polyline points="22,4 12,13.5 2,4"/></svg>
+                Submit Mock Test Result
+            </a>
             <span class="footer-sep">|</span>
             <a href="https://t.me/beldanga1" target="_blank" class="footer-item tg-item" rel="noopener noreferrer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.87 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.938z"/></svg>@beldanga1</a>
             <span class="footer-sep">|</span>
@@ -1148,14 +1162,44 @@
             </div>
         </div>
 
-        <div class="s-card advice-card fade-in" style="transition-delay:.2s">
+        <div class="s-card advice-card fade-in" id="adviceCard" style="transition-delay:.2s">
             <div class="adv-label"><i></i>Advice</div>
             <h2>আপনার পরামর্শ দিন</h2>
             <p class="adv-desc">সরাসরি ইমেইলে পাঠানো হবে</p>
             <form id="advForm" onsubmit="return subAdv(event)">
                 <div class="fg"><label class="fl">নাম <span class="req">*required</span></label><input type="text" id="aN" required class="fi" placeholder="আপনার নাম"></div>
+                <div class="fg"><label class="fl">শ্রেণী/পরীক্ষা <span class="req">*required</span></label>
+                    <select id="aC" required class="fi" style="appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 viewBox=%220 0 16 16%22><path d=%22M4 6l4 4 4-4%22 stroke=%22%2364748b%22 stroke-width=%221.5%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 12px center">
+                        <option value="" disabled selected>নির্বাচন করুন</option>
+                        <option value="Class 5">Class 5</option>
+                        <option value="Class 6">Class 6</option>
+                        <option value="Class 7">Class 7</option>
+                        <option value="Class 8">Class 8</option>
+                        <option value="Class 9">Class 9</option>
+                        <option value="Class 10">Class 10</option>
+                        <option value="Class 11(Arts)">Class 11(Arts)</option>
+                        <option value="Class 11(Science)">Class 11(Science)</option>
+                        <option value="Class 12(Arts)">Class 12(Arts)</option>
+                        <option value="Class 12(Science)">Class 12(Science)</option>
+                        <option value="SSC">SSC</option>
+                        <option value="WBPSC">WBPSC</option>
+                        <option value="Defence">Defence</option>
+                        <option value="GK">GK</option>
+                    </select>
+                </div>
                 <div class="fg"><label class="fl">ফোন নম্বর <span class="opt">— optional</span></label><div class="pw"><span class="pp">+91</span><input type="tel" id="aP" class="fi" placeholder="xxxxxxxxxx" maxlength="14"></div></div>
-                <div class="fg"><label class="fl">বিষয়</label><select id="aS" class="fi" style="appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 viewBox=%220 0 16 16%22><path d=%22M4 6l4 4 4-4%22 stroke=%22%2364748b%22 stroke-width=%221.5%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 12px center"><option value="সাধারণ পরামর্শ">সাধারণ পরামর্শ</option><option value="SSC সম্পর্কিত">SSC সম্পর্কিত</option><option value="WBCS সম্পর্কিত">WBCS সম্পর্কিত</option><option value="Defence সম্পর্কিত">Defence সম্পর্কিত</option><option value="বাগ রিপোর্ট">বাগ রিপোর্ট</option><option value="নতুন ফিচারের অনুরোধ">নতুন ফিচারের অনুরোধ</option></select></div>
+                <div class="fg"><label class="fl">স্ক্রিনশট (jpg/png) <span class="opt">— optional</span></label><input type="file" id="aImg" accept="image/*" class="fi" style="padding:8px; color:#fff; background: transparent;"></div>
+                <div class="fg"><label class="fl">বিষয়</label>
+                    <select id="aS" class="fi" style="appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 viewBox=%220 0 16 16%22><path d=%22M4 6l4 4 4-4%22 stroke=%22%2364748b%22 stroke-width=%221.5%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 12px center">
+                        <option value="Mock test result" selected>Mock test result</option>
+                        <option value="সাধারণ পরামর্শ">সাধারণ পরামর্শ</option>
+                        <option value="SSC সম্পর্কিত">SSC সম্পর্কিত</option>
+                        <option value="WBCS সম্পর্কিত">WBCS সম্পর্কিত</option>
+                        <option value="Defence সম্পর্কিত">Defence সম্পর্কিত</option>
+                        <option value="বাগ রিপোর্ট">বাগ রিপোর্ট</option>
+                        <option value="নতুন ফিচারের অনুরোধ">নতুন ফিচারের অনুরোধ</option>
+                    </select>
+                </div>
                 <div class="fg"><label class="fl">পরামর্শ</label><textarea id="aM" required class="fi" placeholder="আপনার মতামত লিখুন..."></textarea></div>
                 <button type="submit" class="sub-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>পাঠান</button>
             </form>
@@ -1178,6 +1222,7 @@
             teleporting = false,
             canvasMode = 0,
             teleportProg = 0;
+        let navigateToAdvice = false;
 
         /* ═══ Install ═══ */
         let deferredPrompt;
@@ -1236,20 +1281,49 @@
             this.value = v;
         });
 
-        function subAdv(e) {
+        // ⚡ Your Formspree endpoint – already configured
+        const FORMSPREE_URL = 'https://formspree.io/f/mgojrkqa';
+
+        async function subAdv(e) {
             e.preventDefault();
-            const n = document.getElementById('aN').value.trim(),
-                p = document.getElementById('aP').value.trim(),
-                s = document.getElementById('aS').value,
-                m = document.getElementById('aM').value.trim();
-            if (!n || !m) return false;
-            let b = 'পরামর্শদাতা: ' + n;
-            if (p) b += '\nফোন: +91 ' + p;
-            b += '\n\nবিষয়: ' + s + '\n\nপরামর্শ:\n' + m;
-            window.location.href = 'mailto:arifbeldanga@gmail.com?subject=' + encodeURIComponent('পরামর্শ - ' + s) +
-                '&body=' + encodeURIComponent(b);
-            showToast('ইমেইল ক্লায়েন্ট খুলছে');
-            document.getElementById('advForm').reset();
+            const n = document.getElementById('aN').value.trim();
+            const c = document.getElementById('aC').value;
+            const p = document.getElementById('aP').value.trim();
+            const s = document.getElementById('aS').value;
+            const m = document.getElementById('aM').value.trim();
+            const imgFile = document.getElementById('aImg').files[0];
+            if (!n || !c || !m) {
+                showToast('প্রয়োজনীয় তথ্য পূরণ করুন');
+                return false;
+            }
+            const formData = new FormData();
+            formData.append('name', n);
+            formData.append('class', c);
+            if (p) formData.append('phone', '+91 ' + p);
+            // Set the email subject properly
+            formData.append('_subject', s + ' - ' + c);
+            formData.append('subject', s);
+            formData.append('message', m);
+            if (imgFile) formData.append('screenshot', imgFile);
+
+            try {
+                const res = await fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (res.ok) {
+                    showToast('✅ পাঠানো সম্পন্ন! ধন্যবাদ।');
+                    document.getElementById('advForm').reset();
+                } else {
+                    const errorText = await res.text();
+                    console.error('Formspree error:', res.status, errorText);
+                    showToast('⚠️ সার্ভার সমস্যা। পরে আবার চেষ্টা করুন বা ইমেইল করুন।');
+                }
+            } catch (err) {
+                console.error('Network error:', err);
+                showToast('⚠️ নেটওয়ার্ক সমস্যা। ইন্টারনেট চেক করুন।');
+            }
             return false;
         }
 
@@ -1273,13 +1347,6 @@
             gestureHandled = false;
         }
 
-        function isAtBottom() {
-            const st = window.scrollY || document.documentElement.scrollTop || 0;
-            const sh = document.documentElement.scrollHeight;
-            const ch = document.documentElement.clientHeight;
-            return (st + ch) >= (sh - SCROLL_TOP_TOLERANCE);
-        }
-
         function isAtTop() {
             const st = window.scrollY || document.documentElement.scrollTop || 0;
             return st <= SCROLL_TOP_TOLERANCE;
@@ -1292,7 +1359,7 @@
 
             const t = e.touches[0];
             if (currentPage === 1) {
-                if (!isAtTop() && !isAtBottom()) { resetGesture(); return; }
+                if (!isAtTop()) { resetGesture(); return; }
             }
 
             gestureActive = true;
@@ -1324,10 +1391,6 @@
                 gestureHandled = true;
                 if (e.cancelable) e.preventDefault();
                 reverseTeleport();
-            } else if (currentPage === 1 && dy < 0 && velocity > GESTURE_MIN_VELOCITY && isAtBottom()) {
-                gestureHandled = true;
-                if (e.cancelable) e.preventDefault();
-                reverseTeleport({ fromBottom: true });
             }
         }, { passive: false });
 
@@ -1355,10 +1418,8 @@
                 if (isAtTop() && e.deltaY < 0) {
                     e.preventDefault();
                     reverseTeleport();
-                } else if (isAtBottom() && e.deltaY > 0) {
-                    e.preventDefault();
-                    reverseTeleport({ fromBottom: true });
                 }
+                // Bottom scroll reverse teleport removed as requested
             }
         }, { passive: false });
 
@@ -1368,6 +1429,13 @@
                 reverseTeleport({ fromPopstate: true });
             }
         });
+
+        /* ═══ Custom navigation: Go to advice card (only the card shows) ═══ */
+        function goToAdvice() {
+            if (teleporting || currentPage !== 0) return;
+            navigateToAdvice = true;
+            triggerTeleport();
+        }
 
         /* ═══ Teleport (Forward) ═══ */
         function triggerTeleport() {
@@ -1404,16 +1472,23 @@
                 document.querySelectorAll('#page1 .fade-in').forEach(el => obs.observe(el));
                 window.scrollTo({ top: 0, behavior: 'instant' });
                 document.documentElement.scrollTop = 0;
+
+                if (navigateToAdvice) {
+                    document.getElementById('page1').classList.add('advice-only');
+                    navigateToAdvice = false;
+                } else {
+                    document.getElementById('page1').classList.remove('advice-only');
+                }
             }, 550);
             setTimeout(() => { teleporting = false; }, 1300);
         }
 
         /* ═══ Reverse Teleport (back to Page 0) ═══ */
         function reverseTeleport(options = {}) {
-            const { fromPopstate = false, fromBottom = false } = options;
+            const { fromPopstate = false } = options;
             if (teleporting || currentPage !== 1) return;
 
-            if (!fromBottom && !fromPopstate) {
+            if (!fromPopstate) {
                 if (!isAtTop()) return;
             }
 
@@ -1434,7 +1509,7 @@
             setTimeout(() => { overlay.classList.remove('active'); }, 1300);
 
             setTimeout(() => {
-                document.getElementById('page1').classList.remove('active');
+                document.getElementById('page1').classList.remove('active', 'advice-only');
                 document.getElementById('page0').style.display = '';
                 document.getElementById('footer0').style.display = '';
                 document.getElementById('footer0').style.opacity = '1';
