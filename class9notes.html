@@ -1003,10 +1003,12 @@
             </div>
             <div>
                 <div class="mega-title-text">MEGA QUIZ</div>
+                <!-- ✅ Class 10 → Class 9 -->
                 <div style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.3);">Class 9 Question Bank</div>
             </div>
         </a>
         <div class="flex items-center gap-4">
+            <!-- ✅ Class 10 → Class 9 -->
             <span class="header-badge">Class 9</span>
             <button id="themeToggle" style="width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.5);transition:all 0.3s;" onmouseover="this.style.background='rgba(240,192,64,0.1)';this.style.borderColor='rgba(240,192,64,0.2)';this.style.color='#f0c040';" onmouseout="this.style.background='rgba(255,255,255,0.03)';this.style.borderColor='rgba(255,255,255,0.08)';this.style.color='rgba(255,255,255,0.5)';">
                 <i data-lucide="moon" width="18"></i>
@@ -1089,8 +1091,8 @@
 
     <script>
     (function() {
-        // ⭐ Google Sheet লিংক (তোমার দেওয়া)
-        const GOOGLE_SHEET_TSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
+        // ⭐⭐⭐ তোমার Class 9-এর Google Sheet-এর লিংক এখানে বসাও ⭐⭐⭐
+        const GOOGLE_SHEET_TSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZLiRQXIiXxAbgcCyd1EB-zpo1IYbMUl2UyXHGwEO9Wfj4E1rYcN9E8ZpTB-F2Qm5mR299sDfqtp4_/pub?output=tsv";
 
         let questionBank = {};
         let structure = { subjects: [], chapters: [], topics: {} };
@@ -1462,7 +1464,7 @@
             const iconClass = isSAQ ? 'icon-saq' : 'icon-broad';
             const iconName = isSAQ ? 'pen-line' : 'book-open';
 
-            // ✅ এখানে ব্রেডক্রাম্ব এবং হেডিং দেওয়া আছে
+            // ✅ ব্রেডক্রাম্ব ও হেডিং Class 9 অনুযায়ী
             let html = `
                 <nav class="breadcrumb fade-in">
                     <a href="index.html">Home</a>
