@@ -5,28 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class 10 Notes | Mega Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js">
+    </script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        'inter': ['Inter', 'sans-serif'],
-                        'bengali': ['Noto Serif Bengali', 'serif'],
-                        'space': ['Space Grotesk', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                        bengali: ['Noto Serif Bengali', 'serif'],
+                        space: ['Space Grotesk', 'sans-serif'],
                     },
                     colors: {
-                        'galactic': {
-                            900: '#06060f', 800: '#0a0a1a', 700: '#0f0f24', 600: '#14142e',
-                            500: '#1a1a3e', 400: '#252550', 300: '#3a3a6e', 200: '#5a5a9e',
-                            100: '#8a8ac8', 50: '#c4c4e8',
+                        galactic: {
+                            900: '#06060f',
+                            800: '#0a0a1a',
+                            700: '#0f0f24',
+                            600: '#14142e',
+                            500: '#1a1a3e',
+                            400: '#252550',
+                            300: '#3a3a6e',
+                            200: '#5a5a9e',
+                            100: '#8a8ac8',
+                            50: '#c4c4e8',
                         },
-                        'aurora': {
-                            gold: '#f0c040', 'gold-dim': 'rgba(240,192,64,0.08)',
-                            purple: '#a855f7', cyan: '#06b6d4', rose: '#f43f5e',
+                        aurora: {
+                            gold: '#f0c040',
+                            'gold-dim': 'rgba(240,192,64,0.08)',
+                            purple: '#a855f7',
+                            cyan: '#06b6d4',
+                            rose: '#f43f5e',
                         }
                     }
                 }
@@ -34,447 +44,1135 @@
         }
     </script>
     <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        /* ─── Reset & Scroll ─── */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
 
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(240,192,64,0.2); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(240,192,64,0.4); }
-        body.day ::-webkit-scrollbar-thumb { background: rgba(37, 99, 235, 0.2); }
-        body.day ::-webkit-scrollbar-thumb:hover { background: rgba(37, 99, 235, 0.4); }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(240, 192, 64, 0.2);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(240, 192, 64, 0.4);
+        }
+        body.day ::-webkit-scrollbar-thumb {
+            background: rgba(37, 99, 235, 0.2);
+        }
+        body.day ::-webkit-scrollbar-thumb:hover {
+            background: rgba(37, 99, 235, 0.4);
+        }
 
         body {
             font-family: 'Noto Serif Bengali', 'Inter', sans-serif;
-            min-height: 100vh; overflow-x: hidden; font-size: 18px; line-height: 1.8;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-size: 18px;
+            line-height: 1.8;
             transition: background 0.4s, color 0.4s;
         }
 
+        /* ─── Theme Variables ─── */
         body.night {
             --bg-base: #06060f;
             --bg-card: rgba(20, 20, 46, 0.4);
             --bg-card-hover: rgba(26, 26, 62, 0.5);
             --bg-sidebar: rgba(10, 10, 26, 0.4);
-            --bg-header: rgba(6,6,15,0.7);
-            --bg-footer: rgba(6,6,15,0.8);
+            --bg-header: rgba(6, 6, 15, 0.7);
+            --bg-footer: rgba(6, 6, 15, 0.8);
             --text-primary: #e8e8f0;
-            --text-secondary: rgba(255,255,255,0.45);
-            --text-muted: rgba(255,255,255,0.25);
+            --text-secondary: rgba(255, 255, 255, 0.45);
+            --text-muted: rgba(255, 255, 255, 0.25);
             --accent: #f0c040;
-            --accent-dim: rgba(240,192,64,0.08);
-            --border: rgba(255,255,255,0.04);
-            --shadow-card: 0 2px 8px rgba(0,0,0,0.4);
+            --accent-dim: rgba(240, 192, 64, 0.08);
+            --border: rgba(255, 255, 255, 0.04);
+            --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
             --q-color: #f0c040;
-            --a-color: rgba(255,255,255,0.85);
+            --a-color: rgba(255, 255, 255, 0.85);
         }
 
-        /* ====== প্রফেশনাল ডে-মোড ডিজাইন ====== */
         body.day {
-            --bg-base: #FAFAFA; /* প্রিমিয়াম অফ-হোয়াইট */
-            --bg-card: #FFFFFF; /* বিশুদ্ধ সাদা */
+            --bg-base: #FAFAFA;
+            --bg-card: #FFFFFF;
             --bg-card-hover: #FFFFFF;
-            --bg-sidebar: #FFFFFF; /* বিশুদ্ধ সাদা সাইডবার */
-            --bg-header: rgba(255, 255, 255, 0.85); /* ফ্রস্টেড গ্লাস */
-            --bg-footer: #FFFFFF; /* বিশুদ্ধ সাদা ফুটার */
-            --text-primary: #0F172A; /* ডীপ স্লেট ব্ল্যাক */
-            --text-secondary: #475569; /* স্লেট 600 */
-            --text-muted: #94A3B8; /* স্লেট 400 */
-            --accent: #2563EB; /* প্রফেশনাল রয়্যাল ব্লু */
+            --bg-sidebar: #FFFFFF;
+            --bg-header: rgba(255, 255, 255, 0.85);
+            --bg-footer: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #94A3B8;
+            --accent: #2563EB;
             --accent-dim: rgba(37, 99, 235, 0.06);
-            --border: #E2E8F0; /* ক্লিন, সূক্ষ্ম বর্ডার */
-            --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03), 0 0 0 1px rgba(0,0,0,0.02);
+            --border: #E2E8F0;
+            --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.02);
             --q-color: #1E293B;
-            --a-color: #000000; /* ✅ উত্তর টেক্সট একদম কালো */
+            --a-color: #000000;
         }
 
-        body { background: var(--bg-base); color: var(--text-primary); }
+        body {
+            background: var(--bg-base);
+            color: var(--text-primary);
+        }
 
+        /* ─── Background ─── */
         .universe-bg {
-            position: fixed; inset: 0; z-index: 0;
-            background: radial-gradient(ellipse at 20% 20%, rgba(168,85,247,0.08) 0%, transparent 50%),
-                        radial-gradient(ellipse at 80% 80%, rgba(6,182,212,0.06) 0%, transparent 50%),
-                        radial-gradient(ellipse at 50% 50%, rgba(240,192,64,0.03) 0%, transparent 70%),
-                        #06060f;
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse at 20% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(240, 192, 64, 0.03) 0%, transparent 70%),
+                #06060f;
             transition: opacity 0.4s;
         }
         body.day .universe-bg {
             background: radial-gradient(ellipse at 20% 20%, rgba(37, 99, 235, 0.03) 0%, transparent 50%),
-                        radial-gradient(ellipse at 80% 80%, rgba(99, 102, 241, 0.03) 0%, transparent 50%),
-                        #FAFAFA;
+                radial-gradient(ellipse at 80% 80%, rgba(99, 102, 241, 0.03) 0%, transparent 50%),
+                #FAFAFA;
             opacity: 1;
         }
 
-        .stars, .shooting-star { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-        body.day .stars, body.day .shooting-star { display: none; } /* ডে-মোডে ক্লিন লুকের জন্য স্টার হাইড */
+        .stars,
+        .shooting-star {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        body.day .stars,
+        body.day .shooting-star {
+            display: none;
+        }
 
         .star {
-            position: absolute; background: white; border-radius: 50%;
-            animation: twinkle var(--duration) ease-in-out infinite; animation-delay: var(--delay);
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            animation-delay: var(--delay);
         }
         @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
         }
         .shooting-star {
-            position: fixed; width: 100px; height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(240,192,64,0.8), transparent);
-            animation: shoot 8s linear infinite; opacity: 0; z-index: 0;
+            position: fixed;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(240, 192, 64, 0.8), transparent);
+            animation: shoot 8s linear infinite;
+            opacity: 0;
+            z-index: 0;
         }
         @keyframes shoot {
-            0% { transform: translateX(-100px) translateY(0) rotate(-45deg); opacity: 0; }
-            10% { opacity: 1; }
-            20% { transform: translateX(calc(100vw + 100px)) translateY(calc(100vh + 100px)) rotate(-45deg); opacity: 0; }
-            100% { opacity: 0; }
+            0% {
+                transform: translateX(-100px) translateY(0) rotate(-45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            20% {
+                transform: translateX(calc(100vw + 100px)) translateY(calc(100vh + 100px)) rotate(-45deg);
+                opacity: 0;
+            }
+            100% {
+                opacity: 0;
+            }
         }
 
+        /* ─── Glass ─── */
         .glass {
-            background: rgba(10,10,26,0.6); backdrop-filter: blur(20px) saturate(1.5);
-            -webkit-backdrop-filter: blur(20px) saturate(1.5); border: 1px solid rgba(255,255,255,0.04);
+            background: rgba(10, 10, 26, 0.6);
+            backdrop-filter: blur(20px) saturate(1.5);
+            -webkit-backdrop-filter: blur(20px) saturate(1.5);
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
-        body.day .glass { background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0,0,0,0.06); }
-        
+        body.day .glass {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
         .glass-strong {
-            background: rgba(10,10,26,0.85); backdrop-filter: blur(30px) saturate(1.8);
-            -webkit-backdrop-filter: blur(30px) saturate(1.8); border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(30px) saturate(1.8);
+            -webkit-backdrop-filter: blur(30px) saturate(1.8);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        body.day .glass-strong { background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0,0,0,0.08); }
+        body.day .glass-strong {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
 
         .glass-card {
-            background: rgba(20,20,46,0.5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.05); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(20, 20, 46, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         body.day .glass-card {
-            background: #FFFFFF; border: 1px solid #E2E8F0;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
             box-shadow: var(--shadow-card);
         }
         .glass-card:hover {
-            background: rgba(26,26,62,0.7); border-color: rgba(240,192,64,0.15);
-            transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(240,192,64,0.05);
+            background: rgba(26, 26, 62, 0.7);
+            border-color: rgba(240, 192, 64, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(240, 192, 64, 0.05);
         }
         body.day .glass-card:hover {
-            background: #FFFFFF; border-color: #2563EB;
+            background: #FFFFFF;
+            border-color: #2563EB;
             box-shadow: 0 12px 24px -8px rgba(37, 99, 235, 0.15), 0 0 0 1px rgba(37, 99, 235, 0.1);
             transform: translateY(-2px);
         }
 
+        /* ─── Header ─── */
         .mega-header {
-            position: fixed; top: 0; left: 0; right: 0; height: 72px; z-index: 200;
-            display: flex; align-items: center; justify-content: space-between; padding: 0 32px;
-            background: var(--bg-header); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            background: var(--bg-header);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
             transition: background 0.4s, border-color 0.4s;
         }
         .logo-glow {
-            width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem; position: relative; flex-shrink: 0; overflow: hidden;
-            background: linear-gradient(135deg, rgba(240,192,64,0.15), rgba(240,192,64,0.05));
-            border: 1px solid rgba(240,192,64,0.15); box-shadow: 0 0 30px rgba(240,192,64,0.1);
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            position: relative;
+            flex-shrink: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(240, 192, 64, 0.15), rgba(240, 192, 64, 0.05));
+            border: 1px solid rgba(240, 192, 64, 0.15);
+            box-shadow: 0 0 30px rgba(240, 192, 64, 0.1);
         }
         body.day .logo-glow {
             background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0.05));
-            border: 1px solid rgba(37, 99, 235, 0.15); box-shadow: 0 0 20px rgba(37, 99, 235, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.15);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.05);
         }
-        .logo-glow img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; }
+        .logo-glow img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 14px;
+        }
         .mega-title-text {
-            font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 800; letter-spacing: 0.08em;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
             background: linear-gradient(135deg, #f0c040, #f59e0b);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         body.day .mega-title-text {
             background: linear-gradient(135deg, #2563EB, #1D4ED8);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .header-badge {
-            font-family: 'Space Grotesk', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
-            text-transform: uppercase; padding: 6px 16px; border-radius: 20px;
-            background: rgba(240,192,64,0.08); color: #f0c040; border: 1px solid rgba(240,192,64,0.15);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 20px;
+            background: rgba(240, 192, 64, 0.08);
+            color: #f0c040;
+            border: 1px solid rgba(240, 192, 64, 0.15);
         }
         body.day .header-badge {
-            background: rgba(37, 99, 235, 0.08); color: #2563EB; border: 1px solid rgba(37, 99, 235, 0.15);
+            background: rgba(37, 99, 235, 0.08);
+            color: #2563EB;
+            border: 1px solid rgba(37, 99, 235, 0.15);
         }
 
-        .main-wrapper { display: flex; margin-top: 72px; position: relative; }
-        .sidebar {
-            width: 300px; flex-shrink: 0; padding: 3.5rem 1rem 2rem; overflow-y: auto;
-            height: calc(100vh - 72px); position: sticky; top: 72px; border-right: 1px solid var(--border);
-            background: var(--bg-sidebar); backdrop-filter: blur(12px); transition: all 0.4s; overflow-x: hidden;
+        /* ─── Layout ─── */
+        .main-wrapper {
+            display: flex;
+            margin-top: 72px;
+            position: relative;
         }
-        body.day .sidebar { background: #FFFFFF; border-right: 1px solid #E2E8F0; }
-        .sidebar.collapsed { width: 0 !important; padding: 0 !important; border-right: none !important; opacity: 0; overflow: hidden; margin: 0 !important; }
-        .content-scroll { flex: 1; overflow-y: auto; padding: 2.5rem 3rem 0; position: relative; z-index: 1; }
+        .sidebar {
+            width: 300px;
+            flex-shrink: 0;
+            padding: 3.5rem 1rem 2rem;
+            overflow-y: auto;
+            height: calc(100vh - 72px);
+            position: sticky;
+            top: 72px;
+            border-right: 1px solid var(--border);
+            background: var(--bg-sidebar);
+            backdrop-filter: blur(12px);
+            transition: all 0.4s;
+            overflow-x: hidden;
+        }
+        body.day .sidebar {
+            background: #FFFFFF;
+            border-right: 1px solid #E2E8F0;
+        }
+        .sidebar.collapsed {
+            width: 0 !important;
+            padding: 0 !important;
+            border-right: none !important;
+            opacity: 0;
+            overflow: hidden;
+            margin: 0 !important;
+        }
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2.5rem 3rem 0;
+            position: relative;
+            z-index: 1;
+        }
 
         .sidebar-label {
-            font-family: 'Space Grotesk', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.18em;
-            font-weight: 700; color: var(--text-muted); padding: 0 14px; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-weight: 700;
+            color: var(--text-muted);
+            padding: 0 14px;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .sidebar-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+        .sidebar-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border), transparent);
+        }
+
         .subject-item {
-            display: flex; align-items: center; gap: 12px; padding: 12px 16px; margin: 3px 8px; border-radius: 12px;
-            font-size: 0.95rem; cursor: pointer; font-weight: 600; color: var(--text-muted); transition: all 0.3s; position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            margin: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.3s;
+            position: relative;
         }
         .subject-item::before {
-            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-            background: linear-gradient(180deg, #f0c040, #f59e0b); border-radius: 0 3px 3px 0; transform: scaleY(0); transition: 0.3s;
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #f0c040, #f59e0b);
+            border-radius: 0 3px 3px 0;
+            transform: scaleY(0);
+            transition: 0.3s;
         }
-        body.day .subject-item::before { background: linear-gradient(180deg, #2563EB, #1D4ED8); }
-        .subject-item:hover { background: var(--accent-dim); color: var(--text-primary); }
-        .subject-item.active { background: var(--accent-dim); color: var(--accent); }
-        body.day .subject-item.active { color: #2563EB; }
-        .subject-item.active::before { transform: scaleY(1); }
-        .subject-emoji { font-size: 1.2rem; width: 28px; text-align: center; }
+        body.day .subject-item::before {
+            background: linear-gradient(180deg, #2563EB, #1D4ED8);
+        }
+        .subject-item:hover {
+            background: var(--accent-dim);
+            color: var(--text-primary);
+        }
+        .subject-item.active {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+        body.day .subject-item.active {
+            color: #2563EB;
+        }
+        .subject-item.active::before {
+            transform: scaleY(1);
+        }
+        .subject-emoji {
+            font-size: 1.2rem;
+            width: 28px;
+            text-align: center;
+        }
 
         .chapter-item {
-            display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin: 2px 8px; border-radius: 10px;
-            font-size: 0.88rem; cursor: pointer; font-weight: 600; color: var(--text-muted); transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            margin: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.3s;
             border-left: 3px solid transparent;
         }
-        .chapter-item::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; transition: 0.3s; opacity: 0.5; }
-        .chapter-item:hover { background: var(--accent-dim); color: var(--text-primary); }
-        .chapter-item.active { background: var(--accent-dim); color: var(--accent); border-left-color: var(--accent); }
-        body.day .chapter-item.active { color: #2563EB; border-left-color: #2563EB; }
-        .chapter-item.active::before { background: var(--accent); box-shadow: 0 0 10px rgba(240,192,64,0.5); }
-        body.day .chapter-item.active::before { background: #2563EB; box-shadow: 0 0 10px rgba(37, 99, 235, 0.3); }
-        .toggle-icon { margin-left: auto; font-size: 0.65rem; opacity: 0.5; }
-
-        .topic-container { padding-left: 16px; margin-left: 20px; border-left: 2px solid var(--border); overflow: hidden; }
-        .topic-item {
-            display: flex; align-items: center; gap: 8px; padding: 8px 14px 8px 20px; margin: 2px 0; border-radius: 8px;
-            font-size: 0.82rem; cursor: pointer; color: var(--text-muted); transition: 0.3s; position: relative; font-weight: 500;
+        .chapter-item::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            flex-shrink: 0;
+            transition: 0.3s;
+            opacity: 0.5;
         }
-        .topic-item::before { content: ''; position: absolute; left: -18px; top: 50%; width: 10px; height: 2px; background: var(--border); }
-        .topic-item:hover { background: var(--accent-dim); color: var(--text-primary); }
-        .topic-item.active { background: var(--accent-dim); color: var(--accent); font-weight: 700; }
+        .chapter-item:hover {
+            background: var(--accent-dim);
+            color: var(--text-primary);
+        }
+        .chapter-item.active {
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+        body.day .chapter-item.active {
+            color: #2563EB;
+            border-left-color: #2563EB;
+        }
+        .chapter-item.active::before {
+            background: var(--accent);
+            box-shadow: 0 0 10px rgba(240, 192, 64, 0.5);
+        }
+        body.day .chapter-item.active::before {
+            background: #2563EB;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
+        }
+
+        .topic-container {
+            padding-left: 16px;
+            margin-left: 20px;
+            border-left: 2px solid var(--border);
+            overflow: hidden;
+        }
+        .topic-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px 8px 20px;
+            margin: 2px 0;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: 0.3s;
+            position: relative;
+            font-weight: 500;
+        }
+        .topic-item::before {
+            content: '';
+            position: absolute;
+            left: -18px;
+            top: 50%;
+            width: 10px;
+            height: 2px;
+            background: var(--border);
+        }
+        .topic-item:hover {
+            background: var(--accent-dim);
+            color: var(--text-primary);
+        }
+        .topic-item.active {
+            background: var(--accent-dim);
+            color: var(--accent);
+            font-weight: 700;
+        }
 
         .sidebar-toggle-fixed {
-            position: fixed; top: 78px; left: 20px; z-index: 150; width: 46px; height: 46px; border-radius: 14px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            background: rgba(20,20,46,0.85); border: 1px solid var(--border); color: var(--accent);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3); transition: 0.3s; font-size: 1.4rem; backdrop-filter: blur(12px);
+            position: fixed;
+            top: 78px;
+            left: 20px;
+            z-index: 150;
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: rgba(20, 20, 46, 0.85);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: 0.3s;
+            font-size: 1.4rem;
+            backdrop-filter: blur(12px);
         }
         body.day .sidebar-toggle-fixed {
-            background: #FFFFFF; border: 1px solid #E2E8F0; color: #2563EB; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            color: #2563EB;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         .sidebar-toggle-fixed:hover {
-            transform: scale(1.08); background: rgba(240,192,64,0.12); border-color: rgba(240,192,64,0.25);
-            box-shadow: 0 8px 32px rgba(240,192,64,0.15);
+            transform: scale(1.08);
+            background: rgba(240, 192, 64, 0.12);
+            border-color: rgba(240, 192, 64, 0.25);
+            box-shadow: 0 8px 32px rgba(240, 192, 64, 0.15);
         }
         body.day .sidebar-toggle-fixed:hover {
-            background: #F8FAFC; border-color: #2563EB; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            background: #F8FAFC;
+            border-color: #2563EB;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
         }
-        .sidebar-toggle-fixed .icon { transition: transform 0.4s; }
-        .sidebar-toggle-fixed .icon.rotated { transform: rotate(180deg); }
+        .sidebar-toggle-fixed .icon {
+            transition: transform 0.4s;
+        }
+        .sidebar-toggle-fixed .icon.rotated {
+            transform: rotate(180deg);
+        }
 
+        /* ─── Breadcrumb ─── */
         .breadcrumb {
-            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-            font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 500; margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
             color: var(--text-muted);
         }
-        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
-        .breadcrumb a:hover { color: var(--accent); }
-        .breadcrumb .sep { opacity: 0.3; font-size: 0.7rem; }
-        .breadcrumb .current { color: var(--accent); font-weight: 700; }
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .breadcrumb a:hover {
+            color: var(--accent);
+        }
+        .breadcrumb .sep {
+            opacity: 0.3;
+            font-size: 0.7rem;
+        }
+        .breadcrumb .current {
+            color: var(--accent);
+            font-weight: 700;
+        }
 
+        /* ─── Hero ─── */
         .hero-title {
             font-family: 'Noto Serif Bengali', serif;
-            font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; line-height: 1.05; margin-bottom: 0.4rem;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 0.4rem;
             background: linear-gradient(135deg, #ffffff 0%, #f0c040 30%, #f59e0b 60%, #f0c040 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            filter: drop-shadow(0 4px 20px rgba(240,192,64,0.25));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 4px 20px rgba(240, 192, 64, 0.25));
         }
         body.day .hero-title {
             background: linear-gradient(135deg, #0F172A 0%, #2563EB 50%, #1D4ED8 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             filter: none;
         }
         .hero-subtitle {
-            font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.8rem; color: var(--text-secondary); max-width: 650px;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 1.8rem;
+            color: var(--text-secondary);
+            max-width: 650px;
         }
 
+        /* ─── Chapter Banner ─── */
         .chapter-banner {
-            position: relative; width: 100%; max-height: 380px; border-radius: 20px; overflow: hidden;
-            margin-bottom: 2rem; border: 1px solid var(--border); box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+            position: relative;
+            width: 100%;
+            max-height: 380px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
         }
-        body.day .chapter-banner { box-shadow: 0 8px 24px rgba(0,0,0,0.08); border: 1px solid #E2E8F0; }
-        .chapter-banner img { width: 100%; height: 380px; object-fit: cover; transition: transform 0.8s; }
-        .chapter-banner:hover img { transform: scale(1.05); }
+        body.day .chapter-banner {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            border: 1px solid #E2E8F0;
+        }
+        .chapter-banner img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            transition: transform 0.8s;
+        }
+        .chapter-banner:hover img {
+            transform: scale(1.05);
+        }
         .chapter-banner::after {
-            content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 30%, var(--bg-base) 100%); pointer-events: none;
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 30%, var(--bg-base) 100%);
+            pointer-events: none;
         }
-        body.day .chapter-banner::after { background: linear-gradient(180deg, transparent 30%, #FAFAFA 100%); }
-        .chapter-banner-text { position: absolute; bottom: 28px; left: 32px; z-index: 2; }
+        body.day .chapter-banner::after {
+            background: linear-gradient(180deg, transparent 30%, #FAFAFA 100%);
+        }
+        .chapter-banner-text {
+            position: absolute;
+            bottom: 28px;
+            left: 32px;
+            z-index: 2;
+        }
         .chapter-banner-text h3 {
-            font-family: 'Noto Serif Bengali', serif; font-size: 2rem; font-weight: 800; color: #fff;
-            text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+            font-family: 'Noto Serif Bengali', serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
         }
         .banner-subtitle {
-            font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; text-transform: uppercase;
-            letter-spacing: 0.2em; color: rgba(255,255,255,0.7); margin-top: 4px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 4px;
         }
 
+        /* ─── Toggle Group ─── */
         .toggle-group {
-            display: inline-flex; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            border-radius: 16px; padding: 5px; margin-bottom: 2rem; position: relative;
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 5px;
+            margin-bottom: 2rem;
+            position: relative;
         }
-        body.day .toggle-group { background: #F1F5F9; border: 1px solid #E2E8F0; }
+        body.day .toggle-group {
+            background: #F1F5F9;
+            border: 1px solid #E2E8F0;
+        }
         .type-btn {
-            padding: 0.7rem 2rem; border-radius: 12px; cursor: pointer; font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700; font-size: 0.9rem; border: none; background: transparent; color: var(--text-muted);
-            transition: all 0.3s; position: relative; z-index: 1; display: flex; align-items: center; gap: 8px;
+            padding: 0.7rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .type-btn.active { color: #06060f; background: rgba(255,255,255,0.8); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        body.day .type-btn.active { color: #FFFFFF; background: #2563EB; box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2); }
-        
+        .type-btn.active {
+            color: #06060f;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        body.day .type-btn.active {
+            color: #FFFFFF;
+            background: #2563EB;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+        }
+
+        /* ─── Section ─── */
         .section-header {
-            display: flex; align-items: center; gap: 16px; margin-bottom: 2rem; padding-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 2rem;
+            padding-bottom: 16px;
             border-bottom: 1px solid var(--border);
         }
         .section-icon {
-            width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem; color: #fff; flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #fff;
+            flex-shrink: 0;
         }
-        .icon-saq { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-        .icon-broad { background: linear-gradient(135deg, #a855f7, #7c3aed); }
+        .icon-saq {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+        }
+        .icon-broad {
+            background: linear-gradient(135deg, #a855f7, #7c3aed);
+        }
         .section-header h2 {
-            font-family: 'Noto Serif Bengali', serif; font-size: 1.2rem; font-weight: 700; color: var(--text-primary);
+            font-family: 'Noto Serif Bengali', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
         }
         .badge-count {
-            font-family: 'Space Grotesk', sans-serif; border-radius: 24px; padding: 6px 18px; font-size: 0.75rem;
-            font-weight: 700; margin-left: auto; background: rgba(240,192,64,0.1); color: #f0c040;
-            border: 1px solid rgba(240,192,64,0.15); backdrop-filter: blur(8px);
+            font-family: 'Space Grotesk', sans-serif;
+            border-radius: 24px;
+            padding: 6px 18px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: auto;
+            background: rgba(240, 192, 64, 0.1);
+            color: #f0c040;
+            border: 1px solid rgba(240, 192, 64, 0.15);
+            backdrop-filter: blur(8px);
         }
         body.day .badge-count {
-            background: rgba(37, 99, 235, 0.08); color: #2563EB; border: 1px solid rgba(37, 99, 235, 0.15);
+            background: rgba(37, 99, 235, 0.08);
+            color: #2563EB;
+            border: 1px solid rgba(37, 99, 235, 0.15);
         }
 
+        /* ─── Question Card ─── */
         .question-card {
-            border-radius: 20px; padding: 2rem 2.5rem; margin-bottom: 20px; background: var(--bg-card);
-            border: 1px solid var(--border); position: relative; overflow: hidden; transition: all 0.5s;
+            border-radius: 20px;
+            padding: 2rem 2.5rem;
+            margin-bottom: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s;
             box-shadow: var(--shadow-card);
         }
         .question-card .q {
-            display: flex; align-items: flex-start; gap: 16px; font-size: clamp(1.3rem, 3.5vw, 2rem);
-            font-weight: 800; color: var(--q-color); margin-bottom: 14px; line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            font-size: clamp(1.3rem, 3.5vw, 2rem);
+            font-weight: 800;
+            color: var(--q-color);
+            margin-bottom: 14px;
+            line-height: 1.5;
             font-family: 'Noto Serif Bengali', serif;
         }
         .question-card .q .num {
-            display: inline-flex; align-items: center; justify-content: center; min-width: 40px; height: 40px;
-            border-radius: 12px; font-weight: 800; font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif;
-            color: #06060f; flex-shrink: 0; background: linear-gradient(135deg, #f0c040, #f59e0b);
-            box-shadow: 0 4px 20px rgba(240,192,64,0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #06060f;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #f0c040, #f59e0b);
+            box-shadow: 0 4px 20px rgba(240, 192, 64, 0.3);
         }
         body.day .question-card .q .num {
-            background: linear-gradient(135deg, #2563EB, #1D4ED8); color: #FFFFFF;
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+            color: #FFFFFF;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
         }
         .question-card .a {
-            padding: 18px 24px; font-size: clamp(1.15rem, 3vw, 1.7rem); line-height: 1.9;
-            color: var(--a-color); background: transparent !important; font-weight: 500;
-            border-left: 3px solid rgba(240,192,64,0.2); position: relative; font-family: 'Noto Serif Bengali', serif;
+            padding: 18px 24px;
+            font-size: clamp(1.15rem, 3vw, 1.7rem);
+            line-height: 1.9;
+            color: var(--a-color);
+            background: transparent !important;
+            font-weight: 500;
+            border-left: 3px solid rgba(240, 192, 64, 0.2);
+            position: relative;
+            font-family: 'Noto Serif Bengali', serif;
         }
-        body.day .question-card .a { border-left-color: rgba(37, 99, 235, 0.2); }
+        /* উত্তর এর মধ্যে HTML ট্যাগ ঠিকমতো দেখানোর জন্য */
+        .question-card .a table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+        .question-card .a table th,
+        .question-card .a table td {
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            text-align: left;
+        }
+        .question-card .a table th {
+            background: var(--accent-dim);
+            font-weight: 700;
+        }
+        .question-card .a img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-top: 12px;
+            border: 1px solid var(--border);
+        }
+        body.day .question-card .a {
+            border-left-color: rgba(37, 99, 235, 0.2);
+        }
 
-        .empty-state { text-align: center; padding: 5rem 2rem; color: var(--text-muted); }
-        .empty-state-icon {
-            width: 80px; height: 80px; border-radius: 24px; background: rgba(240,192,64,0.05);
-            border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 1.5rem; color: var(--accent); font-size: 2rem;
+        .question-image {
+            margin: 10px 0 10px 24px;
+            max-width: 300px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
         }
-        body.day .empty-state-icon { background: rgba(37, 99, 235, 0.06); border: 1px solid #E2E8F0; color: #2563EB; }
+        @media (max-width: 600px) {
+            .question-image {
+                max-width: 100%;
+                margin-left: 0;
+            }
+        }
+
+        /* ─── Empty / Loading ─── */
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            color: var(--text-muted);
+        }
+        .empty-state-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 24px;
+            background: rgba(240, 192, 64, 0.05);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--accent);
+            font-size: 2rem;
+        }
+        body.day .empty-state-icon {
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid #E2E8F0;
+            color: #2563EB;
+        }
 
         .loading-ring {
-            width: 48px; height: 48px; border: 3px solid rgba(240,192,64,0.1); border-top-color: #f0c040;
-            border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(240, 192, 64, 0.1);
+            border-top-color: #f0c040;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
         }
-        body.day .loading-ring { border: 3px solid rgba(37, 99, 235, 0.1); border-top-color: #2563EB; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        body.day .loading-ring {
+            border: 3px solid rgba(37, 99, 235, 0.1);
+            border-top-color: #2563EB;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
+        /* ─── Search ─── */
         .search-bar {
-            display: flex; align-items: center; gap: 10px; padding: 0 16px; height: 42px; border-radius: 12px;
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text-muted);
-            font-family: 'Inter', sans-serif; font-size: 0.85rem; transition: 0.3s; cursor: text; margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 16px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            transition: 0.3s;
+            cursor: text;
+            margin-bottom: 1rem;
         }
-        body.day .search-bar { background: #F8FAFC; border: 1px solid #E2E8F0; color: #475569; }
+        body.day .search-bar {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            color: #475569;
+        }
         .search-bar:focus-within {
-            border-color: rgba(240,192,64,0.3); background: rgba(240,192,64,0.03);
-            box-shadow: 0 0 20px rgba(240,192,64,0.05);
+            border-color: rgba(240, 192, 64, 0.3);
+            background: rgba(240, 192, 64, 0.03);
+            box-shadow: 0 0 20px rgba(240, 192, 64, 0.05);
         }
         body.day .search-bar:focus-within {
-            border-color: #2563EB; background: #FFFFFF; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            border-color: #2563EB;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
-        .search-bar input { background: transparent; border: none; outline: none; color: var(--text-primary); font-size: 0.85rem; width: 100%; }
+        .search-bar input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            width: 100%;
+        }
 
+        /* ─── Progress ─── */
         .progress-bar {
-            position: fixed; top: 72px; left: 0; height: 2px; background: linear-gradient(90deg, #f0c040, #f59e0b);
-            z-index: 201; transition: width 0.3s; box-shadow: 0 0 10px rgba(240,192,64,0.5);
+            position: fixed;
+            top: 72px;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #f0c040, #f59e0b);
+            z-index: 201;
+            transition: width 0.3s;
+            box-shadow: 0 0 10px rgba(240, 192, 64, 0.5);
         }
-        body.day .progress-bar { background: linear-gradient(90deg, #2563EB, #1D4ED8); box-shadow: 0 0 10px rgba(37, 99, 235, 0.3); }
-        
+        body.day .progress-bar {
+            background: linear-gradient(90deg, #2563EB, #1D4ED8);
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
+        }
+
         .fab-scroll {
-            position: fixed; bottom: 32px; right: 32px; width: 52px; height: 52px; border-radius: 50%;
-            background: linear-gradient(135deg, #f0c040, #f59e0b); border: none; color: #06060f;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            box-shadow: 0 8px 30px rgba(240,192,64,0.3); transition: 0.3s; z-index: 100; opacity: 0; transform: translateY(20px);
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f0c040, #f59e0b);
+            border: none;
+            color: #06060f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(240, 192, 64, 0.3);
+            transition: 0.3s;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(20px);
         }
         body.day .fab-scroll {
-            background: linear-gradient(135deg, #2563EB, #1D4ED8); color: #FFFFFF; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+            color: #FFFFFF;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
         }
-        .fab-scroll.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+        .fab-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
 
+        /* ─── Footer ─── */
         footer {
-            position: relative; z-index: 1; background: var(--bg-footer); backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border); padding: 3rem 2rem 1.5rem; margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+            background: var(--bg-footer);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 3rem;
         }
-        body.day footer { background: #FFFFFF; border-top: 1px solid #E2E8F0; }
-        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto; }
-        .footer-col h4 { font-family: 'Space Grotesk', sans-serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 700; color: var(--text-muted); margin-bottom: 1rem; }
-        .footer-col a, .contact-item { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; padding: 6px 0; transition: 0.3s; }
-        .footer-col a:hover, .contact-item:hover { color: var(--accent); }
-        .footer-col a svg, .contact-item svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.5; transition: 0.3s; }
-        .footer-col a:hover svg, .contact-item:hover svg { opacity: 1; }
-
-        .social-instagram:hover { color: #E4405F !important; }
-        .social-instagram:hover svg { stroke: #E4405F !important; }
-        .social-telegram:hover { color: #0088cc !important; }
-        .social-telegram:hover svg { fill: #0088cc !important; }
+        body.day footer {
+            background: #FFFFFF;
+            border-top: 1px solid #E2E8F0;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-col h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .footer-col a,
+        .contact-item {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 6px 0;
+            transition: 0.3s;
+        }
+        .footer-col a:hover,
+        .contact-item:hover {
+            color: var(--accent);
+        }
+        .footer-col a svg,
+        .contact-item svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            opacity: 0.5;
+            transition: 0.3s;
+        }
+        .footer-col a:hover svg,
+        .contact-item:hover svg {
+            opacity: 1;
+        }
+        .social-instagram:hover {
+            color: #E4405F !important;
+        }
+        .social-instagram:hover svg {
+            stroke: #E4405F !important;
+        }
+        .social-telegram:hover {
+            color: #0088cc !important;
+        }
+        .social-telegram:hover svg {
+            fill: #0088cc !important;
+        }
 
         .footer-bottom {
-            margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center;
-            font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; color: var(--text-muted);
-            max-width: 1200px; margin-left: auto; margin-right: auto; flex-wrap: wrap; gap: 0.5rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
         .encryption-key {
-            font-size: 0.5rem; opacity: 0.15; user-select: none; font-family: 'Courier New', monospace;
-            letter-spacing: 0.05rem; color: var(--text-muted); cursor: default; transition: opacity 0.3s;
+            font-size: 0.5rem;
+            opacity: 0.15;
+            user-select: none;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.05rem;
+            color: var(--text-muted);
+            cursor: default;
+            transition: opacity 0.3s;
         }
-        .encryption-key:hover { opacity: 0.4; }
+        .encryption-key:hover {
+            opacity: 0.4;
+        }
 
-        .card-animate { opacity: 0; transform: translateY(30px); }
-        @keyframes cardReveal { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { opacity: 0; transform: translateY(20px); }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
+        /* ─── Responsive ─── */
         @media (max-width: 768px) {
-            .sidebar { position: fixed; top: 72px; left: 0; bottom: 0; transform: translateX(-100%); width: 300px; background: rgba(10,10,26,0.95); box-shadow: 8px 0 40px rgba(0,0,0,0.5); transition: transform 0.4s; padding-top: 3.5rem; }
-            body.day .sidebar { background: #FFFFFF; box-shadow: 8px 0 40px rgba(0,0,0,0.08); }
-            .sidebar.open { transform: translateX(0); }
-            .content-scroll { padding: 1.5rem 1.2rem 0; }
-            .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-            .hero-title { font-size: clamp(2rem, 7vw, 3.5rem); }
+            .sidebar {
+                position: fixed;
+                top: 72px;
+                left: 0;
+                bottom: 0;
+                transform: translateX(-100%);
+                width: 300px;
+                background: rgba(10, 10, 26, 0.95);
+                box-shadow: 8px 0 40px rgba(0, 0, 0, 0.5);
+                transition: transform 0.4s;
+                padding-top: 3.5rem;
+            }
+            body.day .sidebar {
+                background: #FFFFFF;
+                box-shadow: 8px 0 40px rgba(0, 0, 0, 0.08);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .content-scroll {
+                padding: 1.5rem 1.2rem 0;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .hero-title {
+                font-size: clamp(2rem, 7vw, 3.5rem);
+            }
+            .question-card {
+                padding: 1.2rem 1.2rem;
+            }
+            .question-card .q {
+                font-size: clamp(1.1rem, 3vw, 1.6rem);
+            }
+            .question-card .a {
+                font-size: clamp(1rem, 2.8vw, 1.4rem);
+                padding: 12px 16px;
+            }
+            .mega-header {
+                padding: 0 16px;
+            }
+            .header-badge {
+                display: none;
+            }
+            .sidebar-toggle-fixed {
+                left: 12px;
+                top: 76px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            .chapter-banner img {
+                height: 200px;
+            }
+            .chapter-banner-text h3 {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body class="night">
+    <!-- ─── Background ─── -->
     <div class="universe-bg"></div>
     <div class="stars" id="stars"></div>
-    <div class="shooting-star" style="top: 10%; animation-delay: 0s;"></div>
-    <div class="shooting-star" style="top: 30%; animation-delay: 3s;"></div>
-    <div class="shooting-star" style="top: 60%; animation-delay: 6s;"></div>
-    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+    <div class="shooting-star" style="top:10%;animation-delay:0s;"></div>
+    <div class="shooting-star" style="top:30%;animation-delay:3s;"></div>
+    <div class="shooting-star" style="top:60%;animation-delay:6s;"></div>
+    <div class="progress-bar" id="progressBar" style="width:0%;"></div>
 
+    <!-- ─── Header ─── -->
     <header class="mega-header">
         <a href="index.html" class="flex items-center gap-4 no-underline">
             <div class="logo-glow">
-                <img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz Icon" width="44" height="44">
+                <img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz Icon" width="44" height="44" />
             </div>
             <div>
                 <div class="mega-title-text">MEGA QUIZ</div>
@@ -489,6 +1187,7 @@
         </div>
     </header>
 
+    <!-- ─── Main ─── -->
     <div class="main-wrapper" id="mainWrapper">
         <button class="sidebar-toggle-fixed" id="sidebarToggle" aria-label="Toggle sidebar">
             <span class="icon" id="toggleIcon">☰</span>
@@ -501,7 +1200,7 @@
             <div id="chapterSection" style="display:none;">
                 <div class="search-bar">
                     <i data-lucide="search" width="16" style="opacity:0.4;flex-shrink:0;"></i>
-                    <input type="text" id="searchInput" placeholder="Search chapters...">
+                    <input type="text" id="searchInput" placeholder="Search chapters..." />
                 </div>
                 <div id="chapterList"></div>
             </div>
@@ -521,16 +1220,18 @@
         </div>
     </div>
 
+    <!-- ─── FAB ─── -->
     <button class="fab-scroll" id="fabScroll" onclick="window.scrollTo({top:0,behavior:'smooth'})">
         <i data-lucide="arrow-up" width="20"></i>
     </button>
 
+    <!-- ─── Footer ─── -->
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
                 <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.8rem;">
                     <div style="width:2rem;height:2rem;border-radius:0.6rem;overflow:hidden;border:1px solid rgba(240,192,64,0.15);box-shadow:0 0 20px rgba(240,192,64,0.05);flex-shrink:0;">
-                        <img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz Icon" width="32" height="32" style="display:block;width:100%;height:100%;object-fit:cover;">
+                        <img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz Icon" width="32" height="32" style="display:block;width:100%;height:100%;object-fit:cover;" />
                     </div>
                     <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary);">Mega Quiz</span>
                 </div>
@@ -541,7 +1242,7 @@
                 <h4>Links</h4>
                 <a href="classnotes.html">All Classes Note</a>
                 <a href="index.html">All Classes Quiz</a>
-                <a href="competitive.html">Competitive & GK</a>
+                <a href="competitive.html">Competitive &amp; GK</a>
             </div>
 
             <div class="footer-col">
@@ -568,78 +1269,430 @@
         </div>
     </footer>
 
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  M A I N   J A V A S C R I P T                  -->
+    <!-- ════════════════════════════════════════════════ -->
     <script>
-        (function() {
-            const GOOGLE_SHEET_TSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv"; 
-            const dynamicContent = document.getElementById('dynamicContent');
-            const dynamicSubtitle = document.getElementById('dynamicSubtitle');
-            const sidebarEl = document.getElementById('sidebar');
-            const toggleIcon = document.getElementById('toggleIcon');
-            const progressBar = document.getElementById('progressBar');
-            const fabScroll = document.getElementById('fabScroll');
+        // ─── CONFIG ────────────────────────────────────────────
+        // ✅ আপনার দেওয়া Google Sheet-এর TSV লিংক এখানে বসানো আছে:
+        const GOOGLE_SHEET_TSV_URL =
+            "https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
 
-            function createStars() {
-                const container = document.getElementById('stars');
-                for (let i = 0; i < 80; i++) {
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    star.style.left = Math.random() * 100 + '%';
-                    star.style.top = Math.random() * 100 + '%';
-                    const size = Math.random() * 2 + 1;
-                    star.style.width = size + 'px';
-                    star.style.height = size + 'px';
-                    star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-                    star.style.setProperty('--delay', (Math.random() * 5) + 's');
-                    container.appendChild(star);
+        // ─── DOM refs ──────────────────────────────────────────
+        const dynamicContent = document.getElementById('dynamicContent');
+        const dynamicSubtitle = document.getElementById('dynamicSubtitle');
+        const sidebarEl = document.getElementById('sidebar');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const progressBar = document.getElementById('progressBar');
+        const fabScroll = document.getElementById('fabScroll');
+        const subjectListEl = document.getElementById('subjectList');
+        const chapterListEl = document.getElementById('chapterList');
+        const chapterSectionEl = document.getElementById('chapterSection');
+        const searchInput = document.getElementById('searchInput');
+
+        // ─── Stars ────────────────────────────────────────────
+        (function createStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                const size = Math.random() * 2 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                star.style.setProperty('--delay', (Math.random() * 5) + 's');
+                container.appendChild(star);
+            }
+        })();
+
+        // ─── Scroll Progress ──────────────────────────────────
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            progressBar.style.width = (scrollTop / docHeight) * 100 + '%';
+            fabScroll.classList.toggle('visible', scrollTop > 500);
+        });
+
+        // ─── Theme Toggle ─────────────────────────────────────
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const body = document.body;
+            const isNight = body.classList.contains('night');
+            body.classList.remove('night', 'day');
+            body.classList.add(isNight ? 'day' : 'night');
+            const icon = document.querySelector('#themeToggle i');
+            icon.setAttribute('data-lucide', isNight ? 'sun' : 'moon');
+            const heroSpan = document.querySelector('.hero-title span');
+            if (heroSpan) heroSpan.style.color = isNight ? '#f0c040' : '#2563EB';
+            lucide.createIcons();
+        });
+
+        // ─── Sidebar Toggle ──────────────────────────────────
+        document.getElementById('sidebarToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            sidebarEl.classList.toggle('collapsed');
+            toggleIcon.textContent = sidebarEl.classList.contains('collapsed') ? '☰' : '✕';
+        });
+
+        // ─── Mobile sidebar: close on outside click ──────────
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                const toggle = document.getElementById('sidebarToggle');
+                if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+                    sidebar.classList.remove('open');
                 }
             }
-            createStars();
+        });
 
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                progressBar.style.width = (scrollTop / docHeight) * 100 + '%';
-                fabScroll.classList.toggle('visible', scrollTop > 500);
-            });
+        // ─── Lucide ──────────────────────────────────────────
+        lucide.createIcons();
 
-            document.getElementById('themeToggle').addEventListener('click', () => {
-                const body = document.body;
-                const isNight = body.classList.contains('night');
-                body.classList.remove('night', 'day');
-                body.classList.add(isNight ? 'day' : 'night');
-                const icon = document.querySelector('#themeToggle i');
-                icon.setAttribute('data-lucide', isNight ? 'sun' : 'moon');
-                
-                // হিরো টাইটেলে ডে-মোডে স্প্যান কালার অ্যাডজাস্টমেন্ট
-                const heroSpan = document.querySelector('.hero-title span');
-                if(heroSpan) {
-                    heroSpan.style.color = isNight ? '#f0c040' : '#2563EB';
-                }
-                
-                lucide.createIcons();
-            });
+        // ═══════════════════════════════════════════════════════
+        //  D A T A   L O A D E R   &   R E N D E R E R
+        // ═══════════════════════════════════════════════════════
 
-            lucide.createIcons();
+        // ─── State ────────────────────────────────────────────
+        let allData = [];
+        let currentSubject = null;
+        let currentChapter = null;
+        let currentTopic = null;
+        let filteredChapters = [];
 
-            document.getElementById('sidebarToggle').addEventListener('click', function(e) {
-                e.stopPropagation();
-                sidebarEl.classList.toggle('collapsed');
-                toggleIcon.textContent = sidebarEl.classList.contains('collapsed') ? '☰' : '✕';
-            });
+        // ─── Helpers ──────────────────────────────────────────
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
 
+        // ─── Load & Parse TSV ────────────────────────────────
+        async function loadSheet() {
             if (!GOOGLE_SHEET_TSV_URL) {
                 dynamicContent.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon"><i data-lucide="smile" width="32"></i></div>
-                        <p>তোমার নোটস এখানে আসবে! 📚</p>
-                        <p style="font-size:0.9rem; color: var(--text-muted);">পরে তুমি Google Sheet লিংক যোগ করলে প্রশ্নগুলো দেখাবে।</p>
+                        <div class="empty-state-icon"><i data-lucide="file-text" width="32"></i></div>
+                        <p style="font-size:1.2rem;font-weight:600;color:var(--text-primary);">Google Sheet লিংক বসাও</p>
+                        <p style="font-size:0.9rem;color:var(--text-muted);">GOOGLE_SHEET_TSV_URL-এ তোমার TSV লিংক দিন।</p>
                     </div>
                 `;
-                dynamicSubtitle.textContent = "তোমার পড়ার সব নোট এক জায়গায়।";
+                dynamicSubtitle.textContent = '⏳ লিংক সেট করুন';
                 lucide.createIcons();
                 return;
             }
-        })();
+
+            dynamicContent.innerHTML = `
+                <div class="empty-state">
+                    <div class="loading-ring"></div>
+                    <p style="font-size:1.1rem;font-weight:600;color:var(--text-primary);">📥 ডাটা লোড হচ্ছে...</p>
+                    <p style="font-size:0.85rem;color:var(--text-muted);">Google Sheet থেকে নোটস আনা হচ্ছে</p>
+                </div>
+            `;
+            dynamicSubtitle.textContent = '⏳ লোডিং...';
+
+            try {
+                const resp = await fetch(GOOGLE_SHEET_TSV_URL, {
+                    cache: 'no-store'
+                });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+                const tsv = await resp.text();
+                const lines = tsv.split(/\r?\n/).filter(line => line.trim() !== '');
+
+                if (lines.length < 2) {
+                    throw new Error('শীটে ডাটা নেই (শুধু হেডার থাকতে পারে)');
+                }
+
+                // 헤더: subject, chapter, topic, question, answer, type, image
+                const header = lines[0].split('\t').map(h => h.trim().toLowerCase());
+                const idx = {
+                    subject: header.indexOf('subject'),
+                    chapter: header.indexOf('chapter'),
+                    topic: header.indexOf('topic'),
+                    question: header.indexOf('question'),
+                    answer: header.indexOf('answer'),
+                    type: header.indexOf('type'),
+                    image: header.indexOf('image'),
+                };
+                // যদি 'subject' না থাকে, তাহলে প্রথম কলামকে subject ধরা
+                if (idx.subject === -1) idx.subject = 0;
+                if (idx.chapter === -1) idx.chapter = 1;
+                if (idx.topic === -1) idx.topic = 2;
+                if (idx.question === -1) idx.question = 3;
+                if (idx.answer === -1) idx.answer = 4;
+                // type ও image ঐচ্ছিক
+
+                const rows = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const cols = lines[i].split('\t');
+                    const get = (i) => (i >= 0 && i < cols.length) ? cols[i].trim() : '';
+                    const subject = get(idx.subject) || 'General';
+                    const chapter = get(idx.chapter) || 'Misc';
+                    const topic = get(idx.topic) || '';
+                    const question = get(idx.question) || '';
+                    const answer = get(idx.answer) || '';
+                    const type = get(idx.type) || '';
+                    const image = get(idx.image) || '';
+                    // শুধু সেই সারি নেবো যেখানে প্রশ্ন বা উত্তর আছে
+                    if (question || answer) {
+                        rows.push({ subject, chapter, topic, question, answer, type, image });
+                    }
+                }
+
+                if (rows.length === 0) {
+                    throw new Error('কোনো প্রশ্ন/উত্তর পাওয়া যায়নি।');
+                }
+
+                allData = rows;
+                buildNavigation();
+                renderSubject(''); // প্রথম সাবজেক্ট অটো-সিলেক্ট
+
+            } catch (err) {
+                console.error('Load error:', err);
+                dynamicContent.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon"><i data-lucide="alert-circle" width="32"></i></div>
+                        <p style="font-size:1.1rem;font-weight:600;color:var(--text-primary);">😵 লোড করতে সমস্যা!</p>
+                        <p style="font-size:0.9rem;color:var(--text-muted);">${escapeHtml(err.message)}</p>
+                        <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">লিংক চেক করুন অথবা ইন্টারনেট কানেকশন দেখুন।</p>
+                    </div>
+                `;
+                dynamicSubtitle.textContent = '⚠️ লোড ব্যর্থ';
+                lucide.createIcons();
+            }
+        }
+
+        // ─── Build Navigation ─────────────────────────────────
+        function buildNavigation() {
+            const subjects = [...new Set(allData.map(r => r.subject))].sort();
+
+            subjectListEl.innerHTML = '';
+            subjects.forEach(sub => {
+                const div = document.createElement('div');
+                div.className = 'subject-item';
+                div.dataset.subject = sub;
+                div.innerHTML = `
+                    <span class="subject-emoji">📘</span>
+                    <span>${escapeHtml(sub)}</span>
+                `;
+                div.addEventListener('click', () => renderSubject(sub));
+                subjectListEl.appendChild(div);
+            });
+
+            chapterSectionEl.style.display = 'block';
+
+            searchInput.addEventListener('input', () => {
+                if (currentSubject) renderChapterList(currentSubject, searchInput.value.trim());
+            });
+        }
+
+        // ─── Render Subject ───────────────────────────────────
+        function renderSubject(subject) {
+            if (!subject || !allData.some(r => r.subject === subject)) {
+                const first = [...new Set(allData.map(r => r.subject))].sort()[0];
+                if (first) subject = first;
+                else return;
+            }
+
+            currentSubject = subject;
+            currentChapter = null;
+            currentTopic = null;
+
+            document.querySelectorAll('.subject-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.subject === subject);
+            });
+
+            const count = allData.filter(r => r.subject === subject).length;
+            dynamicSubtitle.textContent = `📖 ${subject} — মোট ${count}টি প্রশ্ন`;
+
+            renderChapterList(subject);
+
+            const chapters = getChaptersForSubject(subject);
+            if (chapters.length) {
+                renderChapter(subject, chapters[0]);
+            } else {
+                dynamicContent.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon"><i data-lucide="book-open" width="32"></i></div>
+                        <p style="font-size:1.1rem;font-weight:600;color:var(--text-primary);">${escapeHtml(subject)}</p>
+                        <p style="font-size:0.9rem;color:var(--text-muted);">এই সাবজেক্টে এখনো কোনো চ্যাপ্টার নেই।</p>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+
+        // ─── Get Chapters for Subject ─────────────────────────
+        function getChaptersForSubject(subject) {
+            const ch = [...new Set(allData.filter(r => r.subject === subject).map(r => r.chapter))].sort();
+            return ch;
+        }
+
+        // ─── Render Chapter List ──────────────────────────────
+        function renderChapterList(subject, filter = '') {
+            const chapters = getChaptersForSubject(subject);
+            const filtered = filter ?
+                chapters.filter(ch => ch.toLowerCase().includes(filter.toLowerCase())) :
+                chapters;
+            filteredChapters = filtered;
+
+            chapterListEl.innerHTML = '';
+            if (filtered.length === 0) {
+                chapterListEl.innerHTML = `
+                    <div style="padding:12px 16px;font-size:0.85rem;color:var(--text-muted);text-align:center;">
+                        ${filter ? '🔍 কোনো চ্যাপ্টার খুঁজে পাওয়া যায়নি' : '📭 কোনো চ্যাপ্টার নেই'}
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(ch => {
+                const div = document.createElement('div');
+                div.className = 'chapter-item';
+                div.dataset.chapter = ch;
+                div.textContent = ch;
+                div.addEventListener('click', () => {
+                    renderChapter(subject, ch);
+                    document.querySelectorAll('.chapter-item').forEach(el => el.classList.remove('active'));
+                    div.classList.add('active');
+                });
+                chapterListEl.appendChild(div);
+            });
+
+            if (currentChapter) {
+                document.querySelectorAll('.chapter-item').forEach(el => {
+                    el.classList.toggle('active', el.dataset.chapter === currentChapter);
+                });
+            }
+        }
+
+        // ─── Render Chapter ──────────────────────────────────
+        function renderChapter(subject, chapter) {
+            currentChapter = chapter;
+            currentTopic = null;
+
+            const rows = allData.filter(r => r.subject === subject && r.chapter === chapter);
+
+            document.querySelectorAll('.chapter-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.chapter === chapter);
+            });
+
+            if (rows.length === 0) {
+                dynamicContent.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon"><i data-lucide="file-question" width="32"></i></div>
+                        <p style="font-size:1.1rem;font-weight:600;color:var(--text-primary);">${escapeHtml(chapter)}</p>
+                        <p style="font-size:0.9rem;color:var(--text-muted);">এই চ্যাপ্টারে কোনো প্রশ্ন নেই।</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            // 🔹 Type অনুযায়ী ফিল্টার
+            const saqRows = rows.filter(r => r.type.toLowerCase() === 'saq');
+            const broadRows = rows.filter(r => r.type.toLowerCase() !== 'saq'); // comparison, empty, ইত্যাদি
+
+            let html = `
+                <div class="chapter-banner">
+                    <img src="https://picsum.photos/seed/${encodeURIComponent(chapter)}/1200/380" alt="${escapeHtml(chapter)}" loading="lazy" />
+                    <div class="chapter-banner-text">
+                        <h3>${escapeHtml(chapter)}</h3>
+                        <div class="banner-subtitle">${escapeHtml(subject)} &bull; ${rows.length} টি প্রশ্ন</div>
+                    </div>
+                </div>
+            `;
+
+            html += `
+                <div class="toggle-group" style="margin-bottom:1.5rem;">
+                    <button class="type-btn active" data-type="all">📚 সব (${rows.length})</button>
+                    <button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত (${saqRows.length})</button>
+                    <button class="type-btn" data-type="broad">📝 ব্যাখ্যামূলক (${broadRows.length})</button>
+                </div>
+            `;
+
+            html += `<div id="questionContainer">`;
+            html += renderQuestionGroup(rows, 'সকল প্রশ্ন');
+            html += `</div>`;
+
+            dynamicContent.innerHTML = html;
+            lucide.createIcons();
+
+            // ── Toggle logic ──
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const type = this.dataset.type;
+                    const container = document.getElementById('questionContainer');
+                    let filteredRows = rows;
+                    let label = 'সকল প্রশ্ন';
+
+                    if (type === 'saq') {
+                        filteredRows = saqRows;
+                        label = 'সংক্ষিপ্ত প্রশ্ন';
+                    } else if (type === 'broad') {
+                        filteredRows = broadRows;
+                        label = 'ব্যাখ্যামূলক প্রশ্ন';
+                    }
+
+                    if (filteredRows.length === 0) {
+                        container.innerHTML = `
+                            <div class="empty-state" style="padding:2rem 0;">
+                                <p style="font-size:1rem;color:var(--text-muted);">😅 এই বিভাগে কোনো প্রশ্ন নেই</p>
+                            </div>
+                        `;
+                    } else {
+                        container.innerHTML = renderQuestionGroup(filteredRows, label);
+                    }
+                    lucide.createIcons();
+                });
+            });
+        }
+
+        // ─── Render Question Group ─────────────────────────────
+        function renderQuestionGroup(rows, label) {
+            let html = `
+                <div class="section-header">
+                    <div class="section-icon icon-saq"><i data-lucide="help-circle" width="20"></i></div>
+                    <h2>${escapeHtml(label)}</h2>
+                    <span class="badge-count">${rows.length} টি</span>
+                </div>
+            `;
+
+            rows.forEach((r, i) => {
+                const q = r.question || '(প্রশ্ন নেই)';
+                const a = r.answer || '(উত্তর নেই)';
+                const img = r.image ? r.image.trim() : '';
+
+                html += `
+                    <div class="question-card card-animate" style="animation:cardReveal 0.4s ease forwards; animation-delay:${i * 0.05}s;">
+                        <div class="q">
+                            <span class="num">${i + 1}</span>
+                            <span>${escapeHtml(q)}</span>
+                        </div>
+                        ${img ? `<img src="${escapeHtml(img)}" alt="Question Image" class="question-image" loading="lazy" />` : ''}
+                        <div class="a">
+                            ${a}
+                        </div>
+                    </div>
+                `;
+            });
+
+            return html;
+        }
+
+        // ─── Init ─────────────────────────────────────────────
+        loadSheet();
+
+        console.log('✅ Mega Quiz Class 10 — Google Sheet TSV Loader (Updated for HTML & Type)');
+        console.log('📌 URL:', GOOGLE_SHEET_TSV_URL || '(খালি)');
     </script>
 </body>
 </html>
