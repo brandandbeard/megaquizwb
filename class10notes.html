@@ -1,1160 +1,645 @@
 <!DOCTYPE html>
-<html lang="bn" dir="ltr"><head>
+<html lang="bn" dir="ltr">
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Class 10 প্রশ্ন উত্তর | Galactic Quiz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 10 Notes | Mega Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'bengali': ['Noto Serif Bengali', 'serif'],
+                        'space': ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        'galactic': {
+                            900: '#06060f', 800: '#0a0a1a', 700: '#0f0f24', 600: '#14142e',
+                            500: '#1a1a3e', 400: '#252550', 300: '#3a3a6e', 200: '#5a5a9e',
+                            100: '#8a8ac8', 50: '#c4c4e8',
+                        },
+                        'aurora': {
+                            gold: '#f0c040', 'gold-dim': 'rgba(240,192,64,0.08)',
+                            purple: '#a855f7', cyan: '#06b6d4', rose: '#f43f5e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        input, textarea, select { -webkit-user-select: text !important; user-select: text !important; }
+
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 10px; }
-
-        body.night {
-            --bg-base: #05050C; --bg-elevated: #0A0A16; --bg-card: rgba(13,13,26,0.55); --bg-card-hover: rgba(18,18,36,0.72); --bg-input: rgba(255,255,255,0.035); --bg-input-focus: rgba(255,255,255,0.06); --bg-sidebar: rgba(7,7,16,0.97); --bg-header: rgba(5,5,12,0.92); --bg-footer: rgba(5,5,10,0.88); --bg-overlay: rgba(0,0,0,0.6); --text-primary: #EEEEF3; --text-secondary: #85859E; --text-muted: #4E4E66; --text-inverse: #000; --accent: #EAB308; --accent-soft: #FACC15; --accent-dim: rgba(234,179,8,0.10); --accent-mid: rgba(234,179,8,0.18); --accent-border: rgba(234,179,8,0.22); --accent-glow: rgba(234,179,8,0.06); --cyan: #06B6D4; --cyan-dim: rgba(6,182,212,0.08); --cyan-mid: rgba(6,182,212,0.15); --cyan-border: rgba(6,182,212,0.35); --purple: #A855F7; --purple-dim: rgba(168,85,247,0.07); --purple-mid: rgba(168,85,247,0.13); --purple-border: rgba(168,85,247,0.35); --border: rgba(255,255,255,0.055); --border-hover: rgba(255,255,255,0.11); --danger: #EF4444; --danger-dim: rgba(239,68,68,0.10); --danger-border: rgba(239,68,68,0.30); --comp-accent: #F59E0B; --comp-dim: rgba(245,158,11,0.08); --comp-border: rgba(245,158,11,0.4); --warning: #F97316; --warning-dim: rgba(249,115,22,0.12); --warning-border: rgba(249,115,22,0.35); --shadow-card: 0 1px 2px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03); --shadow-card-hover: 0 12px 32px rgba(0,0,0,0.45), 0 0 0 1px var(--border-hover); --shadow-header: 0 4px 40px rgba(0,0,0,0.55); --scrollbar-thumb: #2A2A3E; --orb-1: rgba(234,179,8,0.04); --orb-2: rgba(6,182,212,0.035); --orb-3: rgba(168,85,247,0.03); --selection-bg: rgba(234,179,8,0.25); --selection-text: #FEF08A; --logo-gradient: linear-gradient(135deg, #EAB308 0%, #F59E0B 100%); --logo-shadow: 0 0 24px rgba(234,179,8,0.3); --btn-primary-bg: var(--accent); --btn-primary-text: #000; --btn-primary-hover: var(--accent-soft);
-        }
-        body.day {
-            --bg-base: #F4F5FA; --bg-elevated: #FFFFFF; --bg-card: rgba(255,255,255,0.78); --bg-card-hover: rgba(255,255,255,0.96); --bg-input: rgba(0,0,0,0.025); --bg-input-focus: rgba(0,0,0,0.045); --bg-sidebar: rgba(255,255,255,0.98); --bg-header: rgba(255,255,255,0.88); --bg-footer: rgba(255,255,255,0.94); --bg-overlay: rgba(15,23,42,0.25); --text-primary: #0F172A; --text-secondary: #475569; --text-muted: #94A3B8; --text-inverse: #FFF; --accent: #2563EB; --accent-soft: #3B82F6; --accent-dim: rgba(37,99,235,0.06); --accent-mid: rgba(37,99,235,0.10); --accent-border: rgba(37,99,235,0.18); --accent-glow: rgba(37,99,235,0.04); --cyan: #0891B2; --cyan-dim: rgba(8,145,178,0.06); --cyan-mid: rgba(8,145,178,0.10); --cyan-border: rgba(8,145,178,0.4); --purple: #7C3AED; --purple-dim: rgba(124,58,237,0.06); --purple-mid: rgba(124,58,237,0.09); --purple-border: rgba(124,58,237,0.4); --border: rgba(0,0,0,0.06); --border-hover: rgba(0,0,0,0.10); --danger: #DC2626; --danger-dim: rgba(220,38,38,0.07); --danger-border: rgba(220,38,38,0.30); --comp-accent: #D97706; --comp-dim: rgba(217,119,6,0.07); --comp-border: rgba(217,119,6,0.35); --warning: #EA580C; --warning-dim: rgba(234,88,12,0.08); --warning-border: rgba(234,88,12,0.4); --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px var(--border); --shadow-card-hover: 0 12px 32px rgba(0,0,0,0.07), 0 0 0 1px var(--border-hover); --shadow-header: 0 2px 24px rgba(0,0,0,0.05); --scrollbar-thumb: #C4CAD8; --orb-1: rgba(37,99,235,0.025); --orb-2: rgba(8,145,178,0.02); --orb-3: rgba(124,58,237,0.02); --selection-bg: rgba(37,99,235,0.18); --selection-text: #1E3A5F; --logo-gradient: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%); --logo-shadow: 0 0 20px rgba(37,99,235,0.2); --btn-primary-bg: var(--accent); --btn-primary-text: #FFF; --btn-primary-hover: var(--accent-soft);
-        }
+        ::-webkit-scrollbar-thumb { background: rgba(240,192,64,0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(240,192,64,0.4); }
+        body.day ::-webkit-scrollbar-thumb { background: rgba(37, 99, 235, 0.2); }
+        body.day ::-webkit-scrollbar-thumb:hover { background: rgba(37, 99, 235, 0.4); }
 
         body {
             font-family: 'Noto Serif Bengali', 'Inter', sans-serif;
-            background: var(--bg-base);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            animation: pageReveal 0.7s cubic-bezier(0.16,1,0.3,1) both;
+            min-height: 100vh; overflow-x: hidden; font-size: 18px; line-height: 1.8;
+            transition: background 0.4s, color 0.4s;
         }
-        body::selection { background: var(--selection-bg); color: var(--selection-text); }
 
-        .bg-orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(100px); will-change: transform; }
-        .bg-orb-1 { width: 600px; height: 600px; background: var(--orb-1); top: -10%; left: -8%; animation: orbFloat1 20s ease-in-out infinite; }
-        .bg-orb-2 { width: 500px; height: 500px; background: var(--orb-2); top: 50%; right: -10%; animation: orbFloat2 25s ease-in-out infinite; }
-        .bg-orb-3 { width: 450px; height: 450px; background: var(--orb-3); bottom: -5%; left: 30%; animation: orbFloat3 22s ease-in-out infinite; }
+        body.night {
+            --bg-base: #06060f;
+            --bg-card: rgba(20, 20, 46, 0.4);
+            --bg-card-hover: rgba(26, 26, 62, 0.5);
+            --bg-sidebar: rgba(10, 10, 26, 0.4);
+            --bg-header: rgba(6,6,15,0.7);
+            --bg-footer: rgba(6,6,15,0.8);
+            --text-primary: #e8e8f0;
+            --text-secondary: rgba(255,255,255,0.45);
+            --text-muted: rgba(255,255,255,0.25);
+            --accent: #f0c040;
+            --accent-dim: rgba(240,192,64,0.08);
+            --border: rgba(255,255,255,0.04);
+            --shadow-card: 0 2px 8px rgba(0,0,0,0.4);
+            --q-color: #f0c040;
+            --a-color: rgba(255,255,255,0.85);
+        }
 
-        .mega-header { position: fixed; top: 0; left: 0; right: 0; height: 68px; display: flex; align-items: center; padding: 0 28px; z-index: 200; background: var(--bg-header); backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4); box-shadow: var(--shadow-header); transition: background 0.5s, box-shadow 0.5s; }
-        .mega-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1.5px; background: linear-gradient(90deg, transparent 5%, var(--accent) 50%, transparent 95%); opacity: 0.35; background-size: 200% 100%; animation: headerPulse 4s ease-in-out infinite; }
-        .header-left { display: flex; align-items: center; gap: 14px; text-decoration: none; flex: 1; transition: transform 0.25s cubic-bezier(0.16,1,0.3,1); position: relative; z-index: 1; }
-        .header-left:hover { transform: scale(1.015); }
-        .mega-logo-mark { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; background: var(--logo-gradient); box-shadow: var(--logo-shadow); position: relative; overflow: hidden; }
-        .mega-logo-mark::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.28) 50%, transparent 62%); background-size: 250% 100%; animation: logoShimmer 5s ease-in-out infinite; }
-        .mega-title-group { display: flex; flex-direction: column; gap: 1px; }
-        .mega-title { font-family: 'Inter', sans-serif; font-size: clamp(1.05rem, 2.5vw, 1.3rem); font-weight: 800; letter-spacing: 0.07em; line-height: 1.1; color: var(--accent); transition: color 0.5s; }
-        .mega-subtitle { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); transition: color 0.5s; }
-        .header-right { display: flex; align-items: center; gap: 10px; margin-left: auto; position: relative; z-index: 1; }
-        .mega-badge { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; padding: 5px 14px; border-radius: 20px; white-space: nowrap; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); transition: all 0.4s; }
-        .theme-toggle { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid var(--border); font-size: 1.15rem; background: var(--bg-input); color: var(--text-secondary); transition: all 0.35s cubic-bezier(0.16,1,0.3,1); }
-        .theme-toggle:hover { background: var(--accent-dim); border-color: var(--accent-border); color: var(--accent); transform: rotate(25deg) scale(1.05); }
-        .theme-toggle:active { transform: rotate(25deg) scale(0.95); }
+        /* ====== প্রফেশনাল ডে-মোড ডিজাইন ====== */
+        body.day {
+            --bg-base: #FAFAFA; /* প্রিমিয়াম অফ-হোয়াইট */
+            --bg-card: #FFFFFF; /* বিশুদ্ধ সাদা */
+            --bg-card-hover: #FFFFFF;
+            --bg-sidebar: #FFFFFF; /* বিশুদ্ধ সাদা সাইডবার */
+            --bg-header: rgba(255, 255, 255, 0.85); /* ফ্রস্টেড গ্লাস */
+            --bg-footer: #FFFFFF; /* বিশুদ্ধ সাদা ফুটার */
+            --text-primary: #0F172A; /* ডীপ স্লেট ব্ল্যাক */
+            --text-secondary: #475569; /* স্লেট 600 */
+            --text-muted: #94A3B8; /* স্লেট 400 */
+            --accent: #2563EB; /* প্রফেশনাল রয়্যাল ব্লু */
+            --accent-dim: rgba(37, 99, 235, 0.06);
+            --border: #E2E8F0; /* ক্লিন, সূক্ষ্ম বর্ডার */
+            --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03), 0 0 0 1px rgba(0,0,0,0.02);
+            --q-color: #1E293B;
+            --a-color: #000000; /* ✅ উত্তর টেক্সট একদম কালো */
+        }
 
-        .main-container { display: flex; flex: 1; margin-top: 68px; min-height: 0; position: relative; z-index: 1; }
-        .sidebar { width: 272px; background: var(--bg-sidebar); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); overflow-y: auto; padding: 1.75rem 0.75rem 2.5rem 0.75rem; border-right: 1px solid var(--border); flex-shrink: 0; height: 100%; transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), background 0.5s, border-color 0.5s; }
-        .sidebar-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; font-family: 'Inter', sans-serif; font-weight: 700; color: var(--text-muted); padding: 0 14px; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 8px; }
-        .sidebar-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-        .subject-group { margin-bottom: 1.5rem; }
-        .subject-item { display: flex; align-items: center; gap: 10px; padding: 9px 14px; margin: 2px 0; border-radius: 9px; font-size: 0.84rem; cursor: pointer; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 500; color: var(--text-secondary); transition: all 0.2s cubic-bezier(0.16,1,0.3,1); position: relative; }
-        .subject-item:hover { background: var(--bg-input); color: var(--text-primary); }
-        .subject-item.active { background: var(--accent-dim); color: var(--accent); font-weight: 600; }
-        .subject-item.active::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 60%; border-radius: 0 3px 3px 0; background: var(--accent); animation: barIn 0.3s cubic-bezier(0.16,1,0.3,1) both; }
-        .subject-emoji { font-size: 1rem; width: 24px; text-align: center; flex-shrink: 0; }
+        body { background: var(--bg-base); color: var(--text-primary); }
+
+        .universe-bg {
+            position: fixed; inset: 0; z-index: 0;
+            background: radial-gradient(ellipse at 20% 20%, rgba(168,85,247,0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 80%, rgba(6,182,212,0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 50%, rgba(240,192,64,0.03) 0%, transparent 70%),
+                        #06060f;
+            transition: opacity 0.4s;
+        }
+        body.day .universe-bg {
+            background: radial-gradient(ellipse at 20% 20%, rgba(37, 99, 235, 0.03) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 80%, rgba(99, 102, 241, 0.03) 0%, transparent 50%),
+                        #FAFAFA;
+            opacity: 1;
+        }
+
+        .stars, .shooting-star { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        body.day .stars, body.day .shooting-star { display: none; } /* ডে-মোডে ক্লিন লুকের জন্য স্টার হাইড */
+
+        .star {
+            position: absolute; background: white; border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite; animation-delay: var(--delay);
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .shooting-star {
+            position: fixed; width: 100px; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(240,192,64,0.8), transparent);
+            animation: shoot 8s linear infinite; opacity: 0; z-index: 0;
+        }
+        @keyframes shoot {
+            0% { transform: translateX(-100px) translateY(0) rotate(-45deg); opacity: 0; }
+            10% { opacity: 1; }
+            20% { transform: translateX(calc(100vw + 100px)) translateY(calc(100vh + 100px)) rotate(-45deg); opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .glass {
+            background: rgba(10,10,26,0.6); backdrop-filter: blur(20px) saturate(1.5);
+            -webkit-backdrop-filter: blur(20px) saturate(1.5); border: 1px solid rgba(255,255,255,0.04);
+        }
+        body.day .glass { background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0,0,0,0.06); }
+        
+        .glass-strong {
+            background: rgba(10,10,26,0.85); backdrop-filter: blur(30px) saturate(1.8);
+            -webkit-backdrop-filter: blur(30px) saturate(1.8); border: 1px solid rgba(255,255,255,0.06);
+        }
+        body.day .glass-strong { background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0,0,0,0.08); }
+
+        .glass-card {
+            background: rgba(20,20,46,0.5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.05); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        body.day .glass-card {
+            background: #FFFFFF; border: 1px solid #E2E8F0;
+            box-shadow: var(--shadow-card);
+        }
+        .glass-card:hover {
+            background: rgba(26,26,62,0.7); border-color: rgba(240,192,64,0.15);
+            transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(240,192,64,0.05);
+        }
+        body.day .glass-card:hover {
+            background: #FFFFFF; border-color: #2563EB;
+            box-shadow: 0 12px 24px -8px rgba(37, 99, 235, 0.15), 0 0 0 1px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .mega-header {
+            position: fixed; top: 0; left: 0; right: 0; height: 72px; z-index: 200;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 32px;
+            background: var(--bg-header); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border);
+            transition: background 0.4s, border-color 0.4s;
+        }
+        .logo-glow {
+            width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; position: relative; flex-shrink: 0; overflow: hidden;
+            background: linear-gradient(135deg, rgba(240,192,64,0.15), rgba(240,192,64,0.05));
+            border: 1px solid rgba(240,192,64,0.15); box-shadow: 0 0 30px rgba(240,192,64,0.1);
+        }
+        body.day .logo-glow {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0.05));
+            border: 1px solid rgba(37, 99, 235, 0.15); box-shadow: 0 0 20px rgba(37, 99, 235, 0.05);
+        }
+        .logo-glow img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; }
+        .mega-title-text {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 800; letter-spacing: 0.08em;
+            background: linear-gradient(135deg, #f0c040, #f59e0b);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        body.day .mega-title-text {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .header-badge {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
+            text-transform: uppercase; padding: 6px 16px; border-radius: 20px;
+            background: rgba(240,192,64,0.08); color: #f0c040; border: 1px solid rgba(240,192,64,0.15);
+        }
+        body.day .header-badge {
+            background: rgba(37, 99, 235, 0.08); color: #2563EB; border: 1px solid rgba(37, 99, 235, 0.15);
+        }
+
+        .main-wrapper { display: flex; margin-top: 72px; position: relative; }
+        .sidebar {
+            width: 300px; flex-shrink: 0; padding: 3.5rem 1rem 2rem; overflow-y: auto;
+            height: calc(100vh - 72px); position: sticky; top: 72px; border-right: 1px solid var(--border);
+            background: var(--bg-sidebar); backdrop-filter: blur(12px); transition: all 0.4s; overflow-x: hidden;
+        }
+        body.day .sidebar { background: #FFFFFF; border-right: 1px solid #E2E8F0; }
+        .sidebar.collapsed { width: 0 !important; padding: 0 !important; border-right: none !important; opacity: 0; overflow: hidden; margin: 0 !important; }
+        .content-scroll { flex: 1; overflow-y: auto; padding: 2.5rem 3rem 0; position: relative; z-index: 1; }
+
+        .sidebar-label {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.18em;
+            font-weight: 700; color: var(--text-muted); padding: 0 14px; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 10px;
+        }
+        .sidebar-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+        .subject-item {
+            display: flex; align-items: center; gap: 12px; padding: 12px 16px; margin: 3px 8px; border-radius: 12px;
+            font-size: 0.95rem; cursor: pointer; font-weight: 600; color: var(--text-muted); transition: all 0.3s; position: relative;
+        }
+        .subject-item::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+            background: linear-gradient(180deg, #f0c040, #f59e0b); border-radius: 0 3px 3px 0; transform: scaleY(0); transition: 0.3s;
+        }
+        body.day .subject-item::before { background: linear-gradient(180deg, #2563EB, #1D4ED8); }
+        .subject-item:hover { background: var(--accent-dim); color: var(--text-primary); }
+        .subject-item.active { background: var(--accent-dim); color: var(--accent); }
+        body.day .subject-item.active { color: #2563EB; }
+        .subject-item.active::before { transform: scaleY(1); }
+        .subject-emoji { font-size: 1.2rem; width: 28px; text-align: center; }
 
         .chapter-item {
-            display: flex; align-items: center; gap: 8px; padding: 7px 14px 7px 28px; margin: 1px 0; border-radius: 7px;
-            font-size: 0.85rem; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600;
-            color: var(--text-secondary); transition: all 0.2s cubic-bezier(0.16,1,0.3,1); position: relative; user-select: none;
+            display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin: 2px 8px; border-radius: 10px;
+            font-size: 0.88rem; cursor: pointer; font-weight: 600; color: var(--text-muted); transition: all 0.3s;
+            border-left: 3px solid transparent;
         }
-        .chapter-item::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; transition: all 0.25s; opacity: 0.5; }
-        .chapter-item:hover { background: var(--bg-input); color: var(--text-primary); }
-        .chapter-item:hover::before { opacity: 1; background: var(--text-secondary); }
-        .chapter-item.active { background: var(--accent-dim); color: var(--accent); font-weight: 600; }
-        .chapter-item.active::before { opacity: 1; background: var(--accent); box-shadow: 0 0 6px var(--accent-glow); }
-        .chapter-item.has-topics { cursor: pointer; }
-        .chapter-item .toggle-icon { margin-left: auto; font-size: 0.7rem; opacity: 0.7; }
+        .chapter-item::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; transition: 0.3s; opacity: 0.5; }
+        .chapter-item:hover { background: var(--accent-dim); color: var(--text-primary); }
+        .chapter-item.active { background: var(--accent-dim); color: var(--accent); border-left-color: var(--accent); }
+        body.day .chapter-item.active { color: #2563EB; border-left-color: #2563EB; }
+        .chapter-item.active::before { background: var(--accent); box-shadow: 0 0 10px rgba(240,192,64,0.5); }
+        body.day .chapter-item.active::before { background: #2563EB; box-shadow: 0 0 10px rgba(37, 99, 235, 0.3); }
+        .toggle-icon { margin-left: auto; font-size: 0.65rem; opacity: 0.5; }
 
+        .topic-container { padding-left: 16px; margin-left: 20px; border-left: 2px solid var(--border); overflow: hidden; }
         .topic-item {
-            display: flex; align-items: center; gap: 6px; padding: 5px 14px 5px 54px; margin: 1px 0; border-radius: 6px;
-            font-size: 0.76rem; cursor: pointer; font-family: 'Inter', sans-serif; color: var(--text-muted);
-            transition: all 0.2s; position: relative;
+            display: flex; align-items: center; gap: 8px; padding: 8px 14px 8px 20px; margin: 2px 0; border-radius: 8px;
+            font-size: 0.82rem; cursor: pointer; color: var(--text-muted); transition: 0.3s; position: relative; font-weight: 500;
         }
-        .topic-item::before { content: '•'; margin-right: 4px; opacity: 0.5; font-size: 0.9rem; }
-        .topic-item:hover { background: var(--bg-input); color: var(--text-primary); }
-        .topic-item.active { background: var(--accent-dim); color: var(--accent); font-weight: 600; }
-        .topic-item.active::before { color: var(--accent); opacity: 1; }
+        .topic-item::before { content: ''; position: absolute; left: -18px; top: 50%; width: 10px; height: 2px; background: var(--border); }
+        .topic-item:hover { background: var(--accent-dim); color: var(--text-primary); }
+        .topic-item.active { background: var(--accent-dim); color: var(--accent); font-weight: 700; }
 
-        .content-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem 2rem 0;
-            scroll-behavior: auto;
-            overflow-anchor: none;
+        .sidebar-toggle-fixed {
+            position: fixed; top: 78px; left: 20px; z-index: 150; width: 46px; height: 46px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            background: rgba(20,20,46,0.85); border: 1px solid var(--border); color: var(--accent);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3); transition: 0.3s; font-size: 1.4rem; backdrop-filter: blur(12px);
         }
-        .sidebar-overlay { display: none; position: fixed; inset: 0; background: var(--bg-overlay); z-index: 99; opacity: 0; transition: opacity 0.35s ease; backdrop-filter: blur(4px); }
-        .sidebar-overlay.visible { display: block; opacity: 1; }
+        body.day .sidebar-toggle-fixed {
+            background: #FFFFFF; border: 1px solid #E2E8F0; color: #2563EB; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .sidebar-toggle-fixed:hover {
+            transform: scale(1.08); background: rgba(240,192,64,0.12); border-color: rgba(240,192,64,0.25);
+            box-shadow: 0 8px 32px rgba(240,192,64,0.15);
+        }
+        body.day .sidebar-toggle-fixed:hover {
+            background: #F8FAFC; border-color: #2563EB; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+        .sidebar-toggle-fixed .icon { transition: transform 0.4s; }
+        .sidebar-toggle-fixed .icon.rotated { transform: rotate(180deg); }
 
-        .breadcrumb { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; margin-bottom: 1.25rem; color: var(--text-muted); }
-        .breadcrumb a { text-decoration: none; color: var(--text-muted); transition: color 0.2s; }
+        .breadcrumb {
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 500; margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
         .breadcrumb a:hover { color: var(--accent); }
-        .breadcrumb .sep { opacity: 0.4; }
-        .breadcrumb .current { color: var(--accent); font-weight: 600; }
+        .breadcrumb .sep { opacity: 0.3; font-size: 0.7rem; }
+        .breadcrumb .current { color: var(--accent); font-weight: 700; }
 
-        .page-title { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; line-height: 1.25; margin-bottom: 0.4rem; color: var(--text-primary); letter-spacing: -0.01em; }
-        .page-title .accent { background: linear-gradient(135deg, var(--accent), var(--accent-soft)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .page-subtitle { font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.75rem; color: var(--text-secondary); font-weight: 400; }
-
-        .toggle-buttons { display: inline-flex; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 4px; margin-bottom: 2rem; position: relative; }
-        .type-btn { padding: 0.5rem 1.4rem; border-radius: 9px; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.82rem; border: none; background: transparent; color: var(--text-muted); transition: all 0.3s cubic-bezier(0.16,1,0.3,1); position: relative; z-index: 1; }
-        .type-btn:hover:not(.active) { color: var(--text-secondary); }
-        .type-btn.active { background: var(--accent); color: var(--text-inverse); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-
-        .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 1.5rem; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
-        .section-header h2 { font-size: 1rem; font-weight: 700; color: var(--text-primary); font-family: 'Noto Serif Bengali', sans-serif; }
-        .section-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; color: #fff; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-        .icon-saq { background: linear-gradient(135deg, #0891B2, #06B6D4); }
-        .icon-broad { background: linear-gradient(135deg, #7C3AED, #A855F7); }
-        .icon-comp { background: linear-gradient(135deg, #F59E0B, #D97706); }
-        .badge-count { font-family: 'Inter', sans-serif; border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700; margin-left: auto; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); letter-spacing: 0.03em; }
-
-        .saq-card, .broad-card, .comp-card { border-radius: 14px; padding: 1.3rem 1.5rem; margin-bottom: 12px; background: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: all 0.35s cubic-bezier(0.16,1,0.3,1); position: relative; overflow: hidden; }
-        .saq-card::before, .broad-card::before, .comp-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 0 3px 3px 0; transition: width 0.3s ease, box-shadow 0.3s ease; }
-        .saq-card::before { background: linear-gradient(180deg, #06B6D4, #0891B2); }
-        .broad-card::before { background: linear-gradient(180deg, #A855F7, #7C3AED); }
-        .comp-card::before { background: linear-gradient(180deg, #F59E0B, #D97706); }
-        .saq-card:hover, .broad-card:hover, .comp-card:hover { background: var(--bg-card-hover); box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
-        .saq-card:hover::before { width: 4px; box-shadow: 0 0 12px rgba(6,182,212,0.3); }
-        .broad-card:hover::before { width: 4px; box-shadow: 0 0 12px rgba(168,85,247,0.3); }
-        .comp-card:hover::before { width: 4px; box-shadow: 0 0 12px rgba(245,158,11,0.3); }
-
-        .card-animate { opacity: 0; transform: translateY(18px); animation: cardReveal 0.55s cubic-bezier(0.16,1,0.3,1) forwards; }
-        .saq-q, .broad-q, .comp-q { display: flex; align-items: flex-start; gap: 12px; font-size: 0.93rem; line-height: 1.65; margin-bottom: 12px; color: var(--text-primary); font-weight: 500; }
-        .saq-num, .broad-num, .comp-num { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 30px; border-radius: 9px; font-weight: 700; font-size: 0.78rem; flex-shrink: 0; font-family: 'Inter', sans-serif; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
-        .saq-num { background: linear-gradient(135deg, #0891B2, #06B6D4); }
-        .broad-num { background: linear-gradient(135deg, #7C3AED, #A855F7); }
-        .comp-num { background: linear-gradient(135deg, #F59E0B, #D97706); }
-        .saq-a, .broad-a, .comp-a { border-radius: 10px; padding: 12px 16px; font-size: 0.88rem; line-height: 1.8; display: flex; align-items: flex-start; gap: 10px; transition: all 0.3s; }
-        .saq-a { background: var(--cyan-dim); color: var(--text-secondary); border-left: 2px solid var(--cyan-border); }
-        .broad-a { background: var(--purple-dim); color: var(--text-secondary); border-left: 2px solid var(--purple-border); }
-        .comp-a { background: var(--comp-dim); color: var(--text-secondary); border-left: 2px solid var(--comp-border); }
-        .saq-a iconify-icon { color: var(--cyan); flex-shrink: 0; margin-top: 3px; }
-        .broad-a iconify-icon { color: var(--purple); flex-shrink: 0; margin-top: 3px; }
-        .comp-a iconify-icon { color: var(--comp-accent); flex-shrink: 0; margin-top: 3px; }
-
-        .answer-content { flex: 1; min-width: 0; }
-        .answer-content h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--text-primary); }
-        .answer-content table { width: 100%; border-collapse: collapse; margin: 0.6rem 0; font-size: 0.8rem; }
-        .answer-content th { background: var(--purple-dim); color: var(--purple); padding: 10px 12px; text-align: left; font-weight: 700; border: 1px solid var(--purple-border); font-size: 0.78rem; }
-        .answer-content td { padding: 8px 12px; border: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
-        .answer-content tr:nth-child(even) td { background: var(--bg-input); }
-        .tbl-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
-
-        .card-actions { position: absolute; top: 10px; right: 14px; display: flex; gap: 6px; opacity: 0; transition: opacity 0.25s; z-index: 5; }
-        .saq-card:hover .card-actions, .broad-card:hover .card-actions, .comp-card:hover .card-actions { opacity: 1; }
-        .card-action-btn { width: 30px; height: 30px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg-elevated); color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; transition: all 0.2s; padding: 0; }
-        .card-action-btn:hover { border-color: var(--accent-border); color: var(--accent); background: var(--accent-dim); }
-        .card-action-btn.delete-btn:hover { border-color: var(--danger-border); color: var(--danger); background: var(--danger-dim); }
-
-        .editable-q, .editable-a { outline: 1px dashed transparent; transition: outline 0.2s; padding: 2px 4px; border-radius: 4px; }
-        .editable-q:focus, .editable-a:focus { outline-color: var(--accent-border); background: var(--bg-input-focus); }
-
-        .empty-state { text-align: center; padding: 3.5rem 2rem; color: var(--text-muted); animation: fadeIn 0.5s ease both; }
-        .empty-state p { font-size: 0.95rem; margin-top: 0.5rem; }
-        .section-divider { width: 80px; height: 2px; margin: 2.5rem auto; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--accent-border), transparent); }
-
-        .edit-panel { display: none; border-radius: 16px; padding: 2rem; margin-top: 1.5rem; margin-bottom: 2rem; background: var(--bg-elevated); border: 1px solid var(--accent-border); box-shadow: 0 0 40px var(--accent-glow), var(--shadow-card); animation: panelIn 0.4s cubic-bezier(0.16,1,0.3,1) both; }
-        .edit-panel.open { display: block; }
-        .edit-panel h3 { font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
-        .edit-panel h4 { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
-        .edit-panel p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem; line-height: 1.5; }
-        .edit-panel hr { border: none; height: 1px; background: var(--border); margin: 1.5rem 0; }
-        .form-group { margin-bottom: 0.75rem; }
-        .form-group label { display: block; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; }
-        textarea, input[type="text"], input[type="password"], select { width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-input); color: var(--text-primary); font-family: 'Noto Serif Bengali', 'Inter', sans-serif; font-size: 0.88rem; line-height: 1.5; transition: all 0.25s; outline: none; }
-        textarea:focus, input[type="text"]:focus, input[type="password"]:focus, select:focus { background: var(--bg-input-focus); border-color: var(--accent-border); box-shadow: 0 0 0 3px var(--accent-dim); }
-        textarea { resize: vertical; min-height: 100px; }
-        select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
-        select option { background: var(--bg-elevated); color: var(--text-primary); }
-
-        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.82rem; background: var(--btn-primary-bg); color: var(--btn-primary-text); transition: all 0.25s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-        .btn:hover { background: var(--btn-primary-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .btn:active { transform: translateY(0); }
-        .btn-sm { padding: 7px 14px; font-size: 0.78rem; border-radius: 8px; }
-        .btn-xs { padding: 4px 10px; font-size: 0.7rem; border-radius: 6px; gap: 3px; }
-        .btn-save-permanent { background: linear-gradient(135deg, #10B981, #059669) !important; color: #fff !important; box-shadow: 0 2px 8px rgba(16,185,129,0.25); }
-        .btn-save-permanent:hover { box-shadow: 0 4px 16px rgba(16,185,129,0.35) !important; }
-        .btn-danger { background: var(--danger-dim) !important; color: var(--danger) !important; border: 1px solid var(--danger-border) !important; box-shadow: none !important; }
-        .btn-danger:hover { background: var(--danger) !important; color: #fff !important; box-shadow: 0 2px 8px rgba(239,68,68,0.3) !important; }
-        .btn-warning { background: var(--warning-dim) !important; color: var(--warning) !important; border: 1px solid var(--warning-border) !important; box-shadow: none !important; }
-        .btn-warning:hover { background: var(--warning) !important; color: #fff !important; box-shadow: 0 2px 8px rgba(249,115,22,0.3) !important; }
-        .btn-ghost { background: var(--bg-input) !important; color: var(--text-secondary) !important; border: 1px solid var(--border) !important; box-shadow: none !important; }
-        .btn-ghost:hover { background: var(--bg-input-focus) !important; border-color: var(--accent-border) !important; color: var(--accent) !important; }
-        .status-msg { font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--accent); margin-top: 0.5rem; min-height: 1.2em; }
-
-        .mgmt-list { list-style: none; margin: 0; padding: 0; }
-        .mgmt-list-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; margin-bottom: 3px; background: var(--bg-input); border: 1px solid transparent; transition: all 0.2s; font-size: 0.84rem; flex-wrap: wrap; }
-        .mgmt-list-item:hover { border-color: var(--border); background: var(--bg-input-focus); }
-        .mgmt-list-item .item-name { flex: 1; font-weight: 500; color: var(--text-primary); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .mgmt-list-item .item-meta { font-size: 0.7rem; color: var(--text-muted); font-family: 'Inter', sans-serif; flex-shrink: 0; }
-        .mgmt-list-item .btn-arrange { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-input); color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; transition: all 0.2s; flex-shrink: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        .mgmt-list-item .btn-arrange:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--accent-border); color: var(--accent); }
-        .mgmt-list-item .btn-arrange:disabled { opacity: 0.25; cursor: not-allowed; }
-
-        .tbl-toolbar { display: none; position: absolute; z-index: 10000; background: var(--bg-elevated); border: 1px solid var(--accent-border); border-radius: 10px; padding: 6px 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); gap: 4px; align-items: center; }
-        .tbl-toolbar.show { display: flex; }
-        .tbl-toolbar .tbl-btn { width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-input); color: var(--text-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; transition: all 0.2s; padding: 0; font-family: 'Inter', sans-serif; }
-        .tbl-toolbar .tbl-btn:hover { background: var(--accent-dim); border-color: var(--accent-border); color: var(--accent); }
-        .tbl-toolbar .tbl-btn.danger:hover { background: var(--danger-dim); border-color: var(--danger-border); color: var(--danger); }
-
-        footer { background: var(--bg-footer); border-top: 1px solid var(--border); padding: 2.5rem 2rem 1.25rem; margin-top: auto; position: relative; z-index: 1; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background 0.5s, border-color 0.5s; }
-        footer::before { content: ''; position: absolute; top: -1px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 10%, var(--accent-border) 50%, transparent 90%); }
-        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 2.5rem; max-width: 1100px; margin: 0 auto; }
-        .footer-col h4 { font-family: 'Inter', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.85rem; color: var(--text-muted); }
-        .footer-col a, .contact-item { font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; padding: 4px 0; transition: color 0.2s, transform 0.2s; }
-        .footer-col a:hover, .contact-item:hover { color: var(--accent); transform: translateX(2px); }
-        .footer-col a svg, .contact-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.8; transition: opacity 0.2s; }
-        .footer-col a:hover svg, .contact-item:hover svg { opacity: 1; }
-        .footer-bottom { margin-top: 2rem; padding-top: 1.25rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.68rem; font-family: 'Inter', sans-serif; border-top: 1px solid var(--border); max-width: 1100px; margin-left: auto; margin-right: auto; color: var(--text-muted); position: relative; }
-        .footer-bottom-left { display: flex; align-items: center; gap: 12px; }
-
-        .footer-unlock-btn { width: 28px; height: 28px; border-radius: 50%; opacity: 0.25; background: transparent; border: 1px solid transparent; cursor: pointer; color: var(--text-muted); transition: all 0.35s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; }
-        .footer-unlock-btn:hover { opacity: 0.7; color: var(--accent); border-color: var(--accent-border); background: var(--accent-dim); }
-        .footer-unlock-btn.editor-unlocked { opacity: 0.6; color: var(--accent); border-color: var(--accent-border); background: var(--accent-dim); }
-
-        .password-popover { position: absolute; bottom: 100%; left: 0; margin-bottom: 8px; z-index: 10000; background: var(--bg-elevated); border: 1px solid var(--accent-border); border-radius: 14px; padding: 16px; width: 220px; display: none; flex-direction: column; gap: 10px; box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 30px var(--accent-glow); animation: popIn 0.25s cubic-bezier(0.16,1,0.3,1) both; }
-        .password-popover.show { display: flex; }
-
-        .toggle-sidebar-btn { position: fixed; top: 78px; left: 12px; z-index: 110; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(12px); font-size: 1.1rem; background: var(--bg-elevated); border: 1px solid var(--border); color: var(--accent); box-shadow: var(--shadow-card); transition: all 0.3s; }
-        .toggle-sidebar-btn:hover { transform: scale(1.08); box-shadow: var(--shadow-card-hover); }
-
-        @keyframes pageReveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes cardReveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes headerPulse { 0%,100% { background-position: -200% 0; opacity: 0.25; } 50% { background-position: 200% 0; opacity: 0.5; } }
-        @keyframes logoShimmer { 0%,100% { background-position: 250% 0; } 50% { background-position: -250% 0; } }
-        @keyframes barIn { from { height: 0; opacity: 0; } to { height: 60%; opacity: 1; } }
-        @keyframes panelIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        @keyframes popIn { from { opacity: 0; transform: translateY(8px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        @keyframes orbFloat1 { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(60px,-40px) scale(1.1); } 66% { transform: translate(-30px,30px) scale(0.95); } }
-        @keyframes orbFloat2 { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(-50px,50px) scale(0.9); } 66% { transform: translate(40px,-20px) scale(1.08); } }
-        @keyframes orbFloat3 { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(30px,40px) scale(1.05); } 66% { transform: translate(-60px,-30px) scale(0.92); } }
-
-        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
-        @media (max-width: 767px) {
-            .sidebar { position: absolute; top: 0; left: 0; bottom: 0; z-index: 100; transform: translateX(-100%); height: 100%; box-shadow: none; }
-            .sidebar.open { transform: translateX(0); box-shadow: 12px 0 40px rgba(0,0,0,0.4); }
-            .content-scroll { padding: 1.5rem 1rem 0; }
-            .mega-header { padding: 0 16px; }
-            .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-            .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-            .footer-bottom-left { flex-direction: column; gap: 6px; }
-            .password-popover { left: 50%; transform: translateX(-50%); }
+        .hero-title {
+            font-family: 'Noto Serif Bengali', serif;
+            font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; line-height: 1.05; margin-bottom: 0.4rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f0c040 30%, #f59e0b 60%, #f0c040 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            filter: drop-shadow(0 4px 20px rgba(240,192,64,0.25));
         }
-        @media (min-width: 768px) { .toggle-sidebar-btn { display: none; } .sidebar { transform: translateX(0); } }
-        @media (max-width: 480px) { .page-title { font-size: 1.4rem; } .toggle-buttons { width: 100%; } .type-btn { flex: 1; text-align: center; padding: 0.45rem 0.5rem; } }
-    </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}</style></head>
-<body class="night">
+        body.day .hero-title {
+            background: linear-gradient(135deg, #0F172A 0%, #2563EB 50%, #1D4ED8 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            filter: none;
+        }
+        .hero-subtitle {
+            font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.8rem; color: var(--text-secondary); max-width: 650px;
+        }
 
-    <div class="bg-orb bg-orb-1" aria-hidden="true"></div>
-    <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
-    <div class="bg-orb bg-orb-3" aria-hidden="true"></div>
+        .chapter-banner {
+            position: relative; width: 100%; max-height: 380px; border-radius: 20px; overflow: hidden;
+            margin-bottom: 2rem; border: 1px solid var(--border); box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+        }
+        body.day .chapter-banner { box-shadow: 0 8px 24px rgba(0,0,0,0.08); border: 1px solid #E2E8F0; }
+        .chapter-banner img { width: 100%; height: 380px; object-fit: cover; transition: transform 0.8s; }
+        .chapter-banner:hover img { transform: scale(1.05); }
+        .chapter-banner::after {
+            content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 30%, var(--bg-base) 100%); pointer-events: none;
+        }
+        body.day .chapter-banner::after { background: linear-gradient(180deg, transparent 30%, #FAFAFA 100%); }
+        .chapter-banner-text { position: absolute; bottom: 28px; left: 32px; z-index: 2; }
+        .chapter-banner-text h3 {
+            font-family: 'Noto Serif Bengali', serif; font-size: 2rem; font-weight: 800; color: #fff;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+        }
+        .banner-subtitle {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 0.2em; color: rgba(255,255,255,0.7); margin-top: 4px;
+        }
+
+        .toggle-group {
+            display: inline-flex; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            border-radius: 16px; padding: 5px; margin-bottom: 2rem; position: relative;
+        }
+        body.day .toggle-group { background: #F1F5F9; border: 1px solid #E2E8F0; }
+        .type-btn {
+            padding: 0.7rem 2rem; border-radius: 12px; cursor: pointer; font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700; font-size: 0.9rem; border: none; background: transparent; color: var(--text-muted);
+            transition: all 0.3s; position: relative; z-index: 1; display: flex; align-items: center; gap: 8px;
+        }
+        .type-btn.active { color: #06060f; background: rgba(255,255,255,0.8); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        body.day .type-btn.active { color: #FFFFFF; background: #2563EB; box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2); }
+        
+        .section-header {
+            display: flex; align-items: center; gap: 16px; margin-bottom: 2rem; padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-icon {
+            width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; color: #fff; flex-shrink: 0;
+        }
+        .icon-saq { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+        .icon-broad { background: linear-gradient(135deg, #a855f7, #7c3aed); }
+        .section-header h2 {
+            font-family: 'Noto Serif Bengali', serif; font-size: 1.2rem; font-weight: 700; color: var(--text-primary);
+        }
+        .badge-count {
+            font-family: 'Space Grotesk', sans-serif; border-radius: 24px; padding: 6px 18px; font-size: 0.75rem;
+            font-weight: 700; margin-left: auto; background: rgba(240,192,64,0.1); color: #f0c040;
+            border: 1px solid rgba(240,192,64,0.15); backdrop-filter: blur(8px);
+        }
+        body.day .badge-count {
+            background: rgba(37, 99, 235, 0.08); color: #2563EB; border: 1px solid rgba(37, 99, 235, 0.15);
+        }
+
+        .question-card {
+            border-radius: 20px; padding: 2rem 2.5rem; margin-bottom: 20px; background: var(--bg-card);
+            border: 1px solid var(--border); position: relative; overflow: hidden; transition: all 0.5s;
+            box-shadow: var(--shadow-card);
+        }
+        .question-card .q {
+            display: flex; align-items: flex-start; gap: 16px; font-size: clamp(1.3rem, 3.5vw, 2rem);
+            font-weight: 800; color: var(--q-color); margin-bottom: 14px; line-height: 1.5;
+            font-family: 'Noto Serif Bengali', serif;
+        }
+        .question-card .q .num {
+            display: inline-flex; align-items: center; justify-content: center; min-width: 40px; height: 40px;
+            border-radius: 12px; font-weight: 800; font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif;
+            color: #06060f; flex-shrink: 0; background: linear-gradient(135deg, #f0c040, #f59e0b);
+            box-shadow: 0 4px 20px rgba(240,192,64,0.3);
+        }
+        body.day .question-card .q .num {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8); color: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        .question-card .a {
+            padding: 18px 24px; font-size: clamp(1.15rem, 3vw, 1.7rem); line-height: 1.9;
+            color: var(--a-color); background: transparent !important; font-weight: 500;
+            border-left: 3px solid rgba(240,192,64,0.2); position: relative; font-family: 'Noto Serif Bengali', serif;
+        }
+        body.day .question-card .a { border-left-color: rgba(37, 99, 235, 0.2); }
+
+        .empty-state { text-align: center; padding: 5rem 2rem; color: var(--text-muted); }
+        .empty-state-icon {
+            width: 80px; height: 80px; border-radius: 24px; background: rgba(240,192,64,0.05);
+            border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.5rem; color: var(--accent); font-size: 2rem;
+        }
+        body.day .empty-state-icon { background: rgba(37, 99, 235, 0.06); border: 1px solid #E2E8F0; color: #2563EB; }
+
+        .loading-ring {
+            width: 48px; height: 48px; border: 3px solid rgba(240,192,64,0.1); border-top-color: #f0c040;
+            border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;
+        }
+        body.day .loading-ring { border: 3px solid rgba(37, 99, 235, 0.1); border-top-color: #2563EB; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .search-bar {
+            display: flex; align-items: center; gap: 10px; padding: 0 16px; height: 42px; border-radius: 12px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text-muted);
+            font-family: 'Inter', sans-serif; font-size: 0.85rem; transition: 0.3s; cursor: text; margin-bottom: 1rem;
+        }
+        body.day .search-bar { background: #F8FAFC; border: 1px solid #E2E8F0; color: #475569; }
+        .search-bar:focus-within {
+            border-color: rgba(240,192,64,0.3); background: rgba(240,192,64,0.03);
+            box-shadow: 0 0 20px rgba(240,192,64,0.05);
+        }
+        body.day .search-bar:focus-within {
+            border-color: #2563EB; background: #FFFFFF; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        .search-bar input { background: transparent; border: none; outline: none; color: var(--text-primary); font-size: 0.85rem; width: 100%; }
+
+        .progress-bar {
+            position: fixed; top: 72px; left: 0; height: 2px; background: linear-gradient(90deg, #f0c040, #f59e0b);
+            z-index: 201; transition: width 0.3s; box-shadow: 0 0 10px rgba(240,192,64,0.5);
+        }
+        body.day .progress-bar { background: linear-gradient(90deg, #2563EB, #1D4ED8); box-shadow: 0 0 10px rgba(37, 99, 235, 0.3); }
+        
+        .fab-scroll {
+            position: fixed; bottom: 32px; right: 32px; width: 52px; height: 52px; border-radius: 50%;
+            background: linear-gradient(135deg, #f0c040, #f59e0b); border: none; color: #06060f;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: 0 8px 30px rgba(240,192,64,0.3); transition: 0.3s; z-index: 100; opacity: 0; transform: translateY(20px);
+        }
+        body.day .fab-scroll {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8); color: #FFFFFF; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+        }
+        .fab-scroll.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+
+        footer {
+            position: relative; z-index: 1; background: var(--bg-footer); backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border); padding: 3rem 2rem 1.5rem; margin-top: 3rem;
+        }
+        body.day footer { background: #FFFFFF; border-top: 1px solid #E2E8F0; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto; }
+        .footer-col h4 { font-family: 'Space Grotesk', sans-serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 700; color: var(--text-muted); margin-bottom: 1rem; }
+        .footer-col a, .contact-item { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; padding: 6px 0; transition: 0.3s; }
+        .footer-col a:hover, .contact-item:hover { color: var(--accent); }
+        .footer-col a svg, .contact-item svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.5; transition: 0.3s; }
+        .footer-col a:hover svg, .contact-item:hover svg { opacity: 1; }
+
+        .social-instagram:hover { color: #E4405F !important; }
+        .social-instagram:hover svg { stroke: #E4405F !important; }
+        .social-telegram:hover { color: #0088cc !important; }
+        .social-telegram:hover svg { fill: #0088cc !important; }
+
+        .footer-bottom {
+            margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; color: var(--text-muted);
+            max-width: 1200px; margin-left: auto; margin-right: auto; flex-wrap: wrap; gap: 0.5rem;
+        }
+        .encryption-key {
+            font-size: 0.5rem; opacity: 0.15; user-select: none; font-family: 'Courier New', monospace;
+            letter-spacing: 0.05rem; color: var(--text-muted); cursor: default; transition: opacity 0.3s;
+        }
+        .encryption-key:hover { opacity: 0.4; }
+
+        .card-animate { opacity: 0; transform: translateY(30px); }
+        @keyframes cardReveal { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; top: 72px; left: 0; bottom: 0; transform: translateX(-100%); width: 300px; background: rgba(10,10,26,0.95); box-shadow: 8px 0 40px rgba(0,0,0,0.5); transition: transform 0.4s; padding-top: 3.5rem; }
+            body.day .sidebar { background: #FFFFFF; box-shadow: 8px 0 40px rgba(0,0,0,0.08); }
+            .sidebar.open { transform: translateX(0); }
+            .content-scroll { padding: 1.5rem 1.2rem 0; }
+            .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .hero-title { font-size: clamp(2rem, 7vw, 3.5rem); }
+        }
+    </style>
+</head>
+<body class="night">
+    <div class="universe-bg"></div>
+    <div class="stars" id="stars"></div>
+    <div class="shooting-star" style="top: 10%; animation-delay: 0s;"></div>
+    <div class="shooting-star" style="top: 30%; animation-delay: 3s;"></div>
+    <div class="shooting-star" style="top: 60%; animation-delay: 6s;"></div>
+    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
 
     <header class="mega-header">
-        <a href="index.html" title="Go to Homepage" class="header-left">
-            <div class="mega-logo-mark">🚀</div>
-            <div class="mega-title-group">
-                <span class="mega-title">MEGA QUIZ</span>
-                <span class="mega-subtitle">Class 10 Question Bank</span>
+        <a href="index.html" class="flex items-center gap-4 no-underline">
+            <div class="logo-glow">
+                <img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz Icon" width="44" height="44">
+            </div>
+            <div>
+                <div class="mega-title-text">MEGA QUIZ</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.3);">Class 10 Notes</div>
             </div>
         </a>
-        <div class="header-right">
-            <span class="mega-badge">CLASS 10</span>
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                <iconify-icon id="themeIcon" icon="lucide:moon" width="18"></iconify-icon>
+        <div class="flex items-center gap-4">
+            <span class="header-badge">Class 10</span>
+            <button id="themeToggle" style="width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.5);transition:all 0.3s;">
+                <i data-lucide="moon" width="18"></i>
             </button>
         </div>
     </header>
 
-    <div class="main-container" id="mainContainer">
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="main-wrapper" id="mainWrapper">
+        <button class="sidebar-toggle-fixed" id="sidebarToggle" aria-label="Toggle sidebar">
+            <span class="icon" id="toggleIcon">☰</span>
+        </button>
+
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-label">Subjects</div>
-            <div id="subjectList" class="subject-group"><div class="subject-item " data-subject="bengali"><span class="subject-emoji">📖</span><span>বাংলা (প্রথম ভাষা)</span></div><div class="subject-item " data-subject="english"><span class="subject-emoji">🔤</span><span>ইংরেজি (দ্বিতীয় ভাষা)</span></div><div class="subject-item " data-subject="mathematics"><span class="subject-emoji">📐</span><span>গণিত</span></div><div class="subject-item " data-subject="physical_science"><span class="subject-emoji">⚛️</span><span>ভৌতবিজ্ঞান</span></div><div class="subject-item active" data-subject="life_science"><span class="subject-emoji">🧬</span><span>জীবনবিজ্ঞান</span></div><div class="subject-item " data-subject="history"><span class="subject-emoji">🏛️</span><span>ইতিহাস</span></div><div class="subject-item " data-subject="geography"><span class="subject-emoji">🌍</span><span>ভূগোল</span></div></div>
-            <div class="sidebar-label" style="margin-top:1.75rem;">Chapters</div>
-            <div id="chapterSection" class="subject-group" style="display: block;">
-                <div id="chapterList" class="chapter-list"><div class="chapter-item  has-topics" data-chapter="lif_ch1"><span class="toggle-icon">▸</span><span>জীবন প্রক্রিয়া</span></div><div class="topic-container" data-parent="lif_ch1" style="display:none;"><div class="topic-item " data-topic="lif_ch1_t1" data-chapter="lif_ch1">১.A: উদ্ভিদের সংবেদনশীলতা</div><div class="topic-item " data-topic="lif_ch1_t2" data-chapter="lif_ch1">১.B: উদ্ভিদ হরমোন</div><div class="topic-item " data-topic="lif_ch1_t3" data-chapter="lif_ch1">১.C: প্রাণী হরমোন</div><div class="topic-item " data-topic="lif_ch1_t4" data-chapter="lif_ch1">১.D: প্রাণীদের স্নায়ুতন্ত্র</div><div class="topic-item " data-topic="lif_ch1_t5" data-chapter="lif_ch1">১.E: প্রাণীদের গমন</div></div><div class="chapter-item  has-topics" data-chapter="lif_ch2"><span class="toggle-icon">▾</span><span>জীবনের প্রবহমানতা</span></div><div class="topic-container" data-parent="lif_ch2" style="display:block;"><div class="topic-item " data-topic="a_" data-chapter="lif_ch2">২.A: কোশ বিভাজন ও কোশচক্র</div><div class="topic-item active" data-topic="b_reproduction" data-chapter="lif_ch2">২.B: জনন (Reproduction)</div><div class="topic-item " data-topic="c_" data-chapter="lif_ch2">২.C: সপুষ্পক উদ্ভিদের যৌন জনন</div><div class="topic-item " data-topic="d_" data-chapter="lif_ch2">২.D: বৃদ্ধি ও বিকাশ</div></div><div class="chapter-item  has-topics" data-chapter="ch_mrhnhkst"><span class="toggle-icon">▸</span><span>বংশগতি এবং জিনগত রোগ</span></div><div class="topic-container" data-parent="ch_mrhnhkst" style="display:none;"><div class="topic-item " data-topic="ch_mrhnhkst_t1" data-chapter="ch_mrhnhkst">topic1</div></div><div class="chapter-item  has-topics" data-chapter="ch_mrhnhkst_345ea"><span class="toggle-icon">▸</span><span>অভিব্যক্তি ও অভিযোজন</span></div><div class="topic-container" data-parent="ch_mrhnhkst_345ea" style="display:none;"><div class="topic-item " data-topic="ch_mrhnhkst_345ea_t1" data-chapter="ch_mrhnhkst_345ea">topic1</div></div><div class="chapter-item  has-topics" data-chapter="ch_mrhnhkst_0gdya"><span class="toggle-icon">▸</span><span>পরিবেশ ও সংরক্ষণ</span></div><div class="topic-container" data-parent="ch_mrhnhkst_0gdya" style="display:none;"><div class="topic-item " data-topic="ch_mrhnhkst_0gdya_t1" data-chapter="ch_mrhnhkst_0gdya">topic1</div></div></div>
+            <div id="subjectList"></div>
+            <div class="sidebar-label">Chapters</div>
+            <div id="chapterSection" style="display:none;">
+                <div class="search-bar">
+                    <i data-lucide="search" width="16" style="opacity:0.4;flex-shrink:0;"></i>
+                    <input type="text" id="searchInput" placeholder="Search chapters...">
+                </div>
+                <div id="chapterList"></div>
             </div>
         </aside>
-        <div class="content-scroll" id="contentScroll">
-            <div id="mainContent">
-                <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="notes.html">Classes</a><span class="sep">›</span><span class="current">Class 10</span></nav>
-                <h1 class="page-title">Class 10 <span class="accent">প্রশ্ন উত্তর</span></h1>
-                <p class="page-subtitle">জীবনবিজ্ঞান – জীবনের প্রবহমানতা » ২.B: জনন (Reproduction) — BROAD</p>
-                <div class="toggle-buttons">
-                    <button class="type-btn " id="toggleSAQ">📝 SAQ</button>
-                    <button class="type-btn active" id="toggleBroad">📖 Broad</button>
-                </div>
-                <div class="section-header"><div class="section-icon icon-broad"><iconify-icon icon="lucide:book-open" width="18"></iconify-icon></div><h2>জীবনবিজ্ঞান – জীবনের প্রবহমানতা » ২.B: জনন (Reproduction)</h2><span class="badge-count">8 টি</span></div>
-                
-                <div class="broad-card card-animate" style="animation-delay:2.8000000000000003s">
-                        
-                        <div class="broad-q"><span class="broad-num">41</span><span>জনন কাকে বলে? জননের প্রকারভেদ সম্পর্কে সংক্ষেপে আলোচনা করো ও জননের গুরুত্ব লেখো।</span></div>
-                        <div class="broad-a"><iconify-icon icon="lucide:book-open" width="16"></iconify-icon><span class="answer-content"><strong>জনন (Reproduction):</strong> যে জৈবিক পদ্ধতিতে জীব নিজের সজ্জা ও আকৃতিবিশিষ্ট অপত্য জীব সৃষ্টি করে এবং সংখ্যা বৃদ্ধির দ্বারা নিজের বংশধারা অক্ষুণ্ণ রাখে, তাকে জনন বলে। প্রকারভেদ: জনন প্রধানত দুই প্রকার: (i) অযৌন জনন: গ্যামেট ছাড়াই দেহকোশ বিভাজনের মাধ্যমে সম্পন্ন হয়। (যেমন: অ্যামিবার দ্বিবিভাজন, হাইড্রার বাডিং)। (ii) যৌন জনন: পুং ও স্ত্রী গ্যামেট সৃষ্টি ও মিলনের (নিষেক) মাধ্যমে জাইগোট সৃষ্টি করে। (যেমন: মাছ, মানুষ, পাখি)। গুরুত্ব: প্রজাতির অস্তিত্ব রক্ষা করা। প্রজাতির সংখ্যা বৃদ্ধি করা। জীবজগতে ভারসাম্য বজায় রাখা। বংশানুক্রমিক ধারা অক্ষুণ্ণ রাখা।</span></div>
-                    </div><div class="broad-card card-animate" style="animation-delay:2.87s">
-                        
-                        <div class="broad-q"><span class="broad-num">42</span><span>অযৌন জনন কাকে বলে? দ্বিবিভাজন ও বহুবিভাজন প্রক্রিয়া উদাহরণসহ বর্ণনা করো।</span></div>
-                        <div class="broad-a"><iconify-icon icon="lucide:book-open" width="16"></iconify-icon><span class="answer-content"><strong>অযৌন জনন:</strong> যে জনন প্রক্রিয়ায় গ্যামেট উৎপাদন ছাড়াই জনিত জীবের দেহকোশ বিভক্ত হয়ে বা দেহাংশের মাধ্যমে অপত্য জীব সৃষ্টি হয়, তাকে অযৌন জনন বলে। দ্বিবিভাজন (Binary fission): জনিত জীবের নিউক্লিয়াস প্রথমে বিভক্ত হয়ে দুটি অপত্য নিউক্লিয়াস গঠন করে, পরে সাইটোপ্লাজমও বিভক্ত হয়ে দুটি অপত্য জীব সৃষ্টি করে। উদাহরণ: অ্যামিবা, ইউগ্লিনা। বহুবিভাজন (Multiple fission): জনিত জীবের নিউক্লিয়াস বারবার বিভক্ত হয়ে বহু অপত্য নিউক্লিয়াস সৃষ্টি করে। পরে প্রতিটি নিউক্লিয়াসকে কেন্দ্র করে সাইটোপ্লাজম আবদ্ধ হয়ে একাধিক অপত্য জীব সৃষ্টি হয়। উদাহরণ: প্লাজমোডিয়াম (ম্যালেরিয়া পরজীবী)।</span></div>
-                    </div><div class="broad-card card-animate" style="animation-delay:2.9400000000000004s">
-                        
-                        <div class="broad-q"><span class="broad-num">43</span><span>অঙ্গজ বংশবিস্তার (Vegetative Propagation) কাকে বলে? প্রাকৃতিক অঙ্গজ বংশবিস্তারের বিভিন্ন পদ্ধতি উদাহরণসহ আলোচনা করো।</span></div>
-                        <div class="broad-a"><iconify-icon icon="lucide:book-open" width="16"></iconify-icon><span class="answer-content"><strong>অঙ্গজ বংশবিস্তার:</strong> যে জনন প্রক্রিয়ায় উদ্ভিদের দেহের কোনো অঙ্গ বা অঙ্গাংশ (মূল, কাণ্ড, পাতা) জনিত উদ্ভিদ থেকে বিচ্ছিন্ন হয়ে বা না হয়ে অপত্য উদ্ভিদ সৃষ্টি করে, তাকে অঙ্গজ বংশবিস্তার বলে। প্রাকৃতিক পদ্ধতি: মূলের মাধ্যমে: রাঙা আলু বা মিষ্টি আলুর রসালো মূল থেকে অস্বাভাবিক মুকুল সৃষ্টি হয়ে নতুন উদ্ভিদ জন্মায়। কাণ্ডের মাধ্যমে: আলুর টিউবার, আদার রাইজোম, কচুরিপানার অফসেট, দুব্বা ঘাসের ধাবক ইত্যাদি কাণ্ড থেকে মুকুল সৃষ্টি হয়ে অপত্য উদ্ভিদ জন্মায়। পাতার মাধ্যমে: পাথরকুচি ও বেগোনিয়া পাতার কিনারায় অসংখ্য পত্রমুকুল সৃষ্টি হয়, যার গোড়া থেকে মূল বেরিয়ে অপত্য উদ্ভিদ গঠিত হয়।</span></div>
-                    </div><div class="broad-card card-animate" style="animation-delay:3.0100000000000002s">
-                        
-                        <div class="broad-q"><span class="broad-num">44</span><span>কৃত্রিম অঙ্গজ জননের বিভিন্ন পদ্ধতি কী কী? শাখাকলম (Cutting) ও জোড়কলম (Grafting) পদ্ধতি বর্ণনা করো।</span></div>
-                        <div class="broad-a"><iconify-icon icon="lucide:book-open" width="16"></iconify-icon><span class="answer-content"><strong>কৃত্রিম অঙ্গজ জননের পদ্ধতি:</strong> যেসব পদ্ধতিতে মানুষের হস্তক্ষেপে উদ্ভিদের অঙ্গজ জনন ঘটানো হয়, তা কৃত্রিম অঙ্গজ জনন। যেমন: ১. শাখাকলম, ২. জোড়কলম, ৩. টিস্যু কালচার। শাখাকলম (Cutting): গোলাপ, লেবু ইত্যাদি গাছের ২০-৩০ সেমি কাণ্ড বা শাখা কেটে নেওয়া হয়। কাটা অংশ ভিজে নরম মাটিতে পুঁতে রাখলে কয়েকদিন পর তা থেকে মূল সৃষ্টি হয় এবং বায়বীয় অংশ থেকে মুকুল বের হয়ে অপত্য গাছ জন্মায়। জোড়কলম (Grafting): এই প্রক্রিয়ায় একই প্রজাতিভুক্ত দুটি গাছের শাখা জোড়া লাগানো হয়। মূলসহ গাছকে স্টক এবং যে ডাল জোড়া হয় তাকে সায়ন বলে। উভয় গাছের অংশ জোড়া লাগিয়ে শত্রুকবল থেকে রক্ষা করে বেঁধে রাখা হয়। কয়েকদিন পর জোড়া লেগে গেলে সায়নের অংশটি বাড়তে শুরু করে এবং উন্নত জাতের ফল দেয়। যেমন: আম, পেয়ারা।</span></div>
-                    </div><div class="broad-card card-animate" style="animation-delay:3.08s">
-                        
-                        <div class="broad-q"><span class="broad-num">45</span><span>উদ্ভিদের অঙ্গজ বংশবিস্তারের গুরুত্ব ও সুবিধাগুলি কী কী? উদাহরণসহ আলোচনা করো।</span></div>
-                        <div class="broad-a"><iconify-icon icon="lucide:book-open" width="16"></iconify-icon><span class="answer-content"><strong>অঙ্গজ বংশবিস্তারের গুরুত্ব ও সুবিধা:</strong> দ্রুত বংশবিস্তার: বীজ থেকে চারা সৃষ্টির চেয়ে কলম বা কাটিং-এর মাধ্যমে খুব কম সময়ে গাছ তৈরী হয়। মাতৃগুণ বজায় থাকে: যেহেতু এটি অযৌন জনন, তাই সৃষ্ট অপত্য উদ্ভিদ মাতৃউদ্ভিদের সমস্ত গুণাগুণ বহন করে। যেমন- দার্জিলিং আমের জোড়কলম। বীজহীন ফলের চাষ: যেসব ফলের বীজ হয় না (কলা, আঙুর), তাদের বংশবিস্তার একমাত্র অঙ্গজ জননের মাধ্যমেই সম্ভব। রোগ প্রতিরোধ: রোগগ্রস্ত বা দুর্বল গাছের ডাল ভালো স্টকের ওপর গ্রাফটিং করলে তাতে শক্তি সঞ্চার হয় ও ফলন বাড়ে। সহজ প্রক্রিয়া: গ্রাফটিং, শাখাকলম ইত্যাদি পদ্ধতি কৃষকেরা অতি সহজে কম খরচে সম্পন্ন করতে পারেন।</span></div>
-                    </div><div class="broad-card card-animate" style="animation-delay:3.1500000000000004s">
-                        
-                        <div class="broad-q"><span class="broad-num">46</span><span>গ্রাফটিং বা জোড়কলমের স্টক ও সায়ন বলতে কী বোঝো? একটি সফল জোড়কলমের শর্ত কী কী?</span></div>
-                        <div class="broad-a"><iconify-icon icon="lucide:book-open" width="16"></iconify-icon><span class="answer-content"><strong>স্টক ও সায়ন:</strong> স্টক (Stock): যে সুস্থ ও সবল মূলসহ গাছ বা চারার সঙ্গে জোড়া দেওয়া হয়, তাকে স্টক বলে। সায়ন (Scion): উন্নত জাতের যে গাছের শাখা বা ডাল কেটে এনে স্টকের সঙ্গে জোড়া হয়, তাকে সায়ন বলে। সফল জোড়কলমের শর্ত: স্টক ও সায়ন উদ্ভিদকে অবশ্যই একই প্রজাতি বা একই গণভুক্ত হতে হবে। স্টক উদ্ভিদ সুস্থ, সবল ও রোগমুক্ত হতে হবে। সায়ন ডালটিতে ভালো মানের মুকুল থাকতে হবে। জোড়া লাগানোর পর যেন বাতাস বা পোকামাকড় দ্বারা সরে না যায়, তাই তা ভালোভাবে বেঁধে দিতে হবে এবং উপযুক্ত প্রলেপ দিতে হবে। বসন্তকালে ক্যাম্বিয়াম কলা সক্রিয় থাকায় জোড়কলমের সাফল্যের হার সবচেয়ে বেশি।</span></div>
-                    </div><div class="broad-card card-animate" style="animation-delay:3.22s">
-                        
-                        <div class="broad-q"><span class="broad-num">47</span><span>পাথরকুচির অঙ্গজ জনন ও গোলাপের শাখাকলমের মধ্যে পার্থক্য কী? এরা কোন ধরনের জননের উদাহরণ?</span></div>
-                        <div class="broad-a"><iconify-icon icon="lucide:book-open" width="16"></iconify-icon><span class="answer-content"><strong>পার্থক্য:</strong> পাথরকুচির জনন: এটি একটি প্রাকৃতিক অঙ্গজ জনন। এখানে মানুষের কোনো হস্তক্ষেপ ছাড়াই পাতার কিনারায় স্বয়ংক্রিয়ভাবে পত্রমুকুল সৃষ্টি হয় এবং তা থেকে চারা তৈরি হয়। গোলাপের শাখাকলম: এটি একটি কৃত্রিম অঙ্গজ জনন। এখানে মানুষ সক্রিয়ভাবে গোলাপের কাণ্ড কেটে ভিজে মাটিতে পুঁতে দিয়ে শিকড় গজানোর ব্যবস্থা করে। ধরন: উভয়ই অঙ্গজ বংশবিস্তার (Vegetative Propagation) তথা অযৌন জননের উদাহরণ। কারণ এতে ফুল, ফল বা গ্যামেটের প্রয়োজন হয় না।</span></div>
-                    </div><div class="broad-card card-animate" style="animation-delay:3.2900000000000005s">
-                        
-                        <div class="broad-q"><span class="broad-num">48</span><span>জননের প্রয়োজনীয়তা ও জীবজগতে এর ভূমিকা সম্পর্কে বিস্তারিত আলোচনা করো।</span></div>
-                        <div class="broad-a"><iconify-icon icon="lucide:book-open" width="16"></iconify-icon><span class="answer-content"><strong>প্রয়োজনীয়তা:</strong></span></div>
-                    </div>
-                <div class="section-divider"></div></div>
 
-            <div class="edit-panel" id="editPanel">
-                <h3>✏️ Quick Add (|| Question || Answer)</h3>
-                <textarea id="quickAddText" rows="6" placeholder="জীবন প্রক্রিয়া কাকে বলে? || যে প্রক্রিয়া জীবন বজায় রাখে"></textarea>
-                <div class="form-group" style="margin-top:0.75rem;"><label>Target Chapter</label><select id="editChapterSelect"><option value="ben_ch1">পদ্য (bengali)</option><option value="ben_ch2">গদ্য (bengali)</option><option value="eng_ch1">Prose (english)</option><option value="eng_ch2">Poetry (english)</option><option value="math_ch1">বাস্তব সংখ্যা (mathematics)</option><option value="math_ch2">সমীকরণ (mathematics)</option><option value="phy_ch1">পদার্থের গঠন (physical_science)</option><option value="phy_ch2">রাসায়নিক বন্ধন (physical_science)</option><option value="lif_ch1">জীবন প্রক্রিয়া (life_science)</option><option value="lif_ch2" selected="">জীবনের প্রবহমানতা (life_science)</option><option value="his_ch1">ভারতের ইতিহাসের ধারা (history)</option><option value="his_ch2">ঔপনিবেশিক আধিপত্য (history)</option><option value="geo_ch1">পৃথিবীর গঠন (geography)</option><option value="geo_ch2">বায়ুমণ্ডল (geography)</option><option value="ch_mrhnhkst">বংশগতি এবং জিনগত রোগ (life_science)</option><option value="ch_mrhnhkst_345ea">অভিব্যক্তি ও অভিযোজন (life_science)</option><option value="ch_mrhnhkst_0gdya">পরিবেশ ও সংরক্ষণ (life_science)</option></select></div>
-                <div class="form-group" id="quickTopicGroup" style="display: block;"><label>Target Topic (Sub‑chapter)</label><select id="editTopicSelect"><option value="a_">২.A: কোশ বিভাজন ও কোশচক্র</option><option value="b_reproduction">২.B: জনন (Reproduction)</option><option value="c_">২.C: সপুষ্পক উদ্ভিদের যৌন জনন</option><option value="d_">২.D: বৃদ্ধি ও বিকাশ</option></select></div>
-                <div class="form-group" id="uploadTypeGroup"><label>Question Type</label><select id="uploadTypeSelect"><option value="saq">SAQ</option><option value="broad">Broad</option><option value="comparison">Table</option></select></div>
-                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                    <button class="btn" id="quickAddBtn">➕ Add from Text</button>
-                    <button class="btn btn-sm" id="uploadTopicJsonBtn" style="background:var(--cyan);color:#fff;">📥 Upload Topic (JSON)</button>
-                    <button class="btn btn-sm" id="addBlankTableBtn" style="background:var(--comp-accent);color:#000;">➕ Add Blank Table</button>
-                    <input type="file" id="topicJsonFileInput" accept=".json" style="display:none;">
-                </div>
-                <div class="status-msg" id="editStatus">❌ সঠিক ফরম্যাটে কিছু পাওয়া যায়নি।</div><hr>
-                <h3>📚 Subject Management</h3><p>Add or remove subjects. <span style="font-size:0.7rem; color:var(--accent);">(Click on name to edit)</span></p>
-                <ul class="mgmt-list" id="subjectMgmtList"><li class="mgmt-list-item"><span class="item-emoji">📖</span><span class="item-name mgmt-editable-name" data-type="subject" data-key="bengali">বাংলা (প্রথম ভাষা)</span><span class="item-meta">bengali</span><button class="btn btn-xs btn-warning clear-subj-qs-btn" data-subject="bengali">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-subject-btn" data-subject="bengali">🗑️</button></li><li class="mgmt-list-item"><span class="item-emoji">🔤</span><span class="item-name mgmt-editable-name" data-type="subject" data-key="english">ইংরেজি (দ্বিতীয় ভাষা)</span><span class="item-meta">english</span><button class="btn btn-xs btn-warning clear-subj-qs-btn" data-subject="english">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-subject-btn" data-subject="english">🗑️</button></li><li class="mgmt-list-item"><span class="item-emoji">📐</span><span class="item-name mgmt-editable-name" data-type="subject" data-key="mathematics">গণিত</span><span class="item-meta">mathematics</span><button class="btn btn-xs btn-warning clear-subj-qs-btn" data-subject="mathematics">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-subject-btn" data-subject="mathematics">🗑️</button></li><li class="mgmt-list-item"><span class="item-emoji">⚛️</span><span class="item-name mgmt-editable-name" data-type="subject" data-key="physical_science">ভৌতবিজ্ঞান</span><span class="item-meta">physical_science</span><button class="btn btn-xs btn-warning clear-subj-qs-btn" data-subject="physical_science">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-subject-btn" data-subject="physical_science">🗑️</button></li><li class="mgmt-list-item"><span class="item-emoji">🧬</span><span class="item-name mgmt-editable-name" data-type="subject" data-key="life_science">জীবনবিজ্ঞান</span><span class="item-meta">life_science</span><button class="btn btn-xs btn-warning clear-subj-qs-btn" data-subject="life_science">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-subject-btn" data-subject="life_science">🗑️</button></li><li class="mgmt-list-item"><span class="item-emoji">🏛️</span><span class="item-name mgmt-editable-name" data-type="subject" data-key="history">ইতিহাস</span><span class="item-meta">history</span><button class="btn btn-xs btn-warning clear-subj-qs-btn" data-subject="history">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-subject-btn" data-subject="history">🗑️</button></li><li class="mgmt-list-item"><span class="item-emoji">🌍</span><span class="item-name mgmt-editable-name" data-type="subject" data-key="geography">ভূগোল</span><span class="item-meta">geography</span><button class="btn btn-xs btn-warning clear-subj-qs-btn" data-subject="geography">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-subject-btn" data-subject="geography">🗑️</button></li></ul>
-                <div style="display:flex;gap:8px;margin-top:0.75rem;flex-wrap:wrap;align-items:flex-end;">
-                    <div class="form-group" style="flex:1;min-width:140px;margin-bottom:0;"><label>New Subject Name</label><input type="text" id="newSubjectName" placeholder="e.g. সংস্কৃত"></div>
-                    <div class="form-group" style="flex:1;min-width:100px;margin-bottom:0;"><label>Key (auto)</label><input type="text" id="newSubjectKey" placeholder="auto-generated" readonly="" style="opacity:0.7;"></div>
-                    <button class="btn btn-sm" id="addSubjectBtn" style="flex-shrink:0;">➕ Add Subject</button>
-                </div>
-                <div class="status-msg" id="subjectStatus"></div><hr>
-                <h3>📑 Chapter Management</h3><div class="form-group"><label>Select Subject</label><select id="chapterMgmtSubject"><option value="bengali">বাংলা (প্রথম ভাষা)</option><option value="english">ইংরেজি (দ্বিতীয় ভাষা)</option><option value="mathematics">গণিত</option><option value="physical_science">ভৌতবিজ্ঞান</option><option value="life_science" selected="">জীবনবিজ্ঞান</option><option value="history">ইতিহাস</option><option value="geography">ভূগোল</option></select></div>
-                <p>Arrange chapters using ↑ ↓ buttons. <span style="font-size:0.7rem; color:var(--accent);">(Click on name to edit)</span></p>
-                <ul class="mgmt-list" id="chapterMgmtList"><li class="mgmt-list-item"><button class="btn-arrange chap-up-btn" data-chapter="lif_ch1" disabled="">↑</button><button class="btn-arrange chap-down-btn" data-chapter="lif_ch1">↓</button><span class="item-name mgmt-editable-name" data-type="chapter" data-key="lif_ch1">জীবন প্রক্রিয়া</span><span class="item-meta">saq</span><button class="btn btn-xs btn-warning clear-chap-qs-btn" data-chapter="lif_ch1">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-chapter-btn" data-chapter="lif_ch1">🗑️</button></li><li class="mgmt-list-item"><button class="btn-arrange chap-up-btn" data-chapter="lif_ch2">↑</button><button class="btn-arrange chap-down-btn" data-chapter="lif_ch2">↓</button><span class="item-name mgmt-editable-name" data-type="chapter" data-key="lif_ch2">জীবনের প্রবহমানতা</span><span class="item-meta">saq</span><button class="btn btn-xs btn-warning clear-chap-qs-btn" data-chapter="lif_ch2">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-chapter-btn" data-chapter="lif_ch2">🗑️</button></li><li class="mgmt-list-item"><button class="btn-arrange chap-up-btn" data-chapter="ch_mrhnhkst">↑</button><button class="btn-arrange chap-down-btn" data-chapter="ch_mrhnhkst">↓</button><span class="item-name mgmt-editable-name" data-type="chapter" data-key="ch_mrhnhkst">বংশগতি এবং জিনগত রোগ</span><span class="item-meta">saq</span><button class="btn btn-xs btn-warning clear-chap-qs-btn" data-chapter="ch_mrhnhkst">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-chapter-btn" data-chapter="ch_mrhnhkst">🗑️</button></li><li class="mgmt-list-item"><button class="btn-arrange chap-up-btn" data-chapter="ch_mrhnhkst_345ea">↑</button><button class="btn-arrange chap-down-btn" data-chapter="ch_mrhnhkst_345ea">↓</button><span class="item-name mgmt-editable-name" data-type="chapter" data-key="ch_mrhnhkst_345ea">অভিব্যক্তি ও অভিযোজন</span><span class="item-meta">saq</span><button class="btn btn-xs btn-warning clear-chap-qs-btn" data-chapter="ch_mrhnhkst_345ea">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-chapter-btn" data-chapter="ch_mrhnhkst_345ea">🗑️</button></li><li class="mgmt-list-item"><button class="btn-arrange chap-up-btn" data-chapter="ch_mrhnhkst_0gdya">↑</button><button class="btn-arrange chap-down-btn" data-chapter="ch_mrhnhkst_0gdya" disabled="">↓</button><span class="item-name mgmt-editable-name" data-type="chapter" data-key="ch_mrhnhkst_0gdya">পরিবেশ ও সংরক্ষণ</span><span class="item-meta">saq</span><button class="btn btn-xs btn-warning clear-chap-qs-btn" data-chapter="ch_mrhnhkst_0gdya">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-chapter-btn" data-chapter="ch_mrhnhkst_0gdya">🗑️</button></li></ul>
-                <div style="display:flex;gap:8px;margin-top:0.75rem;flex-wrap:wrap;align-items:flex-end;">
-                    <div class="form-group" style="flex:1;min-width:140px;margin-bottom:0;"><label>New Chapter Name</label><input type="text" id="newChapterName" placeholder="e.g. কোষ বিভাজন"></div>
-                    <div class="form-group" style="flex:1;min-width:100px;margin-bottom:0;"><label>Key (auto)</label><input type="text" id="newChapterKey" placeholder="auto-generated" readonly="" style="opacity:0.7;"></div>
-                    <div class="form-group" style="min-width:90px;margin-bottom:0;"><label>Default Type</label><select id="newChapterType"><option value="saq">SAQ</option><option value="broad">Broad</option><option value="comparison">Table</option></select></div>
-                    <button class="btn btn-sm" id="addChapterBtn" style="flex-shrink:0;">➕ Add Chapter</button>
-                </div>
-                <div style="margin-top:1.5rem; border-top:1px solid var(--border); padding-top:1rem;">
-                    <h4>⚡ Bulk Add Chapters</h4>
-                    <p style="font-size:0.78rem; color:var(--text-muted);">প্রতি লাইনে একটি করে চ্যাপ্টারের নাম লিখো। উপরের সাবজেক্ট ও টাইপ সিলেক্টর ব্যবহার করবে।</p>
-                    <textarea id="bulkChapterText" rows="4" placeholder="কোষ বিভাজন
-জীবজগতে নিয়ন্ত্রণ
-পরিবেশ ও বাস্তুতন্ত্র"></textarea>
-                    <div style="margin-top:0.5rem;"><button class="btn btn-sm" id="bulkAddChaptersBtn">➕ Add All Chapters</button></div>
-                    <div class="status-msg" id="bulkChapterStatus">✅ 3 chapters added.</div>
-                </div>
-                <div class="status-msg" id="chapterStatus"></div>
-                <div style="margin-top:1.5rem; border-top:1px solid var(--border); padding-top:1rem;">
-                    <h4>🖼️ Set Chapter Image</h4>
-                    <p style="font-size:0.78rem; color:var(--text-muted);">প্রতিটি চ্যাপ্টারের জন্য আলাদা ইমেজ URL বসাতে পারো।</p>
-                    <div class="form-group"><label>Select Chapter</label><select id="chapterImageSelect"><option value="ben_ch1">পদ্য (bengali)</option><option value="ben_ch2">গদ্য (bengali)</option><option value="eng_ch1">Prose (english)</option><option value="eng_ch2">Poetry (english)</option><option value="math_ch1">বাস্তব সংখ্যা (mathematics)</option><option value="math_ch2">সমীকরণ (mathematics)</option><option value="phy_ch1">পদার্থের গঠন (physical_science)</option><option value="phy_ch2">রাসায়নিক বন্ধন (physical_science)</option><option value="lif_ch1">জীবন প্রক্রিয়া (life_science)</option><option value="lif_ch2">জীবনের প্রবহমানতা (life_science)</option><option value="his_ch1">ভারতের ইতিহাসের ধারা (history)</option><option value="his_ch2">ঔপনিবেশিক আধিপত্য (history)</option><option value="geo_ch1">পৃথিবীর গঠন (geography)</option><option value="geo_ch2">বায়ুমণ্ডল (geography)</option><option value="ch_mrhnhkst">বংশগতি এবং জিনগত রোগ (life_science)</option><option value="ch_mrhnhkst_345ea">অভিব্যক্তি ও অভিযোজন (life_science)</option><option value="ch_mrhnhkst_0gdya">পরিবেশ ও সংরক্ষণ (life_science)</option></select></div>
-                    <div class="form-group"><label>Image URL</label><input type="text" id="chapterImageUrl" placeholder="https://i.ibb.co/..."></div>
-                    <button class="btn btn-sm" id="saveChapterImageBtn">💾 Save Image</button>
-                    <div class="status-msg" id="chapterImageStatus"></div>
-                </div>
-                <hr>
-                <h3>📌 Topic (Sub‑chapter) Management</h3><div class="form-group"><label>Select Chapter</label><select id="topicMgmtChapter"><option value="ben_ch1">পদ্য (bengali)</option><option value="ben_ch2">গদ্য (bengali)</option><option value="eng_ch1">Prose (english)</option><option value="eng_ch2">Poetry (english)</option><option value="math_ch1">বাস্তব সংখ্যা (mathematics)</option><option value="math_ch2">সমীকরণ (mathematics)</option><option value="phy_ch1">পদার্থের গঠন (physical_science)</option><option value="phy_ch2">রাসায়নিক বন্ধন (physical_science)</option><option value="lif_ch1">জীবন প্রক্রিয়া (life_science)</option><option value="lif_ch2">জীবনের প্রবহমানতা (life_science)</option><option value="his_ch1">ভারতের ইতিহাসের ধারা (history)</option><option value="his_ch2">ঔপনিবেশিক আধিপত্য (history)</option><option value="geo_ch1">পৃথিবীর গঠন (geography)</option><option value="geo_ch2">বায়ুমণ্ডল (geography)</option><option value="ch_mrhnhkst">বংশগতি এবং জিনগত রোগ (life_science)</option><option value="ch_mrhnhkst_345ea">অভিব্যক্তি ও অভিযোজন (life_science)</option><option value="ch_mrhnhkst_0gdya">পরিবেশ ও সংরক্ষণ (life_science)</option></select></div>
-                <p>Manage sub‑topics. Arrange with ↑ ↓. <span style="font-size:0.7rem; color:var(--accent);">(Click on name to edit)</span></p>
-                <ul class="mgmt-list" id="topicMgmtList"><li class="mgmt-list-item"><button class="btn-arrange topic-up-btn" data-topic="a_" data-chapter="lif_ch2" disabled="">↑</button><button class="btn-arrange topic-down-btn" data-topic="a_" data-chapter="lif_ch2">↓</button><span class="item-name mgmt-editable-name" data-type="topic" data-chapter="lif_ch2" data-key="a_">২.A: কোশ বিভাজন ও কোশচক্র</span><button class="btn btn-xs btn-warning clear-topic-qs-btn" data-topic="a_" data-chapter="lif_ch2">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-topic-btn" data-topic="a_" data-chapter="lif_ch2">🗑️</button></li><li class="mgmt-list-item"><button class="btn-arrange topic-up-btn" data-topic="b_reproduction" data-chapter="lif_ch2">↑</button><button class="btn-arrange topic-down-btn" data-topic="b_reproduction" data-chapter="lif_ch2">↓</button><span class="item-name mgmt-editable-name" data-type="topic" data-chapter="lif_ch2" data-key="b_reproduction">২.B: জনন (Reproduction)</span><button class="btn btn-xs btn-warning clear-topic-qs-btn" data-topic="b_reproduction" data-chapter="lif_ch2">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-topic-btn" data-topic="b_reproduction" data-chapter="lif_ch2">🗑️</button></li><li class="mgmt-list-item"><button class="btn-arrange topic-up-btn" data-topic="c_" data-chapter="lif_ch2">↑</button><button class="btn-arrange topic-down-btn" data-topic="c_" data-chapter="lif_ch2">↓</button><span class="item-name mgmt-editable-name" data-type="topic" data-chapter="lif_ch2" data-key="c_">২.C: সপুষ্পক উদ্ভিদের যৌন জনন</span><button class="btn btn-xs btn-warning clear-topic-qs-btn" data-topic="c_" data-chapter="lif_ch2">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-topic-btn" data-topic="c_" data-chapter="lif_ch2">🗑️</button></li><li class="mgmt-list-item"><button class="btn-arrange topic-up-btn" data-topic="d_" data-chapter="lif_ch2">↑</button><button class="btn-arrange topic-down-btn" data-topic="d_" data-chapter="lif_ch2" disabled="">↓</button><span class="item-name mgmt-editable-name" data-type="topic" data-chapter="lif_ch2" data-key="d_">২.D: বৃদ্ধি ও বিকাশ</span><button class="btn btn-xs btn-warning clear-topic-qs-btn" data-topic="d_" data-chapter="lif_ch2">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-topic-btn" data-topic="d_" data-chapter="lif_ch2">🗑️</button></li></ul>
-                <div style="display:flex;gap:8px;margin-top:0.75rem;flex-wrap:wrap;align-items:flex-end;">
-                    <div class="form-group" style="flex:1;min-width:160px;margin-bottom:0;"><label>New Topic Name</label><input type="text" id="newTopicName" placeholder="e.g. ১.A: উদ্ভিদের সংবেদনশীলতা"></div>
-                    <div class="form-group" style="flex:1;min-width:100px;margin-bottom:0;"><label>Key (auto)</label><input type="text" id="newTopicKey" placeholder="auto-generated" readonly="" style="opacity:0.7;"></div>
-                    <button class="btn btn-sm" id="addTopicBtn" style="flex-shrink:0;">➕ Add Topic</button>
-                </div>
-                <div style="margin-top:1.5rem; border-top:1px solid var(--border); padding-top:1rem;">
-                    <h4>⚡ Bulk Add Topics</h4>
-                    <p style="font-size:0.78rem; color:var(--text-muted);">প্রতি লাইনে একটি করে টপিকের নাম লিখো। উপরের চ্যাপ্টার সিলেক্টর ব্যবহার করবে।</p>
-                    <textarea id="bulkTopicText" rows="4" placeholder="১.A: উদ্ভিদের সংবেদনশীলতা
-১.B: উদ্ভিদ হরমোন
-১.C: প্রাণী হরমোন"></textarea>
-                    <div style="margin-top:0.5rem;"><button class="btn btn-sm" id="bulkAddTopicsBtn">➕ Add All Topics</button></div>
-                    <div class="status-msg" id="bulkTopicStatus">✅ 4 topics added.</div>
-                </div>
-                <div class="status-msg" id="topicStatus"></div><hr>
-                <h4>📂 JSON File Upload (Full Bank Replace)</h4><input type="file" id="jsonFileInput" accept=".json" style="display:none;">
-                <button class="btn btn-sm" id="uploadJsonBtn">📤 Upload Full JSON &amp; Replace</button>
-                <div class="status-msg" id="fullJsonStatus"></div><hr>
-                <h4>Backup / Remote Load</h4>
-                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:0.5rem;">
-                    <button class="btn btn-sm" id="backupFullBtn">📥 Full Backup</button>
-                    <button class="btn btn-sm" id="backupChapterBtn">📥 Backup Current Chapter</button>
-                    <button class="btn btn-sm" id="backupTopicBtn">📥 Backup Current Topic</button>
-                </div>
-                <div class="form-group" style="margin-top:1rem;"><label>Load from URL (GitHub raw JSON)</label><input type="text" id="remoteUrl" placeholder="https://raw.githubusercontent.com/.../class10_bank.json"><button class="btn btn-sm" id="loadRemoteBtn" style="margin-top:0.5rem;">Load</button></div>
-                <hr>
-                <h4>📤 Import Questions from JSON</h4>
-                <p style="font-size:0.78rem; color:var(--text-muted);">JSON ফাইল (প্রশ্নের অ্যারে) আপলোড করে নির্দিষ্ট চ্যাপ্টার/টপিকে যোগ করো।</p>
-                <div class="form-group"><label>Target Chapter</label><select id="importChapterSelect"><option value="ben_ch1">পদ্য (bengali)</option><option value="ben_ch2">গদ্য (bengali)</option><option value="eng_ch1">Prose (english)</option><option value="eng_ch2">Poetry (english)</option><option value="math_ch1">বাস্তব সংখ্যা (mathematics)</option><option value="math_ch2">সমীকরণ (mathematics)</option><option value="phy_ch1">পদার্থের গঠন (physical_science)</option><option value="phy_ch2">রাসায়নিক বন্ধন (physical_science)</option><option value="lif_ch1">জীবন প্রক্রিয়া (life_science)</option><option value="lif_ch2">জীবনের প্রবহমানতা (life_science)</option><option value="his_ch1">ভারতের ইতিহাসের ধারা (history)</option><option value="his_ch2">ঔপনিবেশিক আধিপত্য (history)</option><option value="geo_ch1">পৃথিবীর গঠন (geography)</option><option value="geo_ch2">বায়ুমণ্ডল (geography)</option><option value="ch_mrhnhkst">বংশগতি এবং জিনগত রোগ (life_science)</option><option value="ch_mrhnhkst_345ea">অভিব্যক্তি ও অভিযোজন (life_science)</option><option value="ch_mrhnhkst_0gdya">পরিবেশ ও সংরক্ষণ (life_science)</option></select></div>
-                <div class="form-group" id="importTopicGroup" style="display: block;"><label>Target Topic</label><select id="importTopicSelect"><option value="ben_ch1_t1">topic1</option></select></div>
-                <input type="file" id="importJsonFile" accept=".json" style="display:none;">
-                <button class="btn btn-sm" id="importJsonBtn">📥 Choose JSON &amp; Import</button>
-                <div class="status-msg" id="importStatus"></div>
-                <hr>
-                <h4>🔒 Save as Permanent HTML</h4>
-                <p style="font-size:0.78rem; color:var(--text-muted);">সম্পূর্ণ এডিটরসহ ডাউনলোড হবে। পরে আবার এডিট করতে পারবে।</p>
-                <button class="btn btn-save-permanent" id="savePermanentBtn">💾 Save as Permanent HTML</button>
-                <div class="status-msg" id="permanentStatus" style="margin-top:0.5rem;"></div>
-            </div>
+        <div class="content-scroll" id="contentScroll">
+            <nav class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="sep">›</span>
+                <a href="classnotes.html">Classes</a>
+                <span class="sep">›</span>
+                <span class="current">Class 10</span>
+            </nav>
+            <h1 class="hero-title">Class 10 <span style="color:#f0c040;">Notes</span></h1>
+            <p class="hero-subtitle" id="dynamicSubtitle"></p>
+            <div id="dynamicContent"></div>
         </div>
     </div>
 
-    <div class="tbl-toolbar" id="tblToolbar" style="top: 864.543px; left: 1224.67px;">
-        <button class="tbl-btn" id="tblAddRowBelow" title="Add Row Below">➕</button>
-        <button class="tbl-btn" id="tblAddColRight" title="Add Column Right">➕</button>
-        <button class="tbl-btn danger" id="tblDeleteRow" title="Delete Row">🗑️</button>
-        <button class="tbl-btn danger" id="tblDeleteCol" title="Delete Column">🗑️</button>
-    </div>
+    <button class="fab-scroll" id="fabScroll" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <i data-lucide="arrow-up" width="20"></i>
+    </button>
 
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
-                <div style="display:flex;align-items:center;gap:0.65rem;margin-bottom:0.85rem;">
-                    <div style="width:1.75rem;height:1.75rem;border-radius:0.5rem;background:linear-gradient(135deg,#7c3aed,#10b981,#f59e0b);display:flex;align-items:center;justify-content:center;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="width:0.875rem;height:0.875rem;"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"></path><path d="M12 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10"></path></svg>
+                <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.8rem;">
+                    <div style="width:2rem;height:2rem;border-radius:0.6rem;overflow:hidden;border:1px solid rgba(240,192,64,0.15);box-shadow:0 0 20px rgba(240,192,64,0.05);flex-shrink:0;">
+                        <img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz Icon" width="32" height="32" style="display:block;width:100%;height:100%;object-fit:cover;">
                     </div>
-                    <span style="font-weight:800;font-size:0.875rem;font-family:'Inter',sans-serif;color:var(--text-primary);letter-spacing:0.04em;">Mega Quiz</span>
+                    <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary);">Mega Quiz</span>
                 </div>
-                <p style="font-size:0.78rem;line-height:1.7;color:var(--text-muted);max-width:280px;">প্রতিযোগিতামূলক পরীক্ষার প্রস্তুতির জন্য স্মার্ট কুইজ প্ল্যাটফর্ম।</p>
+                <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;">Smart quiz platform for students. Learn questions and answers easily and prepare for exams.</p>
             </div>
-            <div class="footer-col"><h4>Quick Links</h4><a href="index.html">All Quizzes</a><a href="ssc.html">SSC Quiz</a><a href="wbpsc.html">WBPCS Quiz</a><a href="defence.html">Defence Quiz</a><a href="gk.html">GK Quiz</a></div>
+
+            <div class="footer-col">
+                <h4>Links</h4>
+                <a href="classnotes.html">All Classes Note</a>
+                <a href="index.html">All Classes Quiz</a>
+                <a href="competitive.html">Competitive & GK</a>
+            </div>
+
             <div class="footer-col">
                 <h4>Contact</h4>
-                <a href="mailto:arifbeldanga@gmail.com" class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><polyline points="22,4 12,13.5 2,4"></polyline></svg> arifbeldanga@gmail.com</a>
-                <a href="https://t.me/beldanga1" target="_blank" class="contact-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.87 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.938z"></path></svg> @beldanga1</a>
-                <a href="https://instagram.com/arifhussain.x" target="_blank" class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><circle cx="12" cy="12" r="5"></circle><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="3" stroke-linecap="round"></line></svg> arifhussain.x</a>
-                <div class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path><circle cx="12" cy="9" r="2.5"></circle></svg> Beldanga, Murshidabad</div>
+                <a href="mailto:arifbeldanga@gmail.com" class="contact-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13.5 2,4"/></svg>
+                    arifbeldanga@gmail.com
+                </a>
+                <a href="https://instagram.com/arifhussain.x" target="_blank" class="contact-item social-instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="3"/></svg>
+                    arifhussain.x
+                </a>
+                <a href="https://t.me/beldanga1" target="_blank" class="contact-item social-telegram">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.87 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.938z"/></svg>
+                    @beldanga1
+                </a>
             </div>
         </div>
+
         <div class="footer-bottom">
-            <div class="footer-bottom-left">
-                <button class="footer-unlock-btn" id="cornerUnlockBtn" aria-label="Unlock Editor" title="Unlock Editor"><iconify-icon icon="lucide:lock" width="13"></iconify-icon></button>
-                <span>© 2025 Mega Quiz — By Arif Hussain</span>
-            </div>
+            <span>&copy; 2025 Mega Quiz - BY Arif Hussain</span>
+            <span class="encryption-key">7a9f2c8e1d4b6a3f5e8c0d2b4a6f9e1c3d5b7a8f0e2c4d6b9a1f3e5c7d0b2a4f</span>
             <span>All Rights Reserved</span>
-            <div class="password-popover" id="passwordPopover">
-                <input type="password" id="popoverPassword" placeholder="Enter password" autocomplete="off">
-                <div class="popover-btns"><button class="popover-cancel" id="popoverCancel">Cancel</button><button class="popover-submit" id="popoverSubmit">Unlock</button></div>
-            </div>
         </div>
     </footer>
-    <button class="toggle-sidebar-btn" id="sidebarToggle" aria-label="Toggle sidebar"><iconify-icon icon="lucide:panel-left" width="18"></iconify-icon></button>
 
     <script>
         (function() {
-            const defaultBank = {
-                __subjectGroups__: [{ key: "class10", name: "Class 10" }],
-                __subjects__: [
-                    { key: "bengali", group: "class10", name: "বাংলা (প্রথম ভাষা)" }, { key: "english", group: "class10", name: "ইংরেজি (দ্বিতীয় ভাষা)" }, { key: "mathematics", group: "class10", name: "গণিত" }, { key: "physical_science", group: "class10", name: "ভৌতবিজ্ঞান" }, { key: "life_science", group: "class10", name: "জীবনবিজ্ঞান" }, { key: "history", group: "class10", name: "ইতিহাস" }, { key: "geography", group: "class10", name: "ভূগোল" }
-                ],
-                __chapters__: [
-                    { key: "ben_ch1", subject: "bengali", name: "পদ্য", defaultType: "saq", image: "", topics: [{ key: "ben_ch1_t1", name: "topic1" }] },
-                    { key: "ben_ch2", subject: "bengali", name: "গদ্য", defaultType: "saq", image: "", topics: [{ key: "ben_ch2_t1", name: "topic1" }] },
-                    { key: "eng_ch1", subject: "english", name: "Prose", defaultType: "saq", image: "", topics: [{ key: "eng_ch1_t1", name: "topic1" }] },
-                    { key: "eng_ch2", subject: "english", name: "Poetry", defaultType: "saq", image: "", topics: [{ key: "eng_ch2_t1", name: "topic1" }] },
-                    { key: "math_ch1", subject: "mathematics", name: "বাস্তব সংখ্যা", defaultType: "saq", image: "", topics: [{ key: "math_ch1_t1", name: "topic1" }] },
-                    { key: "math_ch2", subject: "mathematics", name: "সমীকরণ", defaultType: "saq", image: "", topics: [{ key: "math_ch2_t1", name: "topic1" }] },
-                    { key: "phy_ch1", subject: "physical_science", name: "পদার্থের গঠন", defaultType: "saq", image: "", topics: [{ key: "phy_ch1_t1", name: "topic1" }] },
-                    { key: "phy_ch2", subject: "physical_science", name: "রাসায়নিক বন্ধন", defaultType: "saq", image: "", topics: [{ key: "phy_ch2_t1", name: "topic1" }] },
-                    { key: "lif_ch1", subject: "life_science", name: "জীবন প্রক্রিয়া", defaultType: "saq", image: "https://i.ibb.co/jPJvFDvV/Screenshot-2026-07-10-211835.png", topics: [
-                        { key: "lif_ch1_t1", name: "১.A: উদ্ভিদের সংবেদনশীলতা" }, { key: "lif_ch1_t2", name: "১.B: উদ্ভিদ হরমোন" }, { key: "lif_ch1_t3", name: "১.C: প্রাণী হরমোন" }, { key: "lif_ch1_t4", name: "১.D: প্রাণীদের স্নায়ুতন্ত্র" }, { key: "lif_ch1_t5", name: "১.E: প্রাণীদের গমন" }
-                    ]},
-                    { key: "lif_ch2", subject: "life_science", name: "পরিবহন ও শ্বসন", defaultType: "saq", image: "", topics: [{ key: "lif_ch2_t1", name: "topic1" }] },
-                    { key: "his_ch1", subject: "history", name: "ভারতের ইতিহাসের ধারা", defaultType: "saq", image: "", topics: [{ key: "his_ch1_t1", name: "topic1" }] },
-                    { key: "his_ch2", subject: "history", name: "ঔপনিবেশিক আধিপত্য", defaultType: "saq", image: "", topics: [{ key: "his_ch2_t1", name: "topic1" }] },
-                    { key: "geo_ch1", subject: "geography", name: "পৃথিবীর গঠন", defaultType: "saq", image: "", topics: [{ key: "geo_ch1_t1", name: "topic1" }] },
-                    { key: "geo_ch2", subject: "geography", name: "বায়ুমণ্ডল", defaultType: "saq", image: "", topics: [{ key: "geo_ch2_t1", name: "topic1" }] }
-                ],
-                ben_ch1_t1: [], ben_ch2_t1: [], eng_ch1_t1: [], eng_ch2_t1: [], math_ch1_t1: [], math_ch2_t1: [], phy_ch1_t1: [], phy_ch2_t1: [],
-                lif_ch1_t1: [
-                    { q: "উদ্ভিদের সংবেদনশীলতা বলতে কী বোঝো?", a: "উদ্ভিদ বিভিন্ন উদ্দীপনায় সাড়া দেয়।", type: "saq" },
-                    { q: "ট্যাকটিক, ট্রপিক ও ন্যাস্টিক চলনের তুলনা করো।", a: "<h4>ট্যাকটিক, ট্রপিক ও ন্যাস্টিক চলনের পার্থক্য:</h4><div class='tbl-wrap'><table><thead><tr><th>বৈশিষ্ট্য</th><th>ট্যাকটিক চলন</th><th>ট্রপিক চলন</th><th>ন্যাস্টিক চলন</th></tr></thead><tbody><tr><td><strong>চলনের ধরন</strong></td><td>সামগ্রিক চলন</td><td>বক্র চলন</td><td>বক্র চলন</td></tr><tr><td><strong>উদ্দীপকের প্রভাব</strong></td><td>তীব্রতা ও গতিপথ</td><td>শুধুমাত্র গতিপথ</td><td>শুধুমাত্র তীব্রতা</td></tr><tr><td><strong>হরমোনের ভূমিকা</strong></td><td>প্রভাবিত নয়</td><td>অক্সিন দ্বারা নিয়ন্ত্রিত</td><td>হরমোন নিয়ন্ত্রিত নয়</td></tr></tbody></table></div>", type: "comparison" }
-                ],
-                lif_ch1_t2: [], lif_ch1_t3: [], lif_ch1_t4: [], lif_ch1_t5: [], lif_ch2_t1: [], his_ch1_t1: [], his_ch2_t1: [], geo_ch1_t1: [], geo_ch2_t1: [],
-                ben_ch1: [{ q: "'অভিষেক' কবিতাটি কার লেখা?", a: "রবীন্দ্রনাথ ঠাকুর", type: "saq" }], lif_ch2: []
-            };
+            const GOOGLE_SHEET_TSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pubhtml"; 
+            const dynamicContent = document.getElementById('dynamicContent');
+            const dynamicSubtitle = document.getElementById('dynamicSubtitle');
+            const sidebarEl = document.getElementById('sidebar');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const progressBar = document.getElementById('progressBar');
+            const fabScroll = document.getElementById('fabScroll');
 
-            let questionBank = {"__subjectGroups__":[{"key":"class10","name":"Class 10"}],"__subjects__":[{"key":"bengali","group":"class10","name":"বাংলা (প্রথম ভাষা)"},{"key":"english","group":"class10","name":"ইংরেজি (দ্বিতীয় ভাষা)"},{"key":"mathematics","group":"class10","name":"গণিত"},{"key":"physical_science","group":"class10","name":"ভৌতবিজ্ঞান"},{"key":"life_science","group":"class10","name":"জীবনবিজ্ঞান"},{"key":"history","group":"class10","name":"ইতিহাস"},{"key":"geography","group":"class10","name":"ভূগোল"}],"__chapters__":[{"key":"ben_ch1","subject":"bengali","name":"পদ্য","defaultType":"saq","image":"","topics":[{"key":"ben_ch1_t1","name":"topic1"}]},{"key":"ben_ch2","subject":"bengali","name":"গদ্য","defaultType":"saq","image":"","topics":[{"key":"ben_ch2_t1","name":"topic1"}]},{"key":"eng_ch1","subject":"english","name":"Prose","defaultType":"saq","image":"","topics":[{"key":"eng_ch1_t1","name":"topic1"}]},{"key":"eng_ch2","subject":"english","name":"Poetry","defaultType":"saq","image":"","topics":[{"key":"eng_ch2_t1","name":"topic1"}]},{"key":"math_ch1","subject":"mathematics","name":"বাস্তব সংখ্যা","defaultType":"saq","image":"","topics":[{"key":"math_ch1_t1","name":"topic1"}]},{"key":"math_ch2","subject":"mathematics","name":"সমীকরণ","defaultType":"saq","image":"","topics":[{"key":"math_ch2_t1","name":"topic1"}]},{"key":"phy_ch1","subject":"physical_science","name":"পদার্থের গঠন","defaultType":"saq","image":"","topics":[{"key":"phy_ch1_t1","name":"topic1"}]},{"key":"phy_ch2","subject":"physical_science","name":"রাসায়নিক বন্ধন","defaultType":"saq","image":"","topics":[{"key":"phy_ch2_t1","name":"topic1"}]},{"key":"lif_ch1","subject":"life_science","name":"জীবন প্রক্রিয়া","defaultType":"saq","image":"https://i.ibb.co/jPJvFDvV/Screenshot-2026-07-10-211835.png","topics":[{"key":"lif_ch1_t1","name":"১.A: উদ্ভিদের সংবেদনশীলতা"},{"key":"lif_ch1_t2","name":"১.B: উদ্ভিদ হরমোন"},{"key":"lif_ch1_t3","name":"১.C: প্রাণী হরমোন"},{"key":"lif_ch1_t4","name":"১.D: প্রাণীদের স্নায়ুতন্ত্র"},{"key":"lif_ch1_t5","name":"১.E: প্রাণীদের গমন"}]},{"key":"lif_ch2","subject":"life_science","name":"জীবনের প্রবহমানতা","defaultType":"saq","image":"","topics":[{"key":"a_","name":"২.A: কোশ বিভাজন ও কোশচক্র"},{"key":"b_reproduction","name":"২.B: জনন (Reproduction)"},{"key":"c_","name":"২.C: সপুষ্পক উদ্ভিদের যৌন জনন"},{"key":"d_","name":"২.D: বৃদ্ধি ও বিকাশ"}]},{"key":"his_ch1","subject":"history","name":"ভারতের ইতিহাসের ধারা","defaultType":"saq","image":"","topics":[{"key":"his_ch1_t1","name":"topic1"}]},{"key":"his_ch2","subject":"history","name":"ঔপনিবেশিক আধিপত্য","defaultType":"saq","image":"","topics":[{"key":"his_ch2_t1","name":"topic1"}]},{"key":"geo_ch1","subject":"geography","name":"পৃথিবীর গঠন","defaultType":"saq","image":"","topics":[{"key":"geo_ch1_t1","name":"topic1"}]},{"key":"geo_ch2","subject":"geography","name":"বায়ুমণ্ডল","defaultType":"saq","image":"","topics":[{"key":"geo_ch2_t1","name":"topic1"}]},{"key":"ch_mrhnhkst","subject":"life_science","name":"বংশগতি এবং জিনগত রোগ","defaultType":"saq","image":"","topics":[{"key":"ch_mrhnhkst_t1","name":"topic1"}]},{"key":"ch_mrhnhkst_345ea","subject":"life_science","name":"অভিব্যক্তি ও অভিযোজন","defaultType":"saq","image":"","topics":[{"key":"ch_mrhnhkst_345ea_t1","name":"topic1"}]},{"key":"ch_mrhnhkst_0gdya","subject":"life_science","name":"পরিবেশ ও সংরক্ষণ","defaultType":"saq","image":"","topics":[{"key":"ch_mrhnhkst_0gdya_t1","name":"topic1"}]}],"ben_ch1_t1":[],"ben_ch2_t1":[],"eng_ch1_t1":[],"eng_ch2_t1":[],"math_ch1_t1":[],"math_ch2_t1":[],"phy_ch1_t1":[],"phy_ch2_t1":[],"lif_ch1_t1":[{"q":"উদ্ভিদের সংবেদনশীলতা বলতে কী বোঝো?","a":"উদ্ভিদ বিভিন্ন উদ্দীপনায় সাড়া দেয়।","type":"saq"},{"q":"ট্যাকটিক, ট্রপিক ও ন্যাস্টিক চলনের তুলনা করো।","a":"<h4>ট্যাকটিক, ট্রপিক ও ন্যাস্টিক চলনের পার্থক্য:</h4><div class='tbl-wrap'><table><thead><tr><th>বৈশিষ্ট্য</th><th>ট্যাকটিক চলন</th><th>ট্রপিক চলন</th><th>ন্যাস্টিক চলন</th></tr></thead><tbody><tr><td><strong>চলনের ধরন</strong></td><td>সামগ্রিক চলন</td><td>বক্র চলন</td><td>বক্র চলন</td></tr><tr><td><strong>উদ্দীপকের প্রভাব</strong></td><td>তীব্রতা ও গতিপথ</td><td>শুধুমাত্র গতিপথ</td><td>শুধুমাত্র তীব্রতা</td></tr><tr><td><strong>হরমোনের ভূমিকা</strong></td><td>প্রভাবিত নয়</td><td>অক্সিন দ্বারা নিয়ন্ত্রিত</td><td>হরমোন নিয়ন্ত্রিত নয়</td></tr></tbody></table></div>","type":"comparison"}],"lif_ch1_t2":[],"lif_ch1_t3":[],"lif_ch1_t4":[],"lif_ch1_t5":[],"his_ch1_t1":[],"his_ch2_t1":[],"geo_ch1_t1":[],"geo_ch2_t1":[],"ben_ch1":[{"q":"'অভিষেক' কবিতাটি কার লেখা?","a":"রবীন্দ্রনাথ ঠাকুর","type":"saq"}],"lif_ch2":[],"a_":[],"b_reproduction":[{"q":"জনন (Reproduction) কাকে বলে?","a":"যে জৈবিক প্রক্রিয়ায় জীব নিজের সজ্জা ও আকৃতিবিশিষ্ট অপত্য জীব সৃষ্টি করে এবং সংখ্যা বৃদ্ধির দ্বারা নিজের বংশধারা অক্ষুণ্ণ রাখে, তাকে জনন বা বংশবিস্তার বলে।","type":"saq"},{"q":"জননের দুটি প্রধান প্রকার কী কী?","a":"জনন প্রধানত দুই প্রকার: (১) অযৌন জনন (Asexual reproduction) এবং (২) যৌন জনন (Sexual reproduction)।","type":"saq"},{"q":"অযৌন জনন কাকে বলে?","a":"যে জনন প্রক্রিয়ায় গ্যামেট উৎপাদন ছাড়াই জনিত জীবের দেহকোশ বিভাজিত হয়ে বা দেহাংশের মাধ্যমে অপত্য জীব সৃষ্টি করে, তাকে অযৌন জনন বলে।","type":"saq"},{"q":"দ্বিবিভাজন কাকে বলে? উদাহরণ দাও।","a":"যে অযৌন জননে একটি জনিত জীবের নিউক্লিয়াস ও সাইটোপ্লাজম বিভক্ত হয়ে দুটি অপত্য জীব সৃষ্টি করে, তাকে দ্বিবিভাজন বলে। উদাহরণ: অ্যামিবা, ইউগ্লিনা।","type":"saq"},{"q":"বহুবিভাজন (Multiple fission) কী?","a":"যে অযৌন জননে জনিত জীবের নিউক্লিয়াস বারবার বিভক্ত হয়ে বহু অপত্য নিউক্লিয়াস সৃষ্টি হয় এবং পরে সাইটোপ্লাজম বিভক্ত হয়ে একাধিক অপত্য জীব সৃষ্টি করে, তাকে বহুবিভাজন বলে। যেমন: প্লাজমোডিয়াম।","type":"saq"},{"q":"যৌন জনন কাকে বলে?","a":"যে জনন প্রক্রিয়ায় দুটি ভিন্নধর্মী গ্যামেট (পুং ও স্ত্রী) উৎপন্ন হয় এবং এদের মিলনের (নিষেক) মাধ্যমে জাইগোট সৃষ্টি হয়ে অপত্য জীব গঠিত হয়, তাকে যৌন জনন বলে।","type":"saq"},{"q":"অঙ্গজ বংশবিস্তার (Vegetative Propagation) কাকে বলে?","a":"যে জনন প্রক্রিয়ায় উদ্ভিদের মূল, কাণ্ড, পাতা প্রভৃতি অঙ্গ বা অঙ্গাংশ থেকে অপত্য উদ্ভিদ সৃষ্টি হয়, তাকে অঙ্গজ বংশবিস্তার বলে।","type":"saq"},{"q":"প্রাকৃতিক অঙ্গজ জননের কয়েকটি উদাহরণ দাও।","a":"পাথরকুচির পাতার পত্রমুকুল, আলুর টিউবার (কাণ্ড), রাঙা আলুর রসালো মূল, কচুরিপানার অফসেট ইত্যাদি।","type":"saq"},{"q":"কৃত্রিম অঙ্গজ জননের পদ্ধতিগুলি কী কী?","a":"কৃত্রিম অঙ্গজ জননের প্রধান পদ্ধতি তিনটি: শাখাকলম বা কাটিং (Cutting), জোড়কলম বা গ্রাফটিং (Grafting) এবং টিস্যু কালচার বা মাইক্রোপ্রোপাগেশন (Micropropagation)।","type":"saq"},{"q":"শাখাকলম (Cutting) পদ্ধতি কী?","a":"এ পদ্ধতিতে জনিত উদ্ভিদের কাণ্ডের 20-30 cm অংশ কেটে ভিজে মাটিতে পুঁতে রাখলে কয়েকদিন পর তা থেকে মূল ও মুকুল সৃষ্টি হয়ে অপত্য গাছ সৃষ্টি হয়। যেমন: গোলাপ, লেবু।","type":"saq"},{"q":"জোড়কলম বা গ্রাফটিং (Grafting) কাকে বলে?","a":"যে কৃত্রিম অঙ্গজ জননে একই প্রজাতিভুক্ত দুটি গাছের শাখা জোড়া লাগিয়ে অপত্য গাছ সৃষ্টি করা হয়, তাকে গ্রাফটিং বা জোড়কলম বলে। যেমন: আম, পেয়ারা।","type":"saq"},{"q":"স্টক (Stock) ও সায়ন (Scion) কাকে বলে?","a":"জোড়কলমের ক্ষেত্রে মূলসহ যে গাছটির সাথে জোড়া দেওয়া হয় তাকে স্টক এবং যে গাছের ডাল কেটে এনে স্টকের সঙ্গে জোড়া হয় তাকে সায়ন বলে।","type":"saq"},{"q":"পাথরকুচির পাতার কিনারায় কীভাবে অঙ্গজ জনন হয়?","a":"পাথরকুচি পাতার কিনারায় অসংখ্য পত্রজ মুকুল সৃষ্টি হয়। এদের গোড়া থেকে অস্বাভাবিক মূল সৃষ্টি হলে সেগুলি পাতা থেকে বিচ্ছিন্ন হয়ে অপত্য উদ্ভিদ গঠন করে।","type":"saq"},{"q":"আলুতে অঙ্গজ জনন কীভাবে ঘটে?","a":"আলু হল ভূনিম্নস্থ রূপান্তরিত কাণ্ড বা টিউবার। এর অক্ষীয় মুকুল (চোখ) থেকে নতুন উদ্ভিদ সৃষ্টি হয়, যা প্রাকৃতিক অঙ্গজ জননের উদাহরণ।","type":"saq"},{"q":"কচুরিপানার অফসেট কী?","a":"কচুরিপানা, টোপাপানা ইত্যাদি জলজ উদ্ভিদের কাণ্ড থেকে উৎপন্ন বিশেষ ধরনের খর্বাকার শাখাকেই অফসেট (Offset) বলে। এ অংশ ছিন্ন হয়ে অপত্য উদ্ভিদ সৃষ্টি করে।","type":"saq"},{"q":"জননের প্রয়োজনীয়তা কী?","a":"প্রজাতির অস্তিত্ব রক্ষা, সংখ্যা বৃদ্ধি, বংশানুক্রমিক ধারা বজায় রাখা এবং জীবজগতে ভারসাম্য বজায় রাখা জননের মুখ্য প্রয়োজনীয়তা।","type":"saq"},{"q":"অযৌন ও যৌন জননের মধ্যে একটি মুখ্য পার্থক্য লেখো।","a":"অযৌন জননে গ্যামেট উৎপাদন হয় না এবং জনিত জীব একটি; কিন্তু যৌন জননে পুং ও স্ত্রী গ্যামেটের মিলন ঘটে এবং জনিত জীব দুটি।","type":"saq"},{"q":"জাইগোট কী?","a":"পুংগ্যামেট ও স্ত্রীগ্যামেটের মিলনের (নিষেক) ফলে সৃষ্ট ডিপ্লয়েড (2n) কোশকে জাইগোট (Zygote) বলে। জাইগোট থেকেই নতুন অপত্য জীবের সৃষ্টি হয়।","type":"saq"},{"q":"গ্যামেটের মিলন প্রক্রিয়াকে কী বলা হয়?","a":"পুংগ্যামেট ও স্ত্রীগ্যামেটের মিলন প্রক্রিয়াকে নিষেক বা ফার্টিলাইজেশন (Fertilization) বলে। এর ফলেই জাইগোট সৃষ্টি হয়।","type":"saq"},{"q":"মাইটোসিস ও মিয়োসিসের ভূমিকা অনুসারে জননের পার্থক্য কী?","a":"অযৌন জনন সম্পূর্ণ মাইটোসিস নির্ভর। কিন্তু যৌন জননে গ্যামেট উৎপাদন হয় মিয়োসিসের মাধ্যমে এবং জাইগোট থেকে অপত্য সৃষ্টি হয় মাইটোসিসের মাধ্যমে।","type":"saq"},{"q":"কোন জননে অপত্য জীব জিনগতভাবে ভিন্ন হয়?","a":"যৌন জননের ফলে অপত্য জীব জিনগতভাবে জনিত জীব অপেক্ষা ভিন্ন প্রকৃতির হয়। কারণ এতে দুটি ভিন্ন জীবের জিনের সমন্বয় ঘটে।","type":"saq"},{"q":"প্লাজমোডিয়ামের বহুবিভাজন কীভাবে ঘটে?","a":"প্লাজমোডিয়ামের নিউক্লিয়াস প্রথমে বারবার বিভক্ত হয়ে বহু অপত্য নিউক্লিয়াস সৃষ্টি করে। পরে প্রতিটি নিউক্লিয়াসকে ঘিরে সাইটোপ্লাজম আবদ্ধ হয়ে বহু অপত্য জীব সৃষ্টি হয়।","type":"saq"},{"q":"মুকুলোদগম (Budding) পদ্ধতি কী?","a":"যে অযৌন জননে জনিত জীবের দেহ থেকে একটি মুকুল সৃষ্টি হয়ে ধীরে ধীরে তা থেকে অপত্য জীব গঠিত হয়, তাকে মুকুলোদগম বা বাডিং বলে। যেমন: হাইড্রা, ইস্ট।","type":"saq"},{"q":"বীজের মাধ্যমে জনন কী ধরনের জনন?","a":"সপুষ্পক উদ্ভিদের বীজের মাধ্যমে জনন মূলত যৌন জননের অন্তর্গত, কারণ বীজ উৎপাদনের পূর্বে নিষেক ক্রিয়া সম্পন্ন হয়।","type":"saq"},{"q":"রেণু (Spore) কী? মসের অযৌন জননে এর ভূমিকা কী?","a":"রেণু হল একপ্রকার এককোশী বিস্তারক কণা। মস ও ফার্নে রেণু সৃষ্টির মাধ্যমে অযৌন জনন ঘটে। রেণু থেকে সরাসরি অপত্য উদ্ভিদ জন্মায়।","type":"saq"},{"q":"অ্যামিবার দ্বিবিভাজন প্রক্রিয়াটি সংক্ষেপে লেখো।","a":"অ্যামিবার নিউক্লিয়াসটি প্রথমে মাইটোসিস প্রক্রিয়ায় বিভক্ত হয়ে দুটি অপত্য নিউক্লিয়াস গঠন করে। পরে সাইটোপ্লাজম বিভক্ত হয়ে দুটি অপত্য অ্যামিবা সৃষ্টি করে।","type":"saq"},{"q":"পত্রমুকুল থেকে সৃষ্ট উদ্ভিদকে কেন অঙ্গজ জনন বলা হয়?","a":"কারণ এটি ফুল বা গ্যামেটের মিলন ছাড়াই উদ্ভিদের একটি অঙ্গ (পাতা) থেকে সরাসরি অপত্য উদ্ভিদ সৃষ্টি হয়।","type":"saq"},{"q":"টিস্যু কালচার বা মাইক্রোপ্রোপাগেশন কাকে বলে?","a":"একটি আধুনিক কৃত্রিম অঙ্গজ জনন পদ্ধতি যেখানে উদ্ভিদের কোশ বা কলা (টিস্যু) থেকে পুষ্টির মাধ্যমে অতি ক্ষুদ্রাকার বহু অপত্য চারাগাছ সৃষ্টি করা হয়।","type":"saq"},{"q":"জোড়কলমের ক্ষেত্রে স্টক ও সায়ন একই প্রজাতির হতে হয় কেন?","a":"কারণ একই প্রজাতিভুক্ত উদ্ভিদের কলা (ভাস্কুলার ক্যাম্বিয়াম) সহজে জোড়া লেগে যায়। ভিন্ন প্রজাতির ক্ষেত্রে জোড়া না লাগার সম্ভাবনা থাকে।","type":"saq"},{"q":"প্রাকৃতিক ও কৃত্রিম অঙ্গজ জননের একটি পার্থক্য লেখো।","a":"প্রাকৃতিক অঙ্গজ জননে মানুষের হস্তক্ষেপ থাকে না (যেমন পাথরকুচির পাতা); কিন্তু কৃত্রিম অঙ্গজ জননে মানুষ সক্রিয়ভাবে কলাকৌশল প্রয়োগ করে (যেমন গ্রাফটিং, কাটিং)।","type":"saq"},{"q":"অঙ্গজ বংশবিস্তারের দুটি সুবিধা কী কী?","a":"(১) খুব কম সময়ে ও দ্রুত ফলপ্রাপ্তি ঘটে। (২) মাতৃউদ্ভিদের সমস্ত গুণাগুণ অপত্য উদ্ভিদে অক্ষুণ্ণ থাকে (যেমন উন্নত জাতের আমের কলম)।","type":"saq"},{"q":"জননের মাধ্যমে জীবজগতের ভারসাম্য কীভাবে রক্ষা পায়?","a":"জীবমাত্রই মৃত্যুমুখী। জননের মাধ্যমে জীব তার বংশবিস্তার ঘটিয়ে মৃত্যুজনিত সংখ্যা হ্রাস পূরণ করে, ফলে প্রকৃতিতে জীবের ভারসাম্য বজায় থাকে।","type":"saq"},{"q":"স্পাইরোগাইরার যৌন জনন কোন পদ্ধতিতে হয়?","a":"স্পাইরোগাইরা নামক শৈবালে সংতক্ষণ বা কনজুগেশন (Conjugation) পদ্ধতিতে যৌন জনন ঘটে। এতে দুটি ভিন্ন তন্তুর কোশের মধ্যে সাইটোপ্লাজমিক সেতু তৈরি হয়।","type":"saq"},{"q":"কলম করার জন্য কোন ঋতু সবচেয়ে উপযুক্ত?","a":"জোড়কলম বা গ্রাফটিংয়ের জন্য বসন্তকাল (Spring) সবচেয়ে উপযুক্ত, কারণ এ সময় ক্যাম্বিয়াম কলা সবচেয়ে সক্রিয় থাকে এবং জোড়া লাগার সম্ভাবনা বেশি।","type":"saq"},{"q":"সংখ্যা বৃদ্ধির জন্য জননের ভূমিকা কী?","a":"জননের প্রধান কাজ হলো প্রজাতির সদস্য সংখ্যা বৃদ্ধি করা। যেমন একটি অ্যামিবা দ্বিবিভাজনের মাধ্যমে অসংখ্য অ্যামিবায় পরিণত হয়ে সংখ্যা বাড়ায়।","type":"saq"},{"q":"হাইড্রার মুকুলোদগম পদ্ধতি ব্যাখ্যা করো।","a":"হাইড্রার দেহের বাইরের দিকে একটি ক্ষুদ্র স্ফীতি বা মুকুল সৃষ্টি হয়। ক্রমে তা বড় হয়ে মুখবিশিষ্ট অপত্য হাইড্রায় পরিণত হয় এবং পরে মাতৃদেহ থেকে বিচ্ছিন্ন হয়।","type":"saq"},{"q":"মিষ্টি আলুর মূল থেকে কীভাবে অঙ্গজ জনন ঘটে?","a":"মিষ্টি আলু বা রাঙা আলুর রসালো মূলে অস্বাভাবিক (অস্থানিক) মুকুল সৃষ্টি হয়। এই মুকুল থেকে মূল ও কাণ্ড বেরিয়ে অপত্য উদ্ভিদ তৈরি হয়।","type":"saq"},{"q":"শূশনি বা দুব্বা ঘাসের ধাবক কীভাবে বংশবিস্তার ঘটায়?","a":"শূশনির অধরাবয়ব (ক্রিপিং) কাণ্ড বা ধাবক (Runner) মাটির ওপর দিয়ে ছড়িয়ে যায় এবং প্রতি পর্ব থেকে মূল বের হয়ে নতুন উদ্ভিদ সৃষ্টি হয়।","type":"saq"},{"q":"ফার্নের অযৌন ও যৌন জনন কীরূপ?","a":"ফার্নের অযৌন জনন রেণুর মাধ্যমে হয়, আর যৌন জনন ঘটে পুং (অ্যানথেরিডিয়াম) ও স্ত্রী (আর্কিগোনিয়াম) গ্যামেট-এর মিলনের মাধ্যমে।","type":"saq"},{"q":"জোড়কলম বা গ্রাফটিং কেন করা হয়?","a":"উন্নত মানের ফল বা ফুল পেতে, রোগ প্রতিরোধ ক্ষমতা বাড়াতে এবং দ্রুত বংশবিস্তারের জন্য গ্রাফটিং করা হয়। যেমন- উন্নত আমের মুকুল সাধারণ আমের চারায় জোড়া হয়।","type":"saq"},{"q":"জনন কাকে বলে? জননের প্রকারভেদ সম্পর্কে সংক্ষেপে আলোচনা করো ও জননের গুরুত্ব লেখো।","a":"জনন (Reproduction): যে জৈবিক পদ্ধতিতে জীব নিজের সজ্জা ও আকৃতিবিশিষ্ট অপত্য জীব সৃষ্টি করে এবং সংখ্যা বৃদ্ধির দ্বারা নিজের বংশধারা অক্ষুণ্ণ রাখে, তাকে জনন বলে। প্রকারভেদ: জনন প্রধানত দুই প্রকার: (i) অযৌন জনন: গ্যামেট ছাড়াই দেহকোশ বিভাজনের মাধ্যমে সম্পন্ন হয়। (যেমন: অ্যামিবার দ্বিবিভাজন, হাইড্রার বাডিং)। (ii) যৌন জনন: পুং ও স্ত্রী গ্যামেট সৃষ্টি ও মিলনের (নিষেক) মাধ্যমে জাইগোট সৃষ্টি করে। (যেমন: মাছ, মানুষ, পাখি)। গুরুত্ব: প্রজাতির অস্তিত্ব রক্ষা করা। প্রজাতির সংখ্যা বৃদ্ধি করা। জীবজগতে ভারসাম্য বজায় রাখা। বংশানুক্রমিক ধারা অক্ষুণ্ণ রাখা।","type":"broad"},{"q":"অযৌন জনন কাকে বলে? দ্বিবিভাজন ও বহুবিভাজন প্রক্রিয়া উদাহরণসহ বর্ণনা করো।","a":"অযৌন জনন: যে জনন প্রক্রিয়ায় গ্যামেট উৎপাদন ছাড়াই জনিত জীবের দেহকোশ বিভক্ত হয়ে বা দেহাংশের মাধ্যমে অপত্য জীব সৃষ্টি হয়, তাকে অযৌন জনন বলে। দ্বিবিভাজন (Binary fission): জনিত জীবের নিউক্লিয়াস প্রথমে বিভক্ত হয়ে দুটি অপত্য নিউক্লিয়াস গঠন করে, পরে সাইটোপ্লাজমও বিভক্ত হয়ে দুটি অপত্য জীব সৃষ্টি করে। উদাহরণ: অ্যামিবা, ইউগ্লিনা। বহুবিভাজন (Multiple fission): জনিত জীবের নিউক্লিয়াস বারবার বিভক্ত হয়ে বহু অপত্য নিউক্লিয়াস সৃষ্টি করে। পরে প্রতিটি নিউক্লিয়াসকে কেন্দ্র করে সাইটোপ্লাজম আবদ্ধ হয়ে একাধিক অপত্য জীব সৃষ্টি হয়। উদাহরণ: প্লাজমোডিয়াম (ম্যালেরিয়া পরজীবী)।","type":"broad"},{"q":"অঙ্গজ বংশবিস্তার (Vegetative Propagation) কাকে বলে? প্রাকৃতিক অঙ্গজ বংশবিস্তারের বিভিন্ন পদ্ধতি উদাহরণসহ আলোচনা করো।","a":"অঙ্গজ বংশবিস্তার: যে জনন প্রক্রিয়ায় উদ্ভিদের দেহের কোনো অঙ্গ বা অঙ্গাংশ (মূল, কাণ্ড, পাতা) জনিত উদ্ভিদ থেকে বিচ্ছিন্ন হয়ে বা না হয়ে অপত্য উদ্ভিদ সৃষ্টি করে, তাকে অঙ্গজ বংশবিস্তার বলে। প্রাকৃতিক পদ্ধতি: মূলের মাধ্যমে: রাঙা আলু বা মিষ্টি আলুর রসালো মূল থেকে অস্বাভাবিক মুকুল সৃষ্টি হয়ে নতুন উদ্ভিদ জন্মায়। কাণ্ডের মাধ্যমে: আলুর টিউবার, আদার রাইজোম, কচুরিপানার অফসেট, দুব্বা ঘাসের ধাবক ইত্যাদি কাণ্ড থেকে মুকুল সৃষ্টি হয়ে অপত্য উদ্ভিদ জন্মায়। পাতার মাধ্যমে: পাথরকুচি ও বেগোনিয়া পাতার কিনারায় অসংখ্য পত্রমুকুল সৃষ্টি হয়, যার গোড়া থেকে মূল বেরিয়ে অপত্য উদ্ভিদ গঠিত হয়।","type":"broad"},{"q":"কৃত্রিম অঙ্গজ জননের বিভিন্ন পদ্ধতি কী কী? শাখাকলম (Cutting) ও জোড়কলম (Grafting) পদ্ধতি বর্ণনা করো।","a":"কৃত্রিম অঙ্গজ জননের পদ্ধতি: যেসব পদ্ধতিতে মানুষের হস্তক্ষেপে উদ্ভিদের অঙ্গজ জনন ঘটানো হয়, তা কৃত্রিম অঙ্গজ জনন। যেমন: ১. শাখাকলম, ২. জোড়কলম, ৩. টিস্যু কালচার। শাখাকলম (Cutting): গোলাপ, লেবু ইত্যাদি গাছের ২০-৩০ সেমি কাণ্ড বা শাখা কেটে নেওয়া হয়। কাটা অংশ ভিজে নরম মাটিতে পুঁতে রাখলে কয়েকদিন পর তা থেকে মূল সৃষ্টি হয় এবং বায়বীয় অংশ থেকে মুকুল বের হয়ে অপত্য গাছ জন্মায়। জোড়কলম (Grafting): এই প্রক্রিয়ায় একই প্রজাতিভুক্ত দুটি গাছের শাখা জোড়া লাগানো হয়। মূলসহ গাছকে স্টক এবং যে ডাল জোড়া হয় তাকে সায়ন বলে। উভয় গাছের অংশ জোড়া লাগিয়ে শত্রুকবল থেকে রক্ষা করে বেঁধে রাখা হয়। কয়েকদিন পর জোড়া লেগে গেলে সায়নের অংশটি বাড়তে শুরু করে এবং উন্নত জাতের ফল দেয়। যেমন: আম, পেয়ারা।","type":"broad"},{"q":"উদ্ভিদের অঙ্গজ বংশবিস্তারের গুরুত্ব ও সুবিধাগুলি কী কী? উদাহরণসহ আলোচনা করো।","a":"অঙ্গজ বংশবিস্তারের গুরুত্ব ও সুবিধা: দ্রুত বংশবিস্তার: বীজ থেকে চারা সৃষ্টির চেয়ে কলম বা কাটিং-এর মাধ্যমে খুব কম সময়ে গাছ তৈরী হয়। মাতৃগুণ বজায় থাকে: যেহেতু এটি অযৌন জনন, তাই সৃষ্ট অপত্য উদ্ভিদ মাতৃউদ্ভিদের সমস্ত গুণাগুণ বহন করে। যেমন- দার্জিলিং আমের জোড়কলম। বীজহীন ফলের চাষ: যেসব ফলের বীজ হয় না (কলা, আঙুর), তাদের বংশবিস্তার একমাত্র অঙ্গজ জননের মাধ্যমেই সম্ভব। রোগ প্রতিরোধ: রোগগ্রস্ত বা দুর্বল গাছের ডাল ভালো স্টকের ওপর গ্রাফটিং করলে তাতে শক্তি সঞ্চার হয় ও ফলন বাড়ে। সহজ প্রক্রিয়া: গ্রাফটিং, শাখাকলম ইত্যাদি পদ্ধতি কৃষকেরা অতি সহজে কম খরচে সম্পন্ন করতে পারেন।","type":"broad"},{"q":"গ্রাফটিং বা জোড়কলমের স্টক ও সায়ন বলতে কী বোঝো? একটি সফল জোড়কলমের শর্ত কী কী?","a":"স্টক ও সায়ন: স্টক (Stock): যে সুস্থ ও সবল মূলসহ গাছ বা চারার সঙ্গে জোড়া দেওয়া হয়, তাকে স্টক বলে। সায়ন (Scion): উন্নত জাতের যে গাছের শাখা বা ডাল কেটে এনে স্টকের সঙ্গে জোড়া হয়, তাকে সায়ন বলে। সফল জোড়কলমের শর্ত: স্টক ও সায়ন উদ্ভিদকে অবশ্যই একই প্রজাতি বা একই গণভুক্ত হতে হবে। স্টক উদ্ভিদ সুস্থ, সবল ও রোগমুক্ত হতে হবে। সায়ন ডালটিতে ভালো মানের মুকুল থাকতে হবে। জোড়া লাগানোর পর যেন বাতাস বা পোকামাকড় দ্বারা সরে না যায়, তাই তা ভালোভাবে বেঁধে দিতে হবে এবং উপযুক্ত প্রলেপ দিতে হবে। বসন্তকালে ক্যাম্বিয়াম কলা সক্রিয় থাকায় জোড়কলমের সাফল্যের হার সবচেয়ে বেশি।","type":"broad"},{"q":"পাথরকুচির অঙ্গজ জনন ও গোলাপের শাখাকলমের মধ্যে পার্থক্য কী? এরা কোন ধরনের জননের উদাহরণ?","a":"পার্থক্য: পাথরকুচির জনন: এটি একটি প্রাকৃতিক অঙ্গজ জনন। এখানে মানুষের কোনো হস্তক্ষেপ ছাড়াই পাতার কিনারায় স্বয়ংক্রিয়ভাবে পত্রমুকুল সৃষ্টি হয় এবং তা থেকে চারা তৈরি হয়। গোলাপের শাখাকলম: এটি একটি কৃত্রিম অঙ্গজ জনন। এখানে মানুষ সক্রিয়ভাবে গোলাপের কাণ্ড কেটে ভিজে মাটিতে পুঁতে দিয়ে শিকড় গজানোর ব্যবস্থা করে। ধরন: উভয়ই অঙ্গজ বংশবিস্তার (Vegetative Propagation) তথা অযৌন জননের উদাহরণ। কারণ এতে ফুল, ফল বা গ্যামেটের প্রয়োজন হয় না।","type":"broad"},{"q":"জননের প্রয়োজনীয়তা ও জীবজগতে এর ভূমিকা সম্পর্কে বিস্তারিত আলোচনা করো।","a":"প্রয়োজনীয়তা:","type":"broad"}],"c_":[],"d_":[],"ch_mrhnhkst_t1":[],"ch_mrhnhkst_345ea_t1":[],"ch_mrhnhkst_0gdya_t1":[]}; // embedded data
-            let currentSubject = "life_science", currentChapter = "lif_ch1", currentTopic = "lif_ch1_t1", currentTypeFilter = "saq";
-            let editorUnlocked = false;
-            const REMOTE_URL_KEY = "galactic_quiz_remote_url", THEME_KEY = "galactic_quiz_theme", EDITOR_PASSWORD = "Arif@956438?";
-            const subjectIcons = { 'bengali': '📖', 'english': '🔤', 'mathematics': '📐', 'physical_science': '⚛️', 'life_science': '🧬', 'history': '🏛️', 'geography': '🌍' };
-
-            const tblToolbar = document.getElementById('tblToolbar');
-            let currentTable = null, currentCell = null;
-
-            function getStoredTheme() { try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; } }
-            function setStoredTheme(t) { try { localStorage.setItem(THEME_KEY, t); } catch (e) {} }
-            function applyTheme(t) { document.body.className = t; document.getElementById('themeIcon').setAttribute('icon', t === 'night' ? 'lucide:moon' : 'lucide:sun'); setStoredTheme(t); }
-            function toggleTheme() { applyTheme(document.body.classList.contains('night') ? 'day' : 'night'); }
-            function getSubjects() { return questionBank.__subjects__ || []; }
-            function getChapters(s) { return (questionBank.__chapters__ || []).filter(c => c.subject === s); }
-            function getChapter(k) { return (questionBank.__chapters__ || []).find(c => c.key === k); }
-            function getTopics(k) { const c = getChapter(k); return c && c.topics ? c.topics : []; }
-            function getActiveQuestionKey() { return currentTopic || currentChapter; }
-            function getActiveQuestions() { return questionBank[getActiveQuestionKey()] || []; }
-            function closeMobileSidebar() { if (window.innerWidth < 768) { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); } }
-
-            function renderSidebar() {
-                document.getElementById('subjectList').innerHTML = getSubjects().map(s => `<div class="subject-item ${s.key===currentSubject?'active':''}" data-subject="${s.key}"><span class="subject-emoji">${subjectIcons[s.key]||'📘'}</span><span>${escapeHtml(s.name)}</span></div>`).join('');
-                const chapters = getChapters(currentSubject);
-                document.getElementById('chapterSection').style.display = chapters.length ? 'block' : 'none';
-                document.getElementById('chapterList').innerHTML = chapters.map(ch => {
-                    const topics = ch.topics || [], expanded = topics.length > 0 && ch.key === currentChapter;
-                    return `<div class="chapter-item ${ch.key===currentChapter&&!currentTopic?'active':''} ${topics.length?'has-topics':''}" data-chapter="${ch.key}">${topics.length?`<span class="toggle-icon">${expanded?'▾':'▸'}</span>`:''}<span>${escapeHtml(ch.name)}</span></div>${topics.length?`<div class="topic-container" data-parent="${ch.key}" style="display:${expanded?'block':'none'};">`+topics.map(t=>`<div class="topic-item ${t.key===currentTopic?'active':''}" data-topic="${t.key}" data-chapter="${ch.key}">${escapeHtml(t.name)}</div>`).join('')+`</div>`:''}`;
-                }).join('');
-                document.querySelectorAll('.subject-item').forEach(el => el.addEventListener('click', () => { const k = el.dataset.subject; if (k && k !== currentSubject) { currentSubject = k; const fc = getChapters(currentSubject)[0]; if (fc) { currentChapter = fc.key; currentTopic = getTopics(fc.key)[0]?.key || null; currentTypeFilter = fc.defaultType || 'saq'; } else { currentChapter = null; currentTopic = null; } renderSidebar(); renderContent(); updateAllEditSelects(); closeMobileSidebar(); } }));
-                document.querySelectorAll('.chapter-item').forEach(el => el.addEventListener('click', () => { const chapKey = el.dataset.chapter, topics = getTopics(chapKey); if (topics.length > 0) { const container = document.querySelector(`.topic-container[data-parent="${chapKey}"]`); if (container) { const vis = container.style.display === 'block'; container.style.display = vis ? 'none' : 'block'; el.querySelector('.toggle-icon').textContent = vis ? '▸' : '▾'; } if (currentChapter !== chapKey || !currentTopic) { currentChapter = chapKey; currentTopic = topics[0].key; renderSidebar(); renderContent(); } } else { currentChapter = chapKey; currentTopic = null; renderSidebar(); renderContent(); } closeMobileSidebar(); }));
-                document.querySelectorAll('.topic-item').forEach(el => el.addEventListener('click', (e) => { e.stopPropagation(); currentChapter = el.dataset.chapter; currentTopic = el.dataset.topic; renderSidebar(); renderContent(); closeMobileSidebar(); }));
-            }
-
-            function formatAnswer(ans) {
-                if (ans.includes('<')) return ans;
-                const lines = ans.split('\n').filter(l => l.trim() !== '');
-                return lines.map(line => {
-                    const idx = line.indexOf(':');
-                    if (idx > 0) return `<strong>${line.substring(0, idx)}:</strong>${line.substring(idx+1)}`;
-                    return line;
-                }).join('<br>');
-            }
-
-            function setupInlineEditing() {
-                const mainContent = document.getElementById('mainContent');
-                const contentScroll = document.getElementById('contentScroll');
-                mainContent.addEventListener('focusin', (e) => {
-                    const editable = e.target.closest('.editable-q, .editable-a');
-                    if (!editable) return;
-                    const scrollTop = contentScroll.scrollTop;
-                    requestAnimationFrame(() => { contentScroll.scrollTop = scrollTop; });
-                });
-                mainContent.addEventListener('focusout', (e) => {
-                    if (!editorUnlocked) return;
-                    const editable = e.target.closest('.editable-q, .editable-a');
-                    if (!editable) return;
-                    const key = editable.dataset.key;
-                    const idx = parseInt(editable.dataset.idx);
-                    if (isNaN(idx) || !key) return;
-                    const qArr = questionBank[key];
-                    if (!qArr || idx < 0 || idx >= qArr.length) return;
-                    if (editable.classList.contains('editable-q')) {
-                        qArr[idx].q = editable.innerHTML.trim();
-                    } else if (editable.classList.contains('editable-a')) {
-                        qArr[idx].a = editable.innerHTML.trim();
-                    }
-                    saveBank();
-                });
-                mainContent.addEventListener('click', (e) => {
-                    if (!editorUnlocked) return;
-                    const cell = e.target.closest('td, th');
-                    if (!cell) { hideTblToolbar(); return; }
-                    const table = cell.closest('table');
-                    if (!table) return;
-                    currentTable = table;
-                    currentCell = cell;
-                    positionToolbar(cell);
-                });
-            }
-
-            function positionToolbar(cell) {
-                const rect = cell.getBoundingClientRect();
-                tblToolbar.style.top = (window.scrollY + rect.top - 40) + 'px';
-                tblToolbar.style.left = (window.scrollX + rect.left) + 'px';
-                tblToolbar.classList.add('show');
-            }
-            function hideTblToolbar() { tblToolbar.classList.remove('show'); currentTable = null; currentCell = null; }
-            function addRowBelow() {
-                if (!currentTable || !currentCell) return;
-                const row = currentCell.parentElement;
-                const newRow = row.cloneNode(true);
-                newRow.querySelectorAll('td, th').forEach(cell => cell.innerHTML = '');
-                row.parentNode.insertBefore(newRow, row.nextSibling);
-                updateTableAnswer();
-            }
-            function addColumnRight() {
-                if (!currentTable || !currentCell) return;
-                const cellIndex = Array.from(currentCell.parentElement.children).indexOf(currentCell);
-                const rows = currentTable.querySelectorAll('tr');
-                rows.forEach(row => {
-                    const cells = row.children;
-                    if (cellIndex < cells.length) {
-                        const newCell = cells[cellIndex].cloneNode(true);
-                        newCell.innerHTML = '';
-                        row.insertBefore(newCell, cells[cellIndex].nextSibling);
-                    }
-                });
-                updateTableAnswer();
-            }
-            function deleteRow() {
-                if (!currentTable || !currentCell) return;
-                const row = currentCell.parentElement;
-                if (currentTable.rows.length <= 1) return;
-                row.remove();
-                updateTableAnswer();
-            }
-            function deleteColumn() {
-                if (!currentTable || !currentCell) return;
-                const cellIndex = Array.from(currentCell.parentElement.children).indexOf(currentCell);
-                const rows = currentTable.querySelectorAll('tr');
-                rows.forEach(row => { if (row.children[cellIndex]) row.children[cellIndex].remove(); });
-                updateTableAnswer();
-            }
-            function updateTableAnswer() {
-                const answerSpan = currentTable.closest('.answer-content');
-                const questionSpan = currentTable.closest('.editable-q');
-                if (answerSpan && answerSpan.dataset.key) {
-                    const key = answerSpan.dataset.key;
-                    const idx = parseInt(answerSpan.dataset.idx);
-                    if (!isNaN(idx) && key) { questionBank[key][idx].a = answerSpan.innerHTML.trim(); saveBank(); }
-                } else if (questionSpan && questionSpan.dataset.key) {
-                    const key = questionSpan.dataset.key;
-                    const idx = parseInt(questionSpan.dataset.idx);
-                    if (!isNaN(idx) && key) { questionBank[key][idx].q = questionSpan.innerHTML.trim(); saveBank(); }
+            function createStars() {
+                const container = document.getElementById('stars');
+                for (let i = 0; i < 80; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    const size = Math.random() * 2 + 1;
+                    star.style.width = size + 'px';
+                    star.style.height = size + 'px';
+                    star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                    star.style.setProperty('--delay', (Math.random() * 5) + 's');
+                    container.appendChild(star);
                 }
             }
+            createStars();
 
-            document.getElementById('tblAddRowBelow').addEventListener('click', addRowBelow);
-            document.getElementById('tblAddColRight').addEventListener('click', addColumnRight);
-            document.getElementById('tblDeleteRow').addEventListener('click', deleteRow);
-            document.getElementById('tblDeleteCol').addEventListener('click', deleteColumn);
-            document.addEventListener('click', (e) => { if (!tblToolbar.contains(e.target) && !e.target.closest('td, th')) hideTblToolbar(); });
-
-            function renderContent() {
-                if (!currentChapter) { document.getElementById('mainContent').innerHTML = '<div class="empty-state"><iconify-icon icon="lucide:book-x" width="48" style="opacity:0.3;display:block;margin:0 auto 0.75rem;"></iconify-icon><p>কোনো অধ্যায় নির্বাচিত নয়।</p></div>'; return; }
-                const allQ = getActiveQuestions();
-                const filteredData = allQ
-                    .map((item, origIdx) => ({ item, origIdx }))
-                    .filter(({ item }) => {
-                        if (currentTypeFilter === 'broad') return item.type === 'broad' || item.type === 'comparison';
-                        return item.type === currentTypeFilter;
-                    });
-
-                const chapterMeta = getChapter(currentChapter) || { name: currentChapter, image: "" }, subjectMeta = getSubjects().find(s => s.key === currentSubject) || { name: '' };
-                let sectionTitle = subjectMeta.name + ' – ' + chapterMeta.name; if (currentTopic) { const t = getTopics(currentChapter).find(x => x.key === currentTopic); if (t) sectionTitle += ' » ' + t.name; }
-                const isSAQ = currentTypeFilter === 'saq', isBroad = currentTypeFilter === 'broad';
-                const cardClass = isSAQ ? 'saq-card' : (isBroad ? 'broad-card' : 'comp-card');
-                const numClass = isSAQ ? 'saq-num' : (isBroad ? 'broad-num' : 'comp-num');
-                const ansClass = isSAQ ? 'saq-a' : (isBroad ? 'broad-a' : 'comp-a');
-                const iconName = isSAQ ? 'lucide:check-circle' : (isBroad ? 'lucide:book-open' : 'lucide:table');
-                const targetKey = getActiveQuestionKey();
-
-                const questionsHtml = filteredData.map(({ item, origIdx }) => {
-                    const qType = item.type;
-                    const cClass = qType === 'comparison' ? 'comp-card' : cardClass;
-                    const nClass = qType === 'comparison' ? 'comp-num' : numClass;
-                    const aClass = qType === 'comparison' ? 'comp-a' : ansClass;
-                    const iName = qType === 'comparison' ? 'lucide:table' : iconName;
-                    const displayAnswer = item.a.includes('<') ? item.a : formatAnswer(item.a);
-                    const displayQuestion = item.q.includes('<') ? item.q : escapeHtml(item.q);
-                    const qEditable = editorUnlocked ? `contenteditable="true" class="editable-q" data-key="${targetKey}" data-idx="${origIdx}"` : '';
-                    const aEditable = editorUnlocked ? `contenteditable="true" class="editable-a" data-key="${targetKey}" data-idx="${origIdx}"` : '';
-                    return `<div class="${cClass} card-animate" style="animation-delay:${origIdx*0.07}s">
-                        ${editorUnlocked?`<div class="card-actions"><button class="card-action-btn delete-btn" data-action="delete" data-key="${targetKey}" data-idx="${origIdx}" title="Delete">🗑️</button></div>`:''}
-                        <div class="${qType==='comparison'?'comp-q':(qType==='saq'?'saq-q':'broad-q')}"><span class="${nClass}">${origIdx+1}</span><span ${qEditable}>${displayQuestion}</span></div>
-                        <div class="${aClass}"><iconify-icon icon="${iName}" width="16"></iconify-icon><span class="answer-content" ${aEditable}>${displayAnswer}</span></div>
-                    </div>`;
-                }).join('');
-
-                const chapterImageHtml = chapterMeta.image ? `<img src="${chapterMeta.image}" alt="Chapter Image" style="max-width:100%; height:auto; margin-bottom:1.5rem;">` : '';
-                document.getElementById('mainContent').innerHTML = `
-                <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="notes.html">Classes</a><span class="sep">›</span><span class="current">Class 10</span></nav>
-                <h1 class="page-title">Class 10 <span class="accent">প্রশ্ন উত্তর</span></h1>
-                <p class="page-subtitle">${sectionTitle} — ${currentTypeFilter.toUpperCase()}</p>
-                <div class="toggle-buttons">
-                    <button class="type-btn ${currentTypeFilter==='saq'?'active':''}" id="toggleSAQ">📝 SAQ</button>
-                    <button class="type-btn ${currentTypeFilter==='broad'?'active':''}" id="toggleBroad">📖 Broad</button>
-                </div>
-                <div class="section-header"><div class="section-icon ${isSAQ?'icon-saq':'icon-broad'}"><iconify-icon icon="${isSAQ?'lucide:pen-line':'lucide:book-open'}" width="18"></iconify-icon></div><h2>${sectionTitle}</h2><span class="badge-count">${filteredData.length} টি</span></div>
-                ${chapterImageHtml}
-                ${questionsHtml||'<div class="empty-state"><iconify-icon icon="lucide:inbox" width="48" style="opacity:0.25;display:block;margin:0 auto 0.75rem;"></iconify-icon><p>এখনো কোনো প্রশ্ন যোগ করা হয়নি।</p></div>'}
-                <div class="section-divider"></div>`;
-                document.getElementById('toggleSAQ').addEventListener('click', () => { currentTypeFilter = 'saq'; renderContent(); });
-                document.getElementById('toggleBroad').addEventListener('click', () => { currentTypeFilter = 'broad'; renderContent(); });
-                document.querySelectorAll('.card-action-btn.delete-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => { e.stopPropagation(); const key = btn.dataset.key, idx = parseInt(btn.dataset.idx); deleteQuestion(key, idx); });
-                });
-                document.getElementById('contentScroll').scrollTop = 0;
-            }
-
-            function deleteQuestion(targetKey, idx) {
-                const qArr = questionBank[targetKey] || [];
-                if (idx < 0 || idx >= qArr.length) return;
-                if (!confirm('Delete this question permanently?')) return;
-                qArr.splice(idx, 1);
-                saveBank();
-                renderContent();
-            }
-
-            // ========== NEW CLEAR FUNCTIONS ==========
-            function clearSubjectQuestions(subjectKey) {
-                const chapters = getChapters(subjectKey);
-                if (!chapters.length) return;
-                if (!confirm(`সাবজেক্ট "${getSubjects().find(s=>s.key===subjectKey)?.name}" এর সব প্রশ্ন ডিলিট করতে চান?`)) return;
-                chapters.forEach(ch => {
-                    if (ch.topics && ch.topics.length) {
-                        ch.topics.forEach(t => { questionBank[t.key] = []; });
-                    } else {
-                        questionBank[ch.key] = [];
-                    }
-                });
-                saveBank();
-                if (currentSubject === subjectKey) { renderContent(); }
-                updateAllEditSelects();
-                document.getElementById('subjectStatus').textContent = `🧹 Subject "${subjectKey}" এর সব প্রশ্ন ক্লিয়ার হয়েছে।`;
-            }
-            function clearChapterQuestions(chapterKey) {
-                const chapter = getChapter(chapterKey);
-                if (!chapter) return;
-                if (!confirm(`চ্যাপ্টার "${chapter.name}" এর সব প্রশ্ন ডিলিট করতে চান?`)) return;
-                if (chapter.topics && chapter.topics.length) {
-                    chapter.topics.forEach(t => { questionBank[t.key] = []; });
-                } else {
-                    questionBank[chapterKey] = [];
-                }
-                saveBank();
-                if (currentChapter === chapterKey) { renderContent(); }
-                updateAllEditSelects();
-                document.getElementById('chapterStatus').textContent = `🧹 Chapter "${chapter.name}" এর সব প্রশ্ন ক্লিয়ার হয়েছে।`;
-            }
-            function clearTopicQuestions(chapterKey, topicKey) {
-                const chapter = getChapter(chapterKey);
-                if (!chapter) return;
-                const topic = (chapter.topics || []).find(t => t.key === topicKey);
-                if (!topic) return;
-                if (!confirm(`টপিক "${topic.name}" এর সব প্রশ্ন ডিলিট করতে চান?`)) return;
-                questionBank[topicKey] = [];
-                saveBank();
-                if (currentTopic === topicKey) { renderContent(); }
-                document.getElementById('topicStatus').textContent = `🧹 Topic "${topic.name}" এর সব প্রশ্ন ক্লিয়ার হয়েছে।`;
-            }
-
-            function handleMgmtInlineEdit(e) {
-                if (!editorUnlocked) return;
-                const editable = e.target.closest('.mgmt-editable-name');
-                if (!editable) return;
-                const newName = editable.innerText.trim();
-                if (!newName) return;
-                const type = editable.dataset.type;
-                const key = editable.dataset.key;
-                if (type === 'subject') {
-                    const subj = getSubjects().find(s => s.key === key);
-                    if (subj && subj.name !== newName) { subj.name = newName; saveBank(); renderSidebar(); }
-                } else if (type === 'chapter') {
-                    const ch = getChapter(key);
-                    if (ch && ch.name !== newName) { ch.name = newName; saveBank(); renderSidebar(); renderContent(); }
-                } else if (type === 'topic') {
-                    const chapterKey = editable.dataset.chapter;
-                    const ch = getChapter(chapterKey);
-                    if (ch && ch.topics) {
-                        const topic = ch.topics.find(t => t.key === key);
-                        if (topic && topic.name !== newName) { topic.name = newName; saveBank(); renderSidebar(); renderContent(); }
-                    }
-                }
-            }
-            document.getElementById('editPanel').addEventListener('focusout', handleMgmtInlineEdit);
-
-            function updateAllEditSelects() {
-                updateEditChapterSelect(); updateTopicSelects(); updateChapterMgmtSubjectSelect(); updateTopicMgmtChapterSelect(); updateChapterImageSelect();
-                updateImportChapterSelect(); updateImportTopicSelect();
-                renderSubjectMgmtList(); renderChapterMgmtList(); renderTopicMgmtList();
-            }
-            function updateEditChapterSelect() { const sel = document.getElementById('editChapterSelect'); sel.innerHTML = getAllChapters().map(c => `<option value="${c.key}" ${c.key===currentChapter?'selected':''}>${escapeHtml(c.name)} (${c.subject})</option>`).join(''); updateTopicSelects(); }
-            function updateTopicSelects() { const cv = document.getElementById('editChapterSelect').value, tg = document.getElementById('quickTopicGroup'), ts = document.getElementById('editTopicSelect'), topics = getTopics(cv); if (topics.length > 0) { tg.style.display = 'block'; ts.innerHTML = topics.map(t => `<option value="${t.key}">${escapeHtml(t.name)}</option>`).join(''); if (currentTopic && topics.find(t => t.key === currentTopic)) ts.value = currentTopic; } else { tg.style.display = 'none'; } }
-            function updateChapterMgmtSubjectSelect() { const sel = document.getElementById('chapterMgmtSubject'), subs = getSubjects(); sel.innerHTML = subs.map(s => `<option value="${s.key}" ${s.key===currentSubject?'selected':''}>${escapeHtml(s.name)}</option>`).join(''); }
-            function updateTopicMgmtChapterSelect() { const sel = document.getElementById('topicMgmtChapter'); sel.innerHTML = getAllChapters().map(c => `<option value="${c.key}">${escapeHtml(c.name)} (${c.subject})</option>`).join(''); if (currentChapter && getAllChapters().some(c => c.key === currentChapter)) sel.value = currentChapter; renderTopicMgmtList(); }
-            function updateChapterImageSelect() { const sel = document.getElementById('chapterImageSelect'); sel.innerHTML = getAllChapters().map(c => `<option value="${c.key}">${escapeHtml(c.name)} (${c.subject})</option>`).join(''); if (currentChapter) sel.value = currentChapter; }
-            function updateImportChapterSelect() { const sel = document.getElementById('importChapterSelect'); sel.innerHTML = getAllChapters().map(c => `<option value="${c.key}">${escapeHtml(c.name)} (${c.subject})</option>`).join(''); updateImportTopicSelect(); }
-            function updateImportTopicSelect() { const chKey = document.getElementById('importChapterSelect').value, tg = document.getElementById('importTopicGroup'), ts = document.getElementById('importTopicSelect'), topics = getTopics(chKey); if (topics.length > 0) { tg.style.display = 'block'; ts.innerHTML = topics.map(t => `<option value="${t.key}">${escapeHtml(t.name)}</option>`).join(''); } else { tg.style.display = 'none'; } }
-            function renderSubjectMgmtList() {
-                const subs = getSubjects();
-                document.getElementById('subjectMgmtList').innerHTML = subs.length ? subs.map(s => `<li class="mgmt-list-item"><span class="item-emoji">${subjectIcons[s.key]||'📘'}</span><span class="item-name mgmt-editable-name" ${editorUnlocked?'contenteditable="true"':''} data-type="subject" data-key="${s.key}">${escapeHtml(s.name)}</span><span class="item-meta">${s.key}</span><button class="btn btn-xs btn-warning clear-subj-qs-btn" data-subject="${s.key}">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-subject-btn" data-subject="${s.key}">🗑️</button></li>`).join('') : '<li class="mgmt-list-item"><span class="item-name" style="color:var(--text-muted);">No subjects yet.</span></li>';
-                document.querySelectorAll('.remove-subject-btn').forEach(b => b.addEventListener('click', () => { if (confirm('Delete subject?')) removeSubject(b.dataset.subject); }));
-                document.querySelectorAll('.clear-subj-qs-btn').forEach(b => b.addEventListener('click', () => clearSubjectQuestions(b.dataset.subject)));
-            }
-            function renderChapterMgmtList() {
-                const subj = document.getElementById('chapterMgmtSubject').value, chaps = getChapters(subj);
-                document.getElementById('chapterMgmtList').innerHTML = chaps.length ? chaps.map((c, i) => `<li class="mgmt-list-item"><button class="btn-arrange chap-up-btn" data-chapter="${c.key}" ${i===0?'disabled':''}>↑</button><button class="btn-arrange chap-down-btn" data-chapter="${c.key}" ${i===chaps.length-1?'disabled':''}>↓</button><span class="item-name mgmt-editable-name" ${editorUnlocked?'contenteditable="true"':''} data-type="chapter" data-key="${c.key}">${escapeHtml(c.name)}</span><span class="item-meta">${c.defaultType||'saq'}</span><button class="btn btn-xs btn-warning clear-chap-qs-btn" data-chapter="${c.key}">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-chapter-btn" data-chapter="${c.key}">🗑️</button></li>`).join('') : '<li class="mgmt-list-item"><span class="item-name" style="color:var(--text-muted);">No chapters.</span></li>';
-                document.querySelectorAll('.chap-up-btn').forEach(b => b.addEventListener('click', () => moveChapterUp(b.dataset.chapter)));
-                document.querySelectorAll('.chap-down-btn').forEach(b => b.addEventListener('click', () => moveChapterDown(b.dataset.chapter)));
-                document.querySelectorAll('.remove-chapter-btn').forEach(b => b.addEventListener('click', () => { if (confirm('Delete chapter?')) removeChapter(b.dataset.chapter); }));
-                document.querySelectorAll('.clear-chap-qs-btn').forEach(b => b.addEventListener('click', () => clearChapterQuestions(b.dataset.chapter)));
-            }
-            function renderTopicMgmtList() {
-                const ck = document.getElementById('topicMgmtChapter').value, topics = getTopics(ck);
-                document.getElementById('topicMgmtList').innerHTML = topics.length ? topics.map((t, i) => `<li class="mgmt-list-item"><button class="btn-arrange topic-up-btn" data-topic="${t.key}" data-chapter="${ck}" ${i===0?'disabled':''}>↑</button><button class="btn-arrange topic-down-btn" data-topic="${t.key}" data-chapter="${ck}" ${i===topics.length-1?'disabled':''}>↓</button><span class="item-name mgmt-editable-name" ${editorUnlocked?'contenteditable="true"':''} data-type="topic" data-chapter="${ck}" data-key="${t.key}">${escapeHtml(t.name)}</span><button class="btn btn-xs btn-warning clear-topic-qs-btn" data-topic="${t.key}" data-chapter="${ck}">🧹 Clear Qs</button><button class="btn btn-xs btn-danger remove-topic-btn" data-topic="${t.key}" data-chapter="${ck}">🗑️</button></li>`).join('') : '<li class="mgmt-list-item"><span class="item-name" style="color:var(--text-muted);">No topics.</span></li>';
-                document.querySelectorAll('.topic-up-btn').forEach(b => b.addEventListener('click', () => moveTopicUp(b.dataset.chapter, b.dataset.topic)));
-                document.querySelectorAll('.topic-down-btn').forEach(b => b.addEventListener('click', () => moveTopicDown(b.dataset.chapter, b.dataset.topic)));
-                document.querySelectorAll('.remove-topic-btn').forEach(b => b.addEventListener('click', () => { if (confirm('Delete topic?')) removeTopic(b.dataset.chapter, b.dataset.topic); }));
-                document.querySelectorAll('.clear-topic-qs-btn').forEach(b => b.addEventListener('click', () => clearTopicQuestions(b.dataset.chapter, b.dataset.topic)));
-            }
-
-            function setChapterImage() {
-                const chapterKey = document.getElementById('chapterImageSelect').value;
-                const imageUrl = document.getElementById('chapterImageUrl').value.trim();
-                const chapter = getChapter(chapterKey);
-                if (!chapter) return;
-                chapter.image = imageUrl;
-                saveBank();
-                if (chapterKey === currentChapter) renderContent();
-                document.getElementById('chapterImageStatus').textContent = '✅ Image saved for ' + chapter.name;
-            }
-
-            function backupChapter() {
-                const chapter = getChapter(currentChapter);
-                if (!chapter) return;
-                let allQuestions = [];
-                if (questionBank[currentChapter]) allQuestions = allQuestions.concat(questionBank[currentChapter]);
-                const topics = chapter.topics || [];
-                topics.forEach(t => { if (questionBank[t.key]) allQuestions = allQuestions.concat(questionBank[t.key]); });
-                const blob = new Blob([JSON.stringify(allQuestions, null, 2)], { type: 'application/json' });
-                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `chapter_${currentChapter}_backup.json`; a.click();
-            }
-            function backupTopic() {
-                if (!currentTopic) return;
-                const questions = questionBank[currentTopic] || [];
-                const blob = new Blob([JSON.stringify(questions, null, 2)], { type: 'application/json' });
-                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `topic_${currentTopic}_backup.json`; a.click();
-            }
-            function importQuestionsFromJson(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const arr = JSON.parse(e.target.result);
-                        if (!Array.isArray(arr)) throw new Error('JSON must be an array of questions.');
-                        const chapterKey = document.getElementById('importChapterSelect').value;
-                        const chapter = getChapter(chapterKey);
-                        if (!chapter) throw new Error('Invalid target chapter.');
-                        let targetKey = chapterKey;
-                        const topics = chapter.topics || [];
-                        if (topics.length > 0) {
-                            const topicKey = document.getElementById('importTopicSelect').value;
-                            targetKey = topicKey || topics[0].key;
-                        }
-                        if (!questionBank[targetKey]) questionBank[targetKey] = [];
-                        let added = 0;
-                        arr.forEach(item => {
-                            if (item.q && item.a) {
-                                const type = item.type || 'saq';
-                                questionBank[targetKey].push({ q: item.q, a: item.a, type });
-                                added++;
-                            }
-                        });
-                        saveBank();
-                        document.getElementById('importStatus').textContent = `✅ ${added} questions imported to ${targetKey}.`;
-                        if (currentChapter === chapterKey || currentTopic === targetKey) renderContent();
-                    } catch (err) { document.getElementById('importStatus').textContent = '❌ ' + err.message; }
-                };
-                reader.readAsText(file);
-            }
-
-            function getAllChapters() { return questionBank.__chapters__ || []; }
-            function moveTopicUp(cK, tK) { const ch = getChapter(cK); if (!ch || !ch.topics) return; const i = ch.topics.findIndex(t => t.key === tK); if (i > 0) { [ch.topics[i - 1], ch.topics[i]] = [ch.topics[i], ch.topics[i - 1]]; saveBank(); renderSidebar(); renderTopicMgmtList(); } }
-            function moveTopicDown(cK, tK) { const ch = getChapter(cK); if (!ch || !ch.topics) return; const i = ch.topics.findIndex(t => t.key === tK); if (i >= 0 && i < ch.topics.length - 1) { [ch.topics[i], ch.topics[i + 1]] = [ch.topics[i + 1], ch.topics[i]]; saveBank(); renderSidebar(); renderTopicMgmtList(); } }
-            function removeTopic(cK, tK) { const ch = getChapter(cK); if (ch && ch.topics) ch.topics = ch.topics.filter(t => t.key !== tK); delete questionBank[tK]; saveBank(); if (currentTopic === tK) { const topics = getTopics(cK); currentTopic = topics.length ? topics[0].key : null; } renderSidebar(); renderContent(); updateAllEditSelects(); }
-            function removeSubject(sK) { const cr = getChapters(sK); cr.forEach(c => { if (c.topics) c.topics.forEach(t => delete questionBank[t.key]); delete questionBank[c.key]; }); questionBank.__chapters__ = (questionBank.__chapters__ || []).filter(c => c.subject !== sK); questionBank.__subjects__ = (questionBank.__subjects__ || []).filter(s => s.key !== sK); saveBank(); if (currentSubject === sK) { const rem = getSubjects(); if (rem.length) { currentSubject = rem[0].key; const fc = getChapters(currentSubject)[0]; if (fc) { currentChapter = fc.key; currentTopic = getTopics(fc.key)[0]?.key || null; } } } renderSidebar(); renderContent(); updateAllEditSelects(); }
-            function removeChapter(cK) { const ch = getChapter(cK); if (ch && ch.topics) ch.topics.forEach(t => delete questionBank[t.key]); delete questionBank[cK]; questionBank.__chapters__ = (questionBank.__chapters__ || []).filter(c => c.key !== cK); saveBank(); if (currentChapter === cK) { const rem = ch ? getChapters(ch.subject) : getAllChapters(); if (rem.length) { currentChapter = rem[0].key; currentTopic = getTopics(rem[0].key)[0]?.key || null; } } renderSidebar(); renderContent(); updateAllEditSelects(); }
-            function moveChapterUp(cK) { const chaps = questionBank.__chapters__ || []; const i = chaps.findIndex(c => c.key === cK); if (i > 0) { [chaps[i - 1], chaps[i]] = [chaps[i], chaps[i - 1]]; saveBank(); renderSidebar(); renderChapterMgmtList(); } }
-            function moveChapterDown(cK) { const chaps = questionBank.__chapters__ || []; const i = chaps.findIndex(c => c.key === cK); if (i >= 0 && i < chaps.length - 1) { [chaps[i], chaps[i + 1]] = [chaps[i + 1], chaps[i]]; saveBank(); renderSidebar(); renderChapterMgmtList(); } }
-            function addSubject() { const name = document.getElementById('newSubjectName').value.trim(); if (!name) return; let key = generateKey(name, 'subj'); while (getSubjects().some(s => s.key === key)) { key = generateKey(name, 'subj') + '_' + Math.random().toString(36).substr(2, 5); } questionBank.__subjects__.push({ key, group: 'class10', name }); saveBank(); document.getElementById('newSubjectName').value = ''; document.getElementById('newSubjectKey').value = ''; renderSidebar(); updateAllEditSelects(); document.getElementById('subjectStatus').textContent = '✅ Subject added.'; }
-            function addChapter() {
-                const name = document.getElementById('newChapterName').value.trim();
-                const subject = document.getElementById('chapterMgmtSubject').value;
-                if (!name || !subject) return;
-                let key = generateKey(name, 'ch');
-                while (getAllChapters().some(c => c.key === key)) { key = generateKey(name, 'ch') + '_' + Math.random().toString(36).substr(2, 5); }
-                const dt = document.getElementById('newChapterType').value;
-                const topicKey = key + '_t1';
-                questionBank.__chapters__.push({ key, subject, name, defaultType: dt, image: "", topics: [{ key: topicKey, name: 'topic1' }] });
-                questionBank[topicKey] = [];
-                saveBank();
-                document.getElementById('newChapterName').value = ''; document.getElementById('newChapterKey').value = '';
-                renderSidebar(); updateAllEditSelects();
-                document.getElementById('chapterStatus').textContent = '✅ Chapter added.';
-            }
-            function bulkAddChapters() {
-                const text = document.getElementById('bulkChapterText').value.trim(); if (!text) return;
-                const subject = document.getElementById('chapterMgmtSubject').value;
-                const defaultType = document.getElementById('newChapterType').value;
-                const names = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-                if (names.length === 0) return;
-                let added = 0;
-                names.forEach(name => {
-                    let key = generateKey(name, 'ch');
-                    while (getAllChapters().some(c => c.key === key)) { key = generateKey(name, 'ch') + '_' + Math.random().toString(36).substr(2, 5); }
-                    const topicKey = key + '_t1';
-                    questionBank.__chapters__.push({ key, subject, name, defaultType, image: "", topics: [{ key: topicKey, name: 'topic1' }] });
-                    questionBank[topicKey] = [];
-                    added++;
-                });
-                saveBank(); document.getElementById('bulkChapterText').value = ''; renderSidebar(); updateAllEditSelects();
-                document.getElementById('bulkChapterStatus').textContent = `✅ ${added} chapters added.`;
-            }
-            function addTopic() {
-                const name = document.getElementById('newTopicName').value.trim();
-                const cK = document.getElementById('topicMgmtChapter').value;
-                if (!name || !cK) return;
-                const ch = getChapter(cK);
-                if (!ch) return;
-                if (!ch.topics) ch.topics = [];
-                let key = generateKey(name, 'topic');
-                while (ch.topics.some(t => t.key === key)) { key = generateKey(name, 'topic') + '_' + Math.random().toString(36).substr(2, 5); }
-                ch.topics.push({ key, name });
-                questionBank[key] = [];
-                saveBank();
-                document.getElementById('newTopicName').value = ''; document.getElementById('newTopicKey').value = '';
-                renderSidebar(); updateAllEditSelects();
-                document.getElementById('topicStatus').textContent = '✅ Topic added.';
-            }
-            function bulkAddTopics() {
-                const text = document.getElementById('bulkTopicText').value.trim(); if (!text) return;
-                const chapterKey = document.getElementById('topicMgmtChapter').value;
-                const chapter = getChapter(chapterKey); if (!chapter) return;
-                const names = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-                if (names.length === 0) return;
-                if (!chapter.topics) chapter.topics = [];
-                let added = 0;
-                names.forEach(name => {
-                    let key = generateKey(name, 'topic');
-                    while (chapter.topics.some(t => t.key === key)) { key = generateKey(name, 'topic') + '_' + Math.random().toString(36).substr(2, 5); }
-                    chapter.topics.push({ key, name });
-                    questionBank[key] = [];
-                    added++;
-                });
-                saveBank(); document.getElementById('bulkTopicText').value = ''; renderSidebar(); updateAllEditSelects();
-                document.getElementById('bulkTopicStatus').textContent = `✅ ${added} topics added.`;
-            }
-
-            function processQuickAdd(text) {
-                const lines = text.split('\n').filter(l => l.trim() !== '');
-                const chapter = document.getElementById('editChapterSelect').value;
-                const topics = getTopics(chapter);
-                let targetKey = chapter;
-                if (topics.length > 0) targetKey = document.getElementById('editTopicSelect').value || topics[0].key;
-                const type = document.getElementById('uploadTypeSelect').value;
-                let added = 0;
-                lines.forEach(line => {
-                    const parts = line.split('||').map(p => p.trim());
-                    if (parts.length >= 2) { const q = parts[0], a = parts[1]; if (q && a) { if (!questionBank[targetKey]) questionBank[targetKey] = []; questionBank[targetKey].push({ q, a, type }); added++; } }
-                });
-                if (added > 0) { saveBank(); if (targetKey === getActiveQuestionKey()) renderContent(); document.getElementById('quickAddText').value = ''; document.getElementById('editStatus').textContent = `✅ ${added} টি প্রশ্ন যোগ হয়েছে।`; }
-                else { document.getElementById('editStatus').textContent = '❌ সঠিক ফরম্যাটে কিছু পাওয়া যায়নি।'; }
-            }
-            function addBlankTable() {
-                const chapter = document.getElementById('editChapterSelect').value;
-                const topics = getTopics(chapter);
-                let targetKey = chapter;
-                if (topics.length > 0) targetKey = document.getElementById('editTopicSelect').value || topics[0].key;
-                if (!questionBank[targetKey]) questionBank[targetKey] = [];
-                const defaultTableHTML = '<div class="tbl-wrap"><table><thead><tr><th></th><th></th><th></th></tr></thead><tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div>';
-                questionBank[targetKey].push({ q: '', a: defaultTableHTML, type: 'comparison' });
-                saveBank(); if (targetKey === getActiveQuestionKey()) renderContent();
-                document.getElementById('editStatus').textContent = '✅ Blank table question added. Edit to fill in.';
-            }
-            function handleTopicJsonUpload(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const arr = JSON.parse(e.target.result);
-                        if (!Array.isArray(arr)) throw new Error('JSON must be an array.');
-                        const chapter = document.getElementById('editChapterSelect').value;
-                        const topics = getTopics(chapter);
-                        let targetKey = chapter;
-                        if (topics.length > 0) targetKey = document.getElementById('editTopicSelect').value || topics[0].key;
-                        const selType = document.getElementById('uploadTypeSelect').value;
-                        if (!questionBank[targetKey]) questionBank[targetKey] = [];
-                        let added = 0;
-                        arr.forEach(item => { if (item.q && item.a) { questionBank[targetKey].push({ q: item.q, a: item.a, type: selType }); added++; } });
-                        saveBank(); if (targetKey === getActiveQuestionKey()) renderContent();
-                        document.getElementById('editStatus').textContent = `✅ ${added} questions uploaded.`;
-                    } catch (err) { document.getElementById('editStatus').textContent = '❌ ' + err.message; }
-                };
-                reader.readAsText(file);
-            }
-
-            function saveBank() { try { localStorage.setItem('galactic_quiz_bank_v2', JSON.stringify(questionBank)); } catch (e) {} }
-            function loadBank() { /* embedded data used, no localStorage loading */ }
-            function backupFull() { const blob = new Blob([JSON.stringify(questionBank, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'class10_full_backup.json'; a.click(); }
-
-            function migrateChapterQuestionsToTopics(bank) {
-                const chapters = bank.__chapters__ || [];
-                chapters.forEach(ch => {
-                    const topics = ch.topics || [];
-                    if (topics.length > 0 && Array.isArray(bank[ch.key])) {
-                        const firstTopicKey = topics[0].key;
-                        if (!bank[firstTopicKey]) bank[firstTopicKey] = [];
-                        bank[firstTopicKey] = bank[firstTopicKey].concat(bank[ch.key]);
-                        delete bank[ch.key];
-                    }
-                });
-                return bank;
-            }
-
-            async function loadFromRemote(url) {
-                try {
-                    const r = await fetch(url);
-                    if (!r.ok) throw new Error('Fetch failed');
-                    let d = await r.json();
-                    d = migrateChapterQuestionsToTopics(d);
-                    questionBank = d;
-                    saveBank();
-                    const subs = getSubjects();
-                    if (subs.length) {
-                        currentSubject = subs[0].key;
-                        const fc = getChapters(currentSubject)[0];
-                        if (fc) {
-                            currentChapter = fc.key;
-                            currentTopic = getTopics(fc.key)[0]?.key || null;
-                            currentTypeFilter = fc.defaultType || 'saq';
-                        }
-                    }
-                    renderSidebar(); renderContent(); updateAllEditSelects();
-                    document.getElementById('editStatus').textContent = '✅ Remote bank loaded & migrated!';
-                    localStorage.setItem(REMOTE_URL_KEY, url);
-                } catch (e) { document.getElementById('editStatus').textContent = '❌ Error: ' + e.message; }
-            }
-
-            function handleFullJsonReplace(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        let d = JSON.parse(e.target.result);
-                        d = migrateChapterQuestionsToTopics(d);
-                        questionBank = d;
-                        saveBank();
-                        const subs = getSubjects();
-                        if (subs.length) {
-                            currentSubject = subs[0].key;
-                            const fc = getChapters(currentSubject)[0];
-                            if (fc) {
-                                currentChapter = fc.key;
-                                currentTopic = getTopics(fc.key)[0]?.key || null;
-                                currentTypeFilter = fc.defaultType || 'saq';
-                            }
-                        }
-                        renderSidebar(); renderContent(); updateAllEditSelects();
-                        document.getElementById('fullJsonStatus').textContent = '✅ Full bank replaced & migrated.';
-                    } catch (err) {
-                        document.getElementById('fullJsonStatus').textContent = '❌ Invalid JSON file.';
-                    }
-                };
-                reader.readAsText(file);
-            }
-
-            function escapeHtml(t) { return String(t).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch])); }
-            function generateKey(n, p) { let s = n.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '_').replace(/-+/g, '_').trim(); if (s.length < 2) s = p + '_' + Date.now().toString(36); return s; }
-
-            function lockEditor() { editorUnlocked = false; document.getElementById('editPanel').classList.remove('open'); const b = document.getElementById('cornerUnlockBtn'); b.classList.remove('editor-unlocked'); b.querySelector('iconify-icon').setAttribute('icon', 'lucide:lock'); b.title = 'Unlock Editor'; hidePasswordPopover(); hideTblToolbar(); renderContent(); updateAllEditSelects(); }
-            function unlockEditor() { editorUnlocked = true; document.getElementById('editPanel').classList.add('open'); const b = document.getElementById('cornerUnlockBtn'); b.classList.add('editor-unlocked'); b.querySelector('iconify-icon').setAttribute('icon', 'lucide:unlock'); b.title = 'Editor unlocked'; updateAllEditSelects(); document.getElementById('editPanel').scrollIntoView({ behavior: 'smooth', block: 'center' }); hidePasswordPopover(); renderContent(); }
-            const popover = document.getElementById('passwordPopover'), popoverInput = document.getElementById('popoverPassword');
-            function showPasswordPopover() { popover.classList.add('show'); popoverInput.value = ''; setTimeout(() => popoverInput.focus(), 50); }
-            function hidePasswordPopover() { popover.classList.remove('show'); popoverInput.value = ''; }
-            document.getElementById('popoverSubmit').addEventListener('click', () => { if (popoverInput.value.trim() === EDITOR_PASSWORD) unlockEditor(); else { alert('Wrong password!'); popoverInput.value = ''; popoverInput.focus(); } });
-            document.getElementById('popoverCancel').addEventListener('click', hidePasswordPopover);
-            popoverInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('popoverSubmit').click(); else if (e.key === 'Escape') hidePasswordPopover(); });
-            document.addEventListener('click', (e) => { if (!popover.contains(e.target) && e.target !== document.getElementById('cornerUnlockBtn') && !document.getElementById('cornerUnlockBtn').contains(e.target)) hidePasswordPopover(); });
-            document.getElementById('cornerUnlockBtn').addEventListener('click', () => { editorUnlocked ? lockEditor() : (popover.classList.contains('show') ? hidePasswordPopover() : showPasswordPopover()); });
-            document.getElementById('editChapterSelect').addEventListener('change', updateTopicSelects);
-            document.getElementById('chapterMgmtSubject').addEventListener('change', () => { renderChapterMgmtList(); document.getElementById('chapterStatus').textContent = ''; });
-            document.getElementById('topicMgmtChapter').addEventListener('change', () => { renderTopicMgmtList(); document.getElementById('topicStatus').textContent = ''; });
-            document.getElementById('importChapterSelect').addEventListener('change', updateImportTopicSelect);
-            document.getElementById('addSubjectBtn').addEventListener('click', addSubject);
-            document.getElementById('addChapterBtn').addEventListener('click', addChapter);
-            document.getElementById('addTopicBtn').addEventListener('click', addTopic);
-            document.getElementById('bulkAddChaptersBtn').addEventListener('click', bulkAddChapters);
-            document.getElementById('bulkAddTopicsBtn').addEventListener('click', bulkAddTopics);
-            document.getElementById('saveChapterImageBtn').addEventListener('click', setChapterImage);
-            document.getElementById('backupChapterBtn').addEventListener('click', backupChapter);
-            document.getElementById('backupTopicBtn').addEventListener('click', backupTopic);
-            document.getElementById('importJsonBtn').addEventListener('click', () => { document.getElementById('importJsonFile').click(); });
-            document.getElementById('importJsonFile').addEventListener('change', (e) => { if (e.target.files[0]) importQuestionsFromJson(e.target.files[0]); });
-            document.getElementById('quickAddBtn').addEventListener('click', () => { processQuickAdd(document.getElementById('quickAddText').value); });
-            document.getElementById('addBlankTableBtn').addEventListener('click', addBlankTable);
-            document.getElementById('uploadTopicJsonBtn').addEventListener('click', () => { document.getElementById('topicJsonFileInput').click(); });
-            document.getElementById('topicJsonFileInput').addEventListener('change', (e) => { if (e.target.files[0]) handleTopicJsonUpload(e.target.files[0]); });
-            document.getElementById('uploadJsonBtn').addEventListener('click', () => { document.getElementById('jsonFileInput').click(); });
-            document.getElementById('jsonFileInput').addEventListener('change', (e) => { if (e.target.files[0]) handleFullJsonReplace(e.target.files[0]); });
-            document.getElementById('backupFullBtn').addEventListener('click', backupFull);
-            document.getElementById('loadRemoteBtn').addEventListener('click', () => { const url = document.getElementById('remoteUrl').value.trim(); if (url) loadFromRemote(url); });
-
-            function forceBlurActiveElement() {
-                const activeEl = document.activeElement;
-                if (activeEl && (activeEl.classList.contains('editable-q') || activeEl.classList.contains('editable-a'))) {
-                    activeEl.blur();
-                }
-            }
-
-            document.getElementById('savePermanentBtn').addEventListener('click', () => {
-                try {
-                    forceBlurActiveElement();
-                    lockEditor();
-                    const htmlClone = document.documentElement.cloneNode(true);
-                    const scriptTags = htmlClone.querySelectorAll('script');
-                    scriptTags.forEach(script => {
-                        if (script.textContent.includes('const defaultBank')) {
-                            let newScript = script.textContent;
-                            const searchLine = 'let questionBank = JSON.parse(JSON.stringify(defaultBank));';
-                            const replaceLine = `let questionBank = ${JSON.stringify(questionBank)}; // embedded data`;
-                            newScript = newScript.replace(searchLine, replaceLine);
-                            newScript = newScript.replace(
-                                'function loadBank() { try { const s = localStorage.getItem(\'galactic_quiz_bank_v2\'); if (s) questionBank = JSON.parse(s); } catch (e) {} }',
-                                'function loadBank() { /* embedded data used, no localStorage loading */ }'
-                            );
-                            script.textContent = newScript;
-                        }
-                    });
-                    const finalHTML = '<!DOCTYPE html>\n' + htmlClone.outerHTML;
-                    const blob = new Blob([finalHTML], { type: 'text/html;charset=UTF-8' });
-                    const a = document.createElement('a');
-                    a.href = URL.createObjectURL(blob);
-                    a.download = 'class10_quiz_permanent_' + new Date().toISOString().slice(0, 10) + '.html';
-                    a.click();
-                } catch (e) { console.error(e); }
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                progressBar.style.width = (scrollTop / docHeight) * 100 + '%';
+                fabScroll.classList.toggle('visible', scrollTop > 500);
             });
 
-            window.addEventListener('DOMContentLoaded', () => {
-                loadBank(); applyTheme(getStoredTheme() === 'day' ? 'day' : 'night');
-                if (!getAllChapters().some(c => c.key === currentChapter)) {
-                    const fs = getSubjects()[0]; if (fs) { currentSubject = fs.key; const fc = getChapters(currentSubject)[0]; if (fc) { currentChapter = fc.key; currentTopic = getTopics(fc.key)[0]?.key || null; currentTypeFilter = fc.defaultType || 'saq'; } }
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                const body = document.body;
+                const isNight = body.classList.contains('night');
+                body.classList.remove('night', 'day');
+                body.classList.add(isNight ? 'day' : 'night');
+                const icon = document.querySelector('#themeToggle i');
+                icon.setAttribute('data-lucide', isNight ? 'sun' : 'moon');
+                
+                // হিরো টাইটেলে ডে-মোডে স্প্যান কালার অ্যাডজাস্টমেন্ট
+                const heroSpan = document.querySelector('.hero-title span');
+                if(heroSpan) {
+                    heroSpan.style.color = isNight ? '#f0c040' : '#2563EB';
                 }
-                renderSidebar(); renderContent(); updateAllEditSelects();
-                setupInlineEditing();
-                document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-                document.getElementById('sidebarToggle').addEventListener('click', () => { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('visible'); });
-                document.getElementById('sidebarOverlay').addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); });
-                lockEditor();
+                
+                lucide.createIcons();
             });
+
+            lucide.createIcons();
+
+            document.getElementById('sidebarToggle').addEventListener('click', function(e) {
+                e.stopPropagation();
+                sidebarEl.classList.toggle('collapsed');
+                toggleIcon.textContent = sidebarEl.classList.contains('collapsed') ? '☰' : '✕';
+            });
+
+            if (!GOOGLE_SHEET_TSV_URL) {
+                dynamicContent.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon"><i data-lucide="smile" width="32"></i></div>
+                        <p>তোমার নোটস এখানে আসবে! 📚</p>
+                        <p style="font-size:0.9rem; color: var(--text-muted);">পরে তুমি Google Sheet লিংক যোগ করলে প্রশ্নগুলো দেখাবে।</p>
+                    </div>
+                `;
+                dynamicSubtitle.textContent = "তোমার পড়ার সব নোট এক জায়গায়।";
+                lucide.createIcons();
+                return;
+            }
         })();
     </script>
-
-</body></html>
+</body>
+</html>
