@@ -1096,6 +1096,59 @@
             opacity: 0.4;
         }
 
+        /* ─── লাইট মোডে হেডার সাবটাইটেল ─── */
+        body.day .header-subtitle {
+            color: rgba(26, 26, 26, 0.5) !important;
+        }
+
+        /* ─── Base theme toggle styles ─── */
+        #themeToggle {
+            border: 2px solid #f0c040;
+            background: #FFF8E7;
+            color: #f0c040;
+            box-shadow: 0 2px 12px rgba(240, 192, 64, 0.3), 0 0 0 3px rgba(240, 192, 64, 0.1);
+        }
+        #themeToggle svg {
+            stroke: #f0c040 !important;
+        }
+        #themeToggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* ─── DARK MODE: Sun icon, LIGHT button (opposite) ─── */
+        body.night #themeToggle {
+            border: 2px solid #f0c040;
+            background: #FFF8E7;
+            color: #f0c040;
+            box-shadow: 0 2px 12px rgba(240, 192, 64, 0.3), 0 0 0 3px rgba(240, 192, 64, 0.1);
+        }
+        body.night #themeToggle svg {
+            stroke: #f0c040 !important;
+        }
+        body.night #themeToggle:hover {
+            background: #FFF5D6;
+            border-color: #f59e0b;
+            box-shadow: 0 4px 20px rgba(240, 192, 64, 0.4), 0 0 0 4px rgba(240, 192, 64, 0.15);
+            transform: scale(1.1);
+        }
+
+        /* ─── LIGHT MODE: Moon icon, DARK button (opposite) ─── */
+        body.day #themeToggle {
+            border: 2px solid #1A1A1A;
+            background: #1A1A2E;
+            color: #f0c040;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(26, 26, 26, 0.1);
+        }
+        body.day #themeToggle svg {
+            stroke: #f0c040 !important;
+        }
+        body.day #themeToggle:hover {
+            background: #252550;
+            border-color: #f0c040;
+            box-shadow: 0 4px 20px rgba(240, 192, 64, 0.3), 0 0 0 4px rgba(240, 192, 64, 0.1);
+            transform: scale(1.1);
+        }
+
         /* ─── Responsive ─── */
         @media (max-width: 768px) {
             .sidebar {
@@ -1158,6 +1211,7 @@
             }
         }
     </style>
+<base target="_blank">
 </head>
 <body class="night">
     <!-- ─── Background ─── -->
@@ -1176,13 +1230,13 @@
             </div>
             <div>
                 <div class="mega-title-text">MEGA QUIZ</div>
-                <div style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.3);">Class 10 Notes</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.3);" class="header-subtitle">Class 10 Notes</div>
             </div>
         </a>
         <div class="flex items-center gap-4">
             <span class="header-badge">Class 10</span>
-            <button id="themeToggle" style="width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.5);transition:all 0.3s;">
-                <i data-lucide="moon" width="18"></i>
+            <button id="themeToggle" style="width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;">
+                <i data-lucide="sun" width="18"></i>
             </button>
         </div>
     </header>
@@ -1235,7 +1289,7 @@
                     </div>
                     <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary);">Mega Quiz</span>
                 </div>
-                <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;">Smart quiz platform for students. Learn questions and answers easily and prepare for exams.</p>
+                <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;">Smart Era , Smart Learning.</p>
             </div>
 
             <div class="footer-col">
@@ -1265,7 +1319,7 @@
         <div class="footer-bottom">
             <span>&copy; 2025 Mega Quiz - BY Arif Hussain</span>
             <span class="encryption-key">7a9f2c8e1d4b6a3f5e8c0d2b4a6f9e1c3d5b7a8f0e2c4d6b9a1f3e5c7d0b2a4f</span>
-            <span>All Rights Reserved</span>
+            <span>❤️All Rights Reserved</span>
         </div>
     </footer>
 
@@ -1316,16 +1370,26 @@
         });
 
         // ─── Theme Toggle ─────────────────────────────────────
+        // Dark mode  → shows SUN icon (click to go light)
+        // Light mode → shows MOON icon (click to go dark)
+        function setThemeIcon(iconName) {
+            const btn = document.getElementById('themeToggle');
+            btn.innerHTML = '<i data-lucide="' + iconName + '" width="18"></i>';
+            lucide.createIcons();
+        }
+
         document.getElementById('themeToggle').addEventListener('click', () => {
             const body = document.body;
             const isNight = body.classList.contains('night');
             body.classList.remove('night', 'day');
             body.classList.add(isNight ? 'day' : 'night');
-            const icon = document.querySelector('#themeToggle i');
-            icon.setAttribute('data-lucide', isNight ? 'sun' : 'moon');
+
+            // After switching: if was night (dark), now day (light) → show MOON
+            // After switching: if was day (light), now night (dark) → show SUN
+            setThemeIcon(isNight ? 'moon' : 'sun');
+
             const heroSpan = document.querySelector('.hero-title span');
-            if (heroSpan) heroSpan.style.color = isNight ? '#f0c040' : '#8B6508';
-            lucide.createIcons();
+            if (heroSpan) heroSpan.style.color = isNight ? '#8B6508' : '#f0c040';
         });
 
         // ─── Sidebar Toggle ──────────────────────────────────
