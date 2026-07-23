@@ -14,21 +14,8 @@ tailwind.config={theme:{extend:{fontFamily:{heading:['Space Grotesk','sans-serif
 <style>
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:thin;scrollbar-color:#1c2560 #080c1a}
 body{font-family:'Inter',sans-serif;background:#04060e;color:#f1f5f9;overflow-x:hidden}
-
-/* Animated mesh gradient */
-.mesh-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(ellipse 600px 600px at 15% 20%,rgba(124,58,237,.1),transparent),
-    radial-gradient(ellipse 500px 500px at 85% 15%,rgba(16,185,129,.07),transparent),
-    radial-gradient(ellipse 450px 450px at 50% 85%,rgba(245,158,11,.06),transparent),
-    radial-gradient(ellipse 400px 400px at 75% 60%,rgba(236,72,153,.05),transparent);
-  animation:mesh-drift 25s ease-in-out infinite alternate}
-@keyframes mesh-drift{
-  0%{transform:scale(1) rotate(0deg);filter:hue-rotate(0deg)}
-  50%{transform:scale(1.08) rotate(1deg);filter:hue-rotate(12deg)}
-  100%{transform:scale(1) rotate(-1deg);filter:hue-rotate(-8deg)}}
-
-/* Nebula blobs with drift */
+.mesh-bg{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 600px at 15% 20%,rgba(124,58,237,.1),transparent),radial-gradient(ellipse 500px 500px at 85% 15%,rgba(16,185,129,.07),transparent),radial-gradient(ellipse 450px 450px at 50% 85%,rgba(245,158,11,.06),transparent),radial-gradient(ellipse 400px 400px at 75% 60%,rgba(236,72,153,.05),transparent);animation:mesh-drift 25s ease-in-out infinite alternate}
+@keyframes mesh-drift{0%{transform:scale(1) rotate(0deg);filter:hue-rotate(0deg)}50%{transform:scale(1.08) rotate(1deg);filter:hue-rotate(12deg)}100%{transform:scale(1) rotate(-1deg);filter:hue-rotate(-8deg)}}
 .nebula-blob{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
 .blob-1{animation:drift1 30s ease-in-out infinite alternate}
 .blob-2{animation:drift2 25s ease-in-out infinite alternate}
@@ -38,32 +25,16 @@ body{font-family:'Inter',sans-serif;background:#04060e;color:#f1f5f9;overflow-x:
 @keyframes drift2{0%{transform:translate(0,0)}100%{transform:translate(-35px,25px)}}
 @keyframes drift3{0%{transform:translate(0,0)}100%{transform:translate(25px,35px)}}
 @keyframes drift4{0%{transform:translate(0,0)}100%{transform:translate(-20px,-25px)}}
-
-/* Stars */
 .stars-layer{position:fixed;inset:0;pointer-events:none;z-index:0}
 .star{position:absolute;border-radius:50%;animation:twinkle var(--dur) ease-in-out infinite alternate}
 @keyframes twinkle{0%{opacity:var(--min-o)}100%{opacity:var(--max-o)}}
-
-/* Cosmic dust */
 .dust{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:rise var(--rise-dur) linear infinite;animation-delay:var(--delay)}
-@keyframes rise{
-  0%{transform:translateY(100vh) translateX(0);opacity:0}
-  8%{opacity:var(--dust-o)}
-  92%{opacity:var(--dust-o)}
-  100%{transform:translateY(-30px) translateX(var(--drift-x));opacity:0}}
-
-/* Shooting star */
+@keyframes rise{0%{transform:translateY(100vh) translateX(0);opacity:0}8%{opacity:var(--dust-o)}92%{opacity:var(--dust-o)}100%{transform:translateY(-30px) translateX(var(--drift-x));opacity:0}}
 .shooting-star{position:fixed;width:2px;height:2px;background:#fff;border-radius:50%;opacity:0;z-index:1;pointer-events:none}
 .shooting-star::after{content:'';position:absolute;top:0;left:0;width:80px;height:1px;background:linear-gradient(to left,rgba(255,255,255,.8),transparent);transform-origin:left center;transform:rotate(var(--angle))}
-
-/* Cursor glow */
 .cursor-glow{position:fixed;width:350px;height:350px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle,rgba(124,58,237,.07),rgba(59,130,246,.03) 40%,transparent 70%);transition:transform .08s linear,opacity .3s;transform:translate(-50%,-50%);opacity:0}
 body:hover .cursor-glow{opacity:1}
-
-/* Grid */
 .grid-pattern{background-image:linear-gradient(rgba(124,58,237,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.02) 1px,transparent 1px);background-size:60px 60px}
-
-/* Quiz cards */
 .quiz-card{position:relative;overflow:hidden;transition:all .5s cubic-bezier(.4,0,.2,1)}
 .quiz-card::before{content:'';position:absolute;inset:-2px;border-radius:inherit;padding:2px;background:conic-gradient(from var(--glow-angle,0deg),transparent 60%,var(--glow-color) 80%,transparent 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .5s}
 .quiz-card:hover::before{opacity:1;animation:glow-rotate 3s linear infinite}
@@ -73,60 +44,35 @@ body:hover .cursor-glow{opacity:1}
 .quiz-card:active{transform:translateY(-2px) scale(.985)}
 .card-bg-shift{transition:background .6s ease}
 .quiz-card:hover .card-bg-shift{background:rgba(8,12,26,.3)}
-
-/* Float */
 .float-slow{animation:float-slow 8s ease-in-out infinite}
 .float-mid{animation:float-mid 6s ease-in-out infinite}
 @keyframes float-slow{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 @keyframes float-mid{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-
-/* Fade up */
 .fade-up{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.4,0,.2,1)}
 .fade-up.visible{opacity:1;transform:translateY(0)}
-
-/* Links */
 a.quiz-link{display:block;text-decoration:none;color:inherit}
-
-/* Toast */
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:linear-gradient(135deg,#141b45,#1c2560);border:1px solid rgba(124,58,237,.3);padding:14px 28px;border-radius:12px;z-index:9999;transition:transform .5s cubic-bezier(.4,0,.2,1);backdrop-filter:blur(20px);box-shadow:0 20px 50px rgba(0,0,0,.5)}
 .toast.show{transform:translateX(-50%) translateY(0)}
-
-/* Instagram */
 .insta-icon{display:inline-block;width:18px;height:18px}
 .insta-icon svg{width:100%;height:100%;fill:currentColor}
-
-/* Form field glow */
 .field-glow{position:relative}
 .field-glow::after{content:'';position:absolute;inset:-1px;border-radius:12px;opacity:0;transition:opacity .4s;pointer-events:none;background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(59,130,246,.08),rgba(16,185,129,.06));z-index:-1}
 .field-glow:focus-within::after{opacity:1}
-
-/* Line deco */
 .line-deco{height:1px;background:linear-gradient(to right,transparent,rgba(124,58,237,.12),rgba(16,185,129,.08),rgba(245,158,11,.06),transparent)}
-
-/* Coffee shimmer */
 .coffee-shimmer{position:relative;overflow:hidden}
 .coffee-shimmer::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(245,158,11,.05),transparent,rgba(236,72,153,.03),transparent);animation:coffee-spin 10s linear infinite;pointer-events:none}
 @keyframes coffee-spin{to{transform:rotate(360deg)}}
-
-/* UPI pulse */
 .upi-pulse{animation:upi-pulse 2.5s ease-in-out infinite}
 @keyframes upi-pulse{0%,100%{box-shadow:0 0 0 0 rgba(9,121,57,.35)}50%{box-shadow:0 0 0 8px rgba(9,121,57,0)}}
-
-/* QR expand */
 .qr-wrapper{max-height:0;overflow:hidden;transition:max-height .6s cubic-bezier(.4,0,.2,1),opacity .4s;opacity:0}
 .qr-wrapper.open{max-height:400px;opacity:1}
-
-/* QR glow frame */
 .qr-frame{position:relative}
 .qr-frame::before{content:'';position:absolute;inset:-3px;border-radius:16px;background:linear-gradient(135deg,rgba(9,121,57,.4),rgba(124,58,237,.3),rgba(245,158,11,.3));z-index:-1;filter:blur(1px)}
-
-/* Stat counter */
 .stat-num{font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body class="grid-pattern">
 
-<!-- Background Layers -->
 <div class="mesh-bg"></div>
 <div class="nebula-blob blob-1" style="width:550px;height:550px;background:radial-gradient(circle,#7c3aed,transparent);top:-12%;right:-8%;opacity:.1"></div>
 <div class="nebula-blob blob-2" style="width:450px;height:450px;background:radial-gradient(circle,#10b981,transparent);bottom:-8%;left:-6%;opacity:.08"></div>
@@ -139,13 +85,10 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
 <div class="shooting-star" id="shoot3"></div>
 <div class="cursor-glow" id="cursorGlow"></div>
 
-<!-- Content -->
 <div class="relative z-10 min-h-screen">
 
-  <!-- Nav -->
   <nav class="fixed top-0 w-full z-50" style="background:rgba(4,6,14,.75);backdrop-filter:blur(24px);border-bottom:1px solid rgba(124,58,237,.06)">
     <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-      <!-- Clickable logo + name -->
       <a href="https://megaquizwb.vercel.app/" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-nebula-purple via-nebula-blue to-nebula-emerald flex items-center justify-center">
           <i data-lucide="orbit" class="w-4 h-4 text-white"></i>
@@ -168,7 +111,6 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
     </div>
   </nav>
 
-  <!-- Hero + Quiz Cards -->
   <section class="relative px-6 pt-20 pb-6 sm:pt-24 sm:pb-8">
     <div class="max-w-5xl mx-auto">
       <div class="text-center mb-8 sm:mb-10 fade-up">
@@ -176,7 +118,6 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
           <span class="w-1.5 h-1.5 rounded-full bg-nebula-emerald animate-pulse"></span>
           <span class="text-[10px] font-medium text-stellar-dim tracking-wider uppercase">Live Quizzes Available</span>
         </div>
-        <!-- Main heading (no longer a link) -->
         <h1 class="font-heading font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.05] mb-2">
           <span class="bg-gradient-to-r from-white via-stellar-white to-stellar-muted bg-clip-text text-transparent">Mega</span><span class="bg-gradient-to-r from-nebula-purple via-nebula-blue to-nebula-emerald bg-clip-text text-transparent"> Quiz</span>
         </h1>
@@ -192,77 +133,16 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
       </div>
 
       <div class="grid sm:grid-cols-3 gap-4 sm:gap-5 fade-up" style="transition-delay:.15s">
-        <a href="ssc.html" class="quiz-link">
-          <div class="quiz-card rounded-2xl p-[1.5px]" style="--glow-color:#7c3aed;--glow-color-alpha:rgba(124,58,237,.18);background:linear-gradient(160deg,rgba(124,58,237,.15),rgba(13,19,48,.9) 40%,rgba(13,19,48,.95))">
-            <div class="card-bg-shift rounded-[13px] p-5 sm:p-6" style="background:rgba(8,12,26,.5);backdrop-filter:blur(10px)">
-              <div class="flex items-start justify-between mb-4">
-                <div class="w-11 h-11 rounded-xl bg-nebula-purple/10 border border-nebula-purple/20 flex items-center justify-center float-mid"><i data-lucide="book-open" class="w-5 h-5 text-nebula-purple"></i></div>
-                <span class="px-2 py-0.5 rounded-md text-[9px] font-semibold uppercase tracking-wider bg-nebula-purple/10 text-nebula-purple border border-nebula-purple/15">Popular</span>
-              </div>
-              <h3 class="font-heading font-semibold text-base text-white mb-1.5">SSC Quiz</h3>
-              <p class="text-stellar-muted text-xs leading-relaxed mb-4">CGL, CHSL, MTS, GD সহ সকল SSC পরীক্ষার বিষয়ভিত্তিক কুইজ</p>
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] uppercase tracking-wider text-nebula-purple font-semibold flex items-center gap-1">Open <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
-                <div class="w-8 h-1 rounded-full bg-white/[.06] overflow-hidden"><div class="h-full w-3/4 rounded-full bg-gradient-to-r from-nebula-purple to-nebula-blue"></div></div>
-              </div>
-            </div>
-          </div>
-        </a>
-        <a href="wbpsc.html" class="quiz-link">
-          <div class="quiz-card rounded-2xl p-[1.5px]" style="--glow-color:#10b981;--glow-color-alpha:rgba(16,185,129,.18);background:linear-gradient(160deg,rgba(16,185,129,.15),rgba(13,19,48,.9) 40%,rgba(13,19,48,.95))">
-            <div class="card-bg-shift rounded-[13px] p-5 sm:p-6" style="background:rgba(8,12,26,.5);backdrop-filter:blur(10px)">
-              <div class="flex items-start justify-between mb-4">
-                <div class="w-11 h-11 rounded-xl bg-nebula-emerald/10 border border-nebula-emerald/20 flex items-center justify-center float-slow"><i data-lucide="landmark" class="w-5 h-5 text-nebula-emerald"></i></div>
-                <span class="px-2 py-0.5 rounded-md text-[9px] font-semibold uppercase tracking-wider bg-nebula-emerald/10 text-nebula-emerald border border-nebula-emerald/15">New</span>
-              </div>
-              <h3 class="font-heading font-semibold text-base text-white mb-1.5">WBPCS Quiz</h3>
-              <p class="text-stellar-muted text-xs leading-relaxed mb-4">WBCS প্রিলিমস ও মেইনস পরীক্ষার জন্য বিশেষ কুইজ সিরিজ</p>
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] uppercase tracking-wider text-nebula-emerald font-semibold flex items-center gap-1">Open <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
-                <div class="w-8 h-1 rounded-full bg-white/[.06] overflow-hidden"><div class="h-full w-1/2 rounded-full bg-gradient-to-r from-nebula-emerald to-nebula-cyan"></div></div>
-              </div>
-            </div>
-          </div>
-        </a>
-        <a href="defence.html" class="quiz-link">
-          <div class="quiz-card rounded-2xl p-[1.5px]" style="--glow-color:#f59e0b;--glow-color-alpha:rgba(245,158,11,.18);background:linear-gradient(160deg,rgba(245,158,11,.15),rgba(13,19,48,.9) 40%,rgba(13,19,48,.95))">
-            <div class="card-bg-shift rounded-[13px] p-5 sm:p-6" style="background:rgba(8,12,26,.5);backdrop-filter:blur(10px)">
-              <div class="flex items-start justify-between mb-4">
-                <div class="w-11 h-11 rounded-xl bg-nebula-amber/10 border border-nebula-amber/20 flex items-center justify-center float-mid" style="animation-delay:.5s"><i data-lucide="shield" class="w-5 h-5 text-nebula-amber"></i></div>
-                <span class="px-2 py-0.5 rounded-md text-[9px] font-semibold uppercase tracking-wider bg-nebula-amber/10 text-nebula-amber border border-nebula-amber/15">Trending</span>
-              </div>
-              <h3 class="font-heading font-semibold text-base text-white mb-1.5">Defence Quiz</h3>
-              <p class="text-stellar-muted text-xs leading-relaxed mb-4">CDS, NDA, Agniveer সহ সামরিক পরীক্ষার কুইজ সিরিজ</p>
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] uppercase tracking-wider text-nebula-amber font-semibold flex items-center gap-1">Open <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
-                <div class="w-8 h-1 rounded-full bg-white/[.06] overflow-hidden"><div class="h-full w-2/3 rounded-full bg-gradient-to-r from-nebula-amber to-nebula-rose"></div></div>
-              </div>
-            </div>
-          </div>
-        </a>
-        <a href="gk.html" class="quiz-link">
-          <div class="quiz-card rounded-2xl p-[1.5px]" style="--glow-color:#7c3aed;--glow-color-alpha:rgba(124,58,237,.18);background:linear-gradient(160deg,rgba(124,58,237,.15),rgba(13,19,48,.9) 40%,rgba(13,19,48,.95))">
-            <div class="card-bg-shift rounded-[13px] p-5 sm:p-6" style="background:rgba(8,12,26,.5);backdrop-filter:blur(10px)">
-              <div class="flex items-start justify-between mb-4">
-                <div class="w-11 h-11 rounded-xl bg-nebula-purple/10 border border-nebula-purple/20 flex items-center justify-center float-mid"><i data-lucide="book-open" class="w-5 h-5 text-nebula-purple"></i></div>
-                <span class="px-2 py-0.5 rounded-md text-[9px] font-semibold uppercase tracking-wider bg-nebula-purple/10 text-nebula-purple border border-nebula-purple/15">Popular</span>
-              </div>
-              <h3 class="font-heading font-semibold text-base text-white mb-1.5">GK</h3>
-              <p class="text-stellar-muted text-xs leading-relaxed mb-4">পরীক্ষার বিষয়ভিত্তিক ও জ্ঞানমূলক কুইজ</p>
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] uppercase tracking-wider text-nebula-purple font-semibold flex items-center gap-1">Open <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
-                <div class="w-8 h-1 rounded-full bg-white/[.06] overflow-hidden"><div class="h-full w-3/4 rounded-full bg-gradient-to-r from-nebula-purple to-nebula-blue"></div></div>
-              </div>
-            </div>
-          </div>
-        </a>
+        <a href="ssc.html" class="quiz-link"><div class="quiz-card rounded-2xl p-[1.5px]" style="--glow-color:#7c3aed;--glow-color-alpha:rgba(124,58,237,.18);background:linear-gradient(160deg,rgba(124,58,237,.15),rgba(13,19,48,.9) 40%,rgba(13,19,48,.95))"><div class="card-bg-shift rounded-[13px] p-5 sm:p-6" style="background:rgba(8,12,26,.5);backdrop-filter:blur(10px)"><div class="flex items-start justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-nebula-purple/10 border border-nebula-purple/20 flex items-center justify-center float-mid"><i data-lucide="book-open" class="w-5 h-5 text-nebula-purple"></i></div><span class="px-2 py-0.5 rounded-md text-[9px] font-semibold uppercase tracking-wider bg-nebula-purple/10 text-nebula-purple border border-nebula-purple/15">Popular</span></div><h3 class="font-heading font-semibold text-base text-white mb-1.5">SSC Quiz</h3><p class="text-stellar-muted text-xs leading-relaxed mb-4">CGL, CHSL, MTS, GD সহ সকল SSC পরীক্ষার বিষয়ভিত্তিক কুইজ</p><div class="flex items-center justify-between"><span class="text-[10px] uppercase tracking-wider text-nebula-purple font-semibold flex items-center gap-1">Open <i data-lucide="arrow-right" class="w-3 h-3"></i></span><div class="w-8 h-1 rounded-full bg-white/[.06] overflow-hidden"><div class="h-full w-3/4 rounded-full bg-gradient-to-r from-nebula-purple to-nebula-blue"></div></div></div></div></div></a>
+        <a href="wbpsc.html" class="quiz-link"><div class="quiz-card rounded-2xl p-[1.5px]" style="--glow-color:#10b981;--glow-color-alpha:rgba(16,185,129,.18);background:linear-gradient(160deg,rgba(16,185,129,.15),rgba(13,19,48,.9) 40%,rgba(13,19,48,.95))"><div class="card-bg-shift rounded-[13px] p-5 sm:p-6" style="background:rgba(8,12,26,.5);backdrop-filter:blur(10px)"><div class="flex items-start justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-nebula-emerald/10 border border-nebula-emerald/20 flex items-center justify-center float-slow"><i data-lucide="landmark" class="w-5 h-5 text-nebula-emerald"></i></div><span class="px-2 py-0.5 rounded-md text-[9px] font-semibold uppercase tracking-wider bg-nebula-emerald/10 text-nebula-emerald border border-nebula-emerald/15">New</span></div><h3 class="font-heading font-semibold text-base text-white mb-1.5">WBPCS Quiz</h3><p class="text-stellar-muted text-xs leading-relaxed mb-4">WBCS প্রিলিমস ও মেইনস পরীক্ষার জন্য বিশেষ কুইজ সিরিজ</p><div class="flex items-center justify-between"><span class="text-[10px] uppercase tracking-wider text-nebula-emerald font-semibold flex items-center gap-1">Open <i data-lucide="arrow-right" class="w-3 h-3"></i></span><div class="w-8 h-1 rounded-full bg-white/[.06] overflow-hidden"><div class="h-full w-1/2 rounded-full bg-gradient-to-r from-nebula-emerald to-nebula-cyan"></div></div></div></div></div></a>
+        <a href="defence.html" class="quiz-link"><div class="quiz-card rounded-2xl p-[1.5px]" style="--glow-color:#f59e0b;--glow-color-alpha:rgba(245,158,11,.18);background:linear-gradient(160deg,rgba(245,158,11,.15),rgba(13,19,48,.9) 40%,rgba(13,19,48,.95))"><div class="card-bg-shift rounded-[13px] p-5 sm:p-6" style="background:rgba(8,12,26,.5);backdrop-filter:blur(10px)"><div class="flex items-start justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-nebula-amber/10 border border-nebula-amber/20 flex items-center justify-center float-mid" style="animation-delay:.5s"><i data-lucide="shield" class="w-5 h-5 text-nebula-amber"></i></div><span class="px-2 py-0.5 rounded-md text-[9px] font-semibold uppercase tracking-wider bg-nebula-amber/10 text-nebula-amber border border-nebula-amber/15">Trending</span></div><h3 class="font-heading font-semibold text-base text-white mb-1.5">Defence Quiz</h3><p class="text-stellar-muted text-xs leading-relaxed mb-4">CDS, NDA, Agniveer সহ সামরিক পরীক্ষার কুইজ সিরিজ</p><div class="flex items-center justify-between"><span class="text-[10px] uppercase tracking-wider text-nebula-amber font-semibold flex items-center gap-1">Open <i data-lucide="arrow-right" class="w-3 h-3"></i></span><div class="w-8 h-1 rounded-full bg-white/[.06] overflow-hidden"><div class="h-full w-2/3 rounded-full bg-gradient-to-r from-nebula-amber to-nebula-rose"></div></div></div></div></div></a>
+        <a href="gk.html" class="quiz-link"><div class="quiz-card rounded-2xl p-[1.5px]" style="--glow-color:#7c3aed;--glow-color-alpha:rgba(124,58,237,.18);background:linear-gradient(160deg,rgba(124,58,237,.15),rgba(13,19,48,.9) 40%,rgba(13,19,48,.95))"><div class="card-bg-shift rounded-[13px] p-5 sm:p-6" style="background:rgba(8,12,26,.5);backdrop-filter:blur(10px)"><div class="flex items-start justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-nebula-purple/10 border border-nebula-purple/20 flex items-center justify-center float-mid"><i data-lucide="book-open" class="w-5 h-5 text-nebula-purple"></i></div><span class="px-2 py-0.5 rounded-md text-[9px] font-semibold uppercase tracking-wider bg-nebula-purple/10 text-nebula-purple border border-nebula-purple/15">Popular</span></div><h3 class="font-heading font-semibold text-base text-white mb-1.5">GK</h3><p class="text-stellar-muted text-xs leading-relaxed mb-4">পরীক্ষার বিষয়ভিত্তিক ও জ্ঞানমূলক কুইজ</p><div class="flex items-center justify-between"><span class="text-[10px] uppercase tracking-wider text-nebula-purple font-semibold flex items-center gap-1">Open <i data-lucide="arrow-right" class="w-3 h-3"></i></span><div class="w-8 h-1 rounded-full bg-white/[.06] overflow-hidden"><div class="h-full w-3/4 rounded-full bg-gradient-to-r from-nebula-purple to-nebula-blue"></div></div></div></div></div></a>
       </div>
     </div>
   </section>
 
   <div class="max-w-5xl mx-auto px-6"><div class="line-deco"></div></div>
 
-  <!-- About -->
   <section id="about" class="relative py-14 sm:py-18 px-6">
     <div class="max-w-4xl mx-auto">
       <div class="fade-up rounded-3xl p-[1.5px]" style="background:linear-gradient(160deg,rgba(124,58,237,.1),transparent 40%,rgba(16,185,129,.08) 80%,transparent)">
@@ -290,7 +170,6 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
 
   <div class="max-w-5xl mx-auto px-6"><div class="line-deco"></div></div>
 
-  <!-- Buy Me a Coffee -->
   <section id="support" class="relative py-14 sm:py-18 px-6">
     <div class="max-w-md mx-auto">
       <div class="text-center mb-8 fade-up">
@@ -301,18 +180,13 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
         <h2 class="font-heading font-bold text-2xl sm:text-3xl tracking-tight text-white mb-2">Buy Me a Coffee</h2>
         <p class="text-stellar-dim text-xs leading-relaxed">আপনার সাপোর্ট এই প্ল্যাটফর্মকে আরও ভালো করবে</p>
       </div>
-
       <div class="fade-up">
         <div class="coffee-shimmer rounded-2xl p-[1.5px]" style="background:linear-gradient(160deg,rgba(245,158,11,.2),rgba(236,72,153,.1) 50%,rgba(16,185,129,.1))">
           <div class="rounded-[13px] p-6 sm:p-8 text-center" style="background:rgba(8,12,26,.65);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.03)">
-
             <div class="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center float-slow" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(236,72,153,.08));border:1px solid rgba(245,158,11,.15)">
               <i data-lucide="coffee" class="w-8 h-8 text-nebula-amber"></i>
             </div>
-
             <p class="text-stellar-muted text-sm mb-6 leading-relaxed">এক কাপ কফির দামে সাপোর্ট করুন</p>
-
-            <!-- UPI Info -->
             <div class="rounded-xl p-4 mb-5" style="background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.1)">
               <div class="flex items-center justify-center gap-2 mb-3">
                 <div class="w-7 h-7 rounded-lg flex items-center justify-center upi-pulse" style="background:linear-gradient(135deg,#097939,#0d9e4d)">
@@ -331,14 +205,10 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
                 </div>
               </div>
             </div>
-
-            <!-- Show QR Button -->
             <button onclick="toggleQR()" id="qrToggleBtn" class="w-full mb-4 py-3 rounded-xl border border-white/[.08] text-stellar-muted text-sm font-medium hover:border-nebula-amber/20 hover:text-white hover:bg-white/[.02] transition-all duration-300 flex items-center justify-center gap-2">
               <i data-lucide="qr-code" class="w-4 h-4"></i>
               <span id="qrToggleText">Show QR Code</span>
             </button>
-
-            <!-- QR Code (Hidden by default) -->
             <div class="qr-wrapper" id="qrWrapper">
               <div class="pb-5">
                 <div class="qr-frame inline-block rounded-2xl p-3" style="background:#080c1a">
@@ -347,8 +217,6 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
                 <p class="text-[10px] text-stellar-dim/60 mt-3">Scan with GPay, PhonePe, Paytm or any UPI app</p>
               </div>
             </div>
-
-            <!-- Pay Now Button -->
             <a href="upi://pay?pa=arho065-1@okicici&pn=ArifHussain&cu=INR" class="block w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[.98] flex items-center justify-center gap-2.5" style="background:linear-gradient(135deg,#097939,#0d9e4d);box-shadow:0 8px 30px -8px rgba(13,158,77,.35)">
               <div class="w-5 h-5 rounded flex items-center justify-center bg-white/20">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><text x="1" y="14" font-family="Arial,sans-serif" font-weight="800" font-size="11" fill="white">₹</text></svg>
@@ -356,7 +224,6 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
               Pay Now via UPI
             </a>
             <p class="text-[10px] text-stellar-dim/50 mt-3">Opens in your UPI app</p>
-
           </div>
         </div>
       </div>
@@ -365,7 +232,6 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
 
   <div class="max-w-5xl mx-auto px-6"><div class="line-deco"></div></div>
 
-  <!-- পরামর্শ -->
   <section id="poramorsho" class="relative py-14 sm:py-18 px-6">
     <div class="max-w-xl mx-auto">
       <div class="text-center mb-8 fade-up">
@@ -412,13 +278,18 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ═══════════════════════════════════════════════════════
+       ✅ FOOTER — Logo image + Official brand colors (always visible)
+  ═══════════════════════════════════════════════════════ -->
   <footer id="contact" class="relative py-14 px-6 border-t border-white/5">
     <div class="max-w-5xl mx-auto">
       <div class="grid sm:grid-cols-3 gap-8 mb-10 fade-up">
         <div>
+          <!-- ✅ Logo Image -->
           <div class="flex items-center gap-2.5 mb-3">
-            <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-nebula-purple via-nebula-emerald to-nebula-amber flex items-center justify-center"><i data-lucide="orbit" class="w-3.5 h-3.5 text-white"></i></div>
+            <div class="w-7 h-7 rounded-lg overflow-hidden" style="border:1px solid rgba(124,58,237,.3);box-shadow:0 0 12px rgba(124,58,237,.15);">
+              <img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz" style="width:100%;height:100%;object-fit:cover;"/>
+            </div>
             <span class="font-heading font-bold text-sm">Mega Quiz</span>
           </div>
           <p class="text-stellar-dim text-xs leading-relaxed">প্রতিযোগিতামূলক পরীক্ষার প্রস্তুতির জন্য স্মার্ট কুইজ প্ল্যাটফর্ম।</p>
@@ -435,10 +306,19 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
         <div>
           <h4 class="text-[10px] font-semibold uppercase tracking-wider text-stellar-muted mb-3">Contact</h4>
           <div class="space-y-2.5">
-            <a href="mailto:arifbeldanga@gmail.com" class="flex items-center gap-2 text-sm text-stellar-dim hover:text-white transition-colors"><i data-lucide="mail" class="w-3.5 h-3.5 text-nebula-purple/50"></i>arifbeldanga@gmail.com</a>
-            <a href="https://t.me/beldanga1" target="_blank" class="flex items-center gap-2 text-sm text-stellar-dim hover:text-white transition-colors"><i data-lucide="send" class="w-3.5 h-3.5 text-nebula-blue/50"></i>@beldanga1</a>
-            <a href="https://instagram.com/arifhussain.x" target="_blank" class="flex items-center gap-2 text-sm text-stellar-dim hover:text-white transition-colors">
-              <span class="insta-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></span>
+            <!-- ✅ Email — Gmail Red (always visible) -->
+            <a href="mailto:arifbeldanga@gmail.com" class="flex items-center gap-2 text-sm transition-colors" style="color:#EA4335;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#EA4335"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+              arifbeldanga@gmail.com
+            </a>
+            <!-- ✅ Telegram — Telegram Blue (always visible) -->
+            <a href="https://t.me/beldanga1" target="_blank" class="flex items-center gap-2 text-sm transition-colors" style="color:#229ED9;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#229ED9"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+              @beldanga1
+            </a>
+            <!-- ✅ Instagram — Instagram Pink (always visible) -->
+            <a href="https://instagram.com/arifhussain.x" target="_blank" class="flex items-center gap-2 text-sm transition-colors" style="color:#E1306C;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
               @arifhussain.x
             </a>
             <div class="flex items-center gap-2 text-sm text-stellar-dim"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-nebula-amber/50"></i>Beldanga, Murshidabad</div>
@@ -457,94 +337,27 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
 <div id="toast" class="toast"><div class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i><span class="text-sm text-white" id="toastMsg"></span></div></div>
 
 <script>
-// Multi-colored stars
-(function(){
-  const l=document.getElementById('starsLayer');
-  const colors=['#ffffff','#ffffff','#ffffff','#ffffff','#c4b5fd','#93c5fd','#fcd34d','#6ee7b7','#fda4af','#a5f3fc'];
-  for(let i=0;i<140;i++){
-    const s=document.createElement('div');s.className='star';
-    const sz=Math.random()*2+.4;
-    const c=colors[Math.floor(Math.random()*colors.length)];
-    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;background:${c};--dur:${Math.random()*3+2}s;--min-o:${Math.random()*.15+.05};--max-o:${Math.random()*.5+.4}`;
-    l.appendChild(s);
-  }
-})();
-
-// Cosmic dust particles
-(function(){
-  const l=document.getElementById('dustLayer');
-  const colors=['rgba(124,58,237,.4)','rgba(59,130,246,.35)','rgba(16,185,129,.3)','rgba(245,158,11,.3)','rgba(236,72,153,.25)','rgba(6,182,212,.3)'];
-  for(let i=0;i<15;i++){
-    const d=document.createElement('div');d.className='dust';
-    const sz=Math.random()*2.5+1;
-    const c=colors[Math.floor(Math.random()*colors.length)];
-    d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;background:${c};box-shadow:0 0 ${sz*3}px ${c};--rise-dur:${18+Math.random()*22}s;--delay:${-Math.random()*25}s;--dust-o:${.3+Math.random()*.4};--drift-x:${(Math.random()-.5)*120}px`;
-    l.appendChild(d);
-  }
-})();
-
-// Shooting stars
+(function(){const l=document.getElementById('starsLayer');const colors=['#ffffff','#ffffff','#ffffff','#ffffff','#c4b5fd','#93c5fd','#fcd34d','#6ee7b7','#fda4af','#a5f3fc'];for(let i=0;i<140;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+.4;const c=colors[Math.floor(Math.random()*colors.length)];s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;background:${c};--dur:${Math.random()*3+2}s;--min-o:${Math.random()*.15+.05};--max-o:${Math.random()*.5+.4}`;l.appendChild(s);}})();
+(function(){const l=document.getElementById('dustLayer');const colors=['rgba(124,58,237,.4)','rgba(59,130,246,.35)','rgba(16,185,129,.3)','rgba(245,158,11,.3)','rgba(236,72,153,.25)','rgba(6,182,212,.3)'];for(let i=0;i<15;i++){const d=document.createElement('div');d.className='dust';const sz=Math.random()*2.5+1;const c=colors[Math.floor(Math.random()*colors.length)];d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;background:${c};box-shadow:0 0 ${sz*3}px ${c};--rise-dur:${18+Math.random()*22}s;--delay:${-Math.random()*25}s;--dust-o:${.3+Math.random()*.4};--drift-x:${(Math.random()-.5)*120}px`;l.appendChild(d);}})();
 function shootStar(el){const sx=Math.random()*80+10,sy=Math.random()*40,a=Math.random()*30+20;el.style.left=sx+'%';el.style.top=sy+'%';el.style.setProperty('--angle',a+'deg');el.style.opacity='1';el.style.transition='none';el.style.transform='translate(0,0)';requestAnimationFrame(()=>{el.style.transition='all .8s linear';el.style.transform=`translate(${Math.cos(a*Math.PI/180)*300}px,${Math.sin(a*Math.PI/180)*300}px)`;el.style.opacity='0'})}
 setInterval(()=>shootStar(document.getElementById('shoot1')),4000);
 setTimeout(()=>setInterval(()=>shootStar(document.getElementById('shoot2')),5500),2000);
 setTimeout(()=>setInterval(()=>shootStar(document.getElementById('shoot3')),7500),4000);
-
-// Cursor glow
-const cg=document.getElementById('cursorGlow');
-let mx=0,my=0,cx=0,cy=0;
+const cg=document.getElementById('cursorGlow');let mx=0,my=0,cx=0,cy=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
 (function animCursor(){cx+=(mx-cx)*.08;cy+=(my-cy)*.08;cg.style.left=cx+'px';cg.style.top=cy+'px';requestAnimationFrame(animCursor)})();
-
-// Fade up observer
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:.1,rootMargin:'0px 0px -20px 0px'});
 document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
-
-// Counter animation
 const counterObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){const el=x.target;const target=parseInt(el.dataset.count);let cur=0;const step=Math.max(1,Math.floor(target/35));const t=setInterval(()=>{cur+=step;if(cur>=target){cur=target;clearInterval(t)}el.textContent=cur+(target===100?'%':target>=500?'+':'')},30);counterObs.unobserve(el)}})},{threshold:.5});
 document.querySelectorAll('.stat-num').forEach(el=>counterObs.observe(el));
-
-// Mobile menu
 document.getElementById('mobileMenuBtn').addEventListener('click',()=>{document.getElementById('mobileMenu').classList.toggle('hidden')});
 document.querySelectorAll('#mobileMenu a').forEach(a=>{a.addEventListener('click',()=>document.getElementById('mobileMenu').classList.add('hidden'))});
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
-
-// Phone format
 document.getElementById('pPhone').addEventListener('input',function(){let v=this.value.replace(/\D/g,'').substring(0,10);if(v.length>5)v=v.slice(0,5)+' '+v.slice(5);this.value=v});
-
-// Copy
 function copyText(t){navigator.clipboard.writeText(t).then(()=>showToast('কপি হয়েছে: '+t)).catch(()=>showToast('কপি করতে সমস্যা'))}
-
-// QR toggle
 let qrGen=false;
-function toggleQR(){
-  const w=document.getElementById('qrWrapper');
-  const txt=document.getElementById('qrToggleText');
-  if(w.classList.contains('open')){
-    w.classList.remove('open');txt.textContent='Show QR Code';
-  }else{
-    w.classList.add('open');txt.textContent='Hide QR Code';
-    if(!qrGen){
-      new QRCode(document.getElementById('qrCode'),{
-        text:'upi://pay?pa=arho065-1@okicici&pn=ArifHussain&cu=INR',
-        width:180,height:180,
-        colorDark:'#ffffff',colorLight:'#080c1a',
-        correctLevel:QRCode.CorrectLevel.M
-      });
-      qrGen=true;
-    }
-  }
-}
-
-// Form
-document.getElementById('poramorshoForm').addEventListener('submit',function(e){
-  e.preventDefault();
-  const n=document.getElementById('pName').value.trim(),ph=document.getElementById('pPhone').value.trim(),s=document.getElementById('pSubject').value,m=document.getElementById('pMessage').value.trim();
-  if(!n||!m)return;
-  let body='পরামর্শদাতা: '+n;if(ph)body+='\nফোন: +91 '+ph;body+='\n\nবিষয়: '+s+'\n\nপরামর্শ:\n'+m;
-  window.location.href='mailto:arifbeldanga@gmail.com?subject='+encodeURIComponent('পরামর্শ - '+s)+'&body='+encodeURIComponent(body);
-  showToast('ইমেইল ক্লায়েন্ট খুলছে — পাঠান ক্লিক করুন');this.reset();
-});
-
+function toggleQR(){const w=document.getElementById('qrWrapper');const txt=document.getElementById('qrToggleText');if(w.classList.contains('open')){w.classList.remove('open');txt.textContent='Show QR Code';}else{w.classList.add('open');txt.textContent='Hide QR Code';if(!qrGen){new QRCode(document.getElementById('qrCode'),{text:'upi://pay?pa=arho065-1@okicici&pn=ArifHussain&cu=INR',width:180,height:180,colorDark:'#ffffff',colorLight:'#080c1a',correctLevel:QRCode.CorrectLevel.M});qrGen=true;}}}
+document.getElementById('poramorshoForm').addEventListener('submit',function(e){e.preventDefault();const n=document.getElementById('pName').value.trim(),ph=document.getElementById('pPhone').value.trim(),s=document.getElementById('pSubject').value,m=document.getElementById('pMessage').value.trim();if(!n||!m)return;let body='পরামর্শদাতা: '+n;if(ph)body+='\nফোন: +91 '+ph;body+='\n\nবিষয়: '+s+'\n\nপরামর্শ:\n'+m;window.location.href='mailto:arifbeldanga@gmail.com?subject='+encodeURIComponent('পরামর্শ - '+s)+'&body='+encodeURIComponent(body);showToast('ইমেইল ক্লায়েন্ট খুলছে — পাঠান ক্লিক করুন');this.reset();});
 function showToast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)}
 lucide.createIcons();
 </script>
