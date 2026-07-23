@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 10 Notes | Mega Quiz AI</title>
+    <title>Class 10 Notes | Mega Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -222,7 +222,6 @@
         .question-card .a { padding:18px 24px; font-size:clamp(1.15rem,3vw,1.7rem); line-height:1.9; color:var(--a-color); background:transparent!important; font-weight:500; border-left:3px solid rgba(240,192,64,0.2); font-family:'Noto Serif Bengali',serif; }
         body.day .question-card .a { border-left-color:rgba(184,134,11,0.25); }
 
-        /* ─── Smart Table Styles ─── */
         .smart-table-wrapper { overflow-x:auto; margin:12px 0; border-radius:12px; border:1px solid var(--border); }
         .smart-table { border-collapse:collapse; width:100%; font-size:0.9rem; font-family:'Inter',sans-serif; }
         .smart-table th { background:var(--accent-dim); font-weight:700; padding:12px 16px; text-align:left; border:1px solid var(--border); color:var(--accent); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; }
@@ -230,7 +229,6 @@
         .smart-table tr:hover td { background:var(--accent-dim); }
         body.day .smart-table th { background:rgba(184,134,11,0.06); color:#8B6508; }
 
-        /* ─── AI Panel ─── */
         .ai-panel {
             margin-top:16px; padding:20px 24px; border-radius:16px;
             background:var(--ai-glow); border:1px solid var(--ai-border);
@@ -267,7 +265,6 @@
         .ai-btn .spinner { width:14px; height:14px; border:2px solid rgba(168,85,247,0.3); border-top-color:#a855f7; border-radius:50%; animation:spin 0.8s linear infinite; display:inline-block; }
         @keyframes spin { to { transform:rotate(360deg); } }
 
-        /* ─── AI Search ─── */
         .ai-search-container {
             position:relative; margin-bottom:2rem; padding:20px 24px; border-radius:16px;
             background:var(--bg-card); border:1px solid var(--border);
@@ -323,10 +320,98 @@
         .highlight-match { background:rgba(240,192,64,0.3); border-radius:3px; padding:0 2px; }
         body.day .highlight-match { background:rgba(184,134,11,0.2); }
 
+        /* ─── Mobile Sidebar Overlay ─── */
+        .sidebar-overlay {
+            display:none; position:fixed; inset:0; z-index:140;
+            background:rgba(0,0,0,0.5); backdrop-filter:blur(2px);
+            opacity:0; transition:opacity 0.3s;
+        }
+        .sidebar-overlay.active { display:block; opacity:1; }
+
+        /* ═══════════════════════════════════════════════════════
+           ✅ FOOTER SOCIAL ICONS - Official Brand Colors on Hover
+        ═══════════════════════════════════════════════════════ */
+        .social-link {
+            display:flex; align-items:center; gap:12px; padding:10px 14px;
+            border-radius:12px; text-decoration:none; color:var(--text-muted);
+            font-family:'Inter',sans-serif; font-size:0.88rem; font-weight:500;
+            transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+            border:1px solid transparent;
+        }
+        .social-link .social-icon {
+            width:38px; height:38px; border-radius:10px; display:flex;
+            align-items:center; justify-content:center; flex-shrink:0;
+            background:rgba(255,255,255,0.04); border:1px solid var(--border);
+            transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .social-link .social-icon svg {
+            width:20px; height:20px; transition:all 0.3s;
+            fill:var(--text-muted);
+        }
+        .social-link .social-text { transition:color 0.3s; }
+
+        /* ─── Instagram Hover ─── */
+        .social-link.instagram:hover {
+            color:#E1306C; border-color:rgba(225,48,108,0.2);
+            background:rgba(225,48,108,0.06);
+        }
+        .social-link.instagram:hover .social-icon {
+            background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+            border-color:transparent;
+            box-shadow:0 4px 20px rgba(225,48,108,0.4);
+            transform:scale(1.1) rotate(-3deg);
+        }
+        .social-link.instagram:hover .social-icon svg { fill:#fff; }
+        .social-link.instagram:hover .social-text { color:#E1306C; }
+
+        /* ─── Telegram Hover ─── */
+        .social-link.telegram:hover {
+            color:#229ED9; border-color:rgba(34,158,217,0.2);
+            background:rgba(34,158,217,0.06);
+        }
+        .social-link.telegram:hover .social-icon {
+            background:linear-gradient(135deg,#2AABEE,#229ED9);
+            border-color:transparent;
+            box-shadow:0 4px 20px rgba(34,158,217,0.4);
+            transform:scale(1.1) rotate(3deg);
+        }
+        .social-link.telegram:hover .social-icon svg { fill:#fff; }
+        .social-link.telegram:hover .social-text { color:#229ED9; }
+
+        /* ─── Gmail/Email Hover ─── */
+        .social-link.email:hover {
+            color:#EA4335; border-color:rgba(234,67,53,0.2);
+            background:rgba(234,67,53,0.06);
+        }
+        .social-link.email:hover .social-icon {
+            background:linear-gradient(135deg,#EA4335,#FBBC05,#34A853,#4285F4);
+            border-color:transparent;
+            box-shadow:0 4px 20px rgba(234,67,53,0.4);
+            transform:scale(1.1) rotate(-3deg);
+        }
+        .social-link.email:hover .social-icon svg { fill:#fff; }
+        .social-link.email:hover .social-text { color:#EA4335; }
+
+        /* Day mode adjustments */
+        body.day .social-link .social-icon { background:rgba(0,0,0,0.03); border:1px solid #E6D5B8; }
+        body.day .social-link .social-icon svg { fill:#3D3D3D; }
+
         @media (max-width:768px) {
-            .sidebar { position:fixed; top:72px; left:0; bottom:0; transform:translateX(-100%); width:300px; background:rgba(10,10,26,0.95); box-shadow:8px 0 40px rgba(0,0,0,0.5); transition:transform 0.4s; padding-top:3.5rem; }
+            .sidebar {
+                position:fixed; top:72px; left:0; bottom:0;
+                transform:translateX(-100%); width:300px!important;
+                background:rgba(10,10,26,0.97); box-shadow:8px 0 40px rgba(0,0,0,0.5);
+                transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+                padding-top:3.5rem; z-index:145;
+                opacity:1!important; overflow-y:auto!important;
+            }
             body.day .sidebar { background:#FFFCF0; }
-            .sidebar.open { transform:translateX(0); }
+            .sidebar.open { transform:translateX(0)!important; }
+            .sidebar.collapsed {
+                width:300px!important; padding:3.5rem 1rem 2rem!important;
+                border-right:1px solid var(--border)!important;
+                opacity:1!important; overflow:visible!important;
+            }
             .content-scroll { padding:1.5rem 1.2rem 0; }
             .footer-grid { grid-template-columns:1fr; gap:1.5rem; }
             .hero-title { font-size:clamp(2rem,7vw,3.5rem); }
@@ -360,6 +445,8 @@
         </div>
     </header>
 
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <div class="main-wrapper">
         <button class="sidebar-toggle-fixed" id="sidebarToggle"><span id="toggleIcon">☰</span></button>
         <aside class="sidebar" id="sidebar">
@@ -381,10 +468,9 @@
                 <a href="classnotes.html">Classes</a><span class="sep">›</span>
                 <span class="current">Class 10</span>
             </nav>
-            <h1 class="hero-title">Class 10 <span style="color:#f0c040;">AI Notes</span></h1>
+            <h1 class="hero-title">Class 10 <span style="color:#f0c040;">Notes</span></h1>
             <p class="hero-subtitle" id="dynamicSubtitle"></p>
 
-            <!-- 🤖 AI Smart Search -->
             <div class="ai-search-container">
                 <div style="position:relative;">
                     <i data-lucide="sparkles" width="20" class="ai-search-icon"></i>
@@ -399,14 +485,17 @@
 
     <button class="fab-scroll" id="fabScroll" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i data-lucide="arrow-up" width="20"></i></button>
 
+    <!-- ═══════════════════════════════════════════════════════════
+         ✅ FOOTER WITH OFFICIAL BRAND ICONS
+    ═══════════════════════════════════════════════════════════ -->
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
                 <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.8rem;">
                     <div style="width:2rem;height:2rem;border-radius:0.6rem;overflow:hidden;border:1px solid rgba(240,192,64,0.15);"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" width="32" height="32" style="width:100%;height:100%;object-fit:cover;"/></div>
-                    <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary);">Mega Quiz AI</span>
+                    <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary);">Mega Quiz</span>
                 </div>
-                <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;">Smart Era, Smart Learning. </p>
+                <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;">Smart Era, Smart Learning.</p>
             </div>
             <div class="footer-col">
                 <h4>Links</h4>
@@ -416,22 +505,47 @@
             </div>
             <div class="footer-col">
                 <h4>Contact</h4>
-                <a href="mailto:arifbeldanga@gmail.com">📧 arifbeldanga@gmail.com</a>
-                <a href="https://instagram.com/arifhussain.x" target="_blank">📸 arifhussain.x</a>
-                <a href="https://t.me/beldanga1" target="_blank">✈️ @beldanga1</a>
+
+                <!-- ✅ Gmail / Email -->
+                <a href="mailto:arifbeldanga@gmail.com" class="social-link email">
+                    <span class="social-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
+                        </svg>
+                    </span>
+                    <span class="social-text">arifbeldanga@gmail.com</span>
+                </a>
+
+                <!-- ✅ Instagram -->
+                <a href="https://instagram.com/arifhussain.x" target="_blank" class="social-link instagram">
+                    <span class="social-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+                        </svg>
+                    </span>
+                    <span class="social-text">arifhussain.x</span>
+                </a>
+
+                <!-- ✅ Telegram -->
+                <a href="https://t.me/beldanga1" target="_blank" class="social-link telegram">
+                    <span class="social-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                        </svg>
+                    </span>
+                    <span class="social-text">@beldanga1</span>
+                </a>
+
             </div>
         </div>
         <div class="footer-bottom">
-            <span>© 2025 Mega Quiz AI - BY Arif Hussain</span>
+            <span>© 2025 Mega Quiz - BY Arif Hussain</span>
             <span>Thank You</span>
             <span>❤️ All Rights Reserved</span>
         </div>
     </footer>
 
     <script>
-    // ═══════════════════════════════════════════════════════════
-    //  CONFIG
-    // ═══════════════════════════════════════════════════════════
     const GOOGLE_SHEET_TSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
 
     const AI_CONFIG = {
@@ -442,32 +556,16 @@
         temperature: 0.7
     };
 
-    // ═══════════════════════════════════════════════════════════
-    //  SMART AI ENGINE
-    // ═══════════════════════════════════════════════════════════
     class SmartAI {
-        constructor(config) {
-            this.config = config;
-            this.cache = new Map();
-        }
-
+        constructor(config) { this.config = config; this.cache = new Map(); }
         async callAI(messages) {
             const cacheKey = JSON.stringify(messages);
             if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
             try {
                 const resp = await fetch(this.config.baseUrl, {
                     method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${this.config.apiKey}`,
-                        'Content-Type': 'application/json',
-                        'HTTP-Referer': window.location.href,
-                        'X-Title': 'Mega Quiz AI'
-                    },
-                    body: JSON.stringify({
-                        model: this.config.model,
-                        messages, max_tokens: this.config.maxTokens,
-                        temperature: this.config.temperature, stream: false
-                    })
+                    headers: { 'Authorization': `Bearer ${this.config.apiKey}`, 'Content-Type': 'application/json', 'HTTP-Referer': window.location.href, 'X-Title': 'Mega Quiz' },
+                    body: JSON.stringify({ model: this.config.model, messages, max_tokens: this.config.maxTokens, temperature: this.config.temperature, stream: false })
                 });
                 if (!resp.ok) { const e = await resp.json().catch(()=>({})); throw new Error(`AI Error ${resp.status}: ${e.error?.message||'Unknown'}`); }
                 const data = await resp.json();
@@ -476,83 +574,47 @@
                 return content;
             } catch(err) { console.error('AI Error:', err); throw err; }
         }
-
         async explainAnswer(question, answer) {
             return await this.callAI([
-                { role:'system', content:`তুমি expert Class 10 teacher। বাংলায় সহজে explain করো।
-- Key points **bold** করো
-- Table থাকলে markdown table দাও
-- Formula clearly লেখো
-- Max 150 words, বাংলায়` },
+                { role:'system', content:`তুমি expert Class 10 teacher। বাংলায় সহজে explain করো।\n- Key points **bold** করো\n- Table থাকলে markdown table দাও\n- Formula clearly লেখো\n- Max 150 words, বাংলায়` },
                 { role:'user', content:`প্রশ্ন: ${question}\nউত্তর: ${answer}\n\nসহজে explain করো:` }
             ]);
         }
-
         async smartSearch(query, allData) {
             return await this.callAI([
-                { role:'system', content:`Smart search assistant। Query অনুযায়ী relevant questions খুঁজে দাও।
-JSON array format: [{"index":0,"reason":"কেন relevant","relevance":95}]
-Max 5 results। শুধু JSON।` },
+                { role:'system', content:`Smart search assistant। Query অনুযায়ী relevant questions খুঁজে দাও।\nJSON array format: [{"index":0,"reason":"কেন relevant","relevance":95}]\nMax 5 results। শুধু JSON।` },
                 { role:'user', content:`Query: "${query}"\n\nQuestions:\n${allData.slice(0,50).map((r,i)=>`${i}. [${r.subject}/${r.chapter}] ${r.question}`).join('\n')}` }
             ]);
         }
-
-        // ─── SMART COPY-PASTE CHART/TABLE DETECTION ───
         smartFormatAnswer(text) {
             if (!text) return '';
             let formatted = text;
-
-            // 1. Detect pipe tables (| col1 | col2 |)
             const pipeRegex = /(?:^|\n)(\|[^\n]+\|\n)(\|[-| :]+\|\n)((?:\|[^\n]+\|\n?)+)/g;
-            formatted = formatted.replace(pipeRegex, (m, header, sep, body) => {
-                return this.renderPipeTable(header, body);
-            });
-
-            // 2. Detect tab-separated (copy from Excel/Sheet)
+            formatted = formatted.replace(pipeRegex, (m, header, sep, body) => this.renderPipeTable(header, body));
             const lines = formatted.split('\n');
-            let result = [];
-            let tableRows = [];
+            let result = []; let tableRows = [];
             for (let line of lines) {
-                if (line.includes('\t') && line.split('\t').length >= 2) {
-                    tableRows.push(line.split('\t').map(c => c.trim()));
-                } else {
-                    if (tableRows.length > 0) { result.push(this.renderArrayTable(tableRows)); tableRows = []; }
-                    result.push(line);
-                }
+                if (line.includes('\t') && line.split('\t').length >= 2) { tableRows.push(line.split('\t').map(c => c.trim())); }
+                else { if (tableRows.length > 0) { result.push(this.renderArrayTable(tableRows)); tableRows = []; } result.push(line); }
             }
             if (tableRows.length > 0) result.push(this.renderArrayTable(tableRows));
             formatted = result.join('\n');
-
-            // 3. Detect "key: value" patterns
             formatted = formatted.replace(/^([A-Za-z\u0980-\u09FF\s]+):\s*(.+)$/gm, '<strong>$1:</strong> $2');
-
-            // 4. Numbered lists
             formatted = formatted.replace(/^(\d+)[.)]\s+(.+)$/gm, '<li>$2</li>');
             formatted = formatted.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ol style="padding-left:20px;margin:8px 0;">$1</ol>');
-
-            // 5. Bullet points
             formatted = formatted.replace(/^[-•*]\s+(.+)$/gm, '<li>$1</li>');
-
-            // 6. Bold **text**
             formatted = formatted.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-
-            // 7. Line breaks
             formatted = formatted.replace(/\n/g, '<br>');
-
             return formatted;
         }
-
         renderArrayTable(rows) {
             if (!rows.length) return '';
             let h = '<div class="smart-table-wrapper"><table class="smart-table"><thead><tr>';
             rows[0].forEach(c => h += `<th>${c}</th>`);
             h += '</tr></thead><tbody>';
-            for (let i = 1; i < rows.length; i++) {
-                h += '<tr>'; rows[i].forEach(c => h += `<td>${c}</td>`); h += '</tr>';
-            }
+            for (let i = 1; i < rows.length; i++) { h += '<tr>'; rows[i].forEach(c => h += `<td>${c}</td>`); h += '</tr>'; }
             return h + '</tbody></table></div>';
         }
-
         renderPipeTable(header, body) {
             const headers = header.split('|').filter(c => c.trim());
             const rows = body.trim().split('\n').map(r => r.split('|').filter(c => c.trim()));
@@ -566,9 +628,6 @@ Max 5 results। শুধু JSON।` },
 
     const ai = new SmartAI(AI_CONFIG);
 
-    // ═══════════════════════════════════════════════════════════
-    //  DOM REFS & STATE
-    // ═══════════════════════════════════════════════════════════
     const dynamicContent = document.getElementById('dynamicContent');
     const dynamicSubtitle = document.getElementById('dynamicSubtitle');
     const sidebarEl = document.getElementById('sidebar');
@@ -581,12 +640,10 @@ Max 5 results। শুধু JSON।` },
     const searchInput = document.getElementById('searchInput');
     const aiSearchInput = document.getElementById('aiSearchInput');
     const aiSearchResults = document.getElementById('aiSearchResults');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
 
     let allData = [], currentSubject = null, currentChapter = null;
 
-    // ═══════════════════════════════════════════════════════════
-    //  STARS, SCROLL, THEME, SIDEBAR
-    // ═══════════════════════════════════════════════════════════
     (function(){ const c=document.getElementById('stars'); for(let i=0;i<80;i++){ const s=document.createElement('div'); s.className='star'; s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%'; const z=Math.random()*2+1; s.style.width=z+'px'; s.style.height=z+'px'; s.style.setProperty('--duration',(Math.random()*3+2)+'s'); s.style.setProperty('--delay',(Math.random()*5)+'s'); c.appendChild(s); } })();
 
     window.addEventListener('scroll',()=>{ const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight; progressBar.style.width=(st/dh)*100+'%'; fabScroll.classList.toggle('visible',st>500); });
@@ -594,12 +651,66 @@ Max 5 results। শুধু JSON।` },
     function setThemeIcon(n){ document.getElementById('themeToggle').innerHTML=`<i data-lucide="${n}" width="18"></i>`; lucide.createIcons(); }
     document.getElementById('themeToggle').addEventListener('click',()=>{ const isN=document.body.classList.contains('night'); document.body.classList.remove('night','day'); document.body.classList.add(isN?'day':'night'); setThemeIcon(isN?'moon':'sun'); });
 
-    document.getElementById('sidebarToggle').addEventListener('click',e=>{ e.stopPropagation(); sidebarEl.classList.toggle('collapsed'); toggleIcon.textContent=sidebarEl.classList.contains('collapsed')?'☰':'✕'; });
-    document.addEventListener('click',e=>{ if(window.innerWidth<=768){ if(!sidebarEl.contains(e.target)&&!document.getElementById('sidebarToggle').contains(e.target)) sidebarEl.classList.remove('open'); } });
+    // ═══════════════════════════════════════════════════════════
+    //  ✅ FIXED SIDEBAR TOGGLE
+    // ═══════════════════════════════════════════════════════════
+    function isMobile() { return window.innerWidth <= 768; }
+
+    function openSidebar() {
+        if (isMobile()) {
+            sidebarEl.classList.add('open');
+            sidebarEl.classList.remove('collapsed');
+            sidebarOverlay.classList.add('active');
+            toggleIcon.textContent = '✕';
+        } else {
+            sidebarEl.classList.remove('collapsed');
+            toggleIcon.textContent = '✕';
+        }
+    }
+
+    function closeSidebar() {
+        if (isMobile()) {
+            sidebarEl.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+            toggleIcon.textContent = '☰';
+        } else {
+            sidebarEl.classList.add('collapsed');
+            toggleIcon.textContent = '☰';
+        }
+    }
+
+    function toggleSidebar() {
+        if (isMobile()) {
+            const isOpen = sidebarEl.classList.contains('open');
+            if (isOpen) closeSidebar(); else openSidebar();
+        } else {
+            const isCollapsed = sidebarEl.classList.contains('collapsed');
+            if (isCollapsed) openSidebar(); else closeSidebar();
+        }
+    }
+
+    document.getElementById('sidebarToggle').addEventListener('click', function(e) {
+        e.stopPropagation(); e.preventDefault(); toggleSidebar();
+    });
+
+    sidebarOverlay.addEventListener('click', closeSidebar);
+
+    document.addEventListener('click', function(e) {
+        if (isMobile()) {
+            if (!sidebarEl.contains(e.target) && !document.getElementById('sidebarToggle').contains(e.target)) closeSidebar();
+        }
+    });
+
+    window.addEventListener('resize', function() {
+        sidebarEl.classList.remove('open', 'collapsed');
+        sidebarOverlay.classList.remove('active');
+        toggleIcon.textContent = '☰';
+    });
+
     lucide.createIcons();
 
     // ═══════════════════════════════════════════════════════════
-    //  🤖 AI SMART SEARCH
+    //  AI SEARCH
     // ═══════════════════════════════════════════════════════════
     let searchTimeout;
     aiSearchInput.addEventListener('input',()=>{
@@ -613,10 +724,8 @@ Max 5 results। শুধু JSON।` },
         if(!allData.length) return;
         aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted);font-size:0.85rem;"><span class="ai-typing">🤖 AI খুঁজছে</span></div>';
         try {
-            // Local fuzzy first (instant)
             const local=allData.map((r,i)=>({...r,idx:i,score:fuzzyScore(query,r.question+' '+r.answer+' '+r.subject+' '+r.chapter)})).filter(r=>r.score>0.2).sort((a,b)=>b.score-a.score).slice(0,8);
             if(local.length>0){ renderSearchResults(local,query); return; }
-            // AI fallback
             const aiRes=await ai.smartSearch(query,allData);
             if(aiRes.length){ const mapped=aiRes.map(r=>({...allData[r.index],idx:r.index,score:r.relevance/100,reason:r.reason})); renderSearchResults(mapped,query); }
             else aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted);">😅 কিছু পাওয়া যায়নি</div>';
@@ -670,9 +779,6 @@ Max 5 results। শুধু JSON।` },
         }
     }
 
-    // ═══════════════════════════════════════════════════════════
-    //  NAVIGATION
-    // ═══════════════════════════════════════════════════════════
     function buildNavigation(){
         const subjects=[...new Set(allData.map(r=>r.subject))].sort();
         subjectListEl.innerHTML='';
@@ -689,7 +795,7 @@ Max 5 results। শুধু JSON।` },
         renderChapterList(subject);
         const ch=getChapters(subject);
         if(ch.length) renderChapter(subject,ch[0]);
-        if(window.innerWidth<=768) sidebarEl.classList.remove('open');
+        if(isMobile()) closeSidebar();
     }
 
     function getChapters(s){ return [...new Set(allData.filter(r=>r.subject===s).map(r=>r.chapter))].sort(); }
@@ -699,21 +805,16 @@ Max 5 results। শুধু JSON।` },
         const filtered=filter?chapters.filter(c=>c.toLowerCase().includes(filter.toLowerCase())):chapters;
         chapterListEl.innerHTML='';
         if(!filtered.length){ chapterListEl.innerHTML='<div style="padding:12px 16px;font-size:0.85rem;color:var(--text-muted);text-align:center;">📭 নেই</div>'; return; }
-        filtered.forEach(ch=>{ const d=document.createElement('div'); d.className='chapter-item'; d.dataset.chapter=ch; d.textContent=ch; d.addEventListener('click',()=>{ renderChapter(subject,ch); document.querySelectorAll('.chapter-item').forEach(el=>el.classList.remove('active')); d.classList.add('active'); }); chapterListEl.appendChild(d); });
+        filtered.forEach(ch=>{ const d=document.createElement('div'); d.className='chapter-item'; d.dataset.chapter=ch; d.textContent=ch; d.addEventListener('click',()=>{ renderChapter(subject,ch); document.querySelectorAll('.chapter-item').forEach(el=>el.classList.remove('active')); d.classList.add('active'); if(isMobile()) closeSidebar(); }); chapterListEl.appendChild(d); });
     }
 
-    // ═══════════════════════════════════════════════════════════
-    //  RENDER CHAPTER + AI FEATURES
-    // ═══════════════════════════════════════════════════════════
     function renderChapter(subject,chapter){
         currentChapter=chapter;
         const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
         document.querySelectorAll('.chapter-item').forEach(el=>el.classList.toggle('active',el.dataset.chapter===chapter));
         if(!rows.length){ dynamicContent.innerHTML='<div class="empty-state"><p>এই চ্যাপ্টারে প্রশ্ন নেই।</p></div>'; return; }
-
         const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
         const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
-
         dynamicContent.innerHTML=`
             <div class="chapter-banner"><img src="https://picsum.photos/seed/${encodeURIComponent(chapter)}/1200/380" alt="${chapter}" loading="lazy"/><div class="chapter-banner-text"><h3>${chapter}</h3><div class="banner-subtitle">${subject} • ${rows.length} টি প্রশ্ন • 🤖 AI Enhanced</div></div></div>
             <div class="toggle-group">
@@ -723,7 +824,6 @@ Max 5 results। শুধু JSON।` },
             </div>
             <div id="questionContainer">${renderQuestionGroup(rows,'সকল প্রশ্ন')}</div>`;
         lucide.createIcons();
-
         document.querySelectorAll('.type-btn').forEach(btn=>{
             btn.addEventListener('click',function(){
                 document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
@@ -737,9 +837,6 @@ Max 5 results। শুধু JSON।` },
         });
     }
 
-    // ═══════════════════════════════════════════════════════════
-    //  SMART QUESTION RENDERER
-    // ═══════════════════════════════════════════════════════════
     function renderQuestionGroup(rows,label){
         let html=`<div class="section-header"><div class="section-icon icon-saq"><i data-lucide="help-circle" width="20"></i></div><h2>${label}</h2><span class="badge-count">${rows.length} টি</span></div>`;
         rows.forEach((r,i)=>{
@@ -762,9 +859,6 @@ Max 5 results। শুধু JSON।` },
         return html;
     }
 
-    // ═══════════════════════════════════════════════════════════
-    //  AI EXPLANATION
-    // ═══════════════════════════════════════════════════════════
     async function getAIExplanation(cardId,question,answer){
         const panel=document.getElementById(`ai-panel-${cardId}`);
         const btn=panel.previousElementSibling;
@@ -782,11 +876,8 @@ Max 5 results। শুধু JSON।` },
         lucide.createIcons();
     }
 
-    // ═══════════════════════════════════════════════════════════
-    //  INIT
-    // ═══════════════════════════════════════════════════════════
     loadSheet();
-    console.log('✅ Mega Quiz AI — Smart Engine Loaded | Model:', AI_CONFIG.model);
+    console.log('✅ Mega Quiz — Smart Engine Loaded');
     </script>
 </body>
 </html>
