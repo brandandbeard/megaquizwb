@@ -79,6 +79,12 @@
         body.day .hero-title{background:linear-gradient(135deg,#2C2C2C 0%,#8B6508 40%,#B8860B 80%,#5C4A0A 100%);-webkit-background-clip:text;background-clip:text;filter:none}
         .hero-subtitle{font-size:1.05rem;line-height:1.7;margin-bottom:1.8rem;color:var(--text-secondary);max-width:650px}
 
+        /* ─── Debug Status Bar ─── */
+        .load-status{font-family:'JetBrains Mono',monospace;font-size:.72rem;line-height:1.7;padding:14px 18px;border-radius:12px;background:rgba(66,133,244,0.06);border:1px solid rgba(66,133,244,0.2);color:var(--text-secondary);margin-bottom:1.5rem;white-space:pre-wrap;word-break:break-word}
+        .load-status .ok{color:#34A853;font-weight:700}
+        .load-status .err{color:#EA4335;font-weight:700}
+        .load-status .warn{color:#FBBC05;font-weight:700}
+
         .chapter-banner{position:relative;width:100%;max-height:380px;border-radius:20px;overflow:hidden;margin-bottom:2rem;border:1px solid var(--border);box-shadow:0 8px 40px rgba(0,0,0,0.3)}
         body.day .chapter-banner{box-shadow:0 8px 20px rgba(184,134,11,0.08);border:1px solid #E6D5B8}
         .chapter-banner img{width:100%;height:380px;object-fit:cover;transition:transform .8s}
@@ -289,15 +295,15 @@
 
 <script>
 // ═══════════════════════════════════════════════════════════════
-//  ⚙️ CONFIG — ✅ AQ. KEY FIX: header auth, no ?key= in URL
+//  ⚙️ CONFIG
 // ═══════════════════════════════════════════════════════════════
 const GOOGLE_SHEET_TSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
-
 const GEMINI_API_KEY="AQ.Ab8RN6JOKuKqFA0WNSIkBY-go_NgUnZSTrGhATObn2Z0YdrIyg";
 const GEMINI_MODEL="gemini-2.5-flash-lite";
-
-// ✅ FIX: URL এ ?key= নেই — key header দিয়ে যাবে
 const GEMINI_URL=`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+
+// ─── Safe icon helper (CDN fail হলেও site ভাঙবে না) ───
+function icons(){try{if(window.lucide)lucide.createIcons();}catch(e){}}
 
 // ═══════════════════════════════════════════════════════════════
 //  🤖 GEMINI AI + 📊 SMART RENDERER ENGINE
@@ -305,23 +311,11 @@ const GEMINI_URL=`https://generativelanguage.googleapis.com/v1beta/models/${GEMI
 class SmartEngine {
     constructor(){this.cache=new Map();this.chartId=0}
 
-    // ✅ FIX: x-goog-api-key header দিয়ে AQ. key পাঠানো হচ্ছে
     async callAI(sys,user){
         const key=sys+'|||'+user;
         if(this.cache.has(key))return this.cache.get(key);
         try{
-            const r=await fetch(GEMINI_URL,{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json',
-                    'x-goog-api-key':GEMINI_API_KEY
-                },
-                body:JSON.stringify({
-                    systemInstruction:{parts:[{text:sys}]},
-                    contents:[{parts:[{text:user}]}],
-                    generationConfig:{temperature:0.7,topP:0.9,maxOutputTokens:1024}
-                })
-            });
+            const r=await fetch(GEMINI_URL,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':GEMINI_API_KEY},body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{parts:[{text:user}]}],generationConfig:{temperature:0.7,topP:0.9,maxOutputTokens:1024}})});
             if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(`Gemini ${r.status}: ${e.error?.message||'Error'}`)}
             const d=await r.json();
             const t=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
@@ -348,7 +342,7 @@ class SmartEngine {
     render(text){
         if(!text)return'';
         let out='';
-        const lines=text.split('\n');
+        const lines=String(text).split('\n');
         let htmlBuffer=[],textBuffer=[];
         for(let i=0;i<lines.length;i++){
             const line=lines[i],trimmed=line.trim();
@@ -410,23 +404,25 @@ class SmartEngine {
         const type=(parts[1]||'bar').toLowerCase().trim();
         const dataPairs=parts.slice(2);
         const labels=[],values=[];
-        dataPairs.forEach(p=>{const [l,v]=p.split(',');if(l&&v){labels.push(l.trim());values.push(parseFloat(v.trim())||0}});
+        dataPairs.forEach(p=>{const [l,v]=p.split(',');if(l&&v){labels.push(l.trim());values.push(parseFloat(v.trim())||0)}});
         if(!labels.length)return`<p style="color:var(--text-muted);font-size:.85rem">⚠️ Invalid chart syntax</p>`;
         const cid=`chart-${++this.chartId}-${Date.now()}`;
         const colors=['#f0c040','#4285F4','#34A853','#EA4335','#a855f7','#06b6d4','#f59e0b','#ec4899','#10b981','#6366f1'];
         const bgColors=labels.map((_,i)=>colors[i%colors.length]);
         setTimeout(()=>{
-            const canvas=document.getElementById(cid);
-            if(!canvas)return;
-            const ctx=canvas.getContext('2d');
-            const isDark=document.body.classList.contains('night');
-            new Chart(ctx,{
-                type:type==='doughnut'?'doughnut':type==='radar'?'radar':type,
-                data:{labels,datasets:[{label:'Data',data:values,backgroundColor:type==='line'?'rgba(240,192,64,0.1)':bgColors.map(c=>c+'33'),borderColor:type==='line'?'#f0c040':bgColors,borderWidth:2,fill:type==='line',tension:0.4,pointBackgroundColor:bgColors,pointRadius:5}]},
-                options:{responsive:true,maintainAspectRatio:true,
-                    plugins:{legend:{display:type!=='line',labels:{color:isDark?'#e8e8f0':'#1A1A1A',font:{family:'Inter',size:12}}},tooltip:{backgroundColor:isDark?'rgba(10,10,26,0.9)':'#FFFDF5',titleColor:isDark?'#f0c040':'#8B6508',bodyColor:isDark?'#e8e8f0':'#1A1A1A',borderColor:'rgba(240,192,64,0.3)',borderWidth:1}},
-                    scales:type==='pie'||type==='doughnut'||type==='radar'?{}:{x:{ticks:{color:isDark?'rgba(255,255,255,0.5)':'#3D3D3D'},grid:{color:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'}},y:{ticks:{color:isDark?'rgba(255,255,255,0.5)':'#3D3D3D'},grid:{color:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'}}}}
-            });
+            try{
+                const canvas=document.getElementById(cid);
+                if(!canvas||!window.Chart)return;
+                const ctx=canvas.getContext('2d');
+                const isDark=document.body.classList.contains('night');
+                new Chart(ctx,{
+                    type:type==='doughnut'?'doughnut':type==='radar'?'radar':type,
+                    data:{labels,datasets:[{label:'Data',data:values,backgroundColor:type==='line'?'rgba(240,192,64,0.1)':bgColors.map(c=>c+'33'),borderColor:type==='line'?'#f0c040':bgColors,borderWidth:2,fill:type==='line',tension:0.4,pointBackgroundColor:bgColors,pointRadius:5}]},
+                    options:{responsive:true,maintainAspectRatio:true,
+                        plugins:{legend:{display:type!=='line',labels:{color:isDark?'#e8e8f0':'#1A1A1A',font:{family:'Inter',size:12}}},tooltip:{backgroundColor:isDark?'rgba(10,10,26,0.9)':'#FFFDF5',titleColor:isDark?'#f0c040':'#8B6508',bodyColor:isDark?'#e8e8f0':'#1A1A1A',borderColor:'rgba(240,192,64,0.3)',borderWidth:1}},
+                        scales:type==='pie'||type==='doughnut'||type==='radar'?{}:{x:{ticks:{color:isDark?'rgba(255,255,255,0.5)':'#3D3D3D'},grid:{color:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'}},y:{ticks:{color:isDark?'rgba(255,255,255,0.5)':'#3D3D3D'},grid:{color:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'}}}}
+                });
+            }catch(e){console.warn('Chart error:',e)}
         },100);
         return`<div class="chart-container"><div class="chart-label">📊 ${type.toUpperCase()} CHART</div><canvas id="${cid}"></canvas></div>`;
     }
@@ -474,11 +470,11 @@ let allData=[],currentSubject=null,currentChapter=null;
 // ═══ UI ═══
 (function(){const c=document.getElementById('stars');for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';const z=Math.random()*2+1;s.style.width=z+'px';s.style.height=z+'px';s.style.setProperty('--duration',(Math.random()*3+2)+'s');s.style.setProperty('--delay',(Math.random()*5)+'s');c.appendChild(s)}})();
 window.addEventListener('scroll',()=>{const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;progressBar.style.width=(st/dh)*100+'%';fabScroll.classList.toggle('visible',st>500)});
-function setThemeIcon(n){document.getElementById('themeToggle').innerHTML=`<i data-lucide="${n}" width="18"></i>`;lucide.createIcons()}
+function setThemeIcon(n){document.getElementById('themeToggle').innerHTML=`<i data-lucide="${n}" width="18"></i>`;icons()}
 document.getElementById('themeToggle').addEventListener('click',()=>{const isN=document.body.classList.contains('night');document.body.classList.remove('night','day');document.body.classList.add(isN?'day':'night');setThemeIcon(isN?'moon':'sun')});
 document.getElementById('sidebarToggle').addEventListener('click',e=>{e.stopPropagation();sidebarEl.classList.toggle('collapsed');toggleIcon.textContent=sidebarEl.classList.contains('collapsed')?'☰':'✕'});
 document.addEventListener('click',e=>{if(window.innerWidth<=768){if(!sidebarEl.contains(e.target)&&!document.getElementById('sidebarToggle').contains(e.target))sidebarEl.classList.remove('open')}});
-lucide.createIcons();
+icons();
 
 // ═══ AI SEARCH ═══
 let searchTimeout;
@@ -505,31 +501,106 @@ function renderSR(results,query){
 function hl(t,q){const w=q.split(/\s+/).filter(x=>x.length>1);let r=t;w.forEach(x=>{r=r.replace(new RegExp(`(${x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<span class="highlight-match">$1</span>')});return r}
 function jumpTo(idx){const item=allData[idx];if(item){renderSubject(item.subject);setTimeout(()=>renderChapter(item.subject,item.chapter),150);aiSearchResults.innerHTML='';aiSearchInput.value=''}}
 
-// ═══ DATA LOADER ═══
+// ═══════════════════════════════════════════════════════════════
+//  📥 BULLETPROOF DATA LOADER (Topicimage সহ যেকোনো column handle করে)
+// ═══════════════════════════════════════════════════════════════
+
+// ─── Smart Column Detection ───
+// exact match আগে, তারপর contains — কিন্তু Topicimage এর সাথে গুলিয়ে ফেলবে না
+function detectColumns(header){
+    const exact=n=>header.findIndex(h=>h===n);
+    const has=n=>header.findIndex(h=>h.includes(n));
+    // topic: exact "topic" আগে; না পেলে "topic" আছে কিন্তু "image" নেই এমন
+    let topic=exact('topic');
+    if(topic<0)topic=header.findIndex(h=>h.includes('topic')&&!h.includes('image'));
+    // image: exact "image" আগে; না পেলে "image" আছে কিন্তু "topic" নেই এমন
+    let image=exact('image');
+    if(image<0)image=header.findIndex(h=>h.includes('image')&&!h.includes('topic'));
+    return {
+        subject: exact('subject')>-1?exact('subject'):has('subject'),
+        chapter: exact('chapter')>-1?exact('chapter'):has('chapter'),
+        topic: topic,
+        topicimage: has('topicimage')>-1?has('topicimage'):header.findIndex(h=>h.includes('topic')&&h.includes('image')),
+        question: exact('question')>-1?exact('question'):has('question'),
+        answer: exact('answer')>-1?exact('answer'):has('answer'),
+        type: exact('type')>-1?exact('type'):has('type'),
+        image: image
+    };
+}
+
 async function loadSheet(){
-    dynamicContent.innerHTML='<div class="empty-state"><div class="loading-ring"></div><p style="font-size:1.1rem;font-weight:600">📥 ডাটা লোড হচ্ছে...</p><p style="font-size:.85rem;color:var(--text-muted)">Google Sheet → Smart Engine</p></div>';
+    // ─── On-screen debug status ───
+    dynamicContent.innerHTML=`
+        <div class="empty-state" style="padding:2rem">
+            <div class="loading-ring"></div>
+            <p style="font-size:1.1rem;font-weight:600">📥 ডাটা লোড হচ্ছে...</p>
+        </div>
+        <div class="load-status" id="loadStatus">⏳ শুরু হচ্ছে...</div>`;
     dynamicSubtitle.textContent='⏳ লোডিং...';
+    const status=msg=>{const el=document.getElementById('loadStatus');if(el)el.innerHTML+=msg+'\n';console.log(msg)};
+
     try{
+        status('🌐 Sheet fetch করা হচ্ছে...');
         const resp=await fetch(GOOGLE_SHEET_TSV_URL,{cache:'no-store'});
-        if(!resp.ok)throw new Error(`HTTP ${resp.status}`);
+        if(!resp.ok)throw new Error(`HTTP ${resp.status} — Sheet link কাজ করছে না`);
         const tsv=await resp.text();
+        status(`<span class="ok">✅ Fetch OK</span> (${(tsv.length/1024).toFixed(1)} KB ডাটা এসেছে)`);
+
         const lines=tsv.split(/\r?\n/).filter(l=>l.trim());
-        if(lines.length<2)throw new Error('ডাটা নেই');
-        const header=lines[0].split('\t').map(h=>h.trim().toLowerCase());
-        const idx={subject:header.indexOf('subject'),chapter:header.indexOf('chapter'),topic:header.indexOf('topic'),question:header.indexOf('question'),answer:header.indexOf('answer'),type:header.indexOf('type'),image:header.indexOf('image')};
-        if(idx.subject===-1)idx.subject=0;if(idx.chapter===-1)idx.chapter=1;if(idx.topic===-1)idx.topic=2;if(idx.question===-1)idx.question=3;if(idx.answer===-1)idx.answer=4;
+        if(lines.length<2)throw new Error('Sheet এ কোনো ডাটা নেই (শুধু header)');
+        status(`📄 মোট ${lines.length-1} টি data row পাওয়া গেছে`);
+
+        // ─── Header parse (BOM + extra space handle) ───
+        const header=lines[0].replace(/^\uFEFF/,'').split('\t').map(h=>h.trim().toLowerCase().replace(/\s+/g,''));
+        status(`🏷️ Columns: [${header.join(', ')}]`);
+
+        const idx=detectColumns(header);
+        status(`🔍 Detect → question:${idx.question} answer:${idx.answer} type:${idx.type} image:${idx.image} topicimage:${idx.topicimage}`);
+
+        if(idx.question<0||idx.answer<0)throw new Error(`Question/Answer column খুঁজে পাওয়া যায়নি! তোমার header: [${header.join(', ')}]`);
+
+        // ─── Row parse ───
         const rows=[];
+        let skipped=0;
         for(let i=1;i<lines.length;i++){
-            const cols=lines[i].split('\t');
-            const get=j=>(j>=0&&j<cols.length)?cols[j].trim():'';
-            const subject=get(idx.subject)||'General',chapter=get(idx.chapter)||'Misc',topic=get(idx.topic)||'',question=get(idx.question)||'',answer=get(idx.answer)||'',type=get(idx.type)||'',image=get(idx.image)||'';
-            if(question||answer)rows.push({subject,chapter,topic,question,answer,type,image});
+            try{
+                const cols=lines[i].split('\t');
+                const get=j=>(j>-1&&j<cols.length)?cols[j].trim():'';
+                const subject=get(idx.subject)||'General';
+                const chapter=get(idx.chapter)||'Misc';
+                const topic=get(idx.topic)||'';
+                const topicimage=get(idx.topicimage)||'';
+                const question=get(idx.question)||'';
+                const answer=get(idx.answer)||'';
+                const type=get(idx.type)||'';
+                const image=get(idx.image)||'';
+                if(question||answer)rows.push({subject,chapter,topic,topicimage,question,answer,type,image});
+                else skipped++;
+            }catch(rowErr){skipped++;console.warn(`Row ${i} skip:`,rowErr)}
         }
-        if(!rows.length)throw new Error('কোনো প্রশ্ন নেই');
-        allData=rows;buildNav();renderSubject('');
-        console.log(`✅ ${rows.length} questions loaded | Gemini ${GEMINI_MODEL} | AQ key via header`);
+        status(`✅ <span class="ok">${rows.length} টি প্রশ্ন parse হয়েছে</span>${skipped?` <span class="warn">(${skipped} টি খালি row skip)`</span>:''}`);
+
+        if(!rows.length)throw new Error('কোনো প্রশ্ন/উত্তর পাওয়া যায়নি। Sheet এ Question ও Answer column এ ডাটা আছে কিনা দেখো।');
+
+        allData=rows;
+        status('🧭 Navigation বানানো হচ্ছে...');
+        buildNav();
+        renderSubject('');
+        status(`<span class="ok">🎉 সব ready! ${rows.length} টি প্রশ্ন load হয়েছে।</span>`);
+
+        // 3 সেকেন্ড পর debug bar লুকিয়ে ফেলো (সব ঠিক থাকলে)
+        setTimeout(()=>{const el=document.getElementById('loadStatus');if(el)el.style.display='none'},3000);
+
     }catch(err){
-        dynamicContent.innerHTML=`<div class="empty-state"><p style="font-size:1.1rem;font-weight:600">⚠️ লোড ব্যর্থ!</p><p style="font-size:.9rem;color:var(--text-muted)">${err.message}</p></div>`;
+        console.error('Load error:',err);
+        dynamicContent.innerHTML=`
+            <div class="empty-state">
+                <p style="font-size:2rem;margin-bottom:1rem">⚠️</p>
+                <p style="font-size:1.1rem;font-weight:600">লোড ব্যর্থ!</p>
+                <p style="font-size:.9rem;color:var(--text-muted);margin-top:.5rem">${err.message}</p>
+            </div>
+            <div class="load-status"><span class="err">❌ ${err.message}</span>\n\n💡 সমাধান:\n1. Sheet টা "File → Publish to web" করেছ কিনা দেখো\n2. TSV link টা browser এ open করে ডাটা আসছে কিনা দেখো\n3. GitHub Pages এ নতুন code deploy হয়েছে কিনা দেখো (Hard refresh: Ctrl+Shift+R)</div>`;
+        dynamicSubtitle.textContent='⚠️ লোড ব্যর্থ';
     }
 }
 
@@ -560,7 +631,7 @@ function renderChapterList(subject,filter=''){
     filtered.forEach(ch=>{const d=document.createElement('div');d.className='chapter-item';d.dataset.chapter=ch;d.textContent=ch;d.addEventListener('click',()=>{renderChapter(subject,ch);document.querySelectorAll('.chapter-item').forEach(el=>el.classList.remove('active'));d.classList.add('active')});chapterListEl.appendChild(d)});
 }
 
-// ═══ RENDER CHAPTER ═══
+// ═══ RENDER CHAPTER (Topicimage ব্যবহার করে banner) ═══
 function renderChapter(subject,chapter){
     currentChapter=chapter;
     const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
@@ -568,15 +639,17 @@ function renderChapter(subject,chapter){
     if(!rows.length){dynamicContent.innerHTML='<div class="empty-state"><p>এই চ্যাপ্টারে প্রশ্ন নেই।</p></div>';return}
     const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
     const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
+    // Topicimage থাকলে সেটা banner এ, না থাকলে picsum
+    const bannerImg=rows.find(r=>r.topicimage&&r.topicimage.startsWith('http'))?.topicimage||`https://picsum.photos/seed/${encodeURIComponent(chapter)}/1200/380`;
     dynamicContent.innerHTML=`
-        <div class="chapter-banner"><img src="https://picsum.photos/seed/${encodeURIComponent(chapter)}/1200/380" alt="${chapter}" loading="lazy"/><div class="chapter-banner-text"><h3>${chapter}</h3><div class="banner-subtitle">${subject} • ${rows.length} টি প্রশ্ন • 📊 Smart Render</div></div></div>
+        <div class="chapter-banner"><img src="${bannerImg}" alt="${chapter}" loading="lazy" onerror="this.src='https://picsum.photos/seed/${encodeURIComponent(chapter)}/1200/380'"/><div class="chapter-banner-text"><h3>${chapter}</h3><div class="banner-subtitle">${subject} • ${rows.length} টি প্রশ্ন • 📊 Smart Render</div></div></div>
         <div class="toggle-group">
             <button class="type-btn active" data-type="all">📚 সব (${rows.length})</button>
             <button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত (${saq.length})</button>
             <button class="type-btn" data-type="broad">📝 ব্যাখ্যামূলক (${broad.length})</button>
         </div>
         <div id="questionContainer">${renderQGroup(rows,'সকল প্রশ্ন')}</div>`;
-    lucide.createIcons();
+    icons();
     document.querySelectorAll('.type-btn').forEach(btn=>{
         btn.addEventListener('click',function(){
             document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
@@ -585,30 +658,35 @@ function renderChapter(subject,chapter){
             let f=rows,l='সকল প্রশ্ন';
             if(t==='saq'){f=saq;l='সংক্ষিপ্ত'}else if(t==='broad'){f=broad;l='ব্যাখ্যামূলক'}
             c.innerHTML=f.length?renderQGroup(f,l):'<div class="empty-state" style="padding:2rem"><p>😅 নেই</p></div>';
-            lucide.createIcons();
+            icons();
         });
     });
 }
 
-// ═══ SMART QUESTION RENDERER ═══
+// ═══ SMART QUESTION RENDERER (প্রতিটা row আলাদা try/catch — একটা খারাপ row সব নষ্ট করবে না) ═══
 function renderQGroup(rows,label){
     let html=`<div class="section-header"><div class="section-icon icon-saq"><i data-lucide="help-circle" width="20"></i></div><h2>${label}</h2><span class="badge-count">${rows.length} টি</span></div>`;
     rows.forEach((r,i)=>{
-        const q=r.question||'(প্রশ্ন নেই)';
-        const rawA=r.answer||'(উত্তর নেই)';
-        const smartA=engine.render(rawA);
-        const img=r.image?r.image.trim():'';
-        const cid=`card-${Date.now()}-${i}-${Math.random().toString(36).slice(2,6)}`;
-        html+=`
-            <div class="question-card" id="${cid}">
-                <div class="q"><span class="num">${i+1}</span><span>${q}</span></div>
-                ${img?`<img src="${img}" class="question-image" loading="lazy"/>`:''}
-                <div class="a">${smartA}</div>
-                <button class="ai-btn" onclick="getAIExp('${cid}',this)" data-q="${encodeURIComponent(q)}" data-a="${encodeURIComponent(rawA)}">
-                    <i data-lucide="sparkles" width="14"></i> Gemini Explain
-                </button>
-                <div id="ai-panel-${cid}"></div>
-            </div>`;
+        try{
+            const q=r.question||'(প্রশ্ন নেই)';
+            const rawA=r.answer||'(উত্তর নেই)';
+            const smartA=engine.render(rawA);
+            const img=r.image?r.image.trim():'';
+            const cid=`card-${Date.now()}-${i}-${Math.random().toString(36).slice(2,6)}`;
+            html+=`
+                <div class="question-card" id="${cid}">
+                    <div class="q"><span class="num">${i+1}</span><span>${q}</span></div>
+                    ${img&&img.startsWith('http')?`<img src="${img}" class="question-image" loading="lazy"/>`:''}
+                    <div class="a">${smartA}</div>
+                    <button class="ai-btn" onclick="getAIExp('${cid}',this)" data-q="${encodeURIComponent(q)}" data-a="${encodeURIComponent(rawA)}">
+                        <i data-lucide="sparkles" width="14"></i> Gemini Explain
+                    </button>
+                    <div id="ai-panel-${cid}"></div>
+                </div>`;
+        }catch(rowErr){
+            console.warn(`Question ${i} render skip:`,rowErr);
+            html+=`<div class="question-card"><div class="q"><span class="num">${i+1}</span><span>${r.question||'⚠️ render error'}</span></div></div>`;
+        }
     });
     return html;
 }
@@ -616,7 +694,7 @@ function renderQGroup(rows,label){
 // ═══ AI EXPLANATION ═══
 async function getAIExp(cardId,btn){
     const panel=document.getElementById(`ai-panel-${cardId}`);
-    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="sparkles" width="14"></i> Gemini Explain';lucide.createIcons();return}
+    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="sparkles" width="14"></i> Gemini Explain';icons();return}
     const q=decodeURIComponent(btn.dataset.q);
     const a=decodeURIComponent(btn.dataset.a);
     btn.classList.add('loading');
@@ -631,11 +709,11 @@ async function getAIExp(cardId,btn){
         btn.classList.remove('loading');
         btn.innerHTML='<i data-lucide="sparkles" width="14"></i> Retry';
     }
-    lucide.createIcons();
+    icons();
 }
 
 loadSheet();
-console.log('✅ Mega Quiz — AQ. Key Header Auth Fix Applied');
+console.log('✅ Mega Quiz — Bulletproof Loader (Topicimage supported)');
 </script>
 </body>
 </html>
