@@ -40,8 +40,8 @@
         .logo-glow img{width:100%;height:100%;object-fit:cover;border-radius:14px}
         .mega-title-text{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:.08em;background:linear-gradient(135deg,#f0c040,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         body.day .mega-title-text{background:linear-gradient(135deg,#B8860B,#8B6508);-webkit-background-clip:text;background-clip:text}
-        .header-badge{font-family:'Space Grotesk',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:6px 16px;border-radius:20px;background:rgba(240,192,64,0.08);color:#f0c040;border:1px solid rgba(240,192,64,0.15)}
-        body.day .header-badge{background:rgba(184,134,11,0.08);color:#8B6508;border:1px solid rgba(184,134,11,0.15)}
+        .header-badge{font-family:'Space Grotesk',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:6px 16px;border-radius:20px;background:rgba(66,133,244,0.1);color:#4285F4;border:1px solid rgba(66,133,244,0.2)}
+        body.day .header-badge{background:rgba(66,133,244,0.06);color:#1a73e8;border:1px solid rgba(66,133,244,0.15)}
 
         .main-wrapper{display:flex;margin-top:72px;position:relative}
         .sidebar{width:300px;flex-shrink:0;padding:3.5rem 1rem 2rem;overflow-y:auto;height:calc(100vh - 72px);position:sticky;top:72px;border-right:1px solid var(--border);background:var(--bg-sidebar);backdrop-filter:blur(12px);transition:all .4s;overflow-x:hidden}
@@ -126,30 +126,28 @@
         .html-content-block video{max-width:100%;border-radius:8px}
         .html-content-block svg{max-width:100%}
 
-        .explain-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden}
-        .explain-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#f0c040,#f59e0b,#f0c040)}
-        .explain-panel-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-        .explain-panel-header .explain-badge{font-family:'Space Grotesk',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:rgba(240,192,64,0.1);color:#f0c040;border:1px solid rgba(240,192,64,0.2)}
-        body.day .explain-panel-header .explain-badge{color:#8B6508;background:rgba(184,134,11,0.08);border:1px solid rgba(184,134,11,0.15)}
-        .explain-panel-content{font-size:.95rem;line-height:1.8;color:var(--text-primary)}
-        .explain-panel-content strong{color:var(--accent)}
+        .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden}
+        .ai-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#4285F4,#34A853,#FBBC05,#EA4335)}
+        .ai-panel-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+        .ai-panel-header .ai-badge{font-family:'Space Grotesk',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:linear-gradient(135deg,rgba(66,133,244,0.15),rgba(52,168,83,0.15));color:#4285F4;border:1px solid rgba(66,133,244,0.25)}
+        .ai-panel-content{font-size:.95rem;line-height:1.8;color:var(--text-primary)}
+        .ai-panel-content strong{color:var(--accent)}
 
-        .explain-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.8rem;border:1px solid rgba(240,192,64,0.25);background:rgba(240,192,64,0.06);color:#f0c040;transition:all .3s;margin-top:12px}
-        body.day .explain-btn{color:#8B6508;border:1px solid rgba(184,134,11,0.25);background:rgba(184,134,11,0.05)}
-        .explain-btn:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(240,192,64,0.15);background:rgba(240,192,64,0.1)}
-        .explain-btn.loading{opacity:.6;pointer-events:none}
-        .explain-btn .spinner{width:14px;height:14px;border:2px solid rgba(240,192,64,0.3);border-top-color:#f0c040;border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+        .ai-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.8rem;border:1px solid var(--ai-border);background:var(--ai-glow);color:#4285F4;transition:all .3s;margin-top:12px}
+        body.day .ai-btn{color:#1a73e8}
+        .ai-btn:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(66,133,244,0.2)}
+        .ai-btn.loading{opacity:.6;pointer-events:none}
+        .ai-btn .spinner{width:14px;height:14px;border:2px solid rgba(66,133,244,0.3);border-top-color:#4285F4;border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
         @keyframes spin{to{transform:rotate(360deg)}}
 
-        .search-container{position:relative;margin-bottom:2rem;padding:20px 24px;border-radius:16px;background:var(--bg-card);border:1px solid var(--border)}
-        .search-main-input{width:100%;padding:14px 20px 14px 48px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--text-primary);font-size:1rem;font-family:'Noto Serif Bengali',serif;outline:none;transition:all .3s}
-        body.day .search-main-input{background:#FFFDF5;border:1px solid #E6D5B8}
-        .search-main-input:focus{border-color:rgba(240,192,64,0.4);box-shadow:0 0 20px rgba(240,192,64,0.08)}
-        .search-main-icon{position:absolute;left:40px;top:38px;color:#f0c040}
-        body.day .search-main-icon{color:#B8860B}
-        .search-results{margin-top:16px}
-        .search-result-item{padding:14px 18px;border-radius:12px;margin-bottom:8px;cursor:pointer;background:var(--accent-dim);border:1px solid var(--border);transition:all .3s}
-        .search-result-item:hover{border-color:var(--accent);transform:translateX(4px)}
+        .ai-search-container{position:relative;margin-bottom:2rem;padding:20px 24px;border-radius:16px;background:var(--bg-card);border:1px solid var(--border)}
+        .ai-search-input{width:100%;padding:14px 20px 14px 48px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--text-primary);font-size:1rem;font-family:'Noto Serif Bengali',serif;outline:none;transition:all .3s}
+        body.day .ai-search-input{background:#FFFDF5;border:1px solid #E6D5B8}
+        .ai-search-input:focus{border-color:rgba(66,133,244,0.4);box-shadow:0 0 20px rgba(66,133,244,0.1)}
+        .ai-search-icon{position:absolute;left:40px;top:38px;color:#4285F4}
+        .ai-search-results{margin-top:16px}
+        .ai-search-result-item{padding:14px 18px;border-radius:12px;margin-bottom:8px;cursor:pointer;background:var(--accent-dim);border:1px solid var(--border);transition:all .3s}
+        .ai-search-result-item:hover{border-color:var(--accent);transform:translateX(4px)}
 
         .progress-bar{position:fixed;top:72px;left:0;height:2px;background:linear-gradient(90deg,#f0c040,#f59e0b);z-index:201;transition:width .3s}
         .fab-scroll{position:fixed;bottom:32px;right:32px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f0c040,#f59e0b);border:none;color:#06060f;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 30px rgba(240,192,64,0.3);transition:.3s;z-index:100;opacity:0;transform:translateY(20px)}
@@ -190,10 +188,9 @@
         .empty-state{text-align:center;padding:5rem 2rem;color:var(--text-muted)}
         .loading-ring{width:48px;height:48px;border:3px solid rgba(240,192,64,0.1);border-top-color:#f0c040;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1rem}
         .question-image{margin:10px 0 10px 24px;max-width:300px;border-radius:12px;border:1px solid var(--border)}
-        .typing-dot::after{content:'▊';animation:blink .8s infinite;color:#f0c040}
+        .ai-typing::after{content:'▊';animation:blink .8s infinite;color:#4285F4}
         @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-        .highlight-match{background:rgba(240,192,64,0.25);border-radius:3px;padding:0 2px}
-        body.day .highlight-match{background:rgba(184,134,11,0.2)}
+        .highlight-match{background:rgba(66,133,244,0.25);border-radius:3px;padding:0 2px}
 
         @media(max-width:768px){
             .sidebar{position:fixed;top:72px;left:0;bottom:0;transform:translateX(-100%);width:300px;background:rgba(10,10,26,0.95);box-shadow:8px 0 40px rgba(0,0,0,0.5);transition:transform .4s;padding-top:3.5rem}
@@ -224,7 +221,7 @@
             <div class="logo-glow"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz" width="44" height="44"/></div>
             <div>
                 <div class="mega-title-text">MEGA QUIZ</div>
-                <div style="font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.3)">Class 10 Notes</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.3)">Smart Class 10 Notes</div>
             </div>
         </a>
         <div class="flex items-center gap-4">
@@ -248,12 +245,12 @@
             <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 10</span></nav>
             <h1 class="hero-title">Class 10 <span style="color:#f0c040">Notes</span></h1>
             <p class="hero-subtitle" id="dynamicSubtitle"></p>
-            <div class="search-container">
+            <div class="ai-search-container">
                 <div style="position:relative">
-                    <i data-lucide="search" width="20" class="search-main-icon"></i>
-                    <input type="text" class="search-main-input" id="aiSearchInput" placeholder="🔍 যেকোনো প্রশ্ন খুঁজুন..."/>
+                    <i data-lucide="sparkles" width="20" class="ai-search-icon"></i>
+                    <input type="text" class="ai-search-input" id="aiSearchInput" placeholder="যেকোনো প্রশ্ন খুঁজুন..."/>
                 </div>
-                <div class="search-results" id="aiSearchResults"></div>
+                <div class="ai-search-results" id="aiSearchResults"></div>
             </div>
             <div id="dynamicContent"></div>
         </div>
@@ -287,25 +284,28 @@
                 </a>
             </div>
         </div>
-        <div class="footer-bottom"><span>© 2025 Mega Quiz - BY Arif Hussain</span><span>🦥 Thank You</span><span>❤️ All Rights Reserved</span></div>
+        <div class="footer-bottom"><span>© 2025 Mega Quiz - BY Arif Hussain</span><span>🦥Thank You</span><span>❤️ All Rights Reserved</span></div>
     </footer>
 
 <script>
 // ═══════════════════════════════════════════════════════════════
-//  CONFIG
+//  ⚙️ CONFIG — ✅ AQ. KEY FIX: header auth, no ?key= in URL
 // ═══════════════════════════════════════════════════════════════
 const GOOGLE_SHEET_TSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
 
 const GEMINI_API_KEY="AQ.Ab8RN6JOKuKqFA0WNSIkBY-go_NgUnZSTrGhATObn2Z0YdrIyg";
 const GEMINI_MODEL="gemini-2.5-flash-lite";
+
+// ✅ FIX: URL এ ?key= নেই — key header দিয়ে যাবে
 const GEMINI_URL=`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 // ═══════════════════════════════════════════════════════════════
-//  SMART ENGINE
+//  🤖 GEMINI AI + 📊 SMART RENDERER ENGINE
 // ═══════════════════════════════════════════════════════════════
 class SmartEngine {
     constructor(){this.cache=new Map();this.chartId=0}
 
+    // ✅ FIX: x-goog-api-key header দিয়ে AQ. key পাঠানো হচ্ছে
     async callAI(sys,user){
         const key=sys+'|||'+user;
         if(this.cache.has(key))return this.cache.get(key);
@@ -322,11 +322,11 @@ class SmartEngine {
                     generationConfig:{temperature:0.7,topP:0.9,maxOutputTokens:1024}
                 })
             });
-            if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(`${r.status}: ${e.error?.message||'Error'}`)}
+            if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(`Gemini ${r.status}: ${e.error?.message||'Error'}`)}
             const d=await r.json();
             const t=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
             this.cache.set(key,t);return t;
-        }catch(e){console.error('Engine Error:',e);throw e}
+        }catch(e){console.error('AI Error:',e);throw e}
     }
 
     async explain(q,a){
@@ -411,7 +411,7 @@ class SmartEngine {
         const dataPairs=parts.slice(2);
         const labels=[],values=[];
         dataPairs.forEach(p=>{const [l,v]=p.split(',');if(l&&v){labels.push(l.trim());values.push(parseFloat(v.trim())||0}});
-        if(!labels.length)return`<p style="color:var(--text-muted);font-size:.85rem">⚠️ Invalid chart</p>`;
+        if(!labels.length)return`<p style="color:var(--text-muted);font-size:.85rem">⚠️ Invalid chart syntax</p>`;
         const cid=`chart-${++this.chartId}-${Date.now()}`;
         const colors=['#f0c040','#4285F4','#34A853','#EA4335','#a855f7','#06b6d4','#f59e0b','#ec4899','#10b981','#6366f1'];
         const bgColors=labels.map((_,i)=>colors[i%colors.length]);
@@ -456,7 +456,7 @@ class SmartEngine {
 
 const engine=new SmartEngine();
 
-// ═══ DOM ═══
+// ═══ DOM & STATE ═══
 const dynamicContent=document.getElementById('dynamicContent');
 const dynamicSubtitle=document.getElementById('dynamicSubtitle');
 const sidebarEl=document.getElementById('sidebar');
@@ -480,12 +480,12 @@ document.getElementById('sidebarToggle').addEventListener('click',e=>{e.stopProp
 document.addEventListener('click',e=>{if(window.innerWidth<=768){if(!sidebarEl.contains(e.target)&&!document.getElementById('sidebarToggle').contains(e.target))sidebarEl.classList.remove('open')}});
 lucide.createIcons();
 
-// ═══ SEARCH ═══
+// ═══ AI SEARCH ═══
 let searchTimeout;
 aiSearchInput.addEventListener('input',()=>{clearTimeout(searchTimeout);const q=aiSearchInput.value.trim();if(q.length<3){aiSearchResults.innerHTML='';return}searchTimeout=setTimeout(()=>doSearch(q),600)});
 async function doSearch(query){
     if(!allData.length)return;
-    aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted);font-size:.85rem"><span class="typing-dot">🔍 খুঁজছি</span></div>';
+    aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted);font-size:.85rem"><span class="ai-typing">🤖 Gemini খুঁজছে</span></div>';
     try{
         const local=allData.map((r,i)=>({...r,idx:i,score:fuzzy(query,r.question+' '+r.answer+' '+r.subject+' '+r.chapter)})).filter(r=>r.score>0.2).sort((a,b)=>b.score-a.score).slice(0,8);
         if(local.length>0){renderSR(local,query);return}
@@ -500,14 +500,14 @@ async function doSearch(query){
 function fuzzy(q,t){q=q.toLowerCase();t=t.toLowerCase();if(t.includes(q))return 1;const w=q.split(/\s+/);return w.filter(x=>t.includes(x)).length/w.length}
 function renderSR(results,query){
     if(!results.length){aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">😅 নেই</div>';return}
-    aiSearchResults.innerHTML=results.map(r=>`<div class="search-result-item" onclick="jumpTo(${r.idx})"><div style="font-size:.7rem;color:var(--accent);font-family:'Space Grotesk',sans-serif;margin-bottom:4px">${r.subject} › ${r.chapter}${r.reason?' • '+r.reason:''}</div><div style="font-size:.95rem;font-weight:600;color:var(--text-primary)">${hl(r.question,query)}</div></div>`).join('');
+    aiSearchResults.innerHTML=results.map(r=>`<div class="ai-search-result-item" onclick="jumpTo(${r.idx})"><div style="font-size:.7rem;color:#4285F4;font-family:'Space Grotesk',sans-serif;margin-bottom:4px">${r.subject} › ${r.chapter}${r.reason?' • '+r.reason:''}</div><div style="font-size:.95rem;font-weight:600;color:var(--text-primary)">${hl(r.question,query)}</div></div>`).join('');
 }
 function hl(t,q){const w=q.split(/\s+/).filter(x=>x.length>1);let r=t;w.forEach(x=>{r=r.replace(new RegExp(`(${x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<span class="highlight-match">$1</span>')});return r}
 function jumpTo(idx){const item=allData[idx];if(item){renderSubject(item.subject);setTimeout(()=>renderChapter(item.subject,item.chapter),150);aiSearchResults.innerHTML='';aiSearchInput.value=''}}
 
 // ═══ DATA LOADER ═══
 async function loadSheet(){
-    dynamicContent.innerHTML='<div class="empty-state"><div class="loading-ring"></div><p style="font-size:1.1rem;font-weight:600">📥 ডাটা লোড হচ্ছে...</p></div>';
+    dynamicContent.innerHTML='<div class="empty-state"><div class="loading-ring"></div><p style="font-size:1.1rem;font-weight:600">📥 ডাটা লোড হচ্ছে...</p><p style="font-size:.85rem;color:var(--text-muted)">Google Sheet → Smart Engine</p></div>';
     dynamicSubtitle.textContent='⏳ লোডিং...';
     try{
         const resp=await fetch(GOOGLE_SHEET_TSV_URL,{cache:'no-store'});
@@ -527,6 +527,7 @@ async function loadSheet(){
         }
         if(!rows.length)throw new Error('কোনো প্রশ্ন নেই');
         allData=rows;buildNav();renderSubject('');
+        console.log(`✅ ${rows.length} questions loaded | Gemini ${GEMINI_MODEL} | AQ key via header`);
     }catch(err){
         dynamicContent.innerHTML=`<div class="empty-state"><p style="font-size:1.1rem;font-weight:600">⚠️ লোড ব্যর্থ!</p><p style="font-size:.9rem;color:var(--text-muted)">${err.message}</p></div>`;
     }
@@ -544,7 +545,7 @@ function renderSubject(subject){
     if(!subject||!allData.some(r=>r.subject===subject)){subject=[...new Set(allData.map(r=>r.subject))].sort()[0];if(!subject)return}
     currentSubject=subject;currentChapter=null;
     document.querySelectorAll('.subject-item').forEach(el=>el.classList.toggle('active',el.dataset.subject===subject));
-    dynamicSubtitle.textContent=`📖 ${subject} — ${allData.filter(r=>r.subject===subject).length}টি প্রশ্ন`;
+    dynamicSubtitle.textContent=`📖 ${subject} — ${allData.filter(r=>r.subject===subject).length}টি প্রশ্ন | ⚡ Smart Engine`;
     renderChapterList(subject);
     const ch=getChapters(subject);
     if(ch.length)renderChapter(subject,ch[0]);
@@ -568,7 +569,7 @@ function renderChapter(subject,chapter){
     const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
     const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
     dynamicContent.innerHTML=`
-        <div class="chapter-banner"><img src="https://picsum.photos/seed/${encodeURIComponent(chapter)}/1200/380" alt="${chapter}" loading="lazy"/><div class="chapter-banner-text"><h3>${chapter}</h3><div class="banner-subtitle">${subject} • ${rows.length} টি প্রশ্ন</div></div></div>
+        <div class="chapter-banner"><img src="https://picsum.photos/seed/${encodeURIComponent(chapter)}/1200/380" alt="${chapter}" loading="lazy"/><div class="chapter-banner-text"><h3>${chapter}</h3><div class="banner-subtitle">${subject} • ${rows.length} টি প্রশ্ন • 📊 Smart Render</div></div></div>
         <div class="toggle-group">
             <button class="type-btn active" data-type="all">📚 সব (${rows.length})</button>
             <button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত (${saq.length})</button>
@@ -589,7 +590,7 @@ function renderChapter(subject,chapter){
     });
 }
 
-// ═══ QUESTION RENDERER ═══
+// ═══ SMART QUESTION RENDERER ═══
 function renderQGroup(rows,label){
     let html=`<div class="section-header"><div class="section-icon icon-saq"><i data-lucide="help-circle" width="20"></i></div><h2>${label}</h2><span class="badge-count">${rows.length} টি</span></div>`;
     rows.forEach((r,i)=>{
@@ -603,37 +604,38 @@ function renderQGroup(rows,label){
                 <div class="q"><span class="num">${i+1}</span><span>${q}</span></div>
                 ${img?`<img src="${img}" class="question-image" loading="lazy"/>`:''}
                 <div class="a">${smartA}</div>
-                <button class="explain-btn" onclick="getExplain('${cid}',this)" data-q="${encodeURIComponent(q)}" data-a="${encodeURIComponent(rawA)}">
-                    <i data-lucide="book-open" width="14"></i> সহজ ব্যাখ্যা
+                <button class="ai-btn" onclick="getAIExp('${cid}',this)" data-q="${encodeURIComponent(q)}" data-a="${encodeURIComponent(rawA)}">
+                    <i data-lucide="sparkles" width="14"></i> Gemini Explain
                 </button>
-                <div id="explain-panel-${cid}"></div>
+                <div id="ai-panel-${cid}"></div>
             </div>`;
     });
     return html;
 }
 
-// ═══ EXPLAIN ═══
-async function getExplain(cardId,btn){
-    const panel=document.getElementById(`explain-panel-${cardId}`);
-    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="book-open" width="14"></i> সহজ ব্যাখ্যা';lucide.createIcons();return}
+// ═══ AI EXPLANATION ═══
+async function getAIExp(cardId,btn){
+    const panel=document.getElementById(`ai-panel-${cardId}`);
+    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="sparkles" width="14"></i> Gemini Explain';lucide.createIcons();return}
     const q=decodeURIComponent(btn.dataset.q);
     const a=decodeURIComponent(btn.dataset.a);
     btn.classList.add('loading');
-    btn.innerHTML='<span class="spinner"></span> ভাবছি...';
+    btn.innerHTML='<span class="spinner"></span> Gemini ভাবছে...';
     try{
         const exp=await engine.explain(q,a);
-        panel.innerHTML=`<div class="explain-panel"><div class="explain-panel-header"><span class="explain-badge">📖 সহজ ব্যাখ্যা</span></div><div class="explain-panel-content">${engine.render(exp)}</div></div>`;
+        panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge">⚡ Gemini 2.5 Flash Lite</span></div><div class="ai-panel-content">${engine.render(exp)}</div></div>`;
         btn.classList.remove('loading');
-        btn.innerHTML='<i data-lucide="check" width="14"></i> ✓';
+        btn.innerHTML='<i data-lucide="check" width="14"></i> Gemini ✓';
     }catch(err){
-        panel.innerHTML=`<div class="explain-panel"><div class="explain-panel-content" style="color:#f43f5e">⚠️ ${err.message}</div></div>`;
+        panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-content" style="color:#f43f5e">⚠️ ${err.message}</div></div>`;
         btn.classList.remove('loading');
-        btn.innerHTML='<i data-lucide="book-open" width="14"></i> আবার চেষ্টা';
+        btn.innerHTML='<i data-lucide="sparkles" width="14"></i> Retry';
     }
     lucide.createIcons();
 }
 
 loadSheet();
+console.log('✅ Mega Quiz — AQ. Key Header Auth Fix Applied');
 </script>
 </body>
 </html>
