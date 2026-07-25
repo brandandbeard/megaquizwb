@@ -125,14 +125,22 @@
         .ai-panel-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
         .ai-panel-header .ai-badge{font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(6,182,212,0.2));color:#a855f7;border:1px solid rgba(168,85,247,0.3)}
         body.day .ai-panel-header .ai-badge{color:#7c3aed}
-        .img-link{margin-left:auto;font-size:0.72rem;color:#06b6d4;text-decoration:none;font-family:'Space Grotesk',sans-serif;font-weight:700;display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;border:1px solid rgba(6,182,212,0.3);background:rgba(6,182,212,0.08);transition:all 0.3s}
-        .img-link:hover{background:rgba(6,182,212,0.18);transform:translateY(-1px);box-shadow:0 4px 14px rgba(6,182,212,0.25)}
         .ai-panel-content{font-size:0.95rem;line-height:1.8;color:var(--text-primary)}
         .ai-panel-content p{margin-bottom:8px}
         .ai-panel-content ul,.ai-panel-content ol{padding-left:20px;margin:8px 0}
         .ai-panel-content li{margin-bottom:4px}
         .ai-panel-content strong{color:var(--accent)}
         .ai-panel-content code{font-family:'JetBrains Mono',monospace;background:var(--accent-dim);padding:2px 6px;border-radius:4px;font-size:0.85em}
+
+        /* ─── 🖼️ Inline Explanation Image ─── */
+        .exp-img-wrap{margin-top:16px;border-radius:12px;overflow:hidden;border:1px solid var(--ai-border);background:rgba(255,255,255,0.03)}
+        body.day .exp-img-wrap{background:#fff}
+        .exp-img-wrap img{width:100%;display:block;max-height:400px;object-fit:contain;background:#fff}
+        .exp-img-loading{padding:34px 20px;text-align:center;color:var(--text-muted);font-size:0.85rem;display:flex;align-items:center;justify-content:center;gap:10px}
+        .exp-img-label{font-family:'Space Grotesk',sans-serif;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);padding:8px 14px;border-bottom:1px solid var(--ai-border);display:flex;align-items:center;justify-content:space-between;gap:6px;background:rgba(255,255,255,0.02)}
+        body.day .exp-img-label{background:rgba(0,0,0,0.02)}
+        .exp-img-hint{color:#06b6d4;font-weight:600}
+        .exp-img-error{padding:24px;text-align:center;color:var(--text-muted);font-size:0.85rem}
 
         .ai-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.8rem;border:1px solid var(--ai-border);background:var(--ai-glow);color:#a855f7;transition:all 0.3s;margin-top:12px}
         body.day .ai-btn{color:#7c3aed}
@@ -305,7 +313,7 @@
     const AI_CONFIG={apiKey:"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",baseUrl:"https://openrouter.ai/api/v1/chat/completions",model:"openrouter/free",maxTokens:1024,temperature:0.7};
 
     // ═══════════════════════════════════════════════════════════
-    //  🎓 শিক্ষক-স্টাইল AI Prompt (মার্জিত ও শিক্ষাসম্মত ভাষা)
+    //  🎓 শিক্ষক-স্টাইল Prompt + 🖼️ [IMG:keyword] (ছবির জন্য)
     // ═══════════════════════════════════════════════════════════
     const TEACHER_PROMPT=`তুমি একজন অভিজ্ঞ ও বন্ধুত্বপূর্ণ Class 10 শিক্ষক। তোমার লক্ষ্য — দুর্বল ছাত্রছাত্রীরাও (যারা ৩০% নম্বর পায়) যেন সহজে বুঝতে পারে এবং পরীক্ষায় ভালো নম্বর পায়।
 
@@ -316,9 +324,9 @@
 
 নিচের format-এ explain করো (প্রতিটি অংশ অবশ্যই দিতে হবে):
 
-🎯 **সহজ কথায়:** এক-দুই লাইনে মূল ধারণা, সহজ ভাষায়।
+🎯 **সহজ কথায়:** এক-দুই লাইনে মূল ধারণা।
 
-🌍 **বাস্তব উদাহরণ:** দৈনন্দিন জীবনের ভদ্র ও প্রাসঙ্গিক উপমা দিয়ে বোঝাও।
+🌍 **বাস্তব উদাহরণ:** দৈনন্দিন জীবনের ভদ্র ও প্রাসঙ্গিক উপমা।
 
 📝 **ধাপে ধাপে:** numbered ছোট ছোট ধাপ।
 
@@ -327,6 +335,10 @@
 ✍️ **পরীক্ষায় লেখো:** পূর্ণ নম্বর পাওয়ার মতো সঠিক উত্তর।
 
 ⚠️ **সাধারণ ভুল:** ছাত্রছাত্রীরা যে ১-২টি ভুল করে।
+
+🖼️ সবার শেষে ছবির জন্য একটা লাইন দাও (ছাত্ররা এটা দেখবে না, শুধু ছবি খোঁজার জন্য):
+[IMG:প্রয়োজনীয় ছবি/diagram এর ৪-৬টি English keyword]
+উদাহরণ: [IMG:binary fission amoeba cell division diagram]
 
 - গুরুত্বপূর্ণ শব্দ **bold** করো
 - সর্বোচ্চ ২৮০ শব্দ`;
@@ -367,6 +379,66 @@
 
     function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return 'h'+Math.abs(h);}
 
+    // ═══════════════════════════════════════════════════════════
+    //  🖼️ IMAGE SYSTEM — no redirect, inline display
+    //  ① Wikimedia Commons (আসল ছবি) → ② Pollinations (AI ছবি)
+    // ═══════════════════════════════════════════════════════════
+    function extractImgKeywords(text){
+        const m=String(text).match(/\[IMG:([^\]]+)\]/i);
+        return m?m[1].trim():null;
+    }
+    function removeImgMarker(text){
+        return String(text).replace(/\[IMG:[^\]]*\]/gi,'').replace(/(<br\s*\/?>\s*)+$/gi,'').trim();
+    }
+
+    async function findImage(keywords){
+        // ① Wikimedia Commons — Wikipedia র আসল educational ছবি/diagram
+        try{
+            const q=keywords.replace(/[^\w\s]/g,' ').trim();
+            const api=`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(q)}&gsrnamespace=6&gsrlimit=5&prop=imageinfo&iiprop=url|mime&iiurlwidth=640&format=json&origin=*`;
+            const r=await fetch(api);
+            if(r.ok){
+                const d=await r.json();
+                if(d.query&&d.query.pages){
+                    const pages=Object.values(d.query.pages).sort((a,b)=>(a.index||99)-(b.index||99));
+                    for(const p of pages){
+                        const info=p.imageinfo&&p.imageinfo[0];
+                        if(info&&info.mime&&info.mime.startsWith('image/')){
+                            return {url:info.thumburl||info.url,source:'📷 Wikimedia Commons — বাস্তব ছবি'};
+                        }
+                    }
+                }
+            }
+        }catch(e){console.warn('Wikimedia search failed:',e);}
+
+        // ② Pollinations.ai — AI-generated diagram (fallback)
+        const prompt=encodeURIComponent(keywords+' educational diagram illustration, clear, detailed, labeled');
+        return {url:`https://image.pollinations.ai/prompt/${prompt}?width=640&height=420&nologo=true&seed=${Math.floor(Math.random()*99999)}`,source:'🎨 AI Generated ছবি'};
+    }
+
+    async function loadImageInline(imgId,keywords){
+        const wrap=document.getElementById(imgId);
+        if(!wrap)return;
+        try{
+            const imgData=await findImage(keywords);
+            const el=document.getElementById(imgId);
+            if(!el)return;
+            el.innerHTML=`<div class="exp-img-label"><span>${imgData.source}</span><span class="exp-img-hint" id="${imgId}-hint">লোড হচ্ছে...</span></div>`;
+            const imgEl=document.createElement('img');
+            imgEl.src=imgData.url;
+            imgEl.alt='চিত্র';
+            imgEl.loading='lazy';
+            imgEl.style.opacity='0';
+            imgEl.style.transition='opacity 0.5s';
+            imgEl.onload=function(){imgEl.style.opacity='1';const h=document.getElementById(imgId+'-hint');if(h)h.style.display='none';};
+            imgEl.onerror=function(){el.innerHTML='<div class="exp-img-error">⚠️ ছবি লোড করা যায়নি</div>';};
+            el.appendChild(imgEl);
+        }catch(e){
+            const el=document.getElementById(imgId);
+            if(el)el.innerHTML='<div class="exp-img-error">⚠️ ছবি পাওয়া যায়নি</div>';
+        }
+    }
+
     (function(){const c=document.getElementById('stars');for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';const z=Math.random()*2+1;s.style.width=z+'px';s.style.height=z+'px';s.style.setProperty('--duration',(Math.random()*3+2)+'s');s.style.setProperty('--delay',(Math.random()*5)+'s');c.appendChild(s);}})();
 
     window.addEventListener('scroll',()=>{const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;progressBar.style.width=(st/dh)*100+'%';fabScroll.classList.toggle('visible',st>500);});
@@ -391,9 +463,6 @@
     function highlightText(text,query){const words=query.split(/\s+/).filter(w=>w.length>1);let r=text;words.forEach(w=>{r=r.replace(new RegExp(`(${w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<span class="highlight-match">$1</span>');});return r;}
     function jumpToQuestion(idx){const item=allData[idx];if(item){renderSubject(item.subject);setTimeout(()=>renderChapter(item.subject,item.chapter),100);aiSearchResults.innerHTML='';aiSearchInput.value='';}}
 
-    // ═══════════════════════════════════════════════════════════
-    //  ✅ DATA LOADER — Explanation column সহ
-    // ═══════════════════════════════════════════════════════════
     async function loadSheet(){
         dynamicContent.innerHTML='<div class="empty-state"><div class="loading-ring"></div><p style="font-size:1.1rem;font-weight:600;">📥 ডাটা লোড হচ্ছে...</p></div>';
         dynamicSubtitle.textContent='⏳ লোডিং...';
@@ -503,9 +572,8 @@
     }
 
     // ═══════════════════════════════════════════════════════════
-    //  🎯 SMART AI EXPLANATION
+    //  🎯 SMART AI EXPLANATION + 🖼️ Inline Image (no redirect)
     //  ① Sheet pre-saved → ② localStorage cache → ③ AI fallback
-    //  + 📊 ছবি/চিত্র দেখার link
     // ═══════════════════════════════════════════════════════════
     async function getAIExplanation(dataIdx){
         const stored=questionDataStore[dataIdx];
@@ -528,46 +596,46 @@
 
         // ① Sheet এ pre-saved explanation (instant, NO API, NO limit) ✅
         if(explanation&&explanation.trim()){
-            exp=explanation;
-            source='📋 AI Explanation';
-            sc='#34A853';
+            exp=explanation;source='📋 Pre-saved (Sheet থেকে)';sc='#34A853';
         }else{
             // ② localStorage cache
             const ck='mqexp_'+hashStr(question+'|||'+answer);
             let cached=null;
             try{cached=localStorage.getItem(ck);}catch(e){}
             if(cached){
-                exp=cached;
-                source='💾 Cached';
-                sc='#4285F4';
+                exp=cached;source='💾 Cached';sc='#4285F4';
             }else{
                 // ③ AI fallback (শুধু নতুন প্রশ্নের জন্য)
                 btn.innerHTML='<span class="spinner"></span> AI ভাবছে...';
                 try{
                     exp=await ai.explainAnswer(question,answer);
                     try{localStorage.setItem(ck,exp);}catch(e){}
-                    source='🤖 AI ';
-                    sc='#a855f7';
+                    source='🤖 AI';sc='#a855f7';
                 }catch(err){
                     panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-content" style="color:#f43f5e;">⚠️ ${err.message}<br><span style="font-size:0.8rem;color:var(--text-muted);">Generator দিয়ে pre-save করলে limit ছাড়াই instant পেত।</span></div></div>`;
                     btn.classList.remove('loading');
                     btn.innerHTML='<i data-lucide="sparkles" width="14"></i> Retry';
-                    lucide.createIcons();
-                    return;
+                    lucide.createIcons();return;
                 }
             }
         }
 
-        // 📊 ছবি/চিত্র দেখার link
-        const imgQuery=encodeURIComponent(question.replace(/<[^>]*>/g,'')+' diagram chart বাংলা');
-        panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge" style="color:${sc};border-color:${sc}55;background:${sc}18">${source}</span><a href="https://www.google.com/search?tbm=isch&q=${imgQuery}" target="_blank" class="img-link">📊 ছবি/চিত্র দেখো ↗</a></div><div class="ai-panel-content">${ai.smartFormatAnswer(exp)}</div></div>`;
+        // 🖼️ ছবির keyword বের করো + text clean করো
+        const imgKw=extractImgKeywords(exp)||question.replace(/<[^>]*>/g,'').slice(0,80);
+        const cleanExp=removeImgMarker(exp);
+        const imgId='expimg-'+cardId;
+
+        panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge" style="color:${sc};border-color:${sc}55;background:${sc}18">${source}</span></div><div class="ai-panel-content">${ai.smartFormatAnswer(cleanExp)}</div><div class="exp-img-wrap" id="${imgId}"><div class="exp-img-loading"><span class="spinner"></span> 🖼️ ছবি/চিত্র খোঁজা হচ্ছে...</div></div></div>`;
         btn.classList.remove('loading');
         btn.innerHTML='<i data-lucide="check" width="14"></i> AI Explanation ✓';
         lucide.createIcons();
+
+        // ছবি inline load করো (কোথাও redirect হবে না)
+        loadImageInline(imgId,imgKw);
     }
 
     loadSheet();
-    console.log('✅ Mega Quiz — Teacher-style Explanation + Pre-saved + Cache + Image Link');
+    console.log('✅ Mega Quiz — Teacher-style Explanation + Inline Images (Wikimedia + AI)');
     </script>
 </body>
 </html>
