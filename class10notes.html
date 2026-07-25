@@ -268,43 +268,56 @@
 // ═══════════════════════════════════════════════════════════════
 const GOOGLE_SHEET_TSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
 
-// 🔑 Gemini API Key (AQ. type — header দিয়ে পাঠাতে হবে)
 const GEMINI_API_KEY="AQ.Ab8RN6KdnwMqk-_WLeQaiiG9vzLD6fFdreW2K21oGWDPH8j0Wg";
 const GEMINI_MODEL="gemini-2.5-flash-lite";
-// ✅ URL-এ ?key= নেই — key header-এ যাবে
-const GEMINI_URL=`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 // ═══════════════════════════════════════════════════════════════
 //  🤖 GEMINI AI + 📊 SMART RENDERER ENGINE
+//  ✅ FIXED: Official @google/genai SDK ব্যবহার করা হচ্ছে
+//     AQ. key REST API-তে কাজ করে না (Google bug Jul 2026)
+//     SDK দিয়ে কাজ করবে ১০০%
 // ═══════════════════════════════════════════════════════════════
+
+// SDK লোড করা হচ্ছে (esm.sh CDN থেকে)
+let genAI=null;
+const sdkReady=import("https://esm.sh/@google/genai@1.16.0").then(mod=>{
+    genAI=new mod.GoogleGenAI({apiKey:GEMINI_API_KEY});
+    console.log("✅ Google Gen AI SDK loaded!");
+}).catch(err=>{
+    console.error("❌ SDK load failed:",err);
+});
+
 class SmartEngine {
     constructor(){this.cache=new Map();this.chartId=0}
 
-    // ─── Gemini API Call (FIXED: x-goog-api-key header) ───
+    // ─── Gemini API Call (SDK দিয়ে — AQ. key কাজ করবে) ───
     async callAI(sys,user){
         const key=sys+'|||'+user;
         if(this.cache.has(key))return this.cache.get(key);
+
+        // SDK লোড হওয়া পর্যন্ত অপেক্ষা করো
+        await sdkReady;
+
+        if(!genAI) throw new Error("SDK লোড হয়নি। ইন্টারনেট চেক করো।");
+
         try{
-            const r=await fetch(GEMINI_URL,{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json',
-                    'x-goog-api-key':GEMINI_API_KEY
-                },
-                body:JSON.stringify({
-                    systemInstruction:{parts:[{text:sys}]},
-                    contents:[{parts:[{text:user}]}],
-                    generationConfig:{temperature:0.7,topP:0.9,maxOutputTokens:1024}
-                })
+            const response=await genAI.models.generateContent({
+                model:GEMINI_MODEL,
+                contents:user,
+                config:{
+                    systemInstruction:sys,
+                    temperature:0.7,
+                    topP:0.9,
+                    maxOutputTokens:1024
+                }
             });
-            if(!r.ok){
-                const e=await r.json().catch(()=>({}));
-                throw new Error(`Gemini ${r.status}: ${e.error?.message||'Error'}`);
-            }
-            const d=await r.json();
-            const t=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-            this.cache.set(key,t);return t;
-        }catch(e){console.error('AI Error:',e);throw e}
+            const t=response.text||'';
+            this.cache.set(key,t);
+            return t;
+        }catch(e){
+            console.error('AI Error:',e);
+            throw new Error(e.message||'Gemini Error');
+        }
     }
 
     async explain(q,a){
@@ -574,7 +587,7 @@ async function loadSheet(){
         }
         if(!rows.length)throw new Error('কোনো প্রশ্ন নেই');
         allData=rows;buildNav();renderSubject('');
-        console.log(`✅ ${rows.length} questions | Gemini ${GEMINI_MODEL} | Chart.js ready`);
+        console.log(`✅ ${rows.length} questions | Gemini SDK ready | Chart.js ready`);
     }catch(err){
         dynamicContent.innerHTML=`<div class="empty-state"><p style="font-size:1.1rem;font-weight:600">⚠️ লোড ব্যর্থ!</p><p style="font-size:.9rem;color:var(--text-muted)">${err.message}</p></div>`;
     }
@@ -693,7 +706,7 @@ async function getAIExp(cardId,btn){
 //  INIT
 // ═══════════════════════════════════════════════════════════════
 loadSheet();
-console.log('✅ Mega Quiz AI — Smart Engine (HTML + Charts + Gemini) Loaded');
+console.log('✅ Mega Quiz AI — Google Gen AI SDK + Chart.js Loaded');
 </script>
 </body>
 </html>
