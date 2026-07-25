@@ -122,9 +122,11 @@
 
         .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden}
         .ai-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#a855f7,#06b6d4,#f0c040)}
-        .ai-panel-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+        .ai-panel-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
         .ai-panel-header .ai-badge{font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(6,182,212,0.2));color:#a855f7;border:1px solid rgba(168,85,247,0.3)}
         body.day .ai-panel-header .ai-badge{color:#7c3aed}
+        .img-link{margin-left:auto;font-size:0.72rem;color:#06b6d4;text-decoration:none;font-family:'Space Grotesk',sans-serif;font-weight:700;display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;border:1px solid rgba(6,182,212,0.3);background:rgba(6,182,212,0.08);transition:all 0.3s}
+        .img-link:hover{background:rgba(6,182,212,0.18);transform:translateY(-1px);box-shadow:0 4px 14px rgba(6,182,212,0.25)}
         .ai-panel-content{font-size:0.95rem;line-height:1.8;color:var(--text-primary)}
         .ai-panel-content p{margin-bottom:8px}
         .ai-panel-content ul,.ai-panel-content ol{padding-left:20px;margin:8px 0}
@@ -302,10 +304,44 @@
     const GOOGLE_SHEET_TSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
     const AI_CONFIG={apiKey:"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",baseUrl:"https://openrouter.ai/api/v1/chat/completions",model:"openrouter/free",maxTokens:1024,temperature:0.7};
 
+    // ═══════════════════════════════════════════════════════════
+    //  🎓 শিক্ষক-স্টাইল AI Prompt (মার্জিত ও শিক্ষাসম্মত ভাষা)
+    // ═══════════════════════════════════════════════════════════
+    const TEACHER_PROMPT=`তুমি একজন অভিজ্ঞ ও বন্ধুত্বপূর্ণ Class 10 শিক্ষক। তোমার লক্ষ্য — দুর্বল ছাত্রছাত্রীরাও (যারা ৩০% নম্বর পায়) যেন সহজে বুঝতে পারে এবং পরীক্ষায় ভালো নম্বর পায়।
+
+ভাষার নিয়ম (খুব গুরুত্বপূর্ণ):
+- সহজ ও সাবলীল বাংলা, কিন্তু অবশ্যই মার্জিত ও শিক্ষাসম্মত
+- শিশুসুলভ, অশালীন বা দ্ব্যর্থক শব্দ ব্যবহার করবে না
+- ছোট ছোট বাক্য; কঠিন পরিভাষা এড়াও (জরুরি হলে সহজ অর্থ দাও)
+
+নিচের format-এ explain করো (প্রতিটি অংশ অবশ্যই দিতে হবে):
+
+🎯 **সহজ কথায়:** এক-দুই লাইনে মূল ধারণা, সহজ ভাষায়।
+
+🌍 **বাস্তব উদাহরণ:** দৈনন্দিন জীবনের ভদ্র ও প্রাসঙ্গিক উপমা দিয়ে বোঝাও।
+
+📝 **ধাপে ধাপে:** numbered ছোট ছোট ধাপ।
+
+💡 **মনে রাখার কৌশল:** সহজ ছড়া বা কৌশল।
+
+✍️ **পরীক্ষায় লেখো:** পূর্ণ নম্বর পাওয়ার মতো সঠিক উত্তর।
+
+⚠️ **সাধারণ ভুল:** ছাত্রছাত্রীরা যে ১-২টি ভুল করে।
+
+- গুরুত্বপূর্ণ শব্দ **bold** করো
+- সর্বোচ্চ ২৮০ শব্দ`;
+
     class SmartAI{
         constructor(c){this.config=c;this.cache=new Map();}
         async callAI(messages){const k=JSON.stringify(messages);if(this.cache.has(k))return this.cache.get(k);try{const r=await fetch(this.config.baseUrl,{method:'POST',headers:{'Authorization':`Bearer ${this.config.apiKey}`,'Content-Type':'application/json','HTTP-Referer':window.location.href,'X-Title':'Mega Quiz'},body:JSON.stringify({model:this.config.model,messages,max_tokens:this.config.maxTokens,temperature:this.config.temperature,stream:false})});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(`AI Error ${r.status}: ${e.error?.message||'Unknown'}`);}const d=await r.json();const c=d.choices?.[0]?.message?.content||'';this.cache.set(k,c);return c;}catch(e){console.error('AI Error:',e);throw e;}}
-        async explainAnswer(q,a){const cq=q.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();const ca=a.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();return await this.callAI([{role:'system',content:`তুমি expert Class 10 teacher। বাংলায় সহজে explain করো।\n- Key points **bold** করো\n- Table থাকলে markdown table দাও\n- Formula clearly লেখো\n- Max 150 words, বাংলায়`},{role:'user',content:`প্রশ্ন: ${cq}\nউত্তর: ${ca}\n\nসহজে explain করো:`}]);}
+        async explainAnswer(q,a){
+            const cq=q.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+            const ca=a.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+            return await this.callAI([
+                {role:'system',content:TEACHER_PROMPT},
+                {role:'user',content:`প্রশ্ন: ${cq}\nমূল উত্তর: ${ca}\n\nউপরের format-এ সহজ ও মার্জিত ভাষায় বুঝিয়ে দাও:`}
+            ]);
+        }
         async smartSearch(query,allData){return await this.callAI([{role:'system',content:`Smart search assistant। JSON array: [{"index":0,"reason":"কেন relevant","relevance":95}] Max 5। শুধু JSON।`},{role:'user',content:`Query: "${query}"\n\nQuestions:\n${allData.slice(0,50).map((r,i)=>`${i}. [${r.subject}/${r.chapter}] ${r.question}`).join('\n')}`}]);}
         smartFormatAnswer(text){if(!text)return'';if(/<(table|div|tr|td|th|thead|tbody|ul|ol|li|p|h[1-6]|span|strong|em|br)\b/i.test(text))return text;let f=text;const pr=/(?:^|\n)(\|[^\n]+\|\n)(\|[-| :]+\|\n)((?:\|[^\n]+\|\n?)+)/g;f=f.replace(pr,(m,h,s,b)=>this.renderPipeTable(h,b));const lines=f.split('\n');let result=[];let tr=[];for(let l of lines){if(l.includes('\t')&&l.split('\t').length>=2){tr.push(l.split('\t').map(c=>c.trim()));}else{if(tr.length>0){result.push(this.renderArrayTable(tr));tr=[];}result.push(l);}}if(tr.length>0)result.push(this.renderArrayTable(tr));f=result.join('\n');f=f.replace(/^([A-Za-z\u0980-\u09FF\s]+):\s*(.+)$/gm,'<strong>$1:</strong> $2');f=f.replace(/^(\d+)[.)]\s+(.+)$/gm,'<li>$2</li>');f=f.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ol style="padding-left:20px;margin:8px 0;">$1</ol>');f=f.replace(/^[-•*]\s+(.+)$/gm,'<li>$1</li>');f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');f=f.replace(/\n/g,'<br>');return f;}
         renderArrayTable(rows){if(!rows.length)return'';let h='<div class="smart-table-wrapper"><table class="smart-table"><thead><tr>';rows[0].forEach(c=>h+=`<th>${c}</th>`);h+='</tr></thead><tbody>';for(let i=1;i<rows.length;i++){h+='<tr>';rows[i].forEach(c=>h+=`<td>${c}</td>`);h+='</tr>';}return h+'</tbody></table></div>';}
@@ -329,7 +365,6 @@
     let allData=[],currentSubject=null,currentChapter=null;
     let questionDataStore=[];
 
-    // ─── localStorage cache helper ───
     function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return 'h'+Math.abs(h);}
 
     (function(){const c=document.getElementById('stars');for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';const z=Math.random()*2+1;s.style.width=z+'px';s.style.height=z+'px';s.style.setProperty('--duration',(Math.random()*3+2)+'s');s.style.setProperty('--delay',(Math.random()*5)+'s');c.appendChild(s);}})();
@@ -452,9 +487,6 @@
         });
     }
 
-    // ═══════════════════════════════════════════════════════════
-    //  ✅ QUESTION RENDERER — explanation data store সহ
-    // ═══════════════════════════════════════════════════════════
     function renderQuestionGroup(rows,label){
         let html=`<div class="section-header"><div class="section-icon icon-saq"><i data-lucide="help-circle" width="20"></i></div><h2>${label}</h2><span class="badge-count">${rows.length} টি</span></div>`;
         rows.forEach((r,i)=>{
@@ -473,7 +505,7 @@
     // ═══════════════════════════════════════════════════════════
     //  🎯 SMART AI EXPLANATION
     //  ① Sheet pre-saved → ② localStorage cache → ③ AI fallback
-    //  Pre-saved থাকলে NO API call → NO limit → instant!
+    //  + 📊 ছবি/চিত্র দেখার link
     // ═══════════════════════════════════════════════════════════
     async function getAIExplanation(dataIdx){
         const stored=questionDataStore[dataIdx];
@@ -497,7 +529,7 @@
         // ① Sheet এ pre-saved explanation (instant, NO API, NO limit) ✅
         if(explanation&&explanation.trim()){
             exp=explanation;
-            source='📋 Pre-saved (Sheet থেকে)';
+            source='📋 AI Explanation';
             sc='#34A853';
         }else{
             // ② localStorage cache
@@ -514,7 +546,7 @@
                 try{
                     exp=await ai.explainAnswer(question,answer);
                     try{localStorage.setItem(ck,exp);}catch(e){}
-                    source='🤖 AI (নতুন বানানো)';
+                    source='🤖 AI ';
                     sc='#a855f7';
                 }catch(err){
                     panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-content" style="color:#f43f5e;">⚠️ ${err.message}<br><span style="font-size:0.8rem;color:var(--text-muted);">Generator দিয়ে pre-save করলে limit ছাড়াই instant পেত।</span></div></div>`;
@@ -526,14 +558,16 @@
             }
         }
 
-        panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge" style="color:${sc};border-color:${sc}55;background:${sc}18">${source}</span></div><div class="ai-panel-content">${ai.smartFormatAnswer(exp)}</div></div>`;
+        // 📊 ছবি/চিত্র দেখার link
+        const imgQuery=encodeURIComponent(question.replace(/<[^>]*>/g,'')+' diagram chart বাংলা');
+        panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge" style="color:${sc};border-color:${sc}55;background:${sc}18">${source}</span><a href="https://www.google.com/search?tbm=isch&q=${imgQuery}" target="_blank" class="img-link">📊 ছবি/চিত্র দেখো ↗</a></div><div class="ai-panel-content">${ai.smartFormatAnswer(exp)}</div></div>`;
         btn.classList.remove('loading');
         btn.innerHTML='<i data-lucide="check" width="14"></i> AI Explanation ✓';
         lucide.createIcons();
     }
 
     loadSheet();
-    console.log('✅ Mega Quiz — Pre-saved Explanation + Cache + AI Fallback');
+    console.log('✅ Mega Quiz — Teacher-style Explanation + Pre-saved + Cache + Image Link');
     </script>
 </body>
 </html>
