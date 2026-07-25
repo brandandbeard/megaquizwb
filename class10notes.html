@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="bn" dir="ltr">
 <head>
@@ -82,9 +83,6 @@
         body.day .hero-title{background:linear-gradient(135deg,#2C2C2C 0%,#8B6508 40%,#B8860B 80%,#5C4A0A 100%);-webkit-background-clip:text;background-clip:text;filter:none}
         .hero-subtitle{font-size:1.05rem;line-height:1.7;margin-bottom:1.8rem;color:var(--text-secondary);max-width:650px}
 
-        /* ═══════════════════════════════════════════════════════
-           ✅ FIXED BANNER - Always dark overlay, sharp image
-        ═══════════════════════════════════════════════════════ */
         .chapter-banner{position:relative;width:100%;height:380px;border-radius:20px;overflow:hidden;margin-bottom:2rem;border:1px solid var(--border);box-shadow:0 8px 40px rgba(0,0,0,0.3)}
         body.day .chapter-banner{box-shadow:0 8px 20px rgba(0,0,0,0.15);border:1px solid rgba(0,0,0,0.1)}
         .chapter-banner img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;image-rendering:auto;filter:none;transition:transform 0.8s}
@@ -331,6 +329,9 @@
     let allData=[],currentSubject=null,currentChapter=null;
     let questionDataStore=[];
 
+    // ─── localStorage cache helper ───
+    function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return 'h'+Math.abs(h);}
+
     (function(){const c=document.getElementById('stars');for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';const z=Math.random()*2+1;s.style.width=z+'px';s.style.height=z+'px';s.style.setProperty('--duration',(Math.random()*3+2)+'s');s.style.setProperty('--delay',(Math.random()*5)+'s');c.appendChild(s);}})();
 
     window.addEventListener('scroll',()=>{const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;progressBar.style.width=(st/dh)*100+'%';fabScroll.classList.toggle('visible',st>500);});
@@ -355,6 +356,9 @@
     function highlightText(text,query){const words=query.split(/\s+/).filter(w=>w.length>1);let r=text;words.forEach(w=>{r=r.replace(new RegExp(`(${w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<span class="highlight-match">$1</span>');});return r;}
     function jumpToQuestion(idx){const item=allData[idx];if(item){renderSubject(item.subject);setTimeout(()=>renderChapter(item.subject,item.chapter),100);aiSearchResults.innerHTML='';aiSearchInput.value='';}}
 
+    // ═══════════════════════════════════════════════════════════
+    //  ✅ DATA LOADER — Explanation column সহ
+    // ═══════════════════════════════════════════════════════════
     async function loadSheet(){
         dynamicContent.innerHTML='<div class="empty-state"><div class="loading-ring"></div><p style="font-size:1.1rem;font-weight:600;">📥 ডাটা লোড হচ্ছে...</p></div>';
         dynamicSubtitle.textContent='⏳ লোডিং...';
@@ -365,17 +369,19 @@
             const lines=tsv.split(/\r?\n/).filter(l=>l.trim());
             if(lines.length<2)throw new Error('ডাটা নেই');
             const header=lines[0].split('\t').map(h=>h.trim().toLowerCase());
-            const idx={subject:header.indexOf('subject'),chapter:header.indexOf('chapter'),topic:header.indexOf('topic'),topicimage:header.indexOf('topicimage'),question:header.indexOf('question'),answer:header.indexOf('answer'),type:header.indexOf('type'),image:header.indexOf('image')};
+            const idx={subject:header.indexOf('subject'),chapter:header.indexOf('chapter'),topic:header.indexOf('topic'),topicimage:header.indexOf('topicimage'),question:header.indexOf('question'),answer:header.indexOf('answer'),type:header.indexOf('type'),image:header.indexOf('image'),explanation:header.indexOf('explanation')};
             if(idx.subject===-1)idx.subject=0;if(idx.chapter===-1)idx.chapter=1;if(idx.topic===-1)idx.topic=2;if(idx.question===-1)idx.question=3;if(idx.answer===-1)idx.answer=4;
             const rows=[];
             for(let i=1;i<lines.length;i++){
                 const cols=lines[i].split('\t');
                 const get=j=>(j>=0&&j<cols.length)?cols[j].trim():'';
-                const subject=get(idx.subject)||'General',chapter=get(idx.chapter)||'Misc',topic=get(idx.topic)||'',topicimage=get(idx.topicimage)||'',question=get(idx.question)||'',answer=get(idx.answer)||'',type=get(idx.type)||'',image=get(idx.image)||'';
-                if(question||answer)rows.push({subject,chapter,topic,topicimage,question,answer,type,image});
+                const subject=get(idx.subject)||'General',chapter=get(idx.chapter)||'Misc',topic=get(idx.topic)||'',topicimage=get(idx.topicimage)||'',question=get(idx.question)||'',answer=get(idx.answer)||'',type=get(idx.type)||'',image=get(idx.image)||'',explanation=get(idx.explanation)||'';
+                if(question||answer)rows.push({subject,chapter,topic,topicimage,question,answer,type,image,explanation});
             }
             if(!rows.length)throw new Error('কোনো প্রশ্ন নেই');
             allData=rows;buildNavigation();renderSubject('');
+            const preSaved=rows.filter(r=>r.explanation&&r.explanation.trim()).length;
+            console.log(`✅ ${rows.length} questions | ${preSaved} pre-saved explanations`);
         }catch(err){dynamicContent.innerHTML=`<div class="empty-state"><p style="font-size:1.1rem;font-weight:600;">⚠️ লোড ব্যর্থ!</p><p style="font-size:0.9rem;color:var(--text-muted);">${err.message}</p></div>`;}
     }
 
@@ -408,9 +414,6 @@
         filtered.forEach(ch=>{const d=document.createElement('div');d.className='chapter-item';d.dataset.chapter=ch;d.textContent=ch;d.addEventListener('click',()=>{renderChapter(subject,ch);document.querySelectorAll('.chapter-item').forEach(el=>el.classList.remove('active'));d.classList.add('active');if(isMobile())closeSidebar();});chapterListEl.appendChild(d);});
     }
 
-    // ═══════════════════════════════════════════════════════════
-    //  ✅ FIXED: renderChapter with topicimage support
-    // ═══════════════════════════════════════════════════════════
     function renderChapter(subject,chapter){
         currentChapter=chapter;
         const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
@@ -418,8 +421,6 @@
         if(!rows.length){dynamicContent.innerHTML='<div class="empty-state"><p>এই চ্যাপ্টারে প্রশ্ন নেই।</p></div>';return;}
         const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
         const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
-
-        // ✅ Get topic image: use first row's topicimage if available, else random per topic
         const topicImg=rows.find(r=>r.topicimage&&r.topicimage.trim())?.topicimage?.trim()||'';
         const bannerSrc=topicImg||`https://picsum.photos/seed/${encodeURIComponent(chapter)}/1200/380`;
 
@@ -451,6 +452,9 @@
         });
     }
 
+    // ═══════════════════════════════════════════════════════════
+    //  ✅ QUESTION RENDERER — explanation data store সহ
+    // ═══════════════════════════════════════════════════════════
     function renderQuestionGroup(rows,label){
         let html=`<div class="section-header"><div class="section-icon icon-saq"><i data-lucide="help-circle" width="20"></i></div><h2>${label}</h2><span class="badge-count">${rows.length} টি</span></div>`;
         rows.forEach((r,i)=>{
@@ -460,27 +464,76 @@
             const img=r.image?r.image.trim():'';
             const cid=`card-${Date.now()}-${i}`;
             const dataIdx=questionDataStore.length;
-            questionDataStore.push({id:cid,question:q,answer:rawA});
+            questionDataStore.push({id:cid,question:q,answer:rawA,explanation:r.explanation||''});
             html+=`<div class="question-card" id="${cid}"><div class="q"><span class="num">${i+1}</span><span>${q}</span></div>${img?`<img src="${img}" class="question-image" loading="lazy"/>`:''}<div class="a">${smartA}</div><button class="ai-btn" data-idx="${dataIdx}" onclick="getAIExplanation(${dataIdx})"><i data-lucide="sparkles" width="14"></i> AI Explanation</button><div id="ai-panel-${cid}"></div></div>`;
         });
         return html;
     }
 
+    // ═══════════════════════════════════════════════════════════
+    //  🎯 SMART AI EXPLANATION
+    //  ① Sheet pre-saved → ② localStorage cache → ③ AI fallback
+    //  Pre-saved থাকলে NO API call → NO limit → instant!
+    // ═══════════════════════════════════════════════════════════
     async function getAIExplanation(dataIdx){
-        const stored=questionDataStore[dataIdx];if(!stored)return;
-        const{id:cardId,question,answer}=stored;
+        const stored=questionDataStore[dataIdx];
+        if(!stored)return;
+        const{id:cardId,question,answer,explanation}=stored;
         const panel=document.getElementById(`ai-panel-${cardId}`);
         const btn=panel?panel.previousElementSibling:null;
         if(!panel||!btn)return;
-        if(panel.innerHTML.trim()){panel.innerHTML='';btn.innerHTML='<i data-lucide="sparkles" width="14"></i> AI Explanation';lucide.createIcons();return;}
-        btn.classList.add('loading');btn.innerHTML='<span class="spinner"></span> AI ভাবছে...';
-        try{const exp=await ai.explainAnswer(question,answer);panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge">🤖 AI Explanation</span></div><div class="ai-panel-content">${ai.smartFormatAnswer(exp)}</div></div>`;}
-        catch(err){panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-content" style="color:#f43f5e;">⚠️ ${err.message}</div></div>`;}
-        btn.classList.remove('loading');btn.innerHTML='<i data-lucide="sparkles" width="14"></i> AI Explanation ✓';lucide.createIcons();
+
+        if(panel.innerHTML.trim()){
+            panel.innerHTML='';
+            btn.innerHTML='<i data-lucide="sparkles" width="14"></i> AI Explanation';
+            lucide.createIcons();
+            return;
+        }
+
+        btn.classList.add('loading');
+        btn.innerHTML='<span class="spinner"></span> খোঁজা হচ্ছে...';
+        let exp='',source='',sc='#a855f7';
+
+        // ① Sheet এ pre-saved explanation (instant, NO API, NO limit) ✅
+        if(explanation&&explanation.trim()){
+            exp=explanation;
+            source='📋 Pre-saved (Sheet থেকে)';
+            sc='#34A853';
+        }else{
+            // ② localStorage cache
+            const ck='mqexp_'+hashStr(question+'|||'+answer);
+            let cached=null;
+            try{cached=localStorage.getItem(ck);}catch(e){}
+            if(cached){
+                exp=cached;
+                source='💾 Cached';
+                sc='#4285F4';
+            }else{
+                // ③ AI fallback (শুধু নতুন প্রশ্নের জন্য)
+                btn.innerHTML='<span class="spinner"></span> AI ভাবছে...';
+                try{
+                    exp=await ai.explainAnswer(question,answer);
+                    try{localStorage.setItem(ck,exp);}catch(e){}
+                    source='🤖 AI (নতুন বানানো)';
+                    sc='#a855f7';
+                }catch(err){
+                    panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-content" style="color:#f43f5e;">⚠️ ${err.message}<br><span style="font-size:0.8rem;color:var(--text-muted);">Generator দিয়ে pre-save করলে limit ছাড়াই instant পেত।</span></div></div>`;
+                    btn.classList.remove('loading');
+                    btn.innerHTML='<i data-lucide="sparkles" width="14"></i> Retry';
+                    lucide.createIcons();
+                    return;
+                }
+            }
+        }
+
+        panel.innerHTML=`<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge" style="color:${sc};border-color:${sc}55;background:${sc}18">${source}</span></div><div class="ai-panel-content">${ai.smartFormatAnswer(exp)}</div></div>`;
+        btn.classList.remove('loading');
+        btn.innerHTML='<i data-lucide="check" width="14"></i> AI Explanation ✓';
+        lucide.createIcons();
     }
 
     loadSheet();
-    console.log('✅ Mega Quiz — All Fixed + Topic Image + Banner Fix');
+    console.log('✅ Mega Quiz — Pre-saved Explanation + Cache + AI Fallback');
     </script>
 </body>
 </html>
