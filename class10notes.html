@@ -596,7 +596,7 @@
 
         // ① Sheet এ pre-saved explanation (instant, NO API, NO limit) ✅
         if(explanation&&explanation.trim()){
-            exp=explanation;source='📋 Pre-saved (Sheet থেকে)';sc='#34A853';
+            exp=explanation;source='📋 AI explanation';sc='#34A853';
         }else{
             // ② localStorage cache
             const ck='mqexp_'+hashStr(question+'|||'+answer);
