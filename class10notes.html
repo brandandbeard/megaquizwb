@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <!-- 📊 Chart.js for auto charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script>
         tailwind.config={theme:{extend:{fontFamily:{inter:['Inter','sans-serif'],bengali:['Noto Serif Bengali','serif'],space:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
@@ -111,26 +110,22 @@
         .question-card .a{padding:18px 24px;font-size:clamp(1.05rem,2.8vw,1.5rem);line-height:1.9;color:var(--a-color);background:transparent!important;font-weight:500;border-left:3px solid rgba(240,192,64,0.2);font-family:'Noto Serif Bengali',serif}
         body.day .question-card .a{border-left-color:rgba(184,134,11,0.25)}
 
-        /* ─── Smart Table ─── */
         .smart-table-wrapper{overflow-x:auto;margin:12px 0;border-radius:12px;border:1px solid var(--border)}
         .smart-table{border-collapse:collapse;width:100%;font-size:.9rem;font-family:'Inter',sans-serif}
         .smart-table th{background:var(--accent-dim);font-weight:700;padding:12px 16px;text-align:left;border:1px solid var(--border);color:var(--accent);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
         .smart-table td{padding:10px 16px;border:1px solid var(--border);color:var(--text-primary)}
         .smart-table tr:hover td{background:var(--accent-dim)}
 
-        /* ─── Chart Container ─── */
         .chart-container{position:relative;width:100%;max-width:600px;margin:16px auto;padding:20px;border-radius:16px;background:var(--chart-bg);border:1px solid var(--border);box-shadow:var(--shadow-card)}
         .chart-container canvas{max-height:350px}
         .chart-label{font-family:'Space Grotesk',sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);text-align:center;margin-bottom:12px}
 
-        /* ─── HTML Content Block ─── */
         .html-content-block{margin:12px 0;padding:16px;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);overflow:hidden}
         .html-content-block img{max-width:100%;border-radius:8px;margin:8px 0}
         .html-content-block iframe{width:100%;min-height:300px;border:none;border-radius:8px}
         .html-content-block video{max-width:100%;border-radius:8px}
         .html-content-block svg{max-width:100%}
 
-        /* ─── AI Panel ─── */
         .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden}
         .ai-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#4285F4,#34A853,#FBBC05,#EA4335)}
         .ai-panel-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
@@ -273,10 +268,11 @@
 // ═══════════════════════════════════════════════════════════════
 const GOOGLE_SHEET_TSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
 
-// 🔑 তোমার Gemini API Key — **** গুলো actual দিয়ে replace করো
+// 🔑 Gemini API Key (AQ. type — header দিয়ে পাঠাতে হবে)
 const GEMINI_API_KEY="AQ.Ab8RN6KdnwMqk-_WLeQaiiG9vzLD6fFdreW2K21oGWDPH8j0Wg";
 const GEMINI_MODEL="gemini-2.5-flash-lite";
-const GEMINI_URL=`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+// ✅ URL-এ ?key= নেই — key header-এ যাবে
+const GEMINI_URL=`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 // ═══════════════════════════════════════════════════════════════
 //  🤖 GEMINI AI + 📊 SMART RENDERER ENGINE
@@ -284,13 +280,27 @@ const GEMINI_URL=`https://generativelanguage.googleapis.com/v1beta/models/${GEMI
 class SmartEngine {
     constructor(){this.cache=new Map();this.chartId=0}
 
-    // ─── Gemini API Call ───
+    // ─── Gemini API Call (FIXED: x-goog-api-key header) ───
     async callAI(sys,user){
         const key=sys+'|||'+user;
         if(this.cache.has(key))return this.cache.get(key);
         try{
-            const r=await fetch(GEMINI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{parts:[{text:user}]}],generationConfig:{temperature:0.7,topP:0.9,maxOutputTokens:1024}})});
-            if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(`Gemini ${r.status}: ${e.error?.message||'Error'}`)}
+            const r=await fetch(GEMINI_URL,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'x-goog-api-key':GEMINI_API_KEY
+                },
+                body:JSON.stringify({
+                    systemInstruction:{parts:[{text:sys}]},
+                    contents:[{parts:[{text:user}]}],
+                    generationConfig:{temperature:0.7,topP:0.9,maxOutputTokens:1024}
+                })
+            });
+            if(!r.ok){
+                const e=await r.json().catch(()=>({}));
+                throw new Error(`Gemini ${r.status}: ${e.error?.message||'Error'}`);
+            }
             const d=await r.json();
             const t=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
             this.cache.set(key,t);return t;
@@ -315,20 +325,10 @@ class SmartEngine {
 
     // ═══════════════════════════════════════════════════════════
     //  📊🖼️🎬 MASTER SMART RENDERER
-    //  Sheet এ যা paste করবে, সব handle করবে:
-    //  - HTML tags → render as HTML
-    //  - CHART:bar/pie/line → Chart.js chart
-    //  - Image URLs → <img>
-    //  - Tab data → table
-    //  - Pipe tables → table
-    //  - CSS animations → live animation
-    //  - iframe → embed
-    //  - Plain text → formatted text
     // ═══════════════════════════════════════════════════════════
     render(text){
         if(!text)return'';
         let out='';
-        // Split by lines to detect blocks
         const lines=text.split('\n');
         let htmlBuffer=[];
         let textBuffer=[];
@@ -337,7 +337,6 @@ class SmartEngine {
             const line=lines[i];
             const trimmed=line.trim();
 
-            // 1. CHART: syntax → Chart.js
             if(trimmed.toUpperCase().startsWith('CHART:')){
                 if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}
                 if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}
@@ -345,14 +344,12 @@ class SmartEngine {
                 continue;
             }
 
-            // 2. HTML block detection
             if(this._isHTML(trimmed)){
                 if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}
                 htmlBuffer.push(line);
                 continue;
             }
 
-            // 3. Image URL on its own line
             if(this._isImageURL(trimmed)){
                 if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}
                 if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}
@@ -360,11 +357,9 @@ class SmartEngine {
                 continue;
             }
 
-            // 4. Tab-separated → table row
             if(line.includes('\t')&&line.split('\t').length>=2){
                 if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}
                 if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}
-                // Collect all consecutive tab lines
                 let tbl=[line.split('\t').map(c=>c.trim())];
                 while(i+1<lines.length&&lines[i+1].includes('\t')&&lines[i+1].split('\t').length>=2){
                     i++;tbl.push(lines[i].split('\t').map(c=>c.trim()));
@@ -373,7 +368,6 @@ class SmartEngine {
                 continue;
             }
 
-            // 5. Pipe table
             if(trimmed.startsWith('|')&&trimmed.endsWith('|')){
                 if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}
                 if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}
@@ -385,7 +379,6 @@ class SmartEngine {
                 continue;
             }
 
-            // 6. Regular text
             if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}
             textBuffer.push(line);
         }
@@ -395,45 +388,31 @@ class SmartEngine {
         return out;
     }
 
-    // ─── Detect if line contains HTML ───
     _isHTML(s){
         return /<[a-z][\s\S]*>/i.test(s)||/<\/[a-z]+>/i.test(s)||s.startsWith('<!')||s.startsWith('<style')||s.startsWith('<script');
     }
 
-    // ─── Detect image URL ───
     _isImageURL(s){
         return /^https?:\/\/.+\.(png|jpg|jpeg|gif|svg|webp|bmp)(\?.*)?$/i.test(s.trim());
     }
 
-    // ─── Render raw HTML (images, animations, iframes, etc) ───
     _renderHTML(html){
         return `<div class="html-content-block">${html}</div>`;
     }
 
-    // ─── Render plain text with formatting ───
     _renderText(text){
         let f=text;
-        // Bold
         f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
-        // Italic
         f=f.replace(/\*([^*]+)\*/g,'<em>$1</em>');
-        // Key: Value
         f=f.replace(/^([A-Za-z\u0980-\u09FF\s]+):\s*(.+)$/gm,'<strong>$1:</strong> $2');
-        // Numbered list
         f=f.replace(/^(\d+)[.)]\s+(.+)$/gm,'<li>$2</li>');
         f=f.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ol style="padding-left:20px;margin:8px 0">$1</ol>');
-        // Bullets
         f=f.replace(/^[-•*]\s+(.+)$/gm,'<li>$1</li>');
-        // Inline image URLs
         f=f.replace(/(https?:\/\/[^\s<]+\.(png|jpg|jpeg|gif|svg|webp))/gi,'<img src="$1" style="max-width:100%;border-radius:8px;margin:8px 0" loading="lazy"/>');
-        // Line breaks
         f=f.replace(/\n/g,'<br>');
         return f;
     }
 
-    // ─── 📊 CHART RENDERER ───
-    // Format: CHART:type:Label1,Value1:Label2,Value2:...
-    // Types: bar, pie, line, doughnut, radar
     _renderChart(syntax){
         const parts=syntax.split(':');
         const type=(parts[1]||'bar').toLowerCase().trim();
@@ -449,7 +428,6 @@ class SmartEngine {
         const colors=['#f0c040','#4285F4','#34A853','#EA4335','#a855f7','#06b6d4','#f59e0b','#ec4899','#10b981','#6366f1'];
         const bgColors=labels.map((_,i)=>colors[i%colors.length]);
 
-        // Store chart config for rendering after DOM insert
         setTimeout(()=>{
             const canvas=document.getElementById(cid);
             if(!canvas)return;
@@ -489,7 +467,6 @@ class SmartEngine {
         return`<div class="chart-container"><div class="chart-label">📊 ${type.toUpperCase()} CHART</div><canvas id="${cid}"></canvas></div>`;
     }
 
-    // ─── Tab Table ───
     _arrayTable(rows){
         if(!rows.length)return'';
         let h='<div class="smart-table-wrapper"><table class="smart-table"><thead><tr>';
@@ -499,12 +476,10 @@ class SmartEngine {
         return h+'</tbody></table></div>';
     }
 
-    // ─── Pipe Table ───
     _pipeTable(lines){
         if(lines.length<2)return'';
         const parse=l=>l.split('|').filter(c=>c.trim()).map(c=>c.trim());
         const headers=parse(lines[0]);
-        // Skip separator line (|---|---|)
         let startIdx=1;
         if(lines[1]&&/^[\s|:-]+$/.test(lines[1]))startIdx=2;
         let h='<div class="smart-table-wrapper"><table class="smart-table"><thead><tr>';
@@ -674,7 +649,7 @@ function renderQGroup(rows,label){
     rows.forEach((r,i)=>{
         const q=r.question||'(প্রশ্ন নেই)';
         const rawA=r.answer||'(উত্তর নেই)';
-        const smartA=engine.render(rawA); // ← MASTER SMART RENDER
+        const smartA=engine.render(rawA);
         const img=r.image?r.image.trim():'';
         const cid=`card-${Date.now()}-${i}-${Math.random().toString(36).slice(2,6)}`;
         html+=`
