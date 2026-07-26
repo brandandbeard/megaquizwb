@@ -90,8 +90,9 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
   <nav class="fixed top-0 w-full z-50" style="background:rgba(4,6,14,.75);backdrop-filter:blur(24px);border-bottom:1px solid rgba(124,58,237,.06)">
     <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
       <a href="https://megaquizwb.vercel.app/" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-nebula-purple via-nebula-blue to-nebula-emerald flex items-center justify-center">
-          <i data-lucide="orbit" class="w-4 h-4 text-white"></i>
+        <!-- ✅ Navbar Logo Image (same as footer) -->
+        <div class="w-8 h-8 rounded-lg overflow-hidden" style="border:1px solid rgba(124,58,237,.3);box-shadow:0 0 12px rgba(124,58,237,.15);">
+          <img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz" style="width:100%;height:100%;object-fit:cover;"/>
         </div>
         <span class="font-heading font-bold text-base tracking-tight text-white">Mega Quiz</span>
       </a>
@@ -148,8 +149,11 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
       <div class="fade-up rounded-3xl p-[1.5px]" style="background:linear-gradient(160deg,rgba(124,58,237,.1),transparent 40%,rgba(16,185,129,.08) 80%,transparent)">
         <div class="rounded-[22px] p-6 sm:p-10" style="background:rgba(8,12,26,.55);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.03)">
           <div class="grid sm:grid-cols-[auto_1fr] gap-6 items-start">
+            <!-- ✅ Photo instead of "A" box -->
             <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-nebula-purple via-nebula-emerald to-nebula-amber p-[2px] shrink-0 mx-auto sm:mx-0">
-              <div class="w-full h-full rounded-[14px] bg-cosmos-900 flex items-center justify-center"><span class="font-heading font-bold text-xl bg-gradient-to-r from-nebula-purple to-nebula-emerald bg-clip-text text-transparent">A</span></div>
+              <div class="w-full h-full rounded-[14px] overflow-hidden">
+                <img src="https://i.ibb.co/ycsPZbXS/arifforweb-jpg.jpg" alt="Arif Hussain" style="width:100%;height:100%;object-fit:cover;"/>
+              </div>
             </div>
             <div class="text-center sm:text-left">
               <h2 class="font-heading font-bold text-xl text-white mb-1">Arif Hussain</h2>
@@ -307,17 +311,17 @@ a.quiz-link{display:block;text-decoration:none;color:inherit}
           <h4 class="text-[10px] font-semibold uppercase tracking-wider text-stellar-muted mb-3">Contact</h4>
           <div class="space-y-2.5">
             <!-- ✅ Email — Gmail Red (always visible) -->
-            <a href="mailto:arifbeldanga@gmail.com" class="flex items-center gap-2 text-sm transition-colors" style="color:#EA4335;">
+            <a href="mailto:arifbeldanga@gmail.com" class="flex items-center gap-2 text-sm" style="color:#EA4335;">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="#EA4335"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
               arifbeldanga@gmail.com
             </a>
             <!-- ✅ Telegram — Telegram Blue (always visible) -->
-            <a href="https://t.me/beldanga1" target="_blank" class="flex items-center gap-2 text-sm transition-colors" style="color:#229ED9;">
+            <a href="https://t.me/beldanga1" target="_blank" class="flex items-center gap-2 text-sm" style="color:#229ED9;">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="#229ED9"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
               @beldanga1
             </a>
             <!-- ✅ Instagram — Instagram Pink (always visible) -->
-            <a href="https://instagram.com/arifhussain.x" target="_blank" class="flex items-center gap-2 text-sm transition-colors" style="color:#E1306C;">
+            <a href="https://instagram.com/arifhussain.x" target="_blank" class="flex items-center gap-2 text-sm" style="color:#E1306C;">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
               @arifhussain.x
             </a>
