@@ -319,10 +319,10 @@ const GROQ_MODEL="llama-3.3-70b-versatile";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
 
 // ═══════════════════════════════════════════════════════════════
-//  🔒 IP QUOTA (প্রতি IP-তে দিনে ১৫টা AI request)
+//  🔒 IP QUOTA (প্রতি IP-তে দিনে 50টা AI request)
 // ═══════════════════════════════════════════════════════════════
 const QuotaManager={
-    AI_DAILY_LIMIT:15,
+    AI_DAILY_LIMIT:50,
     ip:null,data:null,
     async init(){
         try{const r=await fetch('https://api.ipify.org?format=json');const d=await r.json();this.ip=d.ip||'unknown'}
@@ -678,7 +678,7 @@ async function getAIExp(cardId,btn){
     const a=decodeURIComponent(btn.dataset.a);
     const mode=questionType(q);
     btn.classList.add('loading');
-    btn.innerHTML='<span class="spinner"></span> শিক্ষক ভাবছেন...';
+    btn.innerHTML='<span class="spinner"></span> Thinking...';
     try{
         const exp=await engine.explain(q,a);
         QuotaManager.useAI();
@@ -688,7 +688,7 @@ async function getAIExp(cardId,btn){
         panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge"></span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
         btn.classList.remove('loading');
         btn.innerHTML='<i data-lucide="check" width="14"></i> AI Explanation';
-        showToast(mode==='quick'?'⚡ সংক্ষিপ্ত উত্তর তৈরি!':'🧑‍🏫 শিক্ষকের ব্যাখ্যা তৈরি!','okk');
+        showToast(mode==='quick'?'⚡ সংক্ষিপ্ত উত্তর তৈরি!':'Explanation Ready','okk');
     }catch(err){
         panel.innerHTML='<div class="ai-panel"><div class="ai-panel-content" style="color:#f43f5e">⚠️ '+err.message+'</div></div>';
         btn.classList.remove('loading');
