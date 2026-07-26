@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 10 Notes | Mega QUIZ</title>
+    <title>Class 10 Notes | Mega Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -54,8 +54,6 @@
         body.day .subject-item.active{color:#8B6508}
         .subject-item.active::before{transform:scaleY(1)}
         .subject-emoji{font-size:1.2rem;width:28px;text-align:center}
-
-        /* ─── 📂 SIDEBAR CHAPTER→TOPIC TREE ─── */
         .chapter-node{margin:3px 6px}
         .chapter-row{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:12px;cursor:pointer;font-weight:700;font-size:.93rem;line-height:1.45;color:var(--text-secondary);transition:all .3s;border-left:3px solid transparent;font-family:'Noto Serif Bengali',serif}
         .chapter-row:hover{background:var(--accent-dim);color:var(--text-primary);transform:translateX(2px)}
@@ -88,7 +86,6 @@
         .topic-row.topic-all:hover .t-dot{transform:rotate(45deg) scale(1.2)}
         .topic-row.topic-all.active .t-dot{transform:rotate(45deg) scale(1.3)}
         .topic-row.topic-all{font-weight:600;color:var(--text-secondary)}
-
         .sidebar-toggle-fixed{position:fixed;top:78px;left:20px;z-index:250;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(20,20,46,0.9);border:1px solid var(--border);color:var(--accent);box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:.3s;font-size:1.4rem;backdrop-filter:blur(12px)}
         body.day .sidebar-toggle-fixed{background:#FFFCF0;border:1px solid #E6D5B8;color:#8B6508}
         .sidebar-toggle-fixed:hover{transform:scale(1.08)}
@@ -133,8 +130,6 @@
         .type-btn{padding:.7rem 2rem;border-radius:12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;border:none;background:transparent;color:var(--text-muted);transition:all .3s;display:flex;align-items:center;gap:8px}
         .type-btn.active{color:#06060f;background:rgba(255,255,255,0.8);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
         body.day .type-btn.active{color:#000;background:#FFF5D6;border:1px solid #B8860B}
-
-        /* ─── Main content topic divider ─── */
         .topic-divider{display:flex;align-items:center;gap:13px;margin:2.4rem 0 1.5rem;padding-bottom:11px;border-bottom:1px dashed rgba(240,192,64,0.28)}
         body.day .topic-divider{border-bottom-color:rgba(184,134,11,0.3)}
         .topic-divider:first-child{margin-top:.5rem}
@@ -142,8 +137,7 @@
         body.day .td-num{background:linear-gradient(135deg,#B8860B,#8B6508);color:#fff}
         .td-name{font-family:'Noto Serif Bengali',serif;font-weight:800;font-size:1.18rem;color:var(--text-primary)}
         .td-count{margin-left:auto;font-family:'Space Grotesk',sans-serif;font-size:.66rem;font-weight:700;letter-spacing:.06em;color:var(--text-muted)}
-        /* ─── Topic view banner ─── */
-        .topic-banner{display:flex;align-items:center;gap:16px;padding:17px 24px;border-radius:15px;background:linear-gradient(135deg,rgba(240,192,64,0.12),rgba(240,192,64,0.03));border:1px solid rgba(240,192,64,0.28);margin-bottom:1.8rem;flex-wrap:wrap;animation:panelIn .5s ease}
+        .topic-banner{display:flex;align-items:center;gap:16px;padding:17px 24px;border-radius:15px;background:linear-gradient(135deg,rgba(240,192,64,0.12),rgba(240,192,64,0.03));border:1px solid rgba(240,192,64,0.28);margin-bottom:1.4rem;flex-wrap:wrap;animation:panelIn .5s ease}
         body.day .topic-banner{background:linear-gradient(135deg,rgba(184,134,11,0.1),rgba(184,134,11,0.03));border-color:rgba(184,134,11,0.3)}
         .topic-banner .tb-ico{font-size:1.7rem}
         .topic-banner .tb-label{font-family:'Space Grotesk',sans-serif;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:700}
@@ -154,7 +148,6 @@
         .tb-all-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.75rem;border:1px solid rgba(240,192,64,0.3);background:rgba(240,192,64,0.1);color:var(--accent);transition:all .3s;margin-left:auto}
         body.day .tb-all-btn{color:#8B6508}
         .tb-all-btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(240,192,64,0.2)}
-
         .section-header{display:flex;align-items:center;gap:16px;margin-bottom:2rem;padding-bottom:16px;border-bottom:1px solid var(--border)}
         .section-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
         .icon-saq{background:linear-gradient(135deg,#06b6d4,#0891b2)}
@@ -260,6 +253,7 @@
             .chapter-banner img{height:200px}
             .chart-container{padding:12px}
             .quota-ip{margin-left:0;width:100%}
+            .type-btn{padding:.6rem 1.1rem;font-size:.8rem}
         }
     </style>
 </head>
@@ -298,7 +292,7 @@
         </aside>
         <div class="content-scroll" id="contentScroll">
             <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 10</span></nav>
-            <h1 class="hero-title">Class 10 <span style="color:#f0c040">Notes</span></h1>
+            <h1 class="hero-title">Class 10 <span style="color:#f0c040">AI Notes</span></h1>
             <p class="hero-subtitle" id="dynamicSubtitle"></p>
             <div class="quota-bar">
                 <div class="quota-pill ok" id="quotaAI"><span>⚡ লোড হচ্ছে...</span></div>
@@ -322,7 +316,7 @@
             <div class="footer-col">
                 <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.8rem">
                     <div style="width:2rem;height:2rem;border-radius:.6rem;overflow:hidden;border:1px solid rgba(240,192,64,0.15)"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" width="32" height="32" style="width:100%;height:100%;object-fit:cover"/></div>
-                    <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary)">Mega QUIZ</span>
+                    <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary)">Mega Quiz</span>
                 </div>
                 <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6">Smart Era, Smart Learning.</p>
             </div>
@@ -357,39 +351,25 @@
                 </a>
             </div>
         </div>
-        <div class="footer-bottom"><span>© 2025 Mega QUIZ - BY Arif Hussain</span><span>🦥 Thank You</span><span>❤️ All Rights Reserved</span></div>
+        <div class="footer-bottom"><span>© 2025 Mega Quiz - BY Arif Hussain</span><span>🧑‍🏫 Groq AI + 📊 Chart.js</span><span>❤️ All Rights Reserved</span></div>
     </footer>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-//  ⚙️ CONFIG
-// ═══════════════════════════════════════════════════════════════
 const GOOGLE_SHEET_TSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
-
-// ⚡ GROQ API KEY — এখানে তোমার gsk_ key বসাও (বাংলা লেখা রাখবে না!)
 const GROQ_API_KEY="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";
 const GROQ_MODEL="llama-3.3-70b-versatile";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
-
 const CH_EMOJIS=['📕','📗','📘','📙','📔','📒'];
 
-// ═══════════════════════════════════════════════════════════════
-//  🔒 IP QUOTA
-// ═══════════════════════════════════════════════════════════════
 const QuotaManager={
-    AI_DAILY_LIMIT:50,
-    ip:null,data:null,
+    AI_DAILY_LIMIT:15,ip:null,data:null,
     async init(){
         try{const r=await fetch('https://api.ipify.org?format=json');const d=await r.json();this.ip=d.ip||'unknown'}
         catch(e){let dev=localStorage.getItem('mq_device_id');if(!dev){dev='dev-'+Math.random().toString(36).slice(2,10);localStorage.setItem('mq_device_id',dev)}this.ip=dev}
         this.load();this.renderPill();
     },
     today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},
-    load(){
-        let data=null;try{data=JSON.parse(localStorage.getItem('mq_quota_v2'))}catch(e){}
-        if(!data||data.date!==this.today()||data.ip!==this.ip){data={ip:this.ip,date:this.today(),ai:0};localStorage.setItem('mq_quota_v2',JSON.stringify(data))}
-        this.data=data;
-    },
+    load(){let data=null;try{data=JSON.parse(localStorage.getItem('mq_quota_v2'))}catch(e){}if(!data||data.date!==this.today()||data.ip!==this.ip){data={ip:this.ip,date:this.today(),ai:0};localStorage.setItem('mq_quota_v2',JSON.stringify(data))}this.data=data},
     save(){localStorage.setItem('mq_quota_v2',JSON.stringify(this.data))},
     canAI(){return this.data&&this.data.ai<this.AI_DAILY_LIMIT},
     useAI(){this.data.ai++;this.save();this.renderPill()},
@@ -400,21 +380,12 @@ const QuotaManager={
         const left=this.aiLeft(),pct=(left/this.AI_DAILY_LIMIT)*100;
         aiEl.className='quota-pill '+(left===0?'out':pct<=30?'low':'ok');
         aiEl.innerHTML='<div class="fill" style="width:'+pct+'%"></div><span>⚡ আজকের AI বাকি: '+left+'/'+this.AI_DAILY_LIMIT+'</span>';
-        if(ipEl)ipEl.textContent='🌐 IP: '+this.ip+' • রাত 12 টায় reset';
+        if(ipEl)ipEl.textContent='🌐 IP: '+this.ip+' • রাত ১২টায় reset';
     }
 };
-
-function showToast(msg,type){
-    const t=document.createElement('div');t.className='toast '+(type||'');t.innerHTML=msg;document.body.appendChild(t);
-    requestAnimationFrame(()=>t.classList.add('show'));
-    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),450)},3200);
-}
+function showToast(msg,type){const t=document.createElement('div');t.className='toast '+(type||'');t.innerHTML=msg;document.body.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),450)},3200)}
 function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function escJs(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
-
-// ═══════════════════════════════════════════════════════════════
-//  🧠 প্রশ্নের টাইপ চেনা
-// ═══════════════════════════════════════════════════════════════
 function questionType(q){
     const t=(q||'').toLowerCase();
     if(/পার্থক্য|তুলনা|ভিন্নতা|মিল-অমিল|মিল ও অমিল|অমিল|difference|compare|contrast|versus|\bvs\b/i.test(t))return 'quick';
@@ -423,9 +394,6 @@ function questionType(q){
 }
 function topicOf(r){return (r.topic&&r.topic.trim())||'সাধারণ প্রশ্ন'}
 
-// ═══════════════════════════════════════════════════════════════
-//  🧑‍🏫 AI ENGINE
-// ═══════════════════════════════════════════════════════════════
 class SmartEngine {
     constructor(){this.cache=new Map();this.chartId=0}
     async callAI(sys,user){
@@ -434,28 +402,16 @@ class SmartEngine {
         try{
             const r=await fetch(GROQ_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_API_KEY},body:JSON.stringify({model:GROQ_MODEL,messages:[{role:'system',content:sys},{role:'user',content:user}],temperature:0.7,max_tokens:1024})});
             if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('AI '+r.status+': '+(e.error?.message||'Error'))}
-            const d=await r.json();
-            const t=d.choices?.[0]?.message?.content||'';
+            const d=await r.json();const t=d.choices?.[0]?.message?.content||'';
             this.cache.set(key,t);return t;
         }catch(e){console.error('AI Error:',e);throw e}
     }
     async explain(q,a){
         const type=questionType(q);
         if(type==='quick'){
-            return await this.callAI(
-                'তুমি Class 10-এর অভিজ্ঞ শিক্ষক। এটি পার্থক্য/তুলনা/ছক/সংজ্ঞা টাইপ প্রশ্ন — তাই লম্বা ব্যাখ্যা বা উদাহরণ দিও না। শুধু মূল পয়েন্টগুলো দাও, প্রতিটি ১ লাইনে, key terms **bold** করে। পরিষ্কার ও সংক্ষিপ্ত রাখো। Max 80 words।',
-                'প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসংক্ষেপে মূল পয়েন্ট দাও:'
-            );
+            return await this.callAI('তুমি Class 10-এর অভিজ্ঞ শিক্ষক। এটি পার্থক্য/তুলনা/ছক/সংজ্ঞা টাইপ প্রশ্ন — তাই লম্বা ব্যাখ্যা বা উদাহরণ দিও না। শুধু মূল পয়েন্টগুলো দাও, প্রতিটি ১ লাইনে, key terms **bold** করে। পরিষ্কার ও সংক্ষিপ্ত রাখো। Max 80 words।','প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসংক্ষেপে মূল পয়েন্ট দাও:');
         }
-        return await this.callAI(
-            'তুমি একজন অভিজ্ঞ, স্নেহময় Class 10-এর শিক্ষক — যিনি কঠিন জিনিসও খুব সহজে বোঝান। নিচের format-এ ব্যাখ্যা করো:\n\n'
-            +'📖 **সহজ ব্যাখ্যা:** — ২-৩ লাইনে মূল কথা, একদম সহজ বাংলায়, যেন যে কেউ বুঝে যায়\n\n'
-            +'🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ২টা উদাহরণ দিয়ে বোঝাও (যেমন: বাজার, খেলা, রান্নাঘর, মোবাইল — এমন familiar জিনিস)\n\n'
-            +'📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে লেখো\n\n'
-            +'💡 **মনে রাখো:** — শেষে ১ লাইনের সহজ trick বা shortcut দাও\n\n'
-            +'আন্তরিক শিক্ষকের ভাষায় লেখো, কঠিন শব্দ এড়াও। Max 250 words।',
-            'প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসুন্দর করে বুঝিয়ে দাও:'
-        );
+        return await this.callAI('তুমি একজন অভিজ্ঞ, স্নেহময় Class 10-এর শিক্ষক — যিনি কঠিন জিনিসও খুব সহজে বোঝান। নিচের format-এ ব্যাখ্যা করো:\n\n📖 **সহজ ব্যাখ্যা:** — ২-৩ লাইনে মূল কথা, একদম সহজ বাংলায়, যেন যে কেউ বুঝে যায়\n\n🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ২টা উদাহরণ দিয়ে বোঝাও (যেমন: বাজার, খেলা, রান্নাঘর, মোবাইল — এমন familiar জিনিস)\n\n📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে লেখো\n\n💡 **মনে রাখো:** — শেষে ১ লাইনের সহজ trick বা shortcut দাও\n\nআন্তরিক শিক্ষকের ভাষায় লেখো, কঠিন শব্দ এড়াও। Max 250 words।','প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসুন্দর করে বুঝিয়ে দাও:');
     }
     async smartSearch(query,questions){
         const ql=questions.slice(0,60).map((r,i)=>i+'. ['+r.subject+'/'+r.chapter+'] '+r.question).join('\n');
@@ -465,7 +421,7 @@ class SmartEngine {
     render(text){
         if(!text)return'';
         if(/<!doctype\s+html|<html[\s>]/i.test(text)){
-            return '<div class="html-content-block" style="padding:8px"><iframe srcdoc="'+escAttr(text).replace(/&quot;/g,'"').replace(/"/g,'&quot;')+'" style="width:100%;min-height:380px;border:none;border-radius:10px;background:#ffffff" loading="lazy"></iframe></div>';
+            return '<div class="html-content-block" style="padding:8px"><iframe srcdoc="'+escAttr(text)+'" style="width:100%;min-height:380px;border:none;border-radius:10px;background:#ffffff" loading="lazy"></iframe></div>';
         }
         let out='';const lines=text.split('\n');let htmlBuffer=[],textBuffer=[];
         for(let i=0;i<lines.length;i++){
@@ -487,17 +443,7 @@ class SmartEngine {
     _isImageURL(s){return /^https?:\/\/.+\.(png|jpg|jpeg|gif|svg|webp|bmp|avif)(\?.*)?$/i.test(s.trim())}
     _isVideoURL(s){return /^https?:\/\/.+\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(s.trim())}
     _renderHTML(h){return '<div class="html-content-block">'+h+'</div>'}
-    _renderText(text){
-        let f=text;
-        f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
-        f=f.replace(/\*([^*]+)\*/g,'<em>$1</em>');
-        f=f.replace(/^(\d+)[.)]\s+(.+)$/gm,'<li>$2</li>');
-        f=f.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ol style="padding-left:20px;margin:8px 0">$1</ol>');
-        f=f.replace(/^[-•*]\s+(.+)$/gm,'<li>$1</li>');
-        f=f.replace(/(https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?)/gi,'<img src="$1" style="max-width:100%;border-radius:10px;margin:10px 0;display:block" loading="lazy"/>');
-        f=f.replace(/\n/g,'<br>');
-        return f;
-    }
+    _renderText(text){let f=text;f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');f=f.replace(/\*([^*]+)\*/g,'<em>$1</em>');f=f.replace(/^(\d+)[.)]\s+(.+)$/gm,'<li>$2</li>');f=f.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ol style="padding-left:20px;margin:8px 0">$1</ol>');f=f.replace(/^[-•*]\s+(.+)$/gm,'<li>$1</li>');f=f.replace(/(https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?)/gi,'<img src="$1" style="max-width:100%;border-radius:10px;margin:10px 0;display:block" loading="lazy"/>');f=f.replace(/\n/g,'<br>');return f}
     _renderChart(syntax){
         const parts=syntax.split(':');const type=(parts[1]||'bar').toLowerCase().trim();const labels=[],values=[];
         parts.slice(2).forEach(p=>{const kv=p.split(',');if(kv[0]&&kv[1]){labels.push(kv[0].trim());values.push(parseFloat(kv[1].trim())||0)}});
@@ -517,9 +463,6 @@ class SmartEngine {
 }
 const engine=new SmartEngine();
 
-// ═══════════════════════════════════════════════════════════════
-//  DOM & STATE
-// ═══════════════════════════════════════════════════════════════
 const dynamicContent=document.getElementById('dynamicContent');
 const dynamicSubtitle=document.getElementById('dynamicSubtitle');
 const sidebarEl=document.getElementById('sidebar');
@@ -535,9 +478,6 @@ const aiSearchInput=document.getElementById('aiSearchInput');
 const aiSearchResults=document.getElementById('aiSearchResults');
 let allData=[],currentSubject=null,currentChapter=null,currentTopic=null;
 
-// ═══════════════════════════════════════════════════════════════
-//  UI
-// ═══════════════════════════════════════════════════════════════
 (function(){const c=document.getElementById('stars');for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';const z=Math.random()*2+1;s.style.width=z+'px';s.style.height=z+'px';s.style.setProperty('--duration',(Math.random()*3+2)+'s');s.style.setProperty('--delay',(Math.random()*5)+'s');c.appendChild(s)}})();
 window.addEventListener('scroll',()=>{const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;progressBar.style.width=(st/dh)*100+'%';fabScroll.classList.toggle('visible',st>500)});
 function setThemeIcon(n){document.getElementById('themeToggle').innerHTML='<i data-lucide="'+n+'" width="18"></i>';lucide.createIcons()}
@@ -545,27 +485,13 @@ document.getElementById('themeToggle').addEventListener('click',()=>{const isN=d
 function closeMobileSidebar(){sidebarEl.classList.remove('open');toggleIcon.textContent='☰'}
 sidebarToggleBtn.addEventListener('click',e=>{
     e.stopPropagation();
-    if(window.innerWidth<=768){
-        const willOpen=!sidebarEl.classList.contains('open');
-        sidebarEl.classList.toggle('open',willOpen);
-        toggleIcon.textContent=willOpen?'✕':'☰';
-    }else{
-        const willCollapse=!sidebarEl.classList.contains('collapsed');
-        sidebarEl.classList.toggle('collapsed',willCollapse);
-        toggleIcon.textContent=willCollapse?'☰':'✕';
-    }
+    if(window.innerWidth<=768){const willOpen=!sidebarEl.classList.contains('open');sidebarEl.classList.toggle('open',willOpen);toggleIcon.textContent=willOpen?'✕':'☰'}
+    else{const willCollapse=!sidebarEl.classList.contains('collapsed');sidebarEl.classList.toggle('collapsed',willCollapse);toggleIcon.textContent=willCollapse?'☰':'✕'}
 });
-document.addEventListener('click',e=>{
-    if(window.innerWidth<=768){
-        if(!sidebarEl.contains(e.target)&&!sidebarToggleBtn.contains(e.target))closeMobileSidebar();
-    }
-});
+document.addEventListener('click',e=>{if(window.innerWidth<=768){if(!sidebarEl.contains(e.target)&&!sidebarToggleBtn.contains(e.target))closeMobileSidebar()}});
 if(window.innerWidth>768){toggleIcon.textContent='✕'}else{toggleIcon.textContent='☰'}
 lucide.createIcons();
 
-// ═══════════════════════════════════════════════════════════════
-//  AI SEARCH
-// ═══════════════════════════════════════════════════════════════
 let searchTimeout;
 aiSearchInput.addEventListener('input',()=>{clearTimeout(searchTimeout);const q=aiSearchInput.value.trim();if(q.length<3){aiSearchResults.innerHTML='';return}searchTimeout=setTimeout(()=>doSearch(q),600)});
 async function doSearch(query){
@@ -579,9 +505,7 @@ async function doSearch(query){
             QuotaManager.useAI();
             if(aiRes.length)renderSR(aiRes.map(r=>({...allData[r.index],idx:r.index,score:r.relevance/100,reason:r.reason})),query);
             else aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">😅 কিছু পাওয়া যায়নি</div>';
-        }else{
-            aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">🔒 আজকের AI limit শেষ! আগামীকাল আসো 😊</div>';
-        }
+        }else{aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">🔒 আজকের AI limit শেষ! আগামীকাল আসো 😊</div>'}
     }catch(e){
         const local=allData.map((r,i)=>({...r,idx:i,score:fuzzy(query,r.question+' '+r.answer)})).filter(r=>r.score>0.1).sort((a,b)=>b.score-a.score).slice(0,5);
         renderSR(local,query);
@@ -593,18 +517,8 @@ function renderSR(results,query){
     aiSearchResults.innerHTML=results.map(r=>'<div class="ai-search-result-item" onclick="jumpTo('+r.idx+')"><div style="font-size:.7rem;color:#f97316;font-family:Space Grotesk,sans-serif;margin-bottom:4px">'+r.subject+' › '+r.chapter+' › '+topicOf(r)+'</div><div style="font-size:.95rem;font-weight:600;color:var(--text-primary)">'+hl(r.question,query)+'</div></div>').join('');
 }
 function hl(t,q){const w=q.split(/\s+/).filter(x=>x.length>1);let r=t;w.forEach(x=>{r=r.replace(new RegExp('('+x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="highlight-match">$1</span>')});return r}
-function jumpTo(idx){
-    const item=allData[idx];
-    if(item){
-        renderSubject(item.subject,false);
-        setTimeout(()=>{renderTopicView(item.subject,item.chapter,topicOf(item))},150);
-        aiSearchResults.innerHTML='';aiSearchInput.value='';
-    }
-}
+function jumpTo(idx){const item=allData[idx];if(item){renderSubject(item.subject,false);setTimeout(()=>{renderTopicView(item.subject,item.chapter,topicOf(item))},150);aiSearchResults.innerHTML='';aiSearchInput.value=''}}
 
-// ═══════════════════════════════════════════════════════════════
-//  DATA LOADER
-// ═══════════════════════════════════════════════════════════════
 async function loadSheet(){
     dynamicContent.innerHTML='<div class="empty-state"><div class="loading-ring"></div><p style="font-size:1.1rem;font-weight:600">📥 ডাটা লোড হচ্ছে...</p></div>';
     dynamicSubtitle.textContent='⏳ লোডিং...';
@@ -631,31 +545,20 @@ async function loadSheet(){
     }
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  NAVIGATION
-// ═══════════════════════════════════════════════════════════════
 function buildNav(){
     const subjects=[...new Set(allData.map(r=>r.subject))].sort();
     subjectListEl.innerHTML='';
     subjects.forEach(sub=>{const d=document.createElement('div');d.className='subject-item';d.dataset.subject=sub;d.innerHTML='<span class="subject-emoji">📘</span><span>'+sub+'</span>';d.addEventListener('click',()=>renderSubject(sub,true));subjectListEl.appendChild(d)});
     chapterSectionEl.style.display='block';
-    searchInput.addEventListener('input',()=>{
-        if(currentSubject){
-            renderChapterList(currentSubject,searchInput.value.trim());
-            activateChapterNode(currentChapter,currentTopic);
-        }
-    });
+    searchInput.addEventListener('input',()=>{if(currentSubject){renderChapterList(currentSubject,searchInput.value.trim());activateChapterNode(currentChapter,currentTopic)}});
 }
 function renderSubject(subject,loadFirst){
     if(!subject||!allData.some(r=>r.subject===subject)){subject=[...new Set(allData.map(r=>r.subject))].sort()[0];if(!subject)return}
     currentSubject=subject;currentChapter=null;currentTopic=null;
     document.querySelectorAll('.subject-item').forEach(el=>el.classList.toggle('active',el.dataset.subject===subject));
-    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন |';
+    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন | 🧑‍🏫 Teacher AI';
     renderChapterList(subject);
-    if(loadFirst!==false){
-        const ch=getChapters(subject);
-        if(ch.length)renderChapter(subject,ch[0]);
-    }
+    if(loadFirst!==false){const ch=getChapters(subject);if(ch.length)renderChapter(subject,ch[0])}
     if(window.innerWidth<=768)closeMobileSidebar();
 }
 function getChapters(s){return[...new Set(allData.filter(r=>r.subject===s).map(r=>r.chapter))].sort()}
@@ -666,11 +569,6 @@ function getTopics(subject,chapter){
     return [...m.entries()].map(([name,count])=>({name,count}));
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  📂 SIDEBAR: CHAPTER → TOPIC TREE
-//  Chapter = মোটা বড় row + emoji + chevron
-//  Topic   = ছোট indent row + tree রেখা + dot (গুলানো যাবে না)
-// ═══════════════════════════════════════════════════════════════
 function renderChapterList(subject,filter){
     filter=(filter||'').toLowerCase();
     const chapters=getChapters(subject);
@@ -687,45 +585,29 @@ function renderChapterList(subject,filter){
         node.className='chapter-node'+(filter?' open':'');
         node.dataset.chapter=ch;
         let topicHtml='<div class="topic-row topic-all" data-topic="__all__"><span class="t-dot"></span><span class="t-name">সব প্রশ্ন</span><span class="t-count">'+total+'</span></div>';
-        topics.forEach(t=>{
-            topicHtml+='<div class="topic-row" data-topic="'+escAttr(t.name)+'"><span class="t-dot"></span><span class="t-name">'+escAttr(t.name)+'</span><span class="t-count">'+t.count+'</span></div>';
-        });
-        node.innerHTML='<div class="chapter-row">'
-            +'<span class="ch-emoji">'+CH_EMOJIS[ci%CH_EMOJIS.length]+'</span>'
-            +'<span class="ch-name">'+escAttr(ch)+'</span>'
-            +'<span class="ch-meta">'+topics.length+' টপিক</span>'
-            +'<i data-lucide="chevron-right" width="15" class="ch-chev"></i>'
-            +'</div>'
-            +'<div class="topic-tree"><div class="topic-tree-inner"><div class="topic-list">'+topicHtml+'</div></div></div>';
+        topics.forEach(t=>{topicHtml+='<div class="topic-row" data-topic="'+escAttr(t.name)+'"><span class="t-dot"></span><span class="t-name">'+escAttr(t.name)+'</span><span class="t-count">'+t.count+'</span></div>'});
+        node.innerHTML='<div class="chapter-row"><span class="ch-emoji">'+CH_EMOJIS[ci%CH_EMOJIS.length]+'</span><span class="ch-name">'+escAttr(ch)+'</span><span class="ch-meta">'+topics.length+' টপিক</span><i data-lucide="chevron-right" width="15" class="ch-chev"></i></div><div class="topic-tree"><div class="topic-tree-inner"><div class="topic-list">'+topicHtml+'</div></div></div>';
         chapterListEl.appendChild(node);
     });
     lucide.createIcons();
-    // ─── Chapter click: toggle tree + সব প্রশ্ন load ───
     chapterListEl.querySelectorAll('.chapter-row').forEach(row=>{
         row.addEventListener('click',()=>{
-            const node=row.parentElement;
-            const ch=node.dataset.chapter;
+            const node=row.parentElement;const ch=node.dataset.chapter;
             const wasOpen=node.classList.contains('open');
             chapterListEl.querySelectorAll('.chapter-node.open').forEach(n=>{if(n!==node)n.classList.remove('open')});
             node.classList.toggle('open',!wasOpen);
             renderChapter(currentSubject,ch);
         });
     });
-    // ─── Topic click: শুধু ওই topic-এর প্রশ্ন ───
     chapterListEl.querySelectorAll('.topic-row').forEach(row=>{
         row.addEventListener('click',e=>{
             e.stopPropagation();
-            const node=row.closest('.chapter-node');
-            const ch=node.dataset.chapter;
-            const tp=row.dataset.topic;
-            if(tp==='__all__'){renderChapter(currentSubject,ch)}
-            else{renderTopicView(currentSubject,ch,tp)}
+            const node=row.closest('.chapter-node');const ch=node.dataset.chapter;const tp=row.dataset.topic;
+            if(tp==='__all__'){renderChapter(currentSubject,ch)}else{renderTopicView(currentSubject,ch,tp)}
             if(window.innerWidth<=768)closeMobileSidebar();
         });
     });
 }
-
-// ─── Active state highlight ───
 function activateChapterNode(ch,topicName){
     chapterListEl.querySelectorAll('.chapter-node').forEach(n=>{
         const isThis=n.dataset.chapter===ch;
@@ -733,17 +615,12 @@ function activateChapterNode(ch,topicName){
         const row=n.querySelector('.chapter-row');
         if(row)row.classList.toggle('active',isThis);
         n.querySelectorAll('.topic-row').forEach(tr=>{
-            if(isThis){
-                const tp=tr.dataset.topic;
-                tr.classList.toggle('active',topicName?tp===topicName:tp==='__all__');
-            }else{tr.classList.remove('active')}
+            if(isThis){const tp=tr.dataset.topic;tr.classList.toggle('active',topicName?tp===topicName:tp==='__all__')}
+            else{tr.classList.remove('active')}
         });
     });
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  MAIN CONTENT RENDER
-// ═══════════════════════════════════════════════════════════════
 function bannerHTML(subject,chapter,rows){
     const topicCount=getTopics(subject,chapter).length;
     return '<div class="chapter-banner"><img src="https://picsum.photos/seed/'+encodeURIComponent(chapter)+'/1200/380" alt="'+escAttr(chapter)+'" loading="lazy"/><div class="chapter-banner-text"><h3>'+escAttr(chapter)+'</h3><div class="banner-subtitle">'+escAttr(subject)+' • '+rows.length+' টি প্রশ্ন • '+topicCount+' টি টপিক</div></div></div>';
@@ -754,15 +631,24 @@ function groupByTopic(rows){
     return [...m.entries()];
 }
 function buildGrouped(rows){
-    const topics=groupByTopic(rows);
-    let h='';
+    const topics=groupByTopic(rows);let h='';
     topics.forEach((e,ti)=>{
         h+='<div class="topic-divider"><span class="td-num">'+(ti+1)+'</span><span class="td-name">'+escAttr(e[0])+'</span><span class="td-count">'+e[1].length+' টি প্রশ্ন</span></div>';
         h+=renderQuestions(e[1]);
     });
     return h;
 }
-function wireTypeBtns(rows,saq,broad){
+
+// ─── 🆕 Toggle Group (সব / সংক্ষিপ্ত / ব্যাখ্যামূলক) ───
+function toggleGroupHTML(rows,saq,broad){
+    return '<div class="toggle-group">'
+        +'<button class="type-btn active" data-type="all">📚 সব ('+rows.length+')</button>'
+        +'<button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত ('+saq.length+')</button>'
+        +'<button class="type-btn" data-type="broad">📝 ব্যাখ্যামূলক ('+broad.length+')</button>'
+        +'</div>';
+}
+// mode: 'grouped' = topic divider সহ | 'flat' = শুধু প্রশ্ন লিস্ট
+function wireTypeBtns(rows,saq,broad,mode){
     document.querySelectorAll('.type-btn').forEach(btn=>{
         btn.addEventListener('click',function(){
             document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
@@ -770,13 +656,14 @@ function wireTypeBtns(rows,saq,broad){
             const t=this.dataset.type,c=document.getElementById('questionContainer');
             let f=rows;
             if(t==='saq')f=saq;else if(t==='broad')f=broad;
-            c.innerHTML=f.length?buildGrouped(f):'<div class="empty-state" style="padding:2rem"><p>😅 এই ধরনের প্রশ্ন নেই</p></div>';
+            const emptyMsg=mode==='flat'?'😅 এই টপিকে এই ধরনের প্রশ্ন নেই':'😅 এই ধরনের প্রশ্ন নেই';
+            c.innerHTML=f.length?(mode==='flat'?renderQuestions(f):buildGrouped(f)):'<div class="empty-state" style="padding:2rem"><p>'+emptyMsg+'</p></div>';
             lucide.createIcons();
         });
     });
 }
 
-// ─── পুরো Chapter (সব প্রশ্ন, topic অনুযায়ী সাজানো) ───
+// ─── পুরো Chapter ───
 function renderChapter(subject,chapter){
     currentChapter=chapter;currentTopic=null;
     const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
@@ -784,20 +671,22 @@ function renderChapter(subject,chapter){
     const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
     const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
     dynamicContent.innerHTML=bannerHTML(subject,chapter,rows)
-        +'<div class="toggle-group"><button class="type-btn active" data-type="all">📚 সব ('+rows.length+')</button><button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত ('+saq.length+')</button><button class="type-btn" data-type="broad">📝 ব্যাখ্যামূলক ('+broad.length+')</button></div>'
+        +toggleGroupHTML(rows,saq,broad)
         +'<div id="questionContainer">'+buildGrouped(rows)+'</div>';
     lucide.createIcons();
-    wireTypeBtns(rows,saq,broad);
+    wireTypeBtns(rows,saq,broad,'grouped');
     activateChapterNode(chapter,null);
     if(window.innerWidth<=768)closeMobileSidebar();
 }
 
-// ─── একটা Topic-এর প্রশ্ন ───
+// ─── 🆕 একটা Topic (banner + filter toggle + প্রশ্ন) ───
 function renderTopicView(subject,chapter,topic){
     currentChapter=chapter;currentTopic=topic;
     const all=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
     const rows=all.filter(r=>topicOf(r)===topic);
     if(!rows.length){renderChapter(subject,chapter);return}
+    const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
+    const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
     dynamicContent.innerHTML=bannerHTML(subject,chapter,all)
         +'<div class="topic-banner">'
         +'<span class="tb-ico">📂</span>'
@@ -805,13 +694,14 @@ function renderTopicView(subject,chapter,topic){
         +'<span class="tb-count">'+rows.length+' টি প্রশ্ন</span>'
         +'<button class="tb-all-btn" onclick="renderChapter(\''+escJs(subject)+'\',\''+escJs(chapter)+'\')">সব প্রশ্ন <i data-lucide="arrow-right" width="13"></i></button>'
         +'</div>'
+        +toggleGroupHTML(rows,saq,broad)
         +'<div id="questionContainer">'+renderQuestions(rows)+'</div>';
     lucide.createIcons();
+    wireTypeBtns(rows,saq,broad,'flat');
     activateChapterNode(chapter,topic);
     if(window.innerWidth<=768)closeMobileSidebar();
 }
 
-// ─── Question Cards ───
 const IMG_URL_RE=/https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?/gi;
 function renderQuestions(rows){
     let html='';
@@ -825,27 +715,15 @@ function renderQuestions(rows){
         const colImg=r.image?r.image.trim():'';
         if(colImg&&/^https?:\/\//i.test(colImg))allImgs.push(colImg);
         const cid='card-'+Date.now()+'-'+i+'-'+Math.random().toString(36).slice(2,6);
-        html+='<div class="question-card" id="'+cid+'">'
-            +'<div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>'
-            +allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('')
-            +'<div class="a">'+smartA+'</div>'
-            +'<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button>'
-            +'<div id="ai-panel-'+cid+'"></div>'
-            +'</div>';
+        html+='<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>'+allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('')+'<div class="a">'+smartA+'</div><button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'"><i data-lucide="graduation-cap" width="14"></i> শিক্ষকের মতো বুঝিয়ে দাও</button><div id="ai-panel-'+cid+'"></div></div>';
     });
     return html;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  🧑‍🏫 AI EXPLANATION
-// ═══════════════════════════════════════════════════════════════
 async function getAIExp(cardId,btn){
     const panel=document.getElementById('ai-panel-'+cardId);
-    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="graduation-cap" width="14"></i> AI Explanation';lucide.createIcons();return}
-    if(!QuotaManager.canAI()){
-        showToast('🔒 আজকের AI limit শেষ! আগামীকাল আবার আসো 😊','err');
-        return;
-    }
+    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="graduation-cap" width="14"></i> AI Explanation;lucide.createIcons();return}
+    if(!QuotaManager.canAI()){showToast('🔒 আজকের AI limit শেষ! আগামীকাল আবার আসো 😊','err');return}
     const q=decodeURIComponent(btn.dataset.q);
     const a=decodeURIComponent(btn.dataset.a);
     const mode=questionType(q);
@@ -854,9 +732,7 @@ async function getAIExp(cardId,btn){
     try{
         const exp=await engine.explain(q,a);
         QuotaManager.useAI();
-        const modeBadge=mode==='quick'
-            ?'<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">⚡ Quick Mode — সংক্ষিপ্ত</span>'
-            :'<span class="mode-badge">— উদাহরণসহ</span>';
+        const modeBadge=mode==='quick'?'<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">⚡ Quick Mode — সংক্ষিপ্ত</span>':'<span class="mode-badge">🧑‍🏫 Teacher Mode — উদাহরণসহ</span>';
         panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge"></span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
         btn.classList.remove('loading');
         btn.innerHTML='<i data-lucide="check" width="14"></i> Explained';
@@ -869,12 +745,9 @@ async function getAIExp(cardId,btn){
     lucide.createIcons();
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════════════════════════
 QuotaManager.init();
 loadSheet();
-console.log('✅ Mega QUIZ — Sidebar Topic Tree Loaded');
+console.log('✅ Mega Quiz — Topic Filter Loaded');
 </script>
 </body>
 </html>
