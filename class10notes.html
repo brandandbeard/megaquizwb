@@ -20,8 +20,8 @@
         ::-webkit-scrollbar-thumb:hover{background:rgba(240,192,64,0.4)}
         body.day ::-webkit-scrollbar-thumb{background:rgba(180,130,50,0.3)}
         body{font-family:'Noto Serif Bengali','Inter',sans-serif;min-height:100vh;overflow-x:hidden;font-size:18px;line-height:1.8;transition:background .4s,color .4s}
-        body.night{--bg-base:#06060f;--bg-card:rgba(20,20,46,0.4);--bg-card-hover:rgba(26,26,62,0.5);--bg-sidebar:rgba(10,10,26,0.4);--bg-header:rgba(6,6,15,0.7);--bg-footer:rgba(6,6,15,0.8);--text-primary:#e8e8f0;--text-secondary:rgba(255,255,255,0.45);--text-muted:rgba(255,255,255,0.25);--accent:#f0c040;--accent-dim:rgba(240,192,64,0.08);--border:rgba(255,255,255,0.04);--shadow-card:0 2px 8px rgba(0,0,0,0.4);--q-color:#f0c040;--a-color:rgba(255,255,255,0.85);--ai-glow:rgba(66,133,244,0.1);--ai-border:rgba(66,133,244,0.3);--chart-bg:rgba(20,20,46,0.6)}
-        body.day{--bg-base:#FFF8E7;--bg-card:#FFFDF5;--bg-card-hover:#FFF9E6;--bg-sidebar:#FFFCF0;--bg-header:rgba(255,248,231,0.92);--bg-footer:#FFFCF0;--text-primary:#1A1A1A;--text-secondary:#2C2C2C;--text-muted:#3D3D3D;--accent:#B8860B;--accent-dim:rgba(184,134,11,0.08);--border:#E6D5B8;--shadow-card:0 1px 4px rgba(0,0,0,0.06);--q-color:#1A1A1A;--a-color:#1A1A1A;--ai-glow:rgba(66,133,244,0.06);--ai-border:rgba(66,133,244,0.2);--chart-bg:#FFFDF5}
+        body.night{--bg-base:#06060f;--bg-card:rgba(20,20,46,0.4);--bg-card-hover:rgba(26,26,62,0.5);--bg-sidebar:rgba(10,10,26,0.4);--bg-header:rgba(6,6,15,0.7);--bg-footer:rgba(6,6,15,0.8);--text-primary:#e8e8f0;--text-secondary:rgba(255,255,255,0.45);--text-muted:rgba(255,255,255,0.25);--accent:#f0c040;--accent-dim:rgba(240,192,64,0.08);--border:rgba(255,255,255,0.04);--shadow-card:0 2px 8px rgba(0,0,0,0.4);--q-color:#f0c040;--a-color:rgba(255,255,255,0.85);--ai-glow:rgba(249,115,22,0.08);--ai-border:rgba(249,115,22,0.3);--chart-bg:rgba(20,20,46,0.6)}
+        body.day{--bg-base:#FFF8E7;--bg-card:#FFFDF5;--bg-card-hover:#FFF9E6;--bg-sidebar:#FFFCF0;--bg-header:rgba(255,248,231,0.92);--bg-footer:#FFFCF0;--text-primary:#1A1A1A;--text-secondary:#2C2C2C;--text-muted:#3D3D3D;--accent:#B8860B;--accent-dim:rgba(184,134,11,0.08);--border:#E6D5B8;--shadow-card:0 1px 4px rgba(0,0,0,0.06);--q-color:#1A1A1A;--a-color:#1A1A1A;--ai-glow:rgba(249,115,22,0.05);--ai-border:rgba(249,115,22,0.2);--chart-bg:#FFFDF5}
         body{background:var(--bg-base);color:var(--text-primary)}
         .universe-bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(66,133,244,0.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(6,182,212,0.05) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(240,192,64,0.03) 0%,transparent 70%),#06060f}
         body.day .universe-bg{background:radial-gradient(ellipse at 20% 20%,rgba(184,134,11,0.04) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(184,134,11,0.03) 0%,transparent 50%),#FFF8E7}
@@ -37,8 +37,7 @@
         .logo-glow img{width:100%;height:100%;object-fit:cover;border-radius:14px}
         .mega-title-text{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:.08em;background:linear-gradient(135deg,#f0c040,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         body.day .mega-title-text{background:linear-gradient(135deg,#B8860B,#8B6508);-webkit-background-clip:text;background-clip:text}
-        .header-badge{font-family:'Space Grotesk',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:6px 16px;border-radius:20px;background:rgba(66,133,244,0.1);color:#4285F4;border:1px solid rgba(66,133,244,0.2)}
-        body.day .header-badge{background:rgba(66,133,244,0.06);color:#1a73e8;border:1px solid rgba(66,133,244,0.15)}
+        .header-badge{font-family:'Space Grotesk',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:6px 16px;border-radius:20px;background:rgba(249,115,22,0.1);color:#f97316;border:1px solid rgba(249,115,22,0.2)}
         .main-wrapper{display:flex;margin-top:72px;position:relative}
         .sidebar{width:300px;flex-shrink:0;padding:3.5rem 1rem 2rem;overflow-y:auto;height:calc(100vh - 72px);position:sticky;top:72px;border-right:1px solid var(--border);background:var(--bg-sidebar);backdrop-filter:blur(12px);transition:all .4s;overflow-x:hidden}
         body.day .sidebar{background:#FFFCF0;border-right:1px solid #E6D5B8}
@@ -59,7 +58,7 @@
         .chapter-item:hover{background:var(--accent-dim);color:var(--text-primary)}
         .chapter-item.active{background:var(--accent-dim);color:var(--accent);border-left-color:var(--accent)}
         body.day .chapter-item.active{color:#8B6508;border-left-color:#B8860B}
-        .sidebar-toggle-fixed{position:fixed;top:78px;left:20px;z-index:150;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(20,20,46,0.85);border:1px solid var(--border);color:var(--accent);box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:.3s;font-size:1.4rem;backdrop-filter:blur(12px)}
+        .sidebar-toggle-fixed{position:fixed;top:78px;left:20px;z-index:250;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(20,20,46,0.9);border:1px solid var(--border);color:var(--accent);box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:.3s;font-size:1.4rem;backdrop-filter:blur(12px)}
         body.day .sidebar-toggle-fixed{background:#FFFCF0;border:1px solid #E6D5B8;color:#8B6508}
         .sidebar-toggle-fixed:hover{transform:scale(1.08)}
         .breadcrumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:500;margin-bottom:1.5rem;color:var(--text-muted)}
@@ -136,6 +135,21 @@
         .footer-col h4{font-family:'Space Grotesk',sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;font-weight:700;color:var(--text-muted);margin-bottom:1rem}
         .footer-col a{font-family:'Inter',sans-serif;font-size:.85rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:.6rem;padding:6px 0;transition:.3s}
         .footer-col a:hover{color:var(--accent)}
+
+        /* ─── Official Brand Contact Icons (always colored) ─── */
+        .contact-link{display:flex;align-items:center;gap:.75rem;padding:7px 0;font-family:'Inter',sans-serif;font-size:.88rem;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .3s cubic-bezier(.4,0,.2,1)}
+        .contact-link:hover{color:var(--text-primary);transform:translateX(5px)}
+        .contact-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid var(--border);flex-shrink:0;transition:all .3s cubic-bezier(.4,0,.2,1)}
+        body.day .contact-icon{background:#FFFDF5;border:1px solid #E6D5B8}
+        .contact-link:hover .contact-icon{transform:scale(1.12) rotate(-4deg)}
+        .contact-icon svg{display:block}
+        .contact-icon.gmail{box-shadow:0 0 14px rgba(234,67,53,0.18)}
+        .contact-icon.gmail:hover,.contact-link:hover .contact-icon.gmail{box-shadow:0 0 20px rgba(234,67,53,0.35)}
+        .contact-icon.insta{box-shadow:0 0 14px rgba(225,48,108,0.18)}
+        .contact-link:hover .contact-icon.insta{box-shadow:0 0 20px rgba(225,48,108,0.35)}
+        .contact-icon.tg{box-shadow:0 0 14px rgba(34,158,217,0.18)}
+        .contact-link:hover .contact-icon.tg{box-shadow:0 0 20px rgba(34,158,217,0.35)}
+
         .footer-bottom{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-family:'Space Grotesk',sans-serif;font-size:.7rem;color:var(--text-muted);max-width:1200px;margin-left:auto;margin-right:auto;flex-wrap:wrap;gap:.5rem}
         #themeToggle{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s}
         body.night #themeToggle{border:2px solid #f0c040;background:#FFF8E7}
@@ -154,7 +168,7 @@
         @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
         .highlight-match{background:rgba(249,115,22,0.25);border-radius:3px;padding:0 2px}
         @media(max-width:768px){
-            .sidebar{position:fixed;top:72px;left:0;bottom:0;transform:translateX(-100%);width:300px;background:rgba(10,10,26,0.95);box-shadow:8px 0 40px rgba(0,0,0,0.5);transition:transform .4s;padding-top:3.5rem}
+            .sidebar{position:fixed;top:72px;left:0;bottom:0;transform:translateX(-100%);width:300px;background:rgba(10,10,26,0.97);box-shadow:8px 0 40px rgba(0,0,0,0.5);transition:transform .4s;padding-top:3.5rem;z-index:240}
             body.day .sidebar{background:#FFFCF0}
             .sidebar.open{transform:translateX(0)}
             .content-scroll{padding:1.5rem 1.2rem 0}
@@ -163,7 +177,7 @@
             .question-card{padding:1.2rem}
             .mega-header{padding:0 16px}
             .header-badge{display:none}
-            .sidebar-toggle-fixed{left:12px;top:76px;width:40px;height:40px}
+            .sidebar-toggle-fixed{left:12px;top:76px;width:42px;height:42px}
             .chapter-banner img{height:200px}
             .chart-container{padding:12px}
         }
@@ -192,7 +206,7 @@
     </header>
 
     <div class="main-wrapper">
-        <button class="sidebar-toggle-fixed" id="sidebarToggle"><span id="toggleIcon">☰</span></button>
+        <button class="sidebar-toggle-fixed" id="sidebarToggle" aria-label="Toggle menu"><span id="toggleIcon">☰</span></button>
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-label">Subjects</div>
             <div id="subjectList"></div>
@@ -228,8 +242,54 @@
                 </div>
                 <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6">Smart Era, Smart Learning. ⚡ Groq AI + Charts + HTML</p>
             </div>
-            <div class="footer-col"><h4>Links</h4><a href="classnotes.html">All Classes Note</a><a href="index.html">All Classes Quiz</a><a href="competitive.html">Competitive & GK</a></div>
-            <div class="footer-col"><h4>Contact</h4><a href="mailto:arifbeldanga@gmail.com">📧 arifbeldanga@gmail.com</a><a href="https://instagram.com/arifhussain.x" target="_blank">📸 arifhussain.x</a><a href="https://t.me/beldanga1" target="_blank">✈️ @beldanga1</a></div>
+            <div class="footer-col">
+                <h4>Links</h4>
+                <a href="classnotes.html">All Classes Note</a>
+                <a href="index.html">All Classes Quiz</a>
+                <a href="competitive.html">Competitive & GK</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+
+                <!-- 📧 Gmail — official red #EA4335 -->
+                <a href="mailto:arifbeldanga@gmail.com" class="contact-link">
+                    <span class="contact-icon gmail">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19">
+                            <path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
+                        </svg>
+                    </span>
+                    arifbeldanga@gmail.com
+                </a>
+
+                <!-- 📸 Instagram — official gradient -->
+                <a href="https://instagram.com/arifhussain.x" target="_blank" class="contact-link">
+                    <span class="contact-icon insta">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19">
+                            <defs>
+                                <linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#FFDC80"/>
+                                    <stop offset="25%" stop-color="#F77737"/>
+                                    <stop offset="50%" stop-color="#E1306C"/>
+                                    <stop offset="75%" stop-color="#C13584"/>
+                                    <stop offset="100%" stop-color="#833AB4"/>
+                                </linearGradient>
+                            </defs>
+                            <path fill="url(#igGradFooter)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </span>
+                    arifhussain.x
+                </a>
+
+                <!-- ✈️ Telegram — official blue #229ED9 -->
+                <a href="https://t.me/beldanga1" target="_blank" class="contact-link">
+                    <span class="contact-icon tg">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19">
+                            <path fill="#229ED9" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                        </svg>
+                    </span>
+                    @beldanga1
+                </a>
+            </div>
         </div>
         <div class="footer-bottom"><span>© 2025 Mega Quiz AI - BY Arif Hussain</span><span>⚡ Groq AI + Chart.js</span><span>❤️ All Rights Reserved</span></div>
     </footer>
@@ -240,100 +300,43 @@
 // ═══════════════════════════════════════════════════════════════
 const GOOGLE_SHEET_TSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
 
-// ⚡ GROQ API KEY — এখানে তোমার gsk_ key বসাও
-// 👉 https://console.groq.com → API Keys → Create
+// ⚡ GROQ API KEY — এখানে তোমার gsk_ key বসাও (বাংলা লেখা রাখবে না!)
 const GROQ_API_KEY="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";
 const GROQ_MODEL="llama-3.3-70b-versatile";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
 
 // ═══════════════════════════════════════════════════════════════
-//  ⚡ AI ENGINE (Groq — FREE, FAST, ১০০% কাজ করে)
+//  ⚡ AI ENGINE (Groq)
 // ═══════════════════════════════════════════════════════════════
 class SmartEngine {
     constructor(){this.cache=new Map();this.chartId=0}
-
     async callAI(sys,user){
         const key=sys+'|||'+user;
         if(this.cache.has(key))return this.cache.get(key);
         try{
-            const r=await fetch(GROQ_URL,{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json',
-                    'Authorization':'Bearer '+GROQ_API_KEY
-                },
-                body:JSON.stringify({
-                    model:GROQ_MODEL,
-                    messages:[
-                        {role:'system',content:sys},
-                        {role:'user',content:user}
-                    ],
-                    temperature:0.7,
-                    max_tokens:1024
-                })
-            });
-            if(!r.ok){
-                const e=await r.json().catch(()=>({}));
-                throw new Error(`AI ${r.status}: ${e.error?.message||'Error'}`);
-            }
+            const r=await fetch(GROQ_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_API_KEY},body:JSON.stringify({model:GROQ_MODEL,messages:[{role:'system',content:sys},{role:'user',content:user}],temperature:0.7,max_tokens:1024})});
+            if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('AI '+r.status+': '+(e.error?.message||'Error'))}
             const d=await r.json();
             const t=d.choices?.[0]?.message?.content||'';
-            this.cache.set(key,t);
-            return t;
+            this.cache.set(key,t);return t;
         }catch(e){console.error('AI Error:',e);throw e}
     }
-
-    async explain(q,a){
-        return await this.callAI(
-            'তুমি expert Class 10 teacher। বাংলায় সহজে explain করো। Key points **bold** করো। Max 150 words।',
-            'প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসহজে explain করো:'
-        );
-    }
-
+    async explain(q,a){return await this.callAI('তুমি expert Class 10 teacher। বাংলায় সহজে explain করো। Key points **bold** করো। Max 150 words।','প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসহজে explain করো:')}
     async smartSearch(query,questions){
         const ql=questions.slice(0,60).map((r,i)=>i+'. ['+r.subject+'/'+r.chapter+'] '+r.question).join('\n');
-        const res=await this.callAI(
-            'Smart search engine। শুধু JSON array: [{"index":0,"reason":"...","relevance":95}] Max 5। শুধু JSON।',
-            'Query: "'+query+'"\n\nQuestions:\n'+ql
-        );
+        const res=await this.callAI('Smart search engine। শুধু JSON array: [{"index":0,"reason":"...","relevance":95}] Max 5। শুধু JSON।','Query: "'+query+'"\n\nQuestions:\n'+ql);
         try{return JSON.parse(res.replace(/```json?\n?/g,'').replace(/```/g,'').trim())}catch{return[]}
     }
-
     render(text){
         if(!text)return'';
-        let out='';
-        const lines=text.split('\n');
-        let htmlBuffer=[],textBuffer=[];
+        let out='';const lines=text.split('\n');let htmlBuffer=[],textBuffer=[];
         for(let i=0;i<lines.length;i++){
             const line=lines[i],trimmed=line.trim();
-            if(trimmed.toUpperCase().startsWith('CHART:')){
-                if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}
-                if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}
-                out+=this._renderChart(trimmed);continue;
-            }
-            if(this._isHTML(trimmed)){
-                if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}
-                htmlBuffer.push(line);continue;
-            }
-            if(this._isImageURL(trimmed)){
-                if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}
-                if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}
-                out+='<div class="html-content-block"><img src="'+trimmed+'" alt="Image" loading="lazy" style="max-width:100%;border-radius:12px"/></div>';continue;
-            }
-            if(line.includes('\t')&&line.split('\t').length>=2){
-                if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}
-                if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}
-                let tbl=[line.split('\t').map(c=>c.trim())];
-                while(i+1<lines.length&&lines[i+1].includes('\t')&&lines[i+1].split('\t').length>=2){i++;tbl.push(lines[i].split('\t').map(c=>c.trim()))}
-                out+=this._arrayTable(tbl);continue;
-            }
-            if(trimmed.startsWith('|')&&trimmed.endsWith('|')){
-                if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}
-                if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}
-                let pl=[trimmed];
-                while(i+1<lines.length&&lines[i+1].trim().startsWith('|')&&lines[i+1].trim().endsWith('|')){i++;pl.push(lines[i+1].trim())}
-                out+=this._pipeTable(pl);continue;
-            }
+            if(trimmed.toUpperCase().startsWith('CHART:')){if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}out+=this._renderChart(trimmed);continue}
+            if(this._isHTML(trimmed)){if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}htmlBuffer.push(line);continue}
+            if(this._isImageURL(trimmed)){if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}out+='<div class="html-content-block"><img src="'+trimmed+'" alt="Image" loading="lazy" style="max-width:100%;border-radius:12px"/></div>';continue}
+            if(line.includes('\t')&&line.split('\t').length>=2){if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}let tbl=[line.split('\t').map(c=>c.trim())];while(i+1<lines.length&&lines[i+1].includes('\t')&&lines[i+1].split('\t').length>=2){i++;tbl.push(lines[i].split('\t').map(c=>c.trim()))}out+=this._arrayTable(tbl);continue}
+            if(trimmed.startsWith('|')&&trimmed.endsWith('|')){if(textBuffer.length){out+=this._renderText(textBuffer.join('\n'));textBuffer=[]}if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}let pl=[trimmed];while(i+1<lines.length&&lines[i+1].trim().startsWith('|')&&lines[i+1].trim().endsWith('|')){i++;pl.push(lines[i+1].trim())}out+=this._pipeTable(pl);continue}
             if(htmlBuffer.length){out+=this._renderHTML(htmlBuffer.join('\n'));htmlBuffer=[]}
             textBuffer.push(line);
         }
@@ -344,20 +347,9 @@ class SmartEngine {
     _isHTML(s){return /<[a-z][\s\S]*>/i.test(s)||/<\/[a-z]+>/i.test(s)}
     _isImageURL(s){return /^https?:\/\/.+\.(png|jpg|jpeg|gif|svg|webp|bmp)(\?.*)?$/i.test(s.trim())}
     _renderHTML(h){return '<div class="html-content-block">'+h+'</div>'}
-    _renderText(text){
-        let f=text;
-        f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
-        f=f.replace(/\*([^*]+)\*/g,'<em>$1</em>');
-        f=f.replace(/^(\d+)[.)]\s+(.+)$/gm,'<li>$2</li>');
-        f=f.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ol style="padding-left:20px;margin:8px 0">$1</ol>');
-        f=f.replace(/^[-•*]\s+(.+)$/gm,'<li>$1</li>');
-        f=f.replace(/\n/g,'<br>');
-        return f;
-    }
+    _renderText(text){let f=text;f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');f=f.replace(/\*([^*]+)\*/g,'<em>$1</em>');f=f.replace(/^(\d+)[.)]\s+(.+)$/gm,'<li>$2</li>');f=f.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ol style="padding-left:20px;margin:8px 0">$1</ol>');f=f.replace(/^[-•*]\s+(.+)$/gm,'<li>$1</li>');f=f.replace(/\n/g,'<br>');return f}
     _renderChart(syntax){
-        const parts=syntax.split(':');
-        const type=(parts[1]||'bar').toLowerCase().trim();
-        const labels=[],values=[];
+        const parts=syntax.split(':');const type=(parts[1]||'bar').toLowerCase().trim();const labels=[],values=[];
         parts.slice(2).forEach(p=>{const[l,v]=p.split(',');if(l&&v){labels.push(l.trim());values.push(parseFloat(v.trim())||0)}});
         if(!labels.length)return'<p style="color:var(--text-muted)">⚠️ Invalid chart</p>';
         const cid='chart-'+(++this.chartId)+'-'+Date.now();
@@ -370,27 +362,9 @@ class SmartEngine {
         },100);
         return '<div class="chart-container"><div class="chart-label">📊 '+type.toUpperCase()+' CHART</div><canvas id="'+cid+'"></canvas></div>';
     }
-    _arrayTable(rows){
-        if(!rows.length)return'';
-        let h='<div class="smart-table-wrapper"><table class="smart-table"><thead><tr>';
-        rows[0].forEach(c=>h+='<th>'+c+'</th>');
-        h+='</tr></thead><tbody>';
-        for(let i=1;i<rows.length;i++){h+='<tr>';rows[i].forEach(c=>h+='<td>'+c+'</td>');h+='</tr>'}
-        return h+'</tbody></table></div>';
-    }
-    _pipeTable(lines){
-        if(lines.length<2)return'';
-        const parse=l=>l.split('|').filter(c=>c.trim()).map(c=>c.trim());
-        const headers=parse(lines[0]);
-        let si=1;if(lines[1]&&/^[\s|:-]+$/.test(lines[1]))si=2;
-        let h='<div class="smart-table-wrapper"><table class="smart-table"><thead><tr>';
-        headers.forEach(x=>h+='<th>'+x+'</th>');
-        h+='</tr></thead><tbody>';
-        for(let i=si;i<lines.length;i++){const c=parse(lines[i]);h+='<tr>';c.forEach(x=>h+='<td>'+x+'</td>');h+='</tr>'}
-        return h+'</tbody></table></div>';
-    }
+    _arrayTable(rows){if(!rows.length)return'';let h='<div class="smart-table-wrapper"><table class="smart-table"><thead><tr>';rows[0].forEach(c=>h+='<th>'+c+'</th>');h+='</tr></thead><tbody>';for(let i=1;i<rows.length;i++){h+='<tr>';rows[i].forEach(c=>h+='<td>'+c+'</td>');h+='</tr>'}return h+'</tbody></table></div>'}
+    _pipeTable(lines){if(lines.length<2)return'';const parse=l=>l.split('|').filter(c=>c.trim()).map(c=>c.trim());const headers=parse(lines[0]);let si=1;if(lines[1]&&/^[\s|:-]+$/.test(lines[1]))si=2;let h='<div class="smart-table-wrapper"><table class="smart-table"><thead><tr>';headers.forEach(x=>h+='<th>'+x+'</th>');h+='</tr></thead><tbody>';for(let i=si;i<lines.length;i++){const c=parse(lines[i]);h+='<tr>';c.forEach(x=>h+='<td>'+x+'</td>');h+='</tr>'}return h+'</tbody></table></div>'}
 }
-
 const engine=new SmartEngine();
 
 // ═══════════════════════════════════════════════════════════════
@@ -399,6 +373,7 @@ const engine=new SmartEngine();
 const dynamicContent=document.getElementById('dynamicContent');
 const dynamicSubtitle=document.getElementById('dynamicSubtitle');
 const sidebarEl=document.getElementById('sidebar');
+const sidebarToggleBtn=document.getElementById('sidebarToggle');
 const toggleIcon=document.getElementById('toggleIcon');
 const progressBar=document.getElementById('progressBar');
 const fabScroll=document.getElementById('fabScroll');
@@ -417,8 +392,37 @@ let allData=[],currentSubject=null,currentChapter=null;
 window.addEventListener('scroll',()=>{const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;progressBar.style.width=(st/dh)*100+'%';fabScroll.classList.toggle('visible',st>500)});
 function setThemeIcon(n){document.getElementById('themeToggle').innerHTML='<i data-lucide="'+n+'" width="18"></i>';lucide.createIcons()}
 document.getElementById('themeToggle').addEventListener('click',()=>{const isN=document.body.classList.contains('night');document.body.classList.remove('night','day');document.body.classList.add(isN?'day':'night');setThemeIcon(isN?'moon':'sun')});
-document.getElementById('sidebarToggle').addEventListener('click',e=>{e.stopPropagation();sidebarEl.classList.toggle('collapsed');toggleIcon.textContent=sidebarEl.classList.contains('collapsed')?'☰':'✕'});
-document.addEventListener('click',e=>{if(window.innerWidth<=768){if(!sidebarEl.contains(e.target)&&!document.getElementById('sidebarToggle').contains(e.target))sidebarEl.classList.remove('open')}});
+
+// ─── ✅ FIXED: Mobile + Desktop sidebar toggle ───
+function closeMobileSidebar(){
+    sidebarEl.classList.remove('open');
+    toggleIcon.textContent='☰';
+}
+sidebarToggleBtn.addEventListener('click',e=>{
+    e.stopPropagation();
+    if(window.innerWidth<=768){
+        // 📱 Mobile: .open class toggle করতে হবে
+        const willOpen=!sidebarEl.classList.contains('open');
+        sidebarEl.classList.toggle('open',willOpen);
+        toggleIcon.textContent=willOpen?'✕':'☰';
+    }else{
+        // 💻 Desktop: .collapsed class
+        const willCollapse=!sidebarEl.classList.contains('collapsed');
+        sidebarEl.classList.toggle('collapsed',willCollapse);
+        toggleIcon.textContent=willCollapse?'☰':'✕';
+    }
+});
+// বাইরে click করলে mobile sidebar বন্ধ হবে
+document.addEventListener('click',e=>{
+    if(window.innerWidth<=768){
+        if(!sidebarEl.contains(e.target)&&!sidebarToggleBtn.contains(e.target)){
+            closeMobileSidebar();
+        }
+    }
+});
+// Initial icon set
+if(window.innerWidth>768){toggleIcon.textContent='✕'}else{toggleIcon.textContent='☰'}
+
 lucide.createIcons();
 
 // ═══════════════════════════════════════════════════════════════
@@ -495,7 +499,7 @@ function renderSubject(subject){
     renderChapterList(subject);
     const ch=getChapters(subject);
     if(ch.length)renderChapter(subject,ch[0]);
-    if(window.innerWidth<=768)sidebarEl.classList.remove('open');
+    if(window.innerWidth<=768)closeMobileSidebar();
 }
 function getChapters(s){return[...new Set(allData.filter(r=>r.subject===s).map(r=>r.chapter))].sort()}
 function renderChapterList(subject,filter){
@@ -519,6 +523,7 @@ function renderChapter(subject,chapter){
     const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
     dynamicContent.innerHTML='<div class="chapter-banner"><img src="https://picsum.photos/seed/'+encodeURIComponent(chapter)+'/1200/380" alt="'+chapter+'" loading="lazy"/><div class="chapter-banner-text"><h3>'+chapter+'</h3><div class="banner-subtitle">'+subject+' • '+rows.length+' টি প্রশ্ন</div></div></div><div class="toggle-group"><button class="type-btn active" data-type="all">📚 সব ('+rows.length+')</button><button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত ('+saq.length+')</button><button class="type-btn" data-type="broad">📝 ব্যাখ্যামূলক ('+broad.length+')</button></div><div id="questionContainer">'+renderQGroup(rows,'সকল প্রশ্ন')+'</div>';
     lucide.createIcons();
+    if(window.innerWidth<=768)closeMobileSidebar();
     document.querySelectorAll('.type-btn').forEach(btn=>{
         btn.addEventListener('click',function(){
             document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
