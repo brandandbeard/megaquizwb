@@ -280,7 +280,7 @@
             </div>
         </a>
         <div class="flex items-center gap-4">
-            <span class="header-badge">🧑‍🏫 Teacher AI</span>
+            <span class="header-badge">By Arif Hussain</span>
             <button id="themeToggle"><i data-lucide="sun" width="18"></i></button>
         </div>
     </header>
@@ -297,7 +297,7 @@
             </div>
         </aside>
         <div class="content-scroll" id="contentScroll">
-            <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 10 AI</span></nav>
+            <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 10</span></nav>
             <h1 class="hero-title">Class 10 <span style="color:#f0c040">AI Notes</span></h1>
             <p class="hero-subtitle" id="dynamicSubtitle"></p>
             <div class="quota-bar">
@@ -324,7 +324,7 @@
                     <div style="width:2rem;height:2rem;border-radius:.6rem;overflow:hidden;border:1px solid rgba(240,192,64,0.15)"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" width="32" height="32" style="width:100%;height:100%;object-fit:cover"/></div>
                     <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary)">Mega Quiz AI</span>
                 </div>
-                <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6">Smart Era, Smart Learning. 🧑‍🏫 Teacher AI + 📂 Topic Tree + 📊 Charts</p>
+                <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6">Smart Era, Smart Learning.</p>
             </div>
             <div class="footer-col">
                 <h4>Links</h4>
@@ -400,7 +400,7 @@ const QuotaManager={
         const left=this.aiLeft(),pct=(left/this.AI_DAILY_LIMIT)*100;
         aiEl.className='quota-pill '+(left===0?'out':pct<=30?'low':'ok');
         aiEl.innerHTML='<div class="fill" style="width:'+pct+'%"></div><span>⚡ আজকের AI বাকি: '+left+'/'+this.AI_DAILY_LIMIT+'</span>';
-        if(ipEl)ipEl.textContent='🌐 IP: '+this.ip+' • রাত ১২টায় reset';
+        if(ipEl)ipEl.textContent='🌐 IP: '+this.ip+' • রাত 12 টায় reset';
     }
 };
 
@@ -650,7 +650,7 @@ function renderSubject(subject,loadFirst){
     if(!subject||!allData.some(r=>r.subject===subject)){subject=[...new Set(allData.map(r=>r.subject))].sort()[0];if(!subject)return}
     currentSubject=subject;currentChapter=null;currentTopic=null;
     document.querySelectorAll('.subject-item').forEach(el=>el.classList.toggle('active',el.dataset.subject===subject));
-    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন | 🧑‍🏫 Teacher AI';
+    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন |';
     renderChapterList(subject);
     if(loadFirst!==false){
         const ch=getChapters(subject);
@@ -829,7 +829,7 @@ function renderQuestions(rows){
             +'<div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>'
             +allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('')
             +'<div class="a">'+smartA+'</div>'
-            +'<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'"><i data-lucide="graduation-cap" width="14"></i> শিক্ষকের মতো বুঝিয়ে দাও</button>'
+            +'<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button>'
             +'<div id="ai-panel-'+cid+'"></div>'
             +'</div>';
     });
@@ -841,7 +841,7 @@ function renderQuestions(rows){
 // ═══════════════════════════════════════════════════════════════
 async function getAIExp(cardId,btn){
     const panel=document.getElementById('ai-panel-'+cardId);
-    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="graduation-cap" width="14"></i> শিক্ষকের মতো বুঝিয়ে দাও';lucide.createIcons();return}
+    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="graduation-cap" width="14"></i> AI Explanation';lucide.createIcons();return}
     if(!QuotaManager.canAI()){
         showToast('🔒 আজকের AI limit শেষ! আগামীকাল আবার আসো 😊','err');
         return;
@@ -850,17 +850,17 @@ async function getAIExp(cardId,btn){
     const a=decodeURIComponent(btn.dataset.a);
     const mode=questionType(q);
     btn.classList.add('loading');
-    btn.innerHTML='<span class="spinner"></span> শিক্ষক ভাবছেন...';
+    btn.innerHTML='<span class="spinner"></span> Thinking...';
     try{
         const exp=await engine.explain(q,a);
         QuotaManager.useAI();
         const modeBadge=mode==='quick'
             ?'<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">⚡ Quick Mode — সংক্ষিপ্ত</span>'
-            :'<span class="mode-badge">🧑‍🏫 Teacher Mode — উদাহরণসহ</span>';
-        panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge">⚡ Groq Llama 3.3</span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
+            :'<span class="mode-badge">— উদাহরণসহ</span>';
+        panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge"></span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
         btn.classList.remove('loading');
-        btn.innerHTML='<i data-lucide="check" width="14"></i> বুঝিয়ে দিয়েছি ✓';
-        showToast(mode==='quick'?'⚡ সংক্ষিপ্ত উত্তর তৈরি!':'🧑‍🏫 শিক্ষকের ব্যাখ্যা তৈরি!','okk');
+        btn.innerHTML='<i data-lucide="check" width="14"></i> Explained';
+        showToast(mode==='quick'?'⚡ সংক্ষিপ্ত উত্তর তৈরি!':'Explanation Ready','okk');
     }catch(err){
         panel.innerHTML='<div class="ai-panel"><div class="ai-panel-content" style="color:#f43f5e">⚠️ '+err.message+'</div></div>';
         btn.classList.remove('loading');
