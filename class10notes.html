@@ -21,7 +21,6 @@
         body.day ::-webkit-scrollbar-thumb{background:rgba(180,130,50,0.3)}
         body{font-family:'Noto Serif Bengali','Inter',sans-serif;min-height:100vh;overflow-x:hidden;font-size:18px;line-height:1.8;transition:background .4s,color .4s}
         body.night{--bg-base:#06060f;--bg-card:rgba(20,20,46,0.4);--bg-card-hover:rgba(26,26,62,0.5);--bg-sidebar:rgba(10,10,26,0.4);--bg-header:rgba(6,6,15,0.7);--bg-footer:rgba(6,6,15,0.8);--text-primary:#e8e8f0;--text-secondary:rgba(255,255,255,0.45);--text-muted:rgba(255,255,255,0.25);--accent:#f0c040;--accent-dim:rgba(240,192,64,0.08);--border:rgba(255,255,255,0.04);--shadow-card:0 2px 8px rgba(0,0,0,0.4);--q-color:#f0c040;--a-color:rgba(255,255,255,0.85);--ai-glow:rgba(249,115,22,0.08);--ai-border:rgba(249,115,22,0.3);--chart-bg:rgba(20,20,46,0.6)}
-        /* ☀️ DAY MODE — সব text PURE BLACK */
         body.day{--bg-base:#FFF8E7;--bg-card:#FFFDF5;--bg-card-hover:#FFF9E6;--bg-sidebar:#FFFCF0;--bg-header:rgba(255,248,231,0.92);--bg-footer:#FFFCF0;--text-primary:#000000;--text-secondary:#050505;--text-muted:#111111;--accent:#B8860B;--accent-dim:rgba(184,134,11,0.08);--border:#E6D5B8;--shadow-card:0 1px 4px rgba(0,0,0,0.06);--q-color:#000000;--a-color:#000000;--ai-glow:rgba(249,115,22,0.05);--ai-border:rgba(249,115,22,0.2);--chart-bg:#FFFDF5}
         body{background:var(--bg-base);color:var(--text-primary)}
         body.day .ai-search-input::placeholder,body.day .search-bar input::placeholder{color:#333}
@@ -55,11 +54,41 @@
         body.day .subject-item.active{color:#8B6508}
         .subject-item.active::before{transform:scaleY(1)}
         .subject-emoji{font-size:1.2rem;width:28px;text-align:center}
-        .chapter-item{display:flex;align-items:center;gap:10px;padding:10px 16px;margin:2px 8px;border-radius:10px;font-size:.88rem;cursor:pointer;font-weight:600;color:var(--text-muted);transition:all .3s;border-left:3px solid transparent}
-        .chapter-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--text-muted);flex-shrink:0;opacity:.5}
-        .chapter-item:hover{background:var(--accent-dim);color:var(--text-primary)}
-        .chapter-item.active{background:var(--accent-dim);color:var(--accent);border-left-color:var(--accent)}
-        body.day .chapter-item.active{color:#8B6508;border-left-color:#B8860B}
+
+        /* ─── 📂 SIDEBAR CHAPTER→TOPIC TREE ─── */
+        .chapter-node{margin:3px 6px}
+        .chapter-row{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:12px;cursor:pointer;font-weight:700;font-size:.93rem;line-height:1.45;color:var(--text-secondary);transition:all .3s;border-left:3px solid transparent;font-family:'Noto Serif Bengali',serif}
+        .chapter-row:hover{background:var(--accent-dim);color:var(--text-primary);transform:translateX(2px)}
+        .chapter-row.active{background:var(--accent-dim);color:var(--accent);border-left-color:var(--accent)}
+        body.day .chapter-row.active{color:#8B6508}
+        .ch-emoji{font-size:1.05rem;flex-shrink:0;transition:transform .3s}
+        .chapter-row:hover .ch-emoji{transform:scale(1.15) rotate(-6deg)}
+        .ch-name{flex:1;min-width:0}
+        .ch-meta{font-family:'Space Grotesk',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:10px;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(240,192,64,0.15);flex-shrink:0;white-space:nowrap}
+        body.day .ch-meta{color:#8B6508;border-color:rgba(184,134,11,0.2)}
+        .ch-chev{color:var(--text-muted);transition:transform .35s cubic-bezier(.4,0,.2,1),color .3s;flex-shrink:0}
+        .chapter-node.open .ch-chev{transform:rotate(90deg);color:var(--accent)}
+        .topic-tree{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.4,0,.2,1)}
+        .chapter-node.open .topic-tree{grid-template-rows:1fr}
+        .topic-tree-inner{overflow:hidden;min-height:0}
+        .topic-list{margin:4px 0 6px 21px;border-left:2px solid rgba(240,192,64,0.22);padding:4px 0 4px 0}
+        body.day .topic-list{border-left-color:rgba(184,134,11,0.28)}
+        .topic-row{display:flex;align-items:center;gap:9px;padding:7px 11px 7px 15px;margin:2px 8px 2px 0;border-radius:9px;cursor:pointer;font-size:.78rem;font-weight:500;line-height:1.4;color:var(--text-muted);transition:all .25s;font-family:'Inter',sans-serif;position:relative}
+        .topic-row::before{content:'';position:absolute;left:-2px;top:50%;width:11px;height:2px;background:rgba(240,192,64,0.22);border-radius:2px}
+        body.day .topic-row::before{background:rgba(184,134,11,0.28)}
+        .t-dot{width:7px;height:7px;border-radius:50%;background:var(--text-muted);opacity:.45;flex-shrink:0;transition:all .25s}
+        .t-name{flex:1;min-width:0}
+        .t-count{font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:700;color:var(--text-muted);opacity:.7;flex-shrink:0}
+        .topic-row:hover{background:var(--accent-dim);color:var(--text-primary);transform:translateX(3px)}
+        .topic-row:hover .t-dot{background:var(--accent);opacity:1;transform:scale(1.2)}
+        .topic-row.active{background:var(--accent-dim);color:var(--accent);font-weight:700}
+        body.day .topic-row.active{color:#8B6508}
+        .topic-row.active .t-dot{background:var(--accent);opacity:1;box-shadow:0 0 9px rgba(240,192,64,0.65);transform:scale(1.3)}
+        .topic-row.topic-all .t-dot{border-radius:2px;transform:rotate(45deg)}
+        .topic-row.topic-all:hover .t-dot{transform:rotate(45deg) scale(1.2)}
+        .topic-row.topic-all.active .t-dot{transform:rotate(45deg) scale(1.3)}
+        .topic-row.topic-all{font-weight:600;color:var(--text-secondary)}
+
         .sidebar-toggle-fixed{position:fixed;top:78px;left:20px;z-index:250;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(20,20,46,0.9);border:1px solid var(--border);color:var(--accent);box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:.3s;font-size:1.4rem;backdrop-filter:blur(12px)}
         body.day .sidebar-toggle-fixed{background:#FFFCF0;border:1px solid #E6D5B8;color:#8B6508}
         .sidebar-toggle-fixed:hover{transform:scale(1.08)}
@@ -105,32 +134,26 @@
         .type-btn.active{color:#06060f;background:rgba(255,255,255,0.8);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
         body.day .type-btn.active{color:#000;background:#FFF5D6;border:1px solid #B8860B}
 
-        /* ─── 📂 TOPIC TREE ─── */
-        .tree-controls{display:flex;align-items:center;gap:10px;margin-bottom:1.3rem;flex-wrap:wrap}
-        .tree-ctrl-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.75rem;border:1px solid var(--border);background:var(--bg-card);color:var(--text-secondary);transition:all .3s}
-        .tree-ctrl-btn:hover{border-color:rgba(240,192,64,0.45);color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(240,192,64,0.12)}
-        .tree-info{font-family:'Space Grotesk',sans-serif;font-size:.72rem;color:var(--text-muted);margin-left:auto;font-weight:700;letter-spacing:.04em}
-        .topic-block{margin-bottom:14px;border:1px solid var(--border);border-radius:16px;background:var(--bg-card);overflow:hidden;transition:border-color .35s,box-shadow .35s;box-shadow:var(--shadow-card)}
-        .topic-block:hover{border-color:rgba(240,192,64,0.18)}
-        .topic-block.open{border-color:rgba(240,192,64,0.28)}
-        body.day .topic-block.open{border-color:rgba(184,134,11,0.35)}
-        .topic-head{display:flex;align-items:center;gap:14px;padding:15px 20px;cursor:pointer;user-select:none;transition:background .25s}
-        .topic-head:hover{background:var(--accent-dim)}
-        .topic-num{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;border-radius:9px;font-weight:800;font-size:.78rem;font-family:'Space Grotesk',sans-serif;color:#06060f;background:linear-gradient(135deg,#f0c040,#f59e0b);box-shadow:0 3px 14px rgba(240,192,64,0.3);flex-shrink:0;transition:transform .3s}
-        .topic-head:hover .topic-num{transform:scale(1.1) rotate(-4deg)}
-        body.day .topic-num{background:linear-gradient(135deg,#B8860B,#8B6508);color:#fff}
-        .topic-name{font-family:'Noto Serif Bengali',serif;font-weight:700;font-size:1.08rem;color:var(--text-primary);flex:1;line-height:1.5}
-        .topic-count{font-family:'Space Grotesk',sans-serif;font-size:.68rem;font-weight:700;padding:4px 12px;border-radius:16px;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(240,192,64,0.18);flex-shrink:0}
-        body.day .topic-count{color:#8B6508;border-color:rgba(184,134,11,0.25)}
-        .topic-chev{color:var(--text-muted);transition:transform .4s cubic-bezier(.4,0,.2,1),color .3s;flex-shrink:0}
-        .topic-block.open .topic-chev{transform:rotate(180deg);color:var(--accent)}
-        .topic-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.4,0,.2,1)}
-        .topic-block.open .topic-body{grid-template-rows:1fr}
-        .topic-body-inner{overflow:hidden;min-height:0}
-        .topic-questions{padding:16px 18px 8px;position:relative}
-        .topic-questions::before{content:'';position:absolute;left:35px;top:20px;bottom:20px;width:2px;background:linear-gradient(180deg,rgba(240,192,64,0.45),rgba(240,192,64,0.04));border-radius:2px}
-        body.day .topic-questions::before{background:linear-gradient(180deg,rgba(184,134,11,0.4),rgba(184,134,11,0.04))}
-        .topic-questions .question-card{margin-left:34px}
+        /* ─── Main content topic divider ─── */
+        .topic-divider{display:flex;align-items:center;gap:13px;margin:2.4rem 0 1.5rem;padding-bottom:11px;border-bottom:1px dashed rgba(240,192,64,0.28)}
+        body.day .topic-divider{border-bottom-color:rgba(184,134,11,0.3)}
+        .topic-divider:first-child{margin-top:.5rem}
+        .td-num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;border-radius:8px;font-weight:800;font-size:.72rem;font-family:'Space Grotesk',sans-serif;color:#06060f;background:linear-gradient(135deg,#f0c040,#f59e0b);box-shadow:0 3px 12px rgba(240,192,64,0.3);flex-shrink:0}
+        body.day .td-num{background:linear-gradient(135deg,#B8860B,#8B6508);color:#fff}
+        .td-name{font-family:'Noto Serif Bengali',serif;font-weight:800;font-size:1.18rem;color:var(--text-primary)}
+        .td-count{margin-left:auto;font-family:'Space Grotesk',sans-serif;font-size:.66rem;font-weight:700;letter-spacing:.06em;color:var(--text-muted)}
+        /* ─── Topic view banner ─── */
+        .topic-banner{display:flex;align-items:center;gap:16px;padding:17px 24px;border-radius:15px;background:linear-gradient(135deg,rgba(240,192,64,0.12),rgba(240,192,64,0.03));border:1px solid rgba(240,192,64,0.28);margin-bottom:1.8rem;flex-wrap:wrap;animation:panelIn .5s ease}
+        body.day .topic-banner{background:linear-gradient(135deg,rgba(184,134,11,0.1),rgba(184,134,11,0.03));border-color:rgba(184,134,11,0.3)}
+        .topic-banner .tb-ico{font-size:1.7rem}
+        .topic-banner .tb-label{font-family:'Space Grotesk',sans-serif;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:700}
+        body.day .topic-banner .tb-label{color:#8B6508}
+        .topic-banner h3{font-family:'Noto Serif Bengali',serif;font-size:1.4rem;font-weight:800;color:var(--text-primary);line-height:1.3}
+        .tb-count{font-family:'Space Grotesk',sans-serif;font-size:.68rem;font-weight:700;padding:5px 14px;border-radius:14px;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(240,192,64,0.2)}
+        body.day .tb-count{color:#8B6508}
+        .tb-all-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.75rem;border:1px solid rgba(240,192,64,0.3);background:rgba(240,192,64,0.1);color:var(--accent);transition:all .3s;margin-left:auto}
+        body.day .tb-all-btn{color:#8B6508}
+        .tb-all-btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(240,192,64,0.2)}
 
         .section-header{display:flex;align-items:center;gap:16px;margin-bottom:2rem;padding-bottom:16px;border-bottom:1px solid var(--border)}
         .section-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
@@ -237,10 +260,6 @@
             .chapter-banner img{height:200px}
             .chart-container{padding:12px}
             .quota-ip{margin-left:0;width:100%}
-            .topic-questions{padding:12px 10px 6px}
-            .topic-questions::before{display:none}
-            .topic-questions .question-card{margin-left:0}
-            .topic-head{padding:13px 14px;gap:10px}
         }
     </style>
 </head>
@@ -271,9 +290,9 @@
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-label">Subjects</div>
             <div id="subjectList"></div>
-            <div class="sidebar-label">Chapters</div>
+            <div class="sidebar-label">Chapters & Topics</div>
             <div id="chapterSection" style="display:none">
-                <div class="search-bar"><i data-lucide="search" width="16" style="opacity:.4"></i><input type="text" id="searchInput" placeholder="Search chapters..."/></div>
+                <div class="search-bar"><i data-lucide="search" width="16" style="opacity:.4"></i><input type="text" id="searchInput" placeholder="Search chapters / topics..."/></div>
                 <div id="chapterList"></div>
             </div>
         </aside>
@@ -352,6 +371,8 @@ const GROQ_API_KEY="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";
 const GROQ_MODEL="llama-3.3-70b-versatile";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
 
+const CH_EMOJIS=['📕','📗','📘','📙','📔','📒'];
+
 // ═══════════════════════════════════════════════════════════════
 //  🔒 IP QUOTA
 // ═══════════════════════════════════════════════════════════════
@@ -388,6 +409,8 @@ function showToast(msg,type){
     requestAnimationFrame(()=>t.classList.add('show'));
     setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),450)},3200);
 }
+function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function escJs(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
 
 // ═══════════════════════════════════════════════════════════════
 //  🧠 প্রশ্নের টাইপ চেনা
@@ -398,6 +421,7 @@ function questionType(q){
     if(/ছক|টেবিল|table|chart|লেখচিত্র|graph|নামকরণ|তালিকা|list|এক শব্দে|এক কথায়|one word|সংজ্ঞা দাও|সংজ্ঞা লেখো|define|চিহ্নিত/i.test(t))return 'quick';
     return 'full';
 }
+function topicOf(r){return (r.topic&&r.topic.trim())||'সাধারণ প্রশ্ন'}
 
 // ═══════════════════════════════════════════════════════════════
 //  🧑‍🏫 AI ENGINE
@@ -438,11 +462,10 @@ class SmartEngine {
         const res=await this.callAI('Smart search engine। শুধু JSON array: [{"index":0,"reason":"...","relevance":95}] Max 5। শুধু JSON।','Query: "'+query+'"\n\nQuestions:\n'+ql);
         try{return JSON.parse(res.replace(/```json?\n?/g,'').replace(/```/g,'').trim())}catch{return[]}
     }
-    // 🖼️ SMART RENDERER — HTML + Animation + PNG/WEBP + Video
     render(text){
         if(!text)return'';
         if(/<!doctype\s+html|<html[\s>]/i.test(text)){
-            return '<div class="html-content-block" style="padding:8px"><iframe srcdoc="'+this._escAttr(text)+'" style="width:100%;min-height:380px;border:none;border-radius:10px;background:#ffffff" loading="lazy"></iframe></div>';
+            return '<div class="html-content-block" style="padding:8px"><iframe srcdoc="'+escAttr(text).replace(/&quot;/g,'"').replace(/"/g,'&quot;')+'" style="width:100%;min-height:380px;border:none;border-radius:10px;background:#ffffff" loading="lazy"></iframe></div>';
         }
         let out='';const lines=text.split('\n');let htmlBuffer=[],textBuffer=[];
         for(let i=0;i<lines.length;i++){
@@ -460,7 +483,6 @@ class SmartEngine {
         if(textBuffer.length)out+=this._renderText(textBuffer.join('\n'));
         return out;
     }
-    _escAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}
     _isHTML(s){return /<[a-z][\s\S]*>/i.test(s)||/<\/[a-z]+>/i.test(s)||s.startsWith('<!')}
     _isImageURL(s){return /^https?:\/\/.+\.(png|jpg|jpeg|gif|svg|webp|bmp|avif)(\?.*)?$/i.test(s.trim())}
     _isVideoURL(s){return /^https?:\/\/.+\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(s.trim())}
@@ -511,7 +533,7 @@ const chapterSectionEl=document.getElementById('chapterSection');
 const searchInput=document.getElementById('searchInput');
 const aiSearchInput=document.getElementById('aiSearchInput');
 const aiSearchResults=document.getElementById('aiSearchResults');
-let allData=[],currentSubject=null,currentChapter=null;
+let allData=[],currentSubject=null,currentChapter=null,currentTopic=null;
 
 // ═══════════════════════════════════════════════════════════════
 //  UI
@@ -550,7 +572,7 @@ async function doSearch(query){
     if(!allData.length)return;
     aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted);font-size:.85rem"><span class="ai-typing">⚡ খোঁজা হচ্ছে</span></div>';
     try{
-        const local=allData.map((r,i)=>({...r,idx:i,score:fuzzy(query,r.question+' '+r.answer+' '+r.subject+' '+r.chapter)})).filter(r=>r.score>0.2).sort((a,b)=>b.score-a.score).slice(0,8);
+        const local=allData.map((r,i)=>({...r,idx:i,score:fuzzy(query,r.question+' '+r.answer+' '+r.subject+' '+r.chapter+' '+r.topic)})).filter(r=>r.score>0.2).sort((a,b)=>b.score-a.score).slice(0,8);
         if(local.length>0){renderSR(local,query);return}
         if(QuotaManager.canAI()){
             const aiRes=await engine.smartSearch(query,allData);
@@ -568,10 +590,17 @@ async function doSearch(query){
 function fuzzy(q,t){q=q.toLowerCase();t=t.toLowerCase();if(t.includes(q))return 1;const w=q.split(/\s+/);return w.filter(x=>t.includes(x)).length/w.length}
 function renderSR(results,query){
     if(!results.length){aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">😅 নেই</div>';return}
-    aiSearchResults.innerHTML=results.map(r=>'<div class="ai-search-result-item" onclick="jumpTo('+r.idx+')"><div style="font-size:.7rem;color:#f97316;font-family:Space Grotesk,sans-serif;margin-bottom:4px">'+r.subject+' › '+r.chapter+(r.reason?' • '+r.reason:'')+'</div><div style="font-size:.95rem;font-weight:600;color:var(--text-primary)">'+hl(r.question,query)+'</div></div>').join('');
+    aiSearchResults.innerHTML=results.map(r=>'<div class="ai-search-result-item" onclick="jumpTo('+r.idx+')"><div style="font-size:.7rem;color:#f97316;font-family:Space Grotesk,sans-serif;margin-bottom:4px">'+r.subject+' › '+r.chapter+' › '+topicOf(r)+'</div><div style="font-size:.95rem;font-weight:600;color:var(--text-primary)">'+hl(r.question,query)+'</div></div>').join('');
 }
 function hl(t,q){const w=q.split(/\s+/).filter(x=>x.length>1);let r=t;w.forEach(x=>{r=r.replace(new RegExp('('+x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="highlight-match">$1</span>')});return r}
-function jumpTo(idx){const item=allData[idx];if(item){renderSubject(item.subject);setTimeout(()=>renderChapter(item.subject,item.chapter,true),150);aiSearchResults.innerHTML='';aiSearchInput.value=''}}
+function jumpTo(idx){
+    const item=allData[idx];
+    if(item){
+        renderSubject(item.subject,false);
+        setTimeout(()=>{renderTopicView(item.subject,item.chapter,topicOf(item))},150);
+        aiSearchResults.innerHTML='';aiSearchInput.value='';
+    }
+}
 
 // ═══════════════════════════════════════════════════════════════
 //  DATA LOADER
@@ -608,59 +637,132 @@ async function loadSheet(){
 function buildNav(){
     const subjects=[...new Set(allData.map(r=>r.subject))].sort();
     subjectListEl.innerHTML='';
-    subjects.forEach(sub=>{const d=document.createElement('div');d.className='subject-item';d.dataset.subject=sub;d.innerHTML='<span class="subject-emoji">📘</span><span>'+sub+'</span>';d.addEventListener('click',()=>renderSubject(sub));subjectListEl.appendChild(d)});
+    subjects.forEach(sub=>{const d=document.createElement('div');d.className='subject-item';d.dataset.subject=sub;d.innerHTML='<span class="subject-emoji">📘</span><span>'+sub+'</span>';d.addEventListener('click',()=>renderSubject(sub,true));subjectListEl.appendChild(d)});
     chapterSectionEl.style.display='block';
-    searchInput.addEventListener('input',()=>{if(currentSubject)renderChapterList(currentSubject,searchInput.value.trim())});
+    searchInput.addEventListener('input',()=>{
+        if(currentSubject){
+            renderChapterList(currentSubject,searchInput.value.trim());
+            activateChapterNode(currentChapter,currentTopic);
+        }
+    });
 }
-function renderSubject(subject){
+function renderSubject(subject,loadFirst){
     if(!subject||!allData.some(r=>r.subject===subject)){subject=[...new Set(allData.map(r=>r.subject))].sort()[0];if(!subject)return}
-    currentSubject=subject;currentChapter=null;
+    currentSubject=subject;currentChapter=null;currentTopic=null;
     document.querySelectorAll('.subject-item').forEach(el=>el.classList.toggle('active',el.dataset.subject===subject));
     dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন | 🧑‍🏫 Teacher AI';
     renderChapterList(subject);
-    const ch=getChapters(subject);
-    if(ch.length)renderChapter(subject,ch[0]);
+    if(loadFirst!==false){
+        const ch=getChapters(subject);
+        if(ch.length)renderChapter(subject,ch[0]);
+    }
     if(window.innerWidth<=768)closeMobileSidebar();
 }
 function getChapters(s){return[...new Set(allData.filter(r=>r.subject===s).map(r=>r.chapter))].sort()}
-function renderChapterList(subject,filter){
-    filter=filter||'';
-    const chapters=getChapters(subject);
-    const filtered=filter?chapters.filter(c=>c.toLowerCase().includes(filter.toLowerCase())):chapters;
-    chapterListEl.innerHTML='';
-    if(!filtered.length){chapterListEl.innerHTML='<div style="padding:12px 16px;font-size:.85rem;color:var(--text-muted);text-align:center">📭 নেই</div>';return}
-    filtered.forEach(ch=>{const d=document.createElement('div');d.className='chapter-item';d.dataset.chapter=ch;d.textContent=ch;d.addEventListener('click',()=>{renderChapter(subject,ch);document.querySelectorAll('.chapter-item').forEach(el=>el.classList.remove('active'));d.classList.add('active')});chapterListEl.appendChild(d)});
+function getTopics(subject,chapter){
+    const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
+    const m=new Map();
+    rows.forEach(r=>{const t=topicOf(r);if(!m.has(t))m.set(t,0);m.set(t,m.get(t)+1)});
+    return [...m.entries()].map(([name,count])=>({name,count}));
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  📂 TOPIC GROUPING — sheet-এর topic অনুযায়ী tree
+//  📂 SIDEBAR: CHAPTER → TOPIC TREE
+//  Chapter = মোটা বড় row + emoji + chevron
+//  Topic   = ছোট indent row + tree রেখা + dot (গুলানো যাবে না)
 // ═══════════════════════════════════════════════════════════════
+function renderChapterList(subject,filter){
+    filter=(filter||'').toLowerCase();
+    const chapters=getChapters(subject);
+    const filtered=filter?chapters.filter(c=>{
+        if(c.toLowerCase().includes(filter))return true;
+        return getTopics(subject,c).some(t=>t.name.toLowerCase().includes(filter));
+    }):chapters;
+    chapterListEl.innerHTML='';
+    if(!filtered.length){chapterListEl.innerHTML='<div style="padding:12px 16px;font-size:.85rem;color:var(--text-muted);text-align:center">📭 কিছু পাওয়া যায়নি</div>';return}
+    filtered.forEach((ch,ci)=>{
+        const topics=getTopics(subject,ch);
+        const total=topics.reduce((s,t)=>s+t.count,0);
+        const node=document.createElement('div');
+        node.className='chapter-node'+(filter?' open':'');
+        node.dataset.chapter=ch;
+        let topicHtml='<div class="topic-row topic-all" data-topic="__all__"><span class="t-dot"></span><span class="t-name">সব প্রশ্ন</span><span class="t-count">'+total+'</span></div>';
+        topics.forEach(t=>{
+            topicHtml+='<div class="topic-row" data-topic="'+escAttr(t.name)+'"><span class="t-dot"></span><span class="t-name">'+escAttr(t.name)+'</span><span class="t-count">'+t.count+'</span></div>';
+        });
+        node.innerHTML='<div class="chapter-row">'
+            +'<span class="ch-emoji">'+CH_EMOJIS[ci%CH_EMOJIS.length]+'</span>'
+            +'<span class="ch-name">'+escAttr(ch)+'</span>'
+            +'<span class="ch-meta">'+topics.length+' টপিক</span>'
+            +'<i data-lucide="chevron-right" width="15" class="ch-chev"></i>'
+            +'</div>'
+            +'<div class="topic-tree"><div class="topic-tree-inner"><div class="topic-list">'+topicHtml+'</div></div></div>';
+        chapterListEl.appendChild(node);
+    });
+    lucide.createIcons();
+    // ─── Chapter click: toggle tree + সব প্রশ্ন load ───
+    chapterListEl.querySelectorAll('.chapter-row').forEach(row=>{
+        row.addEventListener('click',()=>{
+            const node=row.parentElement;
+            const ch=node.dataset.chapter;
+            const wasOpen=node.classList.contains('open');
+            chapterListEl.querySelectorAll('.chapter-node.open').forEach(n=>{if(n!==node)n.classList.remove('open')});
+            node.classList.toggle('open',!wasOpen);
+            renderChapter(currentSubject,ch);
+        });
+    });
+    // ─── Topic click: শুধু ওই topic-এর প্রশ্ন ───
+    chapterListEl.querySelectorAll('.topic-row').forEach(row=>{
+        row.addEventListener('click',e=>{
+            e.stopPropagation();
+            const node=row.closest('.chapter-node');
+            const ch=node.dataset.chapter;
+            const tp=row.dataset.topic;
+            if(tp==='__all__'){renderChapter(currentSubject,ch)}
+            else{renderTopicView(currentSubject,ch,tp)}
+            if(window.innerWidth<=768)closeMobileSidebar();
+        });
+    });
+}
+
+// ─── Active state highlight ───
+function activateChapterNode(ch,topicName){
+    chapterListEl.querySelectorAll('.chapter-node').forEach(n=>{
+        const isThis=n.dataset.chapter===ch;
+        if(isThis)n.classList.add('open');
+        const row=n.querySelector('.chapter-row');
+        if(row)row.classList.toggle('active',isThis);
+        n.querySelectorAll('.topic-row').forEach(tr=>{
+            if(isThis){
+                const tp=tr.dataset.topic;
+                tr.classList.toggle('active',topicName?tp===topicName:tp==='__all__');
+            }else{tr.classList.remove('active')}
+        });
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  MAIN CONTENT RENDER
+// ═══════════════════════════════════════════════════════════════
+function bannerHTML(subject,chapter,rows){
+    const topicCount=getTopics(subject,chapter).length;
+    return '<div class="chapter-banner"><img src="https://picsum.photos/seed/'+encodeURIComponent(chapter)+'/1200/380" alt="'+escAttr(chapter)+'" loading="lazy"/><div class="chapter-banner-text"><h3>'+escAttr(chapter)+'</h3><div class="banner-subtitle">'+escAttr(subject)+' • '+rows.length+' টি প্রশ্ন • '+topicCount+' টি টপিক</div></div></div>';
+}
 function groupByTopic(rows){
     const m=new Map();
-    rows.forEach(r=>{
-        const t=(r.topic&&r.topic.trim())||'সাধারণ প্রশ্ন';
-        if(!m.has(t))m.set(t,[]);
-        m.get(t).push(r);
-    });
+    rows.forEach(r=>{const t=topicOf(r);if(!m.has(t))m.set(t,[]);m.get(t).push(r)});
     return [...m.entries()];
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  RENDER CHAPTER (Topic Tree সহ)
-// ═══════════════════════════════════════════════════════════════
-function renderChapter(subject,chapter,expandAll){
-    currentChapter=chapter;
-    const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
-    document.querySelectorAll('.chapter-item').forEach(el=>el.classList.toggle('active',el.dataset.chapter===chapter));
-    if(!rows.length){dynamicContent.innerHTML='<div class="empty-state"><p>এই চ্যাপ্টারে প্রশ্ন নেই।</p></div>';return}
-    const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
-    const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
-    const topicCount=groupByTopic(rows).length;
-    dynamicContent.innerHTML='<div class="chapter-banner"><img src="https://picsum.photos/seed/'+encodeURIComponent(chapter)+'/1200/380" alt="'+chapter+'" loading="lazy"/><div class="chapter-banner-text"><h3>'+chapter+'</h3><div class="banner-subtitle">'+subject+' • '+rows.length+' টি প্রশ্ন • '+topicCount+' টি টপিক</div></div></div>'
-        +'<div class="toggle-group"><button class="type-btn active" data-type="all">📚 সব ('+rows.length+')</button><button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত ('+saq.length+')</button><button class="type-btn" data-type="broad">📝 ব্যাখ্যামূলক ('+broad.length+')</button></div>'
-        +'<div id="questionContainer">'+renderTopics(rows,expandAll)+'</div>';
-    lucide.createIcons();
-    if(window.innerWidth<=768)closeMobileSidebar();
+function buildGrouped(rows){
+    const topics=groupByTopic(rows);
+    let h='';
+    topics.forEach((e,ti)=>{
+        h+='<div class="topic-divider"><span class="td-num">'+(ti+1)+'</span><span class="td-name">'+escAttr(e[0])+'</span><span class="td-count">'+e[1].length+' টি প্রশ্ন</span></div>';
+        h+=renderQuestions(e[1]);
+    });
+    return h;
+}
+function wireTypeBtns(rows,saq,broad){
     document.querySelectorAll('.type-btn').forEach(btn=>{
         btn.addEventListener('click',function(){
             document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
@@ -668,39 +770,46 @@ function renderChapter(subject,chapter,expandAll){
             const t=this.dataset.type,c=document.getElementById('questionContainer');
             let f=rows;
             if(t==='saq')f=saq;else if(t==='broad')f=broad;
-            c.innerHTML=f.length?renderTopics(f,true):'<div class="empty-state" style="padding:2rem"><p>😅 এই ধরনের প্রশ্ন নেই</p></div>';
+            c.innerHTML=f.length?buildGrouped(f):'<div class="empty-state" style="padding:2rem"><p>😅 এই ধরনের প্রশ্ন নেই</p></div>';
             lucide.createIcons();
         });
     });
 }
 
-// ─── Topic Tree Render ───
-function renderTopics(rows,expandAll){
-    const topics=groupByTopic(rows);
-    let html='<div class="tree-controls">'
-        +'<button class="tree-ctrl-btn" onclick="toggleAllTopics(true)"><i data-lucide="chevrons-down" width="14"></i> সব খোলো</button>'
-        +'<button class="tree-ctrl-btn" onclick="toggleAllTopics(false)"><i data-lucide="chevrons-up" width="14"></i> সব বন্ধ</button>'
-        +'<span class="tree-info">📂 '+topics.length+' টি টপিক</span>'
-        +'</div>';
-    topics.forEach((entry,ti)=>{
-        const topicName=entry[0],tRows=entry[1];
-        const isOpen=(expandAll||ti===0)?' open':'';
-        html+='<div class="topic-block'+isOpen+'">'
-            +'<div class="topic-head" onclick="toggleTopic(this)">'
-            +'<span class="topic-num">'+(ti+1)+'</span>'
-            +'<span class="topic-name">'+topicName+'</span>'
-            +'<span class="topic-count">'+tRows.length+' টি প্রশ্ন</span>'
-            +'<i data-lucide="chevron-down" width="18" class="topic-chev"></i>'
-            +'</div>'
-            +'<div class="topic-body"><div class="topic-body-inner"><div class="topic-questions">'
-            +renderQuestions(tRows)
-            +'</div></div></div></div>';
-    });
-    return html;
+// ─── পুরো Chapter (সব প্রশ্ন, topic অনুযায়ী সাজানো) ───
+function renderChapter(subject,chapter){
+    currentChapter=chapter;currentTopic=null;
+    const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
+    if(!rows.length){dynamicContent.innerHTML='<div class="empty-state"><p>এই চ্যাপ্টারে প্রশ্ন নেই।</p></div>';return}
+    const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
+    const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
+    dynamicContent.innerHTML=bannerHTML(subject,chapter,rows)
+        +'<div class="toggle-group"><button class="type-btn active" data-type="all">📚 সব ('+rows.length+')</button><button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত ('+saq.length+')</button><button class="type-btn" data-type="broad">📝 ব্যাখ্যামূলক ('+broad.length+')</button></div>'
+        +'<div id="questionContainer">'+buildGrouped(rows)+'</div>';
+    lucide.createIcons();
+    wireTypeBtns(rows,saq,broad);
+    activateChapterNode(chapter,null);
+    if(window.innerWidth<=768)closeMobileSidebar();
 }
 
-function toggleTopic(headEl){headEl.parentElement.classList.toggle('open')}
-function toggleAllTopics(open){document.querySelectorAll('.topic-block').forEach(b=>b.classList.toggle('open',open))}
+// ─── একটা Topic-এর প্রশ্ন ───
+function renderTopicView(subject,chapter,topic){
+    currentChapter=chapter;currentTopic=topic;
+    const all=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
+    const rows=all.filter(r=>topicOf(r)===topic);
+    if(!rows.length){renderChapter(subject,chapter);return}
+    dynamicContent.innerHTML=bannerHTML(subject,chapter,all)
+        +'<div class="topic-banner">'
+        +'<span class="tb-ico">📂</span>'
+        +'<div style="flex:1;min-width:150px"><div class="tb-label">Topic</div><h3>'+escAttr(topic)+'</h3></div>'
+        +'<span class="tb-count">'+rows.length+' টি প্রশ্ন</span>'
+        +'<button class="tb-all-btn" onclick="renderChapter(\''+escJs(subject)+'\',\''+escJs(chapter)+'\')">সব প্রশ্ন <i data-lucide="arrow-right" width="13"></i></button>'
+        +'</div>'
+        +'<div id="questionContainer">'+renderQuestions(rows)+'</div>';
+    lucide.createIcons();
+    activateChapterNode(chapter,topic);
+    if(window.innerWidth<=768)closeMobileSidebar();
+}
 
 // ─── Question Cards ───
 const IMG_URL_RE=/https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?/gi;
@@ -765,7 +874,7 @@ async function getAIExp(cardId,btn){
 // ═══════════════════════════════════════════════════════════════
 QuotaManager.init();
 loadSheet();
-console.log('✅ Mega Quiz AI — Topic Tree + Teacher Mode Loaded');
+console.log('✅ Mega Quiz AI — Sidebar Topic Tree Loaded');
 </script>
 </body>
 </html>
