@@ -685,7 +685,7 @@ async function getAIExp(cardId,btn){
         const modeBadge=mode==='quick'
             ?'<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">⚡ Quick Mode — সংক্ষিপ্ত</span>'
             :'<span class="mode-badge">উদাহরণসহ</span>';
-        panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge"></span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
+        panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge">⚡ Groq Llama 3.3</span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
         btn.classList.remove('loading');
         btn.innerHTML='<i data-lucide="check" width="14"></i> AI Explanation';
         showToast(mode==='quick'?'⚡ সংক্ষিপ্ত উত্তর তৈরি!':'🧑‍🏫 শিক্ষকের ব্যাখ্যা তৈরি!','okk');
