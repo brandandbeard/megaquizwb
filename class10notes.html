@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 10 Notes | Mega Quiz AI</title>
+    <title>Class 10 Notes | Mega Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -227,7 +227,7 @@
             </div>
         </a>
         <div class="flex items-center gap-4">
-            <span class="header-badge">🧑‍🏫 Teacher AI</span>
+            <span class="header-badge">By Arif Hussain</span>
             <button id="themeToggle"><i data-lucide="sun" width="18"></i></button>
         </div>
     </header>
@@ -244,7 +244,7 @@
             </div>
         </aside>
         <div class="content-scroll" id="contentScroll">
-            <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 10 AI</span></nav>
+            <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 10</span></nav>
             <h1 class="hero-title">Class 10 <span style="color:#f0c040">AI Notes</span></h1>
             <p class="hero-subtitle" id="dynamicSubtitle"></p>
             <div class="quota-bar">
@@ -269,9 +269,9 @@
             <div class="footer-col">
                 <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.8rem">
                     <div style="width:2rem;height:2rem;border-radius:.6rem;overflow:hidden;border:1px solid rgba(240,192,64,0.15)"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" width="32" height="32" style="width:100%;height:100%;object-fit:cover"/></div>
-                    <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary)">Mega Quiz AI</span>
+                    <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary)">Mega Quiz</span>
                 </div>
-                <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6">Smart Era, Smart Learning. 🧑‍🏫 Teacher AI + 🖼️ HTML/Animation + 📊 Charts</p>
+                <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6">Smart Era, Smart Learning.</p>
             </div>
             <div class="footer-col">
                 <h4>Links</h4>
@@ -304,7 +304,7 @@
                 </a>
             </div>
         </div>
-        <div class="footer-bottom"><span>© 2025 Mega Quiz AI - BY Arif Hussain</span><span>🧑‍🏫 Groq AI + 📊 Chart.js</span><span>❤️ All Rights Reserved</span></div>
+        <div class="footer-bottom"><span>© 2025 Mega Quiz - BY Arif Hussain</span><span>🦥 Thank You</span><span>❤️ All Rights Reserved</span></div>
     </footer>
 
 <script>
@@ -314,7 +314,7 @@
 const GOOGLE_SHEET_TSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
 
 // ⚡ GROQ API KEY — এখানে তোমার gsk_ key বসাও (বাংলা লেখা রাখবে না!)
-const GROQ_API_KEY="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";
+const GROQ_API_KEY="gsk_এখানে_তোমার_key_বসাও";
 const GROQ_MODEL="llama-3.3-70b-versatile";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
 
@@ -594,7 +594,7 @@ function renderSubject(subject){
     if(!subject||!allData.some(r=>r.subject===subject)){subject=[...new Set(allData.map(r=>r.subject))].sort()[0];if(!subject)return}
     currentSubject=subject;currentChapter=null;
     document.querySelectorAll('.subject-item').forEach(el=>el.classList.toggle('active',el.dataset.subject===subject));
-    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন | 🧑‍🏫 Teacher AI';
+    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন | ';
     renderChapterList(subject);
     const ch=getChapters(subject);
     if(ch.length)renderChapter(subject,ch[0]);
@@ -657,7 +657,7 @@ function renderQGroup(rows,label){
             +'<div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>'
             +allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('')
             +'<div class="a">'+smartA+'</div>'
-            +'<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'"><i data-lucide="graduation-cap" width="14"></i> শিক্ষকের মতো বুঝিয়ে দাও</button>'
+            +'<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button>'
             +'<div id="ai-panel-'+cid+'"></div>'
             +'</div>';
     });
@@ -669,7 +669,7 @@ function renderQGroup(rows,label){
 // ═══════════════════════════════════════════════════════════════
 async function getAIExp(cardId,btn){
     const panel=document.getElementById('ai-panel-'+cardId);
-    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="graduation-cap" width="14"></i> শিক্ষকের মতো বুঝিয়ে দাও';lucide.createIcons();return}
+    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="graduation-cap" width="14"></i> AI Explanation';lucide.createIcons();return}
     if(!QuotaManager.canAI()){
         showToast('🔒 আজকের AI limit শেষ! আগামীকাল আবার আসো 😊','err');
         return;
@@ -684,10 +684,10 @@ async function getAIExp(cardId,btn){
         QuotaManager.useAI();
         const modeBadge=mode==='quick'
             ?'<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">⚡ Quick Mode — সংক্ষিপ্ত</span>'
-            :'<span class="mode-badge">🧑‍🏫 Teacher Mode — উদাহরণসহ</span>';
-        panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge">⚡ Groq Llama 3.3</span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
+            :'<span class="mode-badge">উদাহরণসহ</span>';
+        panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge"></span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
         btn.classList.remove('loading');
-        btn.innerHTML='<i data-lucide="check" width="14"></i> বুঝিয়ে দিয়েছি ✓';
+        btn.innerHTML='<i data-lucide="check" width="14"></i> AI Explanation';
         showToast(mode==='quick'?'⚡ সংক্ষিপ্ত উত্তর তৈরি!':'🧑‍🏫 শিক্ষকের ব্যাখ্যা তৈরি!','okk');
     }catch(err){
         panel.innerHTML='<div class="ai-panel"><div class="ai-panel-content" style="color:#f43f5e">⚠️ '+err.message+'</div></div>';
@@ -702,7 +702,7 @@ async function getAIExp(cardId,btn){
 // ═══════════════════════════════════════════════════════════════
 QuotaManager.init();
 loadSheet();
-console.log('✅ Mega Quiz AI — Teacher Mode + Smart Renderer Loaded');
+console.log('✅ Mega Quiz — Teacher Mode + Smart Renderer Loaded');
 </script>
 </body>
 </html>
