@@ -377,7 +377,7 @@ const CH_EMOJIS=['📕','📗','📘','📙','📔','📒'];
 //  🔒 IP QUOTA
 // ═══════════════════════════════════════════════════════════════
 const QuotaManager={
-    AI_DAILY_LIMIT:15,
+    AI_DAILY_LIMIT:50,
     ip:null,data:null,
     async init(){
         try{const r=await fetch('https://api.ipify.org?format=json');const d=await r.json();this.ip=d.ip||'unknown'}
