@@ -68,7 +68,45 @@
         .breadcrumb .current{color:var(--accent);font-weight:700}
         .hero-title{font-family:'Noto Serif Bengali',serif;font-size:clamp(3rem,8vw,6rem);font-weight:900;line-height:1.05;margin-bottom:.4rem;background:linear-gradient(135deg,#ffffff 0%,#f0c040 30%,#f59e0b 60%,#f0c040 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 20px rgba(240,192,64,0.25))}
         body.day .hero-title{background:linear-gradient(135deg,#2C2C2C 0%,#8B6508 40%,#B8860B 80%,#5C4A0A 100%);-webkit-background-clip:text;background-clip:text;filter:none}
-        .hero-subtitle{font-size:1.05rem;line-height:1.7;margin-bottom:1.8rem;color:var(--text-secondary);max-width:650px}
+        .hero-subtitle{font-size:1.05rem;line-height:1.7;margin-bottom:1.2rem;color:var(--text-secondary);max-width:650px}
+
+        /* ─── 🔒 Quota Bar (IP Limit UI) ─── */
+        .quota-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:1.6rem}
+        .quota-pill{position:relative;display:inline-flex;align-items:center;padding:8px 18px;border-radius:24px;font-family:'Space Grotesk',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.03em;border:1px solid var(--border);background:var(--bg-card);overflow:hidden;transition:all .4s;cursor:default}
+        .quota-pill:hover{transform:translateY(-2px)}
+        .quota-pill .fill{position:absolute;left:0;top:0;bottom:0;transition:width .6s cubic-bezier(.4,0,.2,1);z-index:0}
+        .quota-pill span{position:relative;z-index:1}
+        .quota-pill.ok{color:#34A853;border-color:rgba(52,168,83,0.3)}
+        .quota-pill.ok .fill{background:rgba(52,168,83,0.12)}
+        .quota-pill.low{color:#f59e0b;border-color:rgba(245,158,11,0.35);animation:pillPulse 2s ease infinite}
+        .quota-pill.low .fill{background:rgba(245,158,11,0.12)}
+        .quota-pill.out{color:#f43f5e;border-color:rgba(244,63,94,0.35)}
+        .quota-pill.out .fill{background:rgba(244,63,94,0.12)}
+        @keyframes pillPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,0.25)}50%{box-shadow:0 0 14px 2px rgba(245,158,11,0.2)}}
+        .quota-ip{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-muted);margin-left:auto;letter-spacing:.02em}
+
+        /* ─── 🍞 Toast ─── */
+        .toast{position:fixed;bottom:36px;left:50%;transform:translate(-50%,90px);z-index:500;padding:14px 28px;border-radius:14px;font-family:'Noto Serif Bengali',serif;font-size:.95rem;font-weight:600;background:rgba(20,20,46,0.96);border:1px solid rgba(240,192,64,0.3);color:var(--text-primary);box-shadow:0 12px 44px rgba(0,0,0,0.45);backdrop-filter:blur(12px);transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .4s;opacity:0;max-width:92vw;text-align:center;pointer-events:none}
+        .toast.show{transform:translate(-50%,0);opacity:1}
+        .toast.err{border-color:rgba(244,63,94,0.45);color:#fda4af}
+        .toast.okk{border-color:rgba(52,168,83,0.45);color:#86efac}
+        body.day .toast{background:#FFFDF5;box-shadow:0 12px 40px rgba(0,0,0,0.14);color:#1A1A1A}
+        body.day .toast.err{color:#e11d48}
+
+        /* ─── 🎨 AI Image Panel ─── */
+        .img-btn{border-color:rgba(168,85,247,0.35)!important;background:rgba(168,85,247,0.08)!important;color:#a855f7!important}
+        .img-btn:hover{box-shadow:0 4px 20px rgba(168,85,247,0.25)!important}
+        body.day .img-btn{color:#7c3aed!important}
+        .img-panel{margin-top:16px;padding:16px;border-radius:16px;background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.25);position:relative;overflow:hidden;animation:panelIn .5s ease}
+        .img-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#a855f7,#ec4899,#f59e0b)}
+        @keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes imgReveal{from{opacity:0;transform:scale(0.95);filter:blur(8px)}to{opacity:1;transform:scale(1);filter:blur(0)}}
+        .img-shimmer-box{width:100%;height:240px;border-radius:12px;background:linear-gradient(110deg,rgba(168,85,247,0.07) 8%,rgba(168,85,247,0.22) 18%,rgba(168,85,247,0.07) 33%);background-size:200% 100%;animation:shimmer 1.3s linear infinite}
+        @keyframes shimmer{to{background-position:-200% 0}}
+        .img-loading{text-align:center}
+        .img-loading p{font-size:.85rem;color:#a855f7;margin-top:12px;font-family:'Space Grotesk',sans-serif;font-weight:600}
+        .img-badge{font-family:'Space Grotesk',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:rgba(168,85,247,0.15);color:#a855f7;border:1px solid rgba(168,85,247,0.3)}
+
         .chapter-banner{position:relative;width:100%;max-height:380px;border-radius:20px;overflow:hidden;margin-bottom:2rem;border:1px solid var(--border);box-shadow:0 8px 40px rgba(0,0,0,0.3)}
         body.day .chapter-banner{box-shadow:0 8px 20px rgba(184,134,11,0.08);border:1px solid #E6D5B8}
         .chapter-banner img{width:100%;height:380px;object-fit:cover;transition:transform .8s}
@@ -96,6 +134,7 @@
         body.day .question-card .q .num{background:linear-gradient(135deg,#B8860B,#8B6508);color:#FFF}
         .question-card .a{padding:18px 24px;font-size:clamp(1.05rem,2.8vw,1.5rem);line-height:1.9;color:var(--a-color);background:transparent!important;font-weight:500;border-left:3px solid rgba(240,192,64,0.2);font-family:'Noto Serif Bengali',serif}
         body.day .question-card .a{border-left-color:rgba(184,134,11,0.25)}
+        .btn-row{display:flex;gap:10px;flex-wrap:wrap}
         .smart-table-wrapper{overflow-x:auto;margin:12px 0;border-radius:12px;border:1px solid var(--border)}
         .smart-table{border-collapse:collapse;width:100%;font-size:.9rem;font-family:'Inter',sans-serif}
         .smart-table th{background:var(--accent-dim);font-weight:700;padding:12px 16px;text-align:left;border:1px solid var(--border);color:var(--accent);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
@@ -106,7 +145,7 @@
         .chart-label{font-family:'Space Grotesk',sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);text-align:center;margin-bottom:12px}
         .html-content-block{margin:12px 0;padding:16px;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);overflow:hidden}
         .html-content-block img{max-width:100%;border-radius:8px;margin:8px 0}
-        .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden}
+        .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden;animation:panelIn .5s ease}
         .ai-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#f97316,#fb923c,#fdba74)}
         .ai-panel-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
         .ai-panel-header .ai-badge{font-family:'Space Grotesk',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(251,146,60,0.15));color:#f97316;border:1px solid rgba(249,115,22,0.25)}
@@ -135,8 +174,6 @@
         .footer-col h4{font-family:'Space Grotesk',sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;font-weight:700;color:var(--text-muted);margin-bottom:1rem}
         .footer-col a{font-family:'Inter',sans-serif;font-size:.85rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:.6rem;padding:6px 0;transition:.3s}
         .footer-col a:hover{color:var(--accent)}
-
-        /* ─── Official Brand Contact Icons (always colored) ─── */
         .contact-link{display:flex;align-items:center;gap:.75rem;padding:7px 0;font-family:'Inter',sans-serif;font-size:.88rem;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .3s cubic-bezier(.4,0,.2,1)}
         .contact-link:hover{color:var(--text-primary);transform:translateX(5px)}
         .contact-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid var(--border);flex-shrink:0;transition:all .3s cubic-bezier(.4,0,.2,1)}
@@ -144,12 +181,11 @@
         .contact-link:hover .contact-icon{transform:scale(1.12) rotate(-4deg)}
         .contact-icon svg{display:block}
         .contact-icon.gmail{box-shadow:0 0 14px rgba(234,67,53,0.18)}
-        .contact-icon.gmail:hover,.contact-link:hover .contact-icon.gmail{box-shadow:0 0 20px rgba(234,67,53,0.35)}
+        .contact-link:hover .contact-icon.gmail{box-shadow:0 0 20px rgba(234,67,53,0.35)}
         .contact-icon.insta{box-shadow:0 0 14px rgba(225,48,108,0.18)}
         .contact-link:hover .contact-icon.insta{box-shadow:0 0 20px rgba(225,48,108,0.35)}
         .contact-icon.tg{box-shadow:0 0 14px rgba(34,158,217,0.18)}
         .contact-link:hover .contact-icon.tg{box-shadow:0 0 20px rgba(34,158,217,0.35)}
-
         .footer-bottom{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-family:'Space Grotesk',sans-serif;font-size:.7rem;color:var(--text-muted);max-width:1200px;margin-left:auto;margin-right:auto;flex-wrap:wrap;gap:.5rem}
         #themeToggle{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s}
         body.night #themeToggle{border:2px solid #f0c040;background:#FFF8E7}
@@ -180,6 +216,7 @@
             .sidebar-toggle-fixed{left:12px;top:76px;width:42px;height:42px}
             .chapter-banner img{height:200px}
             .chart-container{padding:12px}
+            .quota-ip{margin-left:0;width:100%}
         }
     </style>
 </head>
@@ -200,7 +237,7 @@
             </div>
         </a>
         <div class="flex items-center gap-4">
-            <span class="header-badge">⚡ Groq AI</span>
+            <span class="header-badge">⚡ Groq + 🎨 AI</span>
             <button id="themeToggle"><i data-lucide="sun" width="18"></i></button>
         </div>
     </header>
@@ -220,6 +257,14 @@
             <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 10 AI</span></nav>
             <h1 class="hero-title">Class 10 <span style="color:#f0c040">AI Notes</span></h1>
             <p class="hero-subtitle" id="dynamicSubtitle"></p>
+
+            <!-- 🔒 IP Quota Bar -->
+            <div class="quota-bar">
+                <div class="quota-pill ok" id="quotaAI"><span>⚡ AI লোড হচ্ছে...</span></div>
+                <div class="quota-pill ok" id="quotaImg"><span>🎨 ছবি লোড হচ্ছে...</span></div>
+                <div class="quota-ip" id="quotaIP"></div>
+            </div>
+
             <div class="ai-search-container">
                 <div style="position:relative">
                     <i data-lucide="sparkles" width="20" class="ai-search-icon"></i>
@@ -240,7 +285,7 @@
                     <div style="width:2rem;height:2rem;border-radius:.6rem;overflow:hidden;border:1px solid rgba(240,192,64,0.15)"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" width="32" height="32" style="width:100%;height:100%;object-fit:cover"/></div>
                     <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary)">Mega Quiz AI</span>
                 </div>
-                <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6">Smart Era, Smart Learning. ⚡ Groq AI + Charts + HTML</p>
+                <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6">Smart Era, Smart Learning. ⚡ Groq AI + 🎨 AI Images + 🔒 IP Limit</p>
             </div>
             <div class="footer-col">
                 <h4>Links</h4>
@@ -250,48 +295,30 @@
             </div>
             <div class="footer-col">
                 <h4>Contact</h4>
-
-                <!-- 📧 Gmail — official red #EA4335 -->
                 <a href="mailto:arifbeldanga@gmail.com" class="contact-link">
                     <span class="contact-icon gmail">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19">
-                            <path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
                     </span>
                     arifbeldanga@gmail.com
                 </a>
-
-                <!-- 📸 Instagram — official gradient -->
                 <a href="https://instagram.com/arifhussain.x" target="_blank" class="contact-link">
                     <span class="contact-icon insta">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19">
-                            <defs>
-                                <linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#FFDC80"/>
-                                    <stop offset="25%" stop-color="#F77737"/>
-                                    <stop offset="50%" stop-color="#E1306C"/>
-                                    <stop offset="75%" stop-color="#C13584"/>
-                                    <stop offset="100%" stop-color="#833AB4"/>
-                                </linearGradient>
-                            </defs>
+                            <defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"/><stop offset="25%" stop-color="#F77737"/><stop offset="50%" stop-color="#E1306C"/><stop offset="75%" stop-color="#C13584"/><stop offset="100%" stop-color="#833AB4"/></linearGradient></defs>
                             <path fill="url(#igGradFooter)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                         </svg>
                     </span>
                     arifhussain.x
                 </a>
-
-                <!-- ✈️ Telegram — official blue #229ED9 -->
                 <a href="https://t.me/beldanga1" target="_blank" class="contact-link">
                     <span class="contact-icon tg">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19">
-                            <path fill="#229ED9" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19"><path fill="#229ED9" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                     </span>
                     @beldanga1
                 </a>
             </div>
         </div>
-        <div class="footer-bottom"><span>© 2025 Mega Quiz AI - BY Arif Hussain</span><span>⚡ Groq AI + Chart.js</span><span>❤️ All Rights Reserved</span></div>
+        <div class="footer-bottom"><span>© 2025 Mega Quiz AI - BY Arif Hussain</span><span>⚡ Groq + 🎨 Pollinations + 📊 Chart.js</span><span>❤️ All Rights Reserved</span></div>
     </footer>
 
 <script>
@@ -306,7 +333,79 @@ const GROQ_MODEL="llama-3.3-70b-versatile";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
 
 // ═══════════════════════════════════════════════════════════════
-//  ⚡ AI ENGINE (Groq)
+//  🔒 IP QUOTA MANAGER (প্রতি IP-তে daily limit)
+//  ⚡ AI Explain: ১৫টা/দিন  |  🎨 ছবি: ২০টা/দিন
+//  রাত ১২টায় auto reset
+// ═══════════════════════════════════════════════════════════════
+const QuotaManager={
+    AI_DAILY_LIMIT:15,
+    IMG_DAILY_LIMIT:20,
+    ip:null,
+    data:null,
+    async init(){
+        // IP detect (ipify — free)
+        try{
+            const r=await fetch('https://api.ipify.org?format=json');
+            const d=await r.json();
+            this.ip=d.ip||'unknown';
+        }catch(e){
+            // IP পাওয়া না গেলে device ID ব্যবহার করো
+            let dev=localStorage.getItem('mq_device_id');
+            if(!dev){dev='dev-'+Math.random().toString(36).slice(2,10);localStorage.setItem('mq_device_id',dev)}
+            this.ip=dev;
+        }
+        this.load();
+        this.renderPill();
+    },
+    today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},
+    load(){
+        let data=null;
+        try{data=JSON.parse(localStorage.getItem('mq_quota_v1'))}catch(e){}
+        // নতুন দিন বা নতুন IP → counter reset
+        if(!data||data.date!==this.today()||data.ip!==this.ip){
+            data={ip:this.ip,date:this.today(),ai:0,img:0};
+            localStorage.setItem('mq_quota_v1',JSON.stringify(data));
+        }
+        this.data=data;
+    },
+    save(){localStorage.setItem('mq_quota_v1',JSON.stringify(this.data))},
+    canAI(){return this.data&&this.data.ai<this.AI_DAILY_LIMIT},
+    canImg(){return this.data&&this.data.img<this.IMG_DAILY_LIMIT},
+    useAI(){this.data.ai++;this.save();this.renderPill()},
+    useImg(){this.data.img++;this.save();this.renderPill()},
+    refundImg(){if(this.data.img>0)this.data.img--;this.save();this.renderPill()},
+    aiLeft(){return Math.max(0,this.AI_DAILY_LIMIT-(this.data?this.data.ai:0))},
+    imgLeft(){return Math.max(0,this.IMG_DAILY_LIMIT-(this.data?this.data.img:0))},
+    renderPill(){
+        const aiEl=document.getElementById('quotaAI');
+        const imgEl=document.getElementById('quotaImg');
+        const ipEl=document.getElementById('quotaIP');
+        if(!aiEl||!this.data)return;
+        const aiLeft=this.aiLeft(),imgLeft=this.imgLeft();
+        const aiPct=(aiLeft/this.AI_DAILY_LIMIT)*100;
+        const imgPct=(imgLeft/this.IMG_DAILY_LIMIT)*100;
+        aiEl.className='quota-pill '+(aiLeft===0?'out':aiPct<=30?'low':'ok');
+        aiEl.innerHTML='<div class="fill" style="width:'+aiPct+'%"></div><span>⚡ AI বাকি: '+aiLeft+'/'+this.AI_DAILY_LIMIT+'</span>';
+        imgEl.className='quota-pill '+(imgLeft===0?'out':imgPct<=30?'low':'ok');
+        imgEl.innerHTML='<div class="fill" style="width:'+imgPct+'%"></div><span>🎨 ছবি বাকি: '+imgLeft+'/'+this.IMG_DAILY_LIMIT+'</span>';
+        if(ipEl)ipEl.textContent='🌐 IP: '+this.ip+' • প্রতিদিন রাত ১২টায় reset';
+    }
+};
+
+// ═══════════════════════════════════════════════════════════════
+//  🍞 TOAST NOTIFICATION
+// ═══════════════════════════════════════════════════════════════
+function showToast(msg,type){
+    const t=document.createElement('div');
+    t.className='toast '+(type||'');
+    t.innerHTML=msg;
+    document.body.appendChild(t);
+    requestAnimationFrame(()=>t.classList.add('show'));
+    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),450)},3200);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  ⚡ AI ENGINE (Groq — text) + 🎨 IMAGE ENGINE (Pollinations — free)
 // ═══════════════════════════════════════════════════════════════
 class SmartEngine {
     constructor(){this.cache=new Map();this.chartId=0}
@@ -350,7 +449,7 @@ class SmartEngine {
     _renderText(text){let f=text;f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');f=f.replace(/\*([^*]+)\*/g,'<em>$1</em>');f=f.replace(/^(\d+)[.)]\s+(.+)$/gm,'<li>$2</li>');f=f.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ol style="padding-left:20px;margin:8px 0">$1</ol>');f=f.replace(/^[-•*]\s+(.+)$/gm,'<li>$1</li>');f=f.replace(/\n/g,'<br>');return f}
     _renderChart(syntax){
         const parts=syntax.split(':');const type=(parts[1]||'bar').toLowerCase().trim();const labels=[],values=[];
-        parts.slice(2).forEach(p=>{const[l,v]=p.split(',');if(l&&v){labels.push(l.trim());values.push(parseFloat(v.trim())||0)}});
+        parts.slice(2).forEach(p=>{const kv=p.split(',');if(kv[0]&&kv[1]){labels.push(kv[0].trim());values.push(parseFloat(kv[1].trim())||0)}});
         if(!labels.length)return'<p style="color:var(--text-muted)">⚠️ Invalid chart</p>';
         const cid='chart-'+(++this.chartId)+'-'+Date.now();
         const colors=['#f0c040','#4285F4','#34A853','#EA4335','#a855f7','#06b6d4','#f59e0b','#ec4899','#10b981','#6366f1'];
@@ -393,52 +492,48 @@ window.addEventListener('scroll',()=>{const st=window.scrollY,dh=document.docume
 function setThemeIcon(n){document.getElementById('themeToggle').innerHTML='<i data-lucide="'+n+'" width="18"></i>';lucide.createIcons()}
 document.getElementById('themeToggle').addEventListener('click',()=>{const isN=document.body.classList.contains('night');document.body.classList.remove('night','day');document.body.classList.add(isN?'day':'night');setThemeIcon(isN?'moon':'sun')});
 
-// ─── ✅ FIXED: Mobile + Desktop sidebar toggle ───
-function closeMobileSidebar(){
-    sidebarEl.classList.remove('open');
-    toggleIcon.textContent='☰';
-}
+// ─── Mobile + Desktop sidebar toggle (FIXED) ───
+function closeMobileSidebar(){sidebarEl.classList.remove('open');toggleIcon.textContent='☰'}
 sidebarToggleBtn.addEventListener('click',e=>{
     e.stopPropagation();
     if(window.innerWidth<=768){
-        // 📱 Mobile: .open class toggle করতে হবে
         const willOpen=!sidebarEl.classList.contains('open');
         sidebarEl.classList.toggle('open',willOpen);
         toggleIcon.textContent=willOpen?'✕':'☰';
     }else{
-        // 💻 Desktop: .collapsed class
         const willCollapse=!sidebarEl.classList.contains('collapsed');
         sidebarEl.classList.toggle('collapsed',willCollapse);
         toggleIcon.textContent=willCollapse?'☰':'✕';
     }
 });
-// বাইরে click করলে mobile sidebar বন্ধ হবে
 document.addEventListener('click',e=>{
     if(window.innerWidth<=768){
-        if(!sidebarEl.contains(e.target)&&!sidebarToggleBtn.contains(e.target)){
-            closeMobileSidebar();
-        }
+        if(!sidebarEl.contains(e.target)&&!sidebarToggleBtn.contains(e.target))closeMobileSidebar();
     }
 });
-// Initial icon set
 if(window.innerWidth>768){toggleIcon.textContent='✕'}else{toggleIcon.textContent='☰'}
-
 lucide.createIcons();
 
 // ═══════════════════════════════════════════════════════════════
-//  AI SEARCH
+//  AI SEARCH (quota-checked)
 // ═══════════════════════════════════════════════════════════════
 let searchTimeout;
 aiSearchInput.addEventListener('input',()=>{clearTimeout(searchTimeout);const q=aiSearchInput.value.trim();if(q.length<3){aiSearchResults.innerHTML='';return}searchTimeout=setTimeout(()=>doSearch(q),600)});
 async function doSearch(query){
     if(!allData.length)return;
-    aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted);font-size:.85rem"><span class="ai-typing">⚡ AI খুঁজছে</span></div>';
+    aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted);font-size:.85rem"><span class="ai-typing">⚡ খোঁজা হচ্ছে</span></div>';
     try{
         const local=allData.map((r,i)=>({...r,idx:i,score:fuzzy(query,r.question+' '+r.answer+' '+r.subject+' '+r.chapter)})).filter(r=>r.score>0.2).sort((a,b)=>b.score-a.score).slice(0,8);
         if(local.length>0){renderSR(local,query);return}
-        const aiRes=await engine.smartSearch(query,allData);
-        if(aiRes.length)renderSR(aiRes.map(r=>({...allData[r.index],idx:r.index,score:r.relevance/100,reason:r.reason})),query);
-        else aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">😅 কিছু পাওয়া যায়নি</div>';
+        // Local-এ না পেলে AI search — quota লাগবে
+        if(QuotaManager.canAI()){
+            const aiRes=await engine.smartSearch(query,allData);
+            QuotaManager.useAI();
+            if(aiRes.length)renderSR(aiRes.map(r=>({...allData[r.index],idx:r.index,score:r.relevance/100,reason:r.reason})),query);
+            else aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">😅 কিছু পাওয়া যায়নি</div>';
+        }else{
+            aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">🔒 আজকের AI limit শেষ! আগামীকাল আবার আসো 😊</div>';
+        }
     }catch(e){
         const local=allData.map((r,i)=>({...r,idx:i,score:fuzzy(query,r.question+' '+r.answer)})).filter(r=>r.score>0.1).sort((a,b)=>b.score-a.score).slice(0,5);
         renderSR(local,query);
@@ -495,7 +590,7 @@ function renderSubject(subject){
     if(!subject||!allData.some(r=>r.subject===subject)){subject=[...new Set(allData.map(r=>r.subject))].sort()[0];if(!subject)return}
     currentSubject=subject;currentChapter=null;
     document.querySelectorAll('.subject-item').forEach(el=>el.classList.toggle('active',el.dataset.subject===subject));
-    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন | ⚡ AI Engine';
+    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন | ⚡ AI + 🎨 ছবি';
     renderChapterList(subject);
     const ch=getChapters(subject);
     if(ch.length)renderChapter(subject,ch[0]);
@@ -538,7 +633,7 @@ function renderChapter(subject,chapter){
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  QUESTION RENDERER
+//  QUESTION RENDERER (⚡ Explain + 🎨 ছবি buttons)
 // ═══════════════════════════════════════════════════════════════
 function renderQGroup(rows,label){
     let html='<div class="section-header"><div class="section-icon icon-saq"><i data-lucide="help-circle" width="20"></i></div><h2>'+label+'</h2><span class="badge-count">'+rows.length+' টি</span></div>';
@@ -548,23 +643,39 @@ function renderQGroup(rows,label){
         const smartA=engine.render(rawA);
         const img=r.image?r.image.trim():'';
         const cid='card-'+Date.now()+'-'+i+'-'+Math.random().toString(36).slice(2,6);
-        html+='<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>'+(img?'<img src="'+img+'" class="question-image" loading="lazy"/>':'')+'<div class="a">'+smartA+'</div><button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(q)+'" data-a="'+encodeURIComponent(rawA)+'"><i data-lucide="sparkles" width="14"></i> AI Explain</button><div id="ai-panel-'+cid+'"></div></div>';
+        html+='<div class="question-card" id="'+cid+'">'
+            +'<div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>'
+            +(img?'<img src="'+img+'" class="question-image" loading="lazy"/>':'')
+            +'<div class="a">'+smartA+'</div>'
+            +'<div class="btn-row">'
+            +'<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(q)+'" data-a="'+encodeURIComponent(rawA)+'"><i data-lucide="sparkles" width="14"></i> AI Explain</button>'
+            +'<button class="ai-btn img-btn" onclick="getAIImage(\''+cid+'\',this)" data-q="'+encodeURIComponent(q)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'">🎨 AI ছবি</button>'
+            +'</div>'
+            +'<div id="ai-panel-'+cid+'"></div>'
+            +'<div id="img-panel-'+cid+'"></div>'
+            +'</div>';
     });
     return html;
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  AI EXPLANATION
+//  ⚡ AI EXPLANATION (Groq — quota-checked)
 // ═══════════════════════════════════════════════════════════════
 async function getAIExp(cardId,btn){
     const panel=document.getElementById('ai-panel-'+cardId);
     if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="sparkles" width="14"></i> AI Explain';lucide.createIcons();return}
+    // 🔒 Quota check
+    if(!QuotaManager.canAI()){
+        showToast('🔒 আজকের AI limit শেষ! আগামীকাল আবার আসো 😊','err');
+        return;
+    }
     const q=decodeURIComponent(btn.dataset.q);
     const a=decodeURIComponent(btn.dataset.a);
     btn.classList.add('loading');
     btn.innerHTML='<span class="spinner"></span> AI ভাবছে...';
     try{
         const exp=await engine.explain(q,a);
+        QuotaManager.useAI();
         panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge">⚡ Groq Llama 3.3 70B</span></div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
         btn.classList.remove('loading');
         btn.innerHTML='<i data-lucide="check" width="14"></i> AI ✓';
@@ -577,10 +688,60 @@ async function getAIExp(cardId,btn){
 }
 
 // ═══════════════════════════════════════════════════════════════
+//  🎨 AI IMAGE (Pollinations — 100% FREE, Groq limit ছোঁয় না!)
+//  Prompt locally বানানো হয় → extra AI cost ZERO
+// ═══════════════════════════════════════════════════════════════
+function getAIImage(cardId,btn){
+    const panel=document.getElementById('img-panel-'+cardId);
+    // Toggle off
+    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='🎨 AI ছবি';return}
+    // 🔒 Quota check
+    if(!QuotaManager.canImg()){
+        showToast('🔒 আজকের ছবির limit শেষ! আগামীকাল আসো 😊','err');
+        return;
+    }
+    const q=decodeURIComponent(btn.dataset.q);
+    const subj=decodeURIComponent(btn.dataset.subject||'');
+    const chap=decodeURIComponent(btn.dataset.chapter||'');
+    const seed=Math.floor(Math.random()*999999);
+    // Local prompt — কোনো extra AI call নেই!
+    const prompt='Educational textbook illustration for Class 10 '+subj+', chapter '+chap+'. Topic: '+q+'. Clean colorful flat vector diagram style, simple shapes, glowing dark background, helpful study illustration, no text, no letters, no numbers, no words';
+    const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=768&height=512&seed='+seed+'&nologo=true';
+    QuotaManager.useImg();
+    btn.classList.add('loading');
+    btn.innerHTML='<span class="spinner" style="border-color:rgba(168,85,247,.3);border-top-color:#a855f7"></span> আঁকছে...';
+    const uid='imgload-'+Date.now();
+    panel.innerHTML='<div class="img-panel"><div class="img-loading" id="'+uid+'"><div class="img-shimmer-box"></div><p>🎨 AI ছবি আঁকছে... ১০-২০ সেকেন্ড লাগতে পারে</p></div></div>';
+    const im=new Image();
+    im.onload=function(){
+        const ld=document.getElementById(uid);
+        if(ld)ld.remove();
+        panel.innerHTML='<div class="img-panel">'
+            +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">'
+            +'<span class="img-badge">🎨 AI Generated</span>'
+            +'<span style="font-size:.68rem;color:var(--text-muted);font-family:Space Grotesk,sans-serif">FREE • Groq limit খরচ হয়নি ✓</span>'
+            +'</div>'
+            +'<img src="'+url+'" alt="AI illustration" style="width:100%;border-radius:12px;display:block;animation:imgReveal .9s ease"/>'
+            +'</div>';
+        btn.classList.remove('loading');
+        btn.innerHTML='🎨 ছবি ✓';
+        showToast('🎨 ছবি তৈরি হয়ে গেছে!','okk');
+    };
+    im.onerror=function(){
+        QuotaManager.refundImg();
+        panel.innerHTML='<div class="img-panel" style="border-color:rgba(244,63,94,.3)"><p style="color:#fda4af;font-size:.9rem">⚠️ ছবি বানানো যায়নি। আবার চেষ্টা করো।</p></div>';
+        btn.classList.remove('loading');
+        btn.innerHTML='🎨 Retry';
+    };
+    im.src=url;
+}
+
+// ═══════════════════════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════════════════════
+QuotaManager.init();
 loadSheet();
-console.log('✅ Mega Quiz AI — Groq AI + Chart.js Loaded');
+console.log('✅ Mega Quiz AI — Groq + Pollinations + IP Quota Loaded');
 </script>
 </body>
 </html>
