@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 10 Notes | Mega Quiz</title>
+    <title>Class 10 Notes | Mega Quiz AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -21,8 +21,10 @@
         body.day ::-webkit-scrollbar-thumb{background:rgba(180,130,50,0.3)}
         body{font-family:'Noto Serif Bengali','Inter',sans-serif;min-height:100vh;overflow-x:hidden;font-size:18px;line-height:1.8;transition:background .4s,color .4s}
         body.night{--bg-base:#06060f;--bg-card:rgba(20,20,46,0.4);--bg-card-hover:rgba(26,26,62,0.5);--bg-sidebar:rgba(10,10,26,0.4);--bg-header:rgba(6,6,15,0.7);--bg-footer:rgba(6,6,15,0.8);--text-primary:#e8e8f0;--text-secondary:rgba(255,255,255,0.45);--text-muted:rgba(255,255,255,0.25);--accent:#f0c040;--accent-dim:rgba(240,192,64,0.08);--border:rgba(255,255,255,0.04);--shadow-card:0 2px 8px rgba(0,0,0,0.4);--q-color:#f0c040;--a-color:rgba(255,255,255,0.85);--ai-glow:rgba(249,115,22,0.08);--ai-border:rgba(249,115,22,0.3);--chart-bg:rgba(20,20,46,0.6)}
-        body.day{--bg-base:#FFF8E7;--bg-card:#FFFDF5;--bg-card-hover:#FFF9E6;--bg-sidebar:#FFFCF0;--bg-header:rgba(255,248,231,0.92);--bg-footer:#FFFCF0;--text-primary:#1A1A1A;--text-secondary:#2C2C2C;--text-muted:#3D3D3D;--accent:#B8860B;--accent-dim:rgba(184,134,11,0.08);--border:#E6D5B8;--shadow-card:0 1px 4px rgba(0,0,0,0.06);--q-color:#1A1A1A;--a-color:#1A1A1A;--ai-glow:rgba(249,115,22,0.05);--ai-border:rgba(249,115,22,0.2);--chart-bg:#FFFDF5}
+        /* ☀️ DAY MODE — সব text PURE BLACK */
+        body.day{--bg-base:#FFF8E7;--bg-card:#FFFDF5;--bg-card-hover:#FFF9E6;--bg-sidebar:#FFFCF0;--bg-header:rgba(255,248,231,0.92);--bg-footer:#FFFCF0;--text-primary:#000000;--text-secondary:#050505;--text-muted:#111111;--accent:#B8860B;--accent-dim:rgba(184,134,11,0.08);--border:#E6D5B8;--shadow-card:0 1px 4px rgba(0,0,0,0.06);--q-color:#000000;--a-color:#000000;--ai-glow:rgba(249,115,22,0.05);--ai-border:rgba(249,115,22,0.2);--chart-bg:#FFFDF5}
         body{background:var(--bg-base);color:var(--text-primary)}
+        body.day .ai-search-input::placeholder,body.day .search-bar input::placeholder{color:#333}
         .universe-bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(66,133,244,0.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(6,182,212,0.05) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(240,192,64,0.03) 0%,transparent 70%),#06060f}
         body.day .universe-bg{background:radial-gradient(ellipse at 20% 20%,rgba(184,134,11,0.04) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(184,134,11,0.03) 0%,transparent 50%),#FFF8E7}
         .stars,.shooting-star{position:fixed;inset:0;z-index:0;pointer-events:none}
@@ -67,7 +69,7 @@
         .breadcrumb .sep{opacity:.3;font-size:.7rem}
         .breadcrumb .current{color:var(--accent);font-weight:700}
         .hero-title{font-family:'Noto Serif Bengali',serif;font-size:clamp(3rem,8vw,6rem);font-weight:900;line-height:1.05;margin-bottom:.4rem;background:linear-gradient(135deg,#ffffff 0%,#f0c040 30%,#f59e0b 60%,#f0c040 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 20px rgba(240,192,64,0.25))}
-        body.day .hero-title{background:linear-gradient(135deg,#2C2C2C 0%,#8B6508 40%,#B8860B 80%,#5C4A0A 100%);-webkit-background-clip:text;background-clip:text;filter:none}
+        body.day .hero-title{background:linear-gradient(135deg,#000000 0%,#5C4A0A 40%,#8B6508 80%,#000000 100%);-webkit-background-clip:text;background-clip:text;filter:none}
         .hero-subtitle{font-size:1.05rem;line-height:1.7;margin-bottom:1.2rem;color:var(--text-secondary);max-width:650px}
         .quota-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:1.6rem}
         .quota-pill{position:relative;display:inline-flex;align-items:center;padding:8px 18px;border-radius:24px;font-family:'Space Grotesk',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.03em;border:1px solid var(--border);background:var(--bg-card);overflow:hidden;transition:all .4s;cursor:default}
@@ -86,7 +88,7 @@
         .toast.show{transform:translate(-50%,0);opacity:1}
         .toast.err{border-color:rgba(244,63,94,0.45);color:#fda4af}
         .toast.okk{border-color:rgba(52,168,83,0.45);color:#86efac}
-        body.day .toast{background:#FFFDF5;box-shadow:0 12px 40px rgba(0,0,0,0.14);color:#1A1A1A}
+        body.day .toast{background:#FFFDF5;box-shadow:0 12px 40px rgba(0,0,0,0.14);color:#000}
         body.day .toast.err{color:#e11d48}
         .chapter-banner{position:relative;width:100%;max-height:380px;border-radius:20px;overflow:hidden;margin-bottom:2rem;border:1px solid var(--border);box-shadow:0 8px 40px rgba(0,0,0,0.3)}
         body.day .chapter-banner{box-shadow:0 8px 20px rgba(184,134,11,0.08);border:1px solid #E6D5B8}
@@ -96,12 +98,40 @@
         body.day .chapter-banner::after{background:linear-gradient(180deg,transparent 30%,#FFF8E7 100%)}
         .chapter-banner-text{position:absolute;bottom:28px;left:32px;z-index:2}
         .chapter-banner-text h3{font-family:'Noto Serif Bengali',serif;font-size:2rem;font-weight:800;color:#fff;text-shadow:0 4px 30px rgba(0,0,0,0.6)}
-        .banner-subtitle{font-family:'Space Grotesk',sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:rgba(255,255,255,0.7);margin-top:4px}
-        .toggle-group{display:inline-flex;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:5px;margin-bottom:2rem}
+        .banner-subtitle{font-family:'Space Grotesk',sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:rgba(255,255,255,0.75);margin-top:4px}
+        .toggle-group{display:inline-flex;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:5px;margin-bottom:1.4rem}
         body.day .toggle-group{background:#FFF9E6;border:1px solid #E6D5B8}
         .type-btn{padding:.7rem 2rem;border-radius:12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;border:none;background:transparent;color:var(--text-muted);transition:all .3s;display:flex;align-items:center;gap:8px}
         .type-btn.active{color:#06060f;background:rgba(255,255,255,0.8);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
-        body.day .type-btn.active{color:#1A1A1A;background:#FFF5D6;border:1px solid #B8860B}
+        body.day .type-btn.active{color:#000;background:#FFF5D6;border:1px solid #B8860B}
+
+        /* ─── 📂 TOPIC TREE ─── */
+        .tree-controls{display:flex;align-items:center;gap:10px;margin-bottom:1.3rem;flex-wrap:wrap}
+        .tree-ctrl-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.75rem;border:1px solid var(--border);background:var(--bg-card);color:var(--text-secondary);transition:all .3s}
+        .tree-ctrl-btn:hover{border-color:rgba(240,192,64,0.45);color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(240,192,64,0.12)}
+        .tree-info{font-family:'Space Grotesk',sans-serif;font-size:.72rem;color:var(--text-muted);margin-left:auto;font-weight:700;letter-spacing:.04em}
+        .topic-block{margin-bottom:14px;border:1px solid var(--border);border-radius:16px;background:var(--bg-card);overflow:hidden;transition:border-color .35s,box-shadow .35s;box-shadow:var(--shadow-card)}
+        .topic-block:hover{border-color:rgba(240,192,64,0.18)}
+        .topic-block.open{border-color:rgba(240,192,64,0.28)}
+        body.day .topic-block.open{border-color:rgba(184,134,11,0.35)}
+        .topic-head{display:flex;align-items:center;gap:14px;padding:15px 20px;cursor:pointer;user-select:none;transition:background .25s}
+        .topic-head:hover{background:var(--accent-dim)}
+        .topic-num{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;border-radius:9px;font-weight:800;font-size:.78rem;font-family:'Space Grotesk',sans-serif;color:#06060f;background:linear-gradient(135deg,#f0c040,#f59e0b);box-shadow:0 3px 14px rgba(240,192,64,0.3);flex-shrink:0;transition:transform .3s}
+        .topic-head:hover .topic-num{transform:scale(1.1) rotate(-4deg)}
+        body.day .topic-num{background:linear-gradient(135deg,#B8860B,#8B6508);color:#fff}
+        .topic-name{font-family:'Noto Serif Bengali',serif;font-weight:700;font-size:1.08rem;color:var(--text-primary);flex:1;line-height:1.5}
+        .topic-count{font-family:'Space Grotesk',sans-serif;font-size:.68rem;font-weight:700;padding:4px 12px;border-radius:16px;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(240,192,64,0.18);flex-shrink:0}
+        body.day .topic-count{color:#8B6508;border-color:rgba(184,134,11,0.25)}
+        .topic-chev{color:var(--text-muted);transition:transform .4s cubic-bezier(.4,0,.2,1),color .3s;flex-shrink:0}
+        .topic-block.open .topic-chev{transform:rotate(180deg);color:var(--accent)}
+        .topic-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.4,0,.2,1)}
+        .topic-block.open .topic-body{grid-template-rows:1fr}
+        .topic-body-inner{overflow:hidden;min-height:0}
+        .topic-questions{padding:16px 18px 8px;position:relative}
+        .topic-questions::before{content:'';position:absolute;left:35px;top:20px;bottom:20px;width:2px;background:linear-gradient(180deg,rgba(240,192,64,0.45),rgba(240,192,64,0.04));border-radius:2px}
+        body.day .topic-questions::before{background:linear-gradient(180deg,rgba(184,134,11,0.4),rgba(184,134,11,0.04))}
+        .topic-questions .question-card{margin-left:34px}
+
         .section-header{display:flex;align-items:center;gap:16px;margin-bottom:2rem;padding-bottom:16px;border-bottom:1px solid var(--border)}
         .section-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
         .icon-saq{background:linear-gradient(135deg,#06b6d4,#0891b2)}
@@ -118,12 +148,12 @@
         .smart-table-wrapper{overflow-x:auto;margin:12px 0;border-radius:12px;border:1px solid var(--border)}
         .smart-table{border-collapse:collapse;width:100%;font-size:.9rem;font-family:'Inter',sans-serif}
         .smart-table th{background:var(--accent-dim);font-weight:700;padding:12px 16px;text-align:left;border:1px solid var(--border);color:var(--accent);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+        body.day .smart-table th{color:#8B6508}
         .smart-table td{padding:10px 16px;border:1px solid var(--border);color:var(--text-primary)}
         .smart-table tr:hover td{background:var(--accent-dim)}
         .chart-container{position:relative;width:100%;max-width:600px;margin:16px auto;padding:20px;border-radius:16px;background:var(--chart-bg);border:1px solid var(--border);box-shadow:var(--shadow-card)}
         .chart-container canvas{max-height:350px}
         .chart-label{font-family:'Space Grotesk',sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);text-align:center;margin-bottom:12px}
-        /* ─── 🖼️ HTML/Animation/Media Block ─── */
         .html-content-block{margin:14px 0;padding:16px;border-radius:14px;border:1px solid rgba(168,85,247,0.2);background:var(--bg-card);overflow:hidden;position:relative;transition:border-color .3s}
         .html-content-block:hover{border-color:rgba(168,85,247,0.4)}
         .html-content-block::after{content:'⚡ RICH CONTENT';position:absolute;top:8px;right:10px;font-family:'Space Grotesk',sans-serif;font-size:.5rem;font-weight:700;letter-spacing:.15em;color:rgba(168,85,247,0.5);pointer-events:none}
@@ -179,7 +209,7 @@
         #themeToggle{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s}
         body.night #themeToggle{border:2px solid #f0c040;background:#FFF8E7}
         body.night #themeToggle svg{stroke:#f0c040!important}
-        body.day #themeToggle{border:2px solid #1A1A1A;background:#1A1A2E}
+        body.day #themeToggle{border:2px solid #000;background:#1A1A2E}
         body.day #themeToggle svg{stroke:#f0c040!important}
         #themeToggle:hover{transform:scale(1.1)}
         .search-bar{display:flex;align-items:center;gap:10px;padding:0 16px;height:42px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--text-muted);font-size:.85rem;transition:.3s;margin-bottom:1rem}
@@ -207,6 +237,10 @@
             .chapter-banner img{height:200px}
             .chart-container{padding:12px}
             .quota-ip{margin-left:0;width:100%}
+            .topic-questions{padding:12px 10px 6px}
+            .topic-questions::before{display:none}
+            .topic-questions .question-card{margin-left:0}
+            .topic-head{padding:13px 14px;gap:10px}
         }
     </style>
 </head>
@@ -227,7 +261,7 @@
             </div>
         </a>
         <div class="flex items-center gap-4">
-            <span class="header-badge">By Arif Hussain</span>
+            <span class="header-badge">🧑‍🏫 Teacher AI</span>
             <button id="themeToggle"><i data-lucide="sun" width="18"></i></button>
         </div>
     </header>
@@ -244,7 +278,7 @@
             </div>
         </aside>
         <div class="content-scroll" id="contentScroll">
-            <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 10</span></nav>
+            <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 10 AI</span></nav>
             <h1 class="hero-title">Class 10 <span style="color:#f0c040">AI Notes</span></h1>
             <p class="hero-subtitle" id="dynamicSubtitle"></p>
             <div class="quota-bar">
@@ -269,9 +303,9 @@
             <div class="footer-col">
                 <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.8rem">
                     <div style="width:2rem;height:2rem;border-radius:.6rem;overflow:hidden;border:1px solid rgba(240,192,64,0.15)"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" width="32" height="32" style="width:100%;height:100%;object-fit:cover"/></div>
-                    <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary)">Mega Quiz</span>
+                    <span style="font-weight:800;font-size:1rem;font-family:'Space Grotesk',sans-serif;color:var(--text-primary)">Mega Quiz AI</span>
                 </div>
-                <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6">Smart Era, Smart Learning.</p>
+                <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6">Smart Era, Smart Learning. 🧑‍🏫 Teacher AI + 📂 Topic Tree + 📊 Charts</p>
             </div>
             <div class="footer-col">
                 <h4>Links</h4>
@@ -304,7 +338,7 @@
                 </a>
             </div>
         </div>
-        <div class="footer-bottom"><span>© 2025 Mega Quiz - BY Arif Hussain</span><span>🦥 Thank You</span><span>❤️ All Rights Reserved</span></div>
+        <div class="footer-bottom"><span>© 2025 Mega Quiz AI - BY Arif Hussain</span><span>🧑‍🏫 Groq AI + 📊 Chart.js</span><span>❤️ All Rights Reserved</span></div>
     </footer>
 
 <script>
@@ -319,10 +353,10 @@ const GROQ_MODEL="llama-3.3-70b-versatile";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
 
 // ═══════════════════════════════════════════════════════════════
-//  🔒 IP QUOTA (প্রতি IP-তে দিনে 50টা AI request)
+//  🔒 IP QUOTA
 // ═══════════════════════════════════════════════════════════════
 const QuotaManager={
-    AI_DAILY_LIMIT:50,
+    AI_DAILY_LIMIT:15,
     ip:null,data:null,
     async init(){
         try{const r=await fetch('https://api.ipify.org?format=json');const d=await r.json();this.ip=d.ip||'unknown'}
@@ -349,9 +383,6 @@ const QuotaManager={
     }
 };
 
-// ═══════════════════════════════════════════════════════════════
-//  🍞 TOAST
-// ═══════════════════════════════════════════════════════════════
 function showToast(msg,type){
     const t=document.createElement('div');t.className='toast '+(type||'');t.innerHTML=msg;document.body.appendChild(t);
     requestAnimationFrame(()=>t.classList.add('show'));
@@ -359,7 +390,7 @@ function showToast(msg,type){
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  🧠 প্রশ্নের টাইপ চেনা — পার্থক্য/ছক হলে সংক্ষিপ্ত উত্তর
+//  🧠 প্রশ্নের টাইপ চেনা
 // ═══════════════════════════════════════════════════════════════
 function questionType(q){
     const t=(q||'').toLowerCase();
@@ -369,7 +400,7 @@ function questionType(q){
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  🧑‍🏫 AI ENGINE — Teacher Mode + Quick Mode
+//  🧑‍🏫 AI ENGINE
 // ═══════════════════════════════════════════════════════════════
 class SmartEngine {
     constructor(){this.cache=new Map();this.chartId=0}
@@ -384,9 +415,6 @@ class SmartEngine {
             this.cache.set(key,t);return t;
         }catch(e){console.error('AI Error:',e);throw e}
     }
-
-    // 🧑‍🏫 Teacher Mode — উদাহরণসহ, শিক্ষকের ভাষায়
-    // ⚡ Quick Mode — পার্থক্য/ছক টাইপ, শুধু মূল পয়েন্ট
     async explain(q,a){
         const type=questionType(q);
         if(type==='quick'){
@@ -405,19 +433,14 @@ class SmartEngine {
             'প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসুন্দর করে বুঝিয়ে দাও:'
         );
     }
-
     async smartSearch(query,questions){
         const ql=questions.slice(0,60).map((r,i)=>i+'. ['+r.subject+'/'+r.chapter+'] '+r.question).join('\n');
         const res=await this.callAI('Smart search engine। শুধু JSON array: [{"index":0,"reason":"...","relevance":95}] Max 5। শুধু JSON।','Query: "'+query+'"\n\nQuestions:\n'+ql);
         try{return JSON.parse(res.replace(/```json?\n?/g,'').replace(/```/g,'').trim())}catch{return[]}
     }
-
-    // ═══════════════════════════════════════════════════════════
-    //  🖼️ SMART RENDERER — HTML + Animation + PNG/WEBP + Video
-    // ═══════════════════════════════════════════════════════════
+    // 🖼️ SMART RENDERER — HTML + Animation + PNG/WEBP + Video
     render(text){
         if(!text)return'';
-        // 🎬 পুরো HTML document (<!DOCTYPE বা <html) → iframe-এ perfect animation
         if(/<!doctype\s+html|<html[\s>]/i.test(text)){
             return '<div class="html-content-block" style="padding:8px"><iframe srcdoc="'+this._escAttr(text)+'" style="width:100%;min-height:380px;border:none;border-radius:10px;background:#ffffff" loading="lazy"></iframe></div>';
         }
@@ -449,7 +472,6 @@ class SmartEngine {
         f=f.replace(/^(\d+)[.)]\s+(.+)$/gm,'<li>$2</li>');
         f=f.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ol style="padding-left:20px;margin:8px 0">$1</ol>');
         f=f.replace(/^[-•*]\s+(.+)$/gm,'<li>$1</li>');
-        // লেখার মাঝখানে ছবির link থাকলে ছবি দেখাও (.png .webp সব)
         f=f.replace(/(https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?)/gi,'<img src="$1" style="max-width:100%;border-radius:10px;margin:10px 0;display:block" loading="lazy"/>');
         f=f.replace(/\n/g,'<br>');
         return f;
@@ -464,7 +486,7 @@ class SmartEngine {
         setTimeout(()=>{
             const c=document.getElementById(cid);if(!c)return;
             const isDark=document.body.classList.contains('night');
-            new Chart(c.getContext('2d'),{type:type==='doughnut'?'doughnut':type==='radar'?'radar':type,data:{labels,datasets:[{label:'Data',data:values,backgroundColor:type==='line'?'rgba(240,192,64,0.1)':bg.map(x=>x+'33'),borderColor:type==='line'?'#f0c040':bg,borderWidth:2,fill:type==='line',tension:0.4,pointBackgroundColor:bg,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:type!=='line',labels:{color:isDark?'#e8e8f0':'#1A1A1A',font:{family:'Inter',size:12}}}},scales:type==='pie'||type==='doughnut'||type==='radar'?{}:{x:{ticks:{color:isDark?'rgba(255,255,255,0.5)':'#3D3D3D'},grid:{color:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'}},y:{ticks:{color:isDark?'rgba(255,255,255,0.5)':'#3D3D3D'},grid:{color:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'}}}}});
+            new Chart(c.getContext('2d'),{type:type==='doughnut'?'doughnut':type==='radar'?'radar':type,data:{labels,datasets:[{label:'Data',data:values,backgroundColor:type==='line'?'rgba(240,192,64,0.1)':bg.map(x=>x+'33'),borderColor:type==='line'?'#f0c040':bg,borderWidth:2,fill:type==='line',tension:0.4,pointBackgroundColor:bg,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:type!=='line',labels:{color:isDark?'#e8e8f0':'#000',font:{family:'Inter',size:12}}}},scales:type==='pie'||type==='doughnut'||type==='radar'?{}:{x:{ticks:{color:isDark?'rgba(255,255,255,0.5)':'#000'},grid:{color:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.06)'}},y:{ticks:{color:isDark?'rgba(255,255,255,0.5)':'#000'},grid:{color:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.06)'}}}}});
         },100);
         return '<div class="chart-container"><div class="chart-label">📊 '+type.toUpperCase()+' CHART</div><canvas id="'+cid+'"></canvas></div>';
     }
@@ -549,7 +571,7 @@ function renderSR(results,query){
     aiSearchResults.innerHTML=results.map(r=>'<div class="ai-search-result-item" onclick="jumpTo('+r.idx+')"><div style="font-size:.7rem;color:#f97316;font-family:Space Grotesk,sans-serif;margin-bottom:4px">'+r.subject+' › '+r.chapter+(r.reason?' • '+r.reason:'')+'</div><div style="font-size:.95rem;font-weight:600;color:var(--text-primary)">'+hl(r.question,query)+'</div></div>').join('');
 }
 function hl(t,q){const w=q.split(/\s+/).filter(x=>x.length>1);let r=t;w.forEach(x=>{r=r.replace(new RegExp('('+x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="highlight-match">$1</span>')});return r}
-function jumpTo(idx){const item=allData[idx];if(item){renderSubject(item.subject);setTimeout(()=>renderChapter(item.subject,item.chapter),150);aiSearchResults.innerHTML='';aiSearchInput.value=''}}
+function jumpTo(idx){const item=allData[idx];if(item){renderSubject(item.subject);setTimeout(()=>renderChapter(item.subject,item.chapter,true),150);aiSearchResults.innerHTML='';aiSearchInput.value=''}}
 
 // ═══════════════════════════════════════════════════════════════
 //  DATA LOADER
@@ -594,7 +616,7 @@ function renderSubject(subject){
     if(!subject||!allData.some(r=>r.subject===subject)){subject=[...new Set(allData.map(r=>r.subject))].sort()[0];if(!subject)return}
     currentSubject=subject;currentChapter=null;
     document.querySelectorAll('.subject-item').forEach(el=>el.classList.toggle('active',el.dataset.subject===subject));
-    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন | ';
+    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন | 🧑‍🏫 Teacher AI';
     renderChapterList(subject);
     const ch=getChapters(subject);
     if(ch.length)renderChapter(subject,ch[0]);
@@ -611,16 +633,32 @@ function renderChapterList(subject,filter){
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  RENDER CHAPTER
+//  📂 TOPIC GROUPING — sheet-এর topic অনুযায়ী tree
 // ═══════════════════════════════════════════════════════════════
-function renderChapter(subject,chapter){
+function groupByTopic(rows){
+    const m=new Map();
+    rows.forEach(r=>{
+        const t=(r.topic&&r.topic.trim())||'সাধারণ প্রশ্ন';
+        if(!m.has(t))m.set(t,[]);
+        m.get(t).push(r);
+    });
+    return [...m.entries()];
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  RENDER CHAPTER (Topic Tree সহ)
+// ═══════════════════════════════════════════════════════════════
+function renderChapter(subject,chapter,expandAll){
     currentChapter=chapter;
     const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
     document.querySelectorAll('.chapter-item').forEach(el=>el.classList.toggle('active',el.dataset.chapter===chapter));
     if(!rows.length){dynamicContent.innerHTML='<div class="empty-state"><p>এই চ্যাপ্টারে প্রশ্ন নেই।</p></div>';return}
     const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
     const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
-    dynamicContent.innerHTML='<div class="chapter-banner"><img src="https://picsum.photos/seed/'+encodeURIComponent(chapter)+'/1200/380" alt="'+chapter+'" loading="lazy"/><div class="chapter-banner-text"><h3>'+chapter+'</h3><div class="banner-subtitle">'+subject+' • '+rows.length+' টি প্রশ্ন</div></div></div><div class="toggle-group"><button class="type-btn active" data-type="all">📚 সব ('+rows.length+')</button><button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত ('+saq.length+')</button><button class="type-btn" data-type="broad">📝 ব্যাখ্যামূলক ('+broad.length+')</button></div><div id="questionContainer">'+renderQGroup(rows,'সকল প্রশ্ন')+'</div>';
+    const topicCount=groupByTopic(rows).length;
+    dynamicContent.innerHTML='<div class="chapter-banner"><img src="https://picsum.photos/seed/'+encodeURIComponent(chapter)+'/1200/380" alt="'+chapter+'" loading="lazy"/><div class="chapter-banner-text"><h3>'+chapter+'</h3><div class="banner-subtitle">'+subject+' • '+rows.length+' টি প্রশ্ন • '+topicCount+' টি টপিক</div></div></div>'
+        +'<div class="toggle-group"><button class="type-btn active" data-type="all">📚 সব ('+rows.length+')</button><button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত ('+saq.length+')</button><button class="type-btn" data-type="broad">📝 ব্যাখ্যামূলক ('+broad.length+')</button></div>'
+        +'<div id="questionContainer">'+renderTopics(rows,expandAll)+'</div>';
     lucide.createIcons();
     if(window.innerWidth<=768)closeMobileSidebar();
     document.querySelectorAll('.type-btn').forEach(btn=>{
@@ -628,23 +666,48 @@ function renderChapter(subject,chapter){
             document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
             this.classList.add('active');
             const t=this.dataset.type,c=document.getElementById('questionContainer');
-            let f=rows,l='সকল প্রশ্ন';
-            if(t==='saq'){f=saq;l='সংক্ষিপ্ত'}else if(t==='broad'){f=broad;l='ব্যাখ্যামূলক'}
-            c.innerHTML=f.length?renderQGroup(f,l):'<div class="empty-state" style="padding:2rem"><p>😅 নেই</p></div>';
+            let f=rows;
+            if(t==='saq')f=saq;else if(t==='broad')f=broad;
+            c.innerHTML=f.length?renderTopics(f,true):'<div class="empty-state" style="padding:2rem"><p>😅 এই ধরনের প্রশ্ন নেই</p></div>';
             lucide.createIcons();
         });
     });
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  QUESTION RENDERER — প্রশ্নের ভেতরের ছবিও দেখাবে
-// ═══════════════════════════════════════════════════════════════
+// ─── Topic Tree Render ───
+function renderTopics(rows,expandAll){
+    const topics=groupByTopic(rows);
+    let html='<div class="tree-controls">'
+        +'<button class="tree-ctrl-btn" onclick="toggleAllTopics(true)"><i data-lucide="chevrons-down" width="14"></i> সব খোলো</button>'
+        +'<button class="tree-ctrl-btn" onclick="toggleAllTopics(false)"><i data-lucide="chevrons-up" width="14"></i> সব বন্ধ</button>'
+        +'<span class="tree-info">📂 '+topics.length+' টি টপিক</span>'
+        +'</div>';
+    topics.forEach((entry,ti)=>{
+        const topicName=entry[0],tRows=entry[1];
+        const isOpen=(expandAll||ti===0)?' open':'';
+        html+='<div class="topic-block'+isOpen+'">'
+            +'<div class="topic-head" onclick="toggleTopic(this)">'
+            +'<span class="topic-num">'+(ti+1)+'</span>'
+            +'<span class="topic-name">'+topicName+'</span>'
+            +'<span class="topic-count">'+tRows.length+' টি প্রশ্ন</span>'
+            +'<i data-lucide="chevron-down" width="18" class="topic-chev"></i>'
+            +'</div>'
+            +'<div class="topic-body"><div class="topic-body-inner"><div class="topic-questions">'
+            +renderQuestions(tRows)
+            +'</div></div></div></div>';
+    });
+    return html;
+}
+
+function toggleTopic(headEl){headEl.parentElement.classList.toggle('open')}
+function toggleAllTopics(open){document.querySelectorAll('.topic-block').forEach(b=>b.classList.toggle('open',open))}
+
+// ─── Question Cards ───
 const IMG_URL_RE=/https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?/gi;
-function renderQGroup(rows,label){
-    let html='<div class="section-header"><div class="section-icon icon-saq"><i data-lucide="help-circle" width="20"></i></div><h2>'+label+'</h2><span class="badge-count">'+rows.length+' টি</span></div>';
+function renderQuestions(rows){
+    let html='';
     rows.forEach((r,i)=>{
         const rawQ=r.question||'(প্রশ্ন নেই)';
-        // প্রশ্নের text-এ ছবির link থাকলে আলাদা করে ছবি দেখাও
         const qImgs=rawQ.match(IMG_URL_RE)||[];
         const q=rawQ.replace(IMG_URL_RE,'').trim()||'(প্রশ্ন নেই)';
         const rawA=r.answer||'(উত্তর নেই)';
@@ -657,7 +720,7 @@ function renderQGroup(rows,label){
             +'<div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>'
             +allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('')
             +'<div class="a">'+smartA+'</div>'
-            +'<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button>'
+            +'<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'"><i data-lucide="graduation-cap" width="14"></i> শিক্ষকের মতো বুঝিয়ে দাও</button>'
             +'<div id="ai-panel-'+cid+'"></div>'
             +'</div>';
     });
@@ -665,11 +728,11 @@ function renderQGroup(rows,label){
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  🧑‍🏫 AI EXPLANATION (auto mode detect)
+//  🧑‍🏫 AI EXPLANATION
 // ═══════════════════════════════════════════════════════════════
 async function getAIExp(cardId,btn){
     const panel=document.getElementById('ai-panel-'+cardId);
-    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="graduation-cap" width="14"></i> AI Explanation';lucide.createIcons();return}
+    if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="graduation-cap" width="14"></i> শিক্ষকের মতো বুঝিয়ে দাও';lucide.createIcons();return}
     if(!QuotaManager.canAI()){
         showToast('🔒 আজকের AI limit শেষ! আগামীকাল আবার আসো 😊','err');
         return;
@@ -678,17 +741,17 @@ async function getAIExp(cardId,btn){
     const a=decodeURIComponent(btn.dataset.a);
     const mode=questionType(q);
     btn.classList.add('loading');
-    btn.innerHTML='<span class="spinner"></span> Thinking...';
+    btn.innerHTML='<span class="spinner"></span> শিক্ষক ভাবছেন...';
     try{
         const exp=await engine.explain(q,a);
         QuotaManager.useAI();
         const modeBadge=mode==='quick'
             ?'<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">⚡ Quick Mode — সংক্ষিপ্ত</span>'
-            :'<span class="mode-badge">উদাহরণসহ</span>';
-        panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge"></span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
+            :'<span class="mode-badge">🧑‍🏫 Teacher Mode — উদাহরণসহ</span>';
+        panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge">⚡ Groq Llama 3.3</span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
         btn.classList.remove('loading');
-        btn.innerHTML='<i data-lucide="check" width="14"></i> AI Explanation';
-        showToast(mode==='quick'?'⚡ সংক্ষিপ্ত উত্তর তৈরি!':'Explanation Ready','okk');
+        btn.innerHTML='<i data-lucide="check" width="14"></i> বুঝিয়ে দিয়েছি ✓';
+        showToast(mode==='quick'?'⚡ সংক্ষিপ্ত উত্তর তৈরি!':'🧑‍🏫 শিক্ষকের ব্যাখ্যা তৈরি!','okk');
     }catch(err){
         panel.innerHTML='<div class="ai-panel"><div class="ai-panel-content" style="color:#f43f5e">⚠️ '+err.message+'</div></div>';
         btn.classList.remove('loading');
@@ -702,7 +765,7 @@ async function getAIExp(cardId,btn){
 // ═══════════════════════════════════════════════════════════════
 QuotaManager.init();
 loadSheet();
-console.log('✅ Mega Quiz — Teacher Mode + Smart Renderer Loaded');
+console.log('✅ Mega Quiz AI — Topic Tree + Teacher Mode Loaded');
 </script>
 </body>
 </html>
