@@ -116,8 +116,6 @@
         .toast.okk{border-color:rgba(52,168,83,0.45);color:#86efac}
         body.day .toast{background:#FFFDF5;box-shadow:0 12px 40px rgba(0,0,0,0.14);color:#000}
         body.day .toast.err{color:#e11d48}
-
-        /* ─── 🖼️ Chapter/Topic Banner — NO shade, original photo ─── */
         .chapter-banner{position:relative;width:100%;max-height:380px;border-radius:20px;overflow:hidden;margin-bottom:2rem;border:1px solid var(--border);box-shadow:0 8px 40px rgba(0,0,0,0.3)}
         body.day .chapter-banner{box-shadow:0 8px 20px rgba(184,134,11,0.08);border:1px solid #E6D5B8}
         .chapter-banner img{width:100%;height:380px;object-fit:cover;display:block;transition:transform .8s}
@@ -125,7 +123,6 @@
         .chapter-banner-text{position:absolute;bottom:24px;left:30px;z-index:2}
         .chapter-banner-text h3{font-family:'Noto Serif Bengali',serif;font-size:2rem;font-weight:800;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,0.95),0 0 26px rgba(0,0,0,0.65)}
         .banner-subtitle{font-family:'Space Grotesk',sans-serif;font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:#fff;margin-top:6px;font-weight:600;text-shadow:0 1px 5px rgba(0,0,0,0.95),0 0 14px rgba(0,0,0,0.65)}
-
         .toggle-group{display:inline-flex;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:5px;margin-bottom:1.4rem}
         body.day .toggle-group{background:#FFF9E6;border:1px solid #E6D5B8}
         .type-btn{padding:.7rem 2rem;border-radius:12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;border:none;background:transparent;color:var(--text-muted);transition:all .3s;display:flex;align-items:center;gap:8px}
@@ -160,31 +157,31 @@
         .question-card .q{display:flex;align-items:flex-start;gap:16px;font-size:clamp(1.3rem,3.5vw,2rem);font-weight:800;color:var(--q-color);margin-bottom:14px;line-height:1.5;font-family:'Noto Serif Bengali',serif}
         .question-card .q .num{display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:40px;border-radius:12px;font-weight:800;font-size:.85rem;font-family:'Space Grotesk',sans-serif;color:#06060f;flex-shrink:0;background:linear-gradient(135deg,#f0c040,#f59e0b);box-shadow:0 4px 20px rgba(240,192,64,0.3)}
         body.day .question-card .q .num{background:linear-gradient(135deg,#B8860B,#8B6508);color:#FFF}
-        .question-card .a{padding:18px 24px;font-size:clamp(1.05rem,2.8vw,1.5rem);line-height:1.9;color:var(--a-color);background:transparent!important;font-weight:500;border-left:3px solid rgba(240,192,64,0.2);font-family:'Noto Serif Bengali',serif}
+        .question-card .a{padding:18px 24px;font-size:clamp(1.05rem,2.8vw,1.5rem);line-height:1.9;color:var(--a-color);background:transparent!important;font-weight:500;border-left:3px solid rgba(240,192,64,0.2);font-family:'Noto Serif Bengali',serif;overflow-wrap:break-word;word-break:break-word}
         body.day .question-card .a{border-left-color:rgba(184,134,11,0.25)}
         .smart-table-wrapper{overflow-x:auto;margin:12px 0;border-radius:12px;border:1px solid var(--border)}
-        .smart-table{border-collapse:collapse;width:100%;font-size:.9rem;font-family:'Inter',sans-serif}
-        .smart-table th{background:var(--accent-dim);font-weight:700;padding:12px 16px;text-align:left;border:1px solid var(--border);color:var(--accent);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+        .smart-table{border-collapse:collapse;width:100%;font-size:clamp(.72rem,2.1vw,.9rem);font-family:'Inter',sans-serif;table-layout:fixed}
+        .smart-table th{background:var(--accent-dim);font-weight:700;padding:10px 12px;text-align:left;border:1px solid var(--border);color:var(--accent);font-size:.78em;text-transform:uppercase;letter-spacing:.05em;word-break:break-word}
         body.day .smart-table th{color:#8B6508}
-        .smart-table td{padding:10px 16px;border:1px solid var(--border);color:var(--text-primary)}
+        .smart-table td{padding:9px 12px;border:1px solid var(--border);color:var(--text-primary);word-break:break-word;overflow-wrap:break-word}
         .smart-table tr:hover td{background:var(--accent-dim)}
         .chart-container{position:relative;width:100%;max-width:600px;margin:16px auto;padding:20px;border-radius:16px;background:var(--chart-bg);border:1px solid var(--border);box-shadow:var(--shadow-card)}
         .chart-container canvas{max-height:350px}
         .chart-label{font-family:'Space Grotesk',sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);text-align:center;margin-bottom:12px}
-        .html-content-block{margin:14px 0;padding:16px;border-radius:14px;border:1px solid rgba(168,85,247,0.2);background:var(--bg-card);overflow:hidden;position:relative;transition:border-color .3s}
+        .html-content-block{margin:14px 0;padding:16px;border-radius:14px;border:1px solid rgba(168,85,247,0.2);background:var(--bg-card);overflow:hidden;position:relative;transition:border-color .3s;max-width:100%}
         .html-content-block:hover{border-color:rgba(168,85,247,0.4)}
         .html-content-block::after{content:'⚡ RICH CONTENT';position:absolute;top:8px;right:10px;font-family:'Space Grotesk',sans-serif;font-size:.5rem;font-weight:700;letter-spacing:.15em;color:rgba(168,85,247,0.5);pointer-events:none}
-        .html-content-block img{max-width:100%;border-radius:10px;margin:8px 0;display:block}
-        .html-content-block iframe{width:100%;min-height:340px;border:none;border-radius:10px;background:#fff}
-        .html-content-block video{max-width:100%;border-radius:10px;display:block}
-        .html-content-block svg{max-width:100%}
+        .html-content-block img,.html-content-block video,.html-content-block svg,.html-content-block table,.html-content-block canvas{max-width:100%;height:auto}
+        .html-content-block img{border-radius:10px;margin:8px 0;display:block}
+        .html-content-block iframe{width:100%;min-height:340px;border:none;border-radius:10px;background:#fff;overflow:hidden}
+        .html-content-block video{border-radius:10px;display:block}
         .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden;animation:panelIn .5s ease}
         @keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
         .ai-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#f97316,#fb923c,#fdba74)}
         .ai-panel-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
         .ai-panel-header .ai-badge{font-family:'Space Grotesk',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(251,146,60,0.15));color:#f97316;border:1px solid rgba(249,115,22,0.25)}
         .mode-badge{font-family:'Space Grotesk',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.08em;padding:4px 12px;border-radius:20px;background:rgba(52,168,83,0.12);color:#34A853;border:1px solid rgba(52,168,83,0.25)}
-        .ai-panel-content{font-size:.98rem;line-height:1.9;color:var(--text-primary)}
+        .ai-panel-content{font-size:.98rem;line-height:1.9;color:var(--text-primary);overflow-wrap:break-word}
         .ai-panel-content strong{color:var(--accent)}
         .ai-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.82rem;border:1px solid rgba(249,115,22,0.3);background:rgba(249,115,22,0.08);color:#f97316;transition:all .3s;margin-top:12px}
         body.day .ai-btn{color:#c2410c}
@@ -256,6 +253,7 @@
             .quota-ip{margin-left:0;width:100%}
             .type-btn{padding:.6rem 1.1rem;font-size:.8rem}
             .chapter-banner-text h3{font-size:1.4rem}
+            .question-card .a{padding:12px 14px}
         }
     </style>
 </head>
@@ -449,7 +447,21 @@ class SmartEngine {
     _isImageURL(s){return /^https?:\/\/.+\.(png|jpg|jpeg|gif|svg|webp|bmp|avif)(\?.*)?$/i.test(s.trim())}
     _isVideoURL(s){return /^https?:\/\/.+\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(s.trim())}
     _renderHTML(h){return '<div class="html-content-block">'+h+'</div>'}
-    _renderText(text){let f=text;f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');f=f.replace(/\*([^*]+)\*/g,'<em>$1</em>');f=f.replace(/^(\d+)[.)]\s+(.+)$/gm,'<li>$2</li>');f=f.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ol style="padding-left:20px;margin:8px 0">$1</ol>');f=f.replace(/^[-•*]\s+(.+)$/gm,'<li>$1</li>');f=f.replace(/(https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?)/gi,'<img src="$1" style="max-width:100%;border-radius:10px;margin:10px 0;display:block" loading="lazy"/>');f=f.replace(/\n/g,'<br>');return f}
+    _renderText(text){
+        let f=text;
+        f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+        f=f.replace(/\*([^*]+)\*/g,'<em>$1</em>');
+        // 🆕 word-এর পর : থাকলে auto-bold (যেমন: জনন (Reproduction): ) — URL বাদে
+        f=f.replace(/([^\s:<>\n][^:<>\n]{0,59}?)\s*:(?=\s|$)/g,function(m,term){
+            return /https?|:\/\//i.test(term)?m:'<strong>'+term.trim()+':</strong>';
+        });
+        f=f.replace(/^(\d+)[.)]\s+(.+)$/gm,'<li>$2</li>');
+        f=f.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ol style="padding-left:20px;margin:8px 0">$1</ol>');
+        f=f.replace(/^[-•*]\s+(.+)$/gm,'<li>$1</li>');
+        f=f.replace(/(https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?)/gi,'<img src="$1" style="max-width:100%;border-radius:10px;margin:10px 0;display:block" loading="lazy"/>');
+        f=f.replace(/\n/g,'<br>');
+        return f;
+    }
     _renderChart(syntax){
         const parts=syntax.split(':');const type=(parts[1]||'bar').toLowerCase().trim();const labels=[],values=[];
         parts.slice(2).forEach(p=>{const kv=p.split(',');if(kv[0]&&kv[1]){labels.push(kv[0].trim());values.push(parseFloat(kv[1].trim())||0)}});
@@ -574,7 +586,6 @@ function getTopics(subject,chapter){
     rows.forEach(r=>{const t=topicOf(r);if(!m.has(t))m.set(t,0);m.set(t,m.get(t)+1)});
     return [...m.entries()].map(([name,count])=>({name,count}));
 }
-// 🆕 Topic-এর ছবি খোঁজা — sheet-এ link থাকলে সেটা, নাহলে null
 function getTopicImage(subject,chapter,topic){
     const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter&&topicOf(r)===topic);
     for(const r of rows){
@@ -636,7 +647,6 @@ function activateChapterNode(ch,topicName){
     });
 }
 
-// 🆕 customImg থাকলে সেটা, নাহলে random (picsum)
 function bannerHTML(subject,chapter,rows,customImg){
     const topicCount=getTopics(subject,chapter).length;
     const img=customImg||'https://picsum.photos/seed/'+encodeURIComponent(chapter)+'/1200/380';
@@ -689,7 +699,6 @@ function renderChapter(subject,chapter){
     if(window.innerWidth<=768)closeMobileSidebar();
 }
 
-// 🆕 Topic view — sheet-এর Topicimage থাকলে সেটা, নাহলে random
 function renderTopicView(subject,chapter,topic){
     currentChapter=chapter;currentTopic=topic;
     const all=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
@@ -759,7 +768,7 @@ async function getAIExp(cardId,btn){
 
 QuotaManager.init();
 loadSheet();
-console.log('✅ Mega QUIZ — Topic Image + Clean Banner Loaded');
+console.log('✅ Mega QUIZ — Fit Screen + Auto Bold Loaded');
 </script>
 </body>
 </html>
