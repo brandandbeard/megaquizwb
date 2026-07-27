@@ -577,7 +577,7 @@ function renderSubject(subject,loadFirst){
     dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন |';
     renderChapterList(subject);
     if(loadFirst!==false){const ch=getChapters(subject);if(ch.length)renderChapter(subject,ch[0])}
-    if(window.innerWidth<=768)closeMobileSidebar();
+    
 }
 function getChapters(s){return[...new Set(allData.filter(r=>r.subject===s).map(r=>r.chapter))].sort()}
 function getTopics(subject,chapter){
@@ -630,7 +630,7 @@ function renderChapterList(subject,filter){
             e.stopPropagation();
             const node=row.closest('.chapter-node');const ch=node.dataset.chapter;const tp=row.dataset.topic;
             if(tp==='__all__'){renderChapter(currentSubject,ch)}else{renderTopicView(currentSubject,ch,tp)}
-            if(window.innerWidth<=768)closeMobileSidebar();
+            
         });
     });
 }
@@ -696,7 +696,7 @@ function renderChapter(subject,chapter){
     lucide.createIcons();
     wireTypeBtns(rows,saq,broad,'grouped');
     activateChapterNode(chapter,null);
-    if(window.innerWidth<=768)closeMobileSidebar();
+    
 }
 
 function renderTopicView(subject,chapter,topic){
@@ -720,7 +720,7 @@ function renderTopicView(subject,chapter,topic){
     lucide.createIcons();
     wireTypeBtns(rows,saq,broad,'flat');
     activateChapterNode(chapter,topic);
-    if(window.innerWidth<=768)closeMobileSidebar();
+    
 }
 
 const IMG_URL_RE=/https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?/gi;
