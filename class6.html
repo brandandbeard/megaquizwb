@@ -56,7 +56,7 @@ body {
 margin: 0; padding: 16px; color: var(--ink);
 font-family: "Segoe UI", "Hind Siliguri", "Noto Sans Bengali", system-ui, sans-serif;
 background: var(--body-gradient); background-attachment: fixed;
-overflow-x: hidden; /* Prevent horizontal scroll */
+overflow-x: hidden;
 }
 button, input, select, textarea { font: inherit; }
 button {
@@ -142,7 +142,7 @@ background: #f8fafc; font-size: 13px; white-space: nowrap; cursor: pointer; bord
 .question-card {
 position: relative; background: #fff; border: 1px solid var(--line); border-left: 6px solid var(--primary);
 border-radius: 18px; padding: 20px; min-height: 380px; box-shadow: 0 8px 28px rgba(15, 23, 42, 0.07);
-transition: border-left-color 0.3s; overflow-x: hidden; /* Prevent scroll */
+transition: border-left-color 0.3s; overflow-x: hidden;
 }
 [data-theme="dark"] .question-card { background: var(--card); }
 .question-card.timer-warn { border-left-color: var(--gold); }
@@ -164,10 +164,9 @@ transition: border-left-color 0.3s; overflow-x: hidden; /* Prevent scroll */
 @keyframes blink { 50% { opacity: 0.5; } }
 .question-text {
 font-weight: 700; font-size: clamp(17px, 4vw, 21px); line-height: 1.6; margin-bottom: 16px; padding-right: 50px;
-word-wrap: break-word; overflow-wrap: break-word; /* Handle long text/HTML */
+word-wrap: break-word; overflow-wrap: break-word;
 }
-/* Image Support CSS */
-.question-text img, .option img {
+.question-text img, .option img, .info img {
 max-width: 100%; height: auto; display: block; margin: 8px 0; border-radius: 8px;
 }
 .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 9px; margin: 12px 0; }
@@ -175,7 +174,7 @@ max-width: 100%; height: auto; display: block; margin: 8px 0; border-radius: 8px
 display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 10px; min-height: 48px;
 padding: 10px 14px; border: 2px solid #dce3ed; border-radius: 12px; background: #f8fafc;
 cursor: pointer; font-size: 15px; transition: all 0.18s ease; font-weight: 500;
-word-wrap: break-word; overflow-wrap: break-word; /* Handle long text/HTML */
+word-wrap: break-word; overflow-wrap: break-word;
 }
 [data-theme="dark"] .option { background: #334155; border-color: #475569; color: #e2e8f0; }
 .option:hover { background: #eef2ff; border-color: #a5b4fc; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26, 86, 219, 0.10); }
@@ -246,18 +245,28 @@ padding: 6px 12px; border-radius: 999px; transition: transform 0.25s ease; white
 .footer-link:hover { transform: translateY(-2px); }
 
 /* Official Brand Colors - Stable */
-.footer-link.email-link { color: #EA4335; } /* Gmail Red */
-.footer-link.tg-link { color: #0088cc; } /* Telegram Blue */
+.footer-link.email-link { color: #EA4335; }
+.footer-link.tg-link { color: #0088cc; }
 .footer-link.ig-link {
-background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
 -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.footer-link.upi-link { color: #94a3b8; } /* Gray Text */
-.footer-link.upi-link span { color: #94a3b8; }
+.footer-link.ig-link:hover {
+-webkit-text-fill-color: #ffffff;
+text-shadow: 0 0 16px rgba(214, 41, 118, 0.9), 0 0 32px rgba(150, 47, 191, 0.6);
+box-shadow: 0 0 22px rgba(214, 41, 118, 0.35);
+}
+.footer-link.ig-link:hover svg {
+filter: drop-shadow(0 0 8px rgba(214, 41, 118, 0.9)) drop-shadow(0 0 14px rgba(150, 47, 191, 0.6));
+transform: scale(1.12);
+}
+.footer-link.upi-link { color: #94a3b8 !important; }
+.footer-link.upi-link span { color: #94a3b8 !important; }
+.footer-link.upi-link:hover { color: #cbd5e1 !important; text-shadow: none; box-shadow: none; }
+.footer-link.upi-link:hover svg { filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.9)) drop-shadow(0 0 16px rgba(255, 0, 0, 0.6)); }
 
 .footer-divider { color: #64748b; font-size: 15px; user-select: none; pointer-events: none; opacity: 0.7; margin: 0 2px; }
 
-/* UPI Heart Pulse Animation */
 @keyframes heartGlowPulse {
 0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 0, 0, 0.5)) drop-shadow(0 0 6px rgba(255, 0, 0, 0.3)); transform: translateY(0) scale(1); }
 20% { filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.85)) drop-shadow(0 0 16px rgba(255, 0, 0, 0.5)) drop-shadow(0 0 24px rgba(255, 0, 0, 0.3)); transform: translateY(-3px) scale(1.1); }
@@ -266,8 +275,7 @@ background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75
 80% { filter: drop-shadow(0 0 4px rgba(255, 0, 0, 0.55)) drop-shadow(0 0 7px rgba(255, 0, 0, 0.35)); transform: translateY(-1px) scale(1.04); }
 }
 .footer-link.upi-link svg {
-fill: #ff0000; /* Solid Red Heart */
-stroke: #ff0000;
+fill: #ff0000 !important; stroke: #ff0000 !important; color: #ff0000 !important;
 animation: heartGlowPulse 1.6s ease-in-out infinite;
 }
 .footer-link.upi-link:hover svg {
@@ -391,7 +399,7 @@ body { padding: 6px; }
 .shake { animation: shake 0.5s ease-in-out; }
 [data-theme="dark"] #quizSize, [data-theme="dark"] #timeLimit { color: #1a1e2b !important; }
 </style>
-<script>try{localStorage.setItem("CLASS_VI_QUIZ_ACCORDION_STATE_class_vi_exam_quiz_v21_full", '[]');}catch(e){}</script>
+<script>try{localStorage.setItem("CLASS_VI_QUIZ_ACCORDION_STATE_class_vi_exam_quiz_v22_final", '["gk","science","history","geography"]');}catch(e){}</script>
 </head>
 <body>
 <div class="warning-overlay" id="warningOverlay">
@@ -458,7 +466,7 @@ body { padding: 6px; }
 </div>
 </div>
 <div class="chapter-panel open" id="chapterPanel">
-<div id="subjectAccordions"><div class="subject-accordion"><div class="subject-header gk" data-group="science"><span>🌿 পরিবেশ ও বিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch1" checked=""><span>পরিবেশ ও জীবজগতের পারস্পরিক নির্ভরতা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch2" checked=""><span>আমাদের চারপাশের ঘটনাসমূহ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch3" checked=""><span>মৌলিক, যৌগিক ও মিশ্র পদার্থ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch4" checked=""><span>শিলা ও খনিজ পদার্থ</span><span class="q-count">[77]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch5" checked=""><span>মাপজোক বা পরিমাপ</span><span class="q-count">[32]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch6" checked=""><span>বল ও শক্তির প্রাথমিক ধারণা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch7" checked=""><span>তরল ও গ্যাসীয় পদার্থের স্থিতি ও গতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch8" checked=""><span>মানুষের শরীর</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch9" checked=""><span>সাধারণ যন্ত্রসমূহ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch10" checked=""><span>জীববৈচিত্র্য ও তার শ্রেণিবিভাগ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch11" checked=""><span>কতকগুলি বিশেষ প্রাণীর বাসস্থান ও আচার-আচরণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch12" checked=""><span>বর্জ্য পদার্থ</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header reasoning" data-group="history"><span>📜 ইতিহাস</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch1" checked=""><span>ইতিহাসের ধারণা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch2" checked=""><span>ভারতীয় উপমহাদেশে আদিম মানুষ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch3" checked=""><span>প্রাচীন ইতিহাসের ধারা: প্রথম পর্যায়</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch4" checked=""><span>প্রাচীন ইতিহাসের ধারা: দ্বিতীয় পর্যায়</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch5" checked=""><span>খ্রিস্টপূর্ব ষষ্ঠ শতকের ভারতীয় উপমহাদেশ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch6" checked=""><span>সাম্রাজ্য বিস্তার ও শাসন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch7" checked=""><span>অর্থনীতি ও জীবনযাত্রা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch8" checked=""><span>প্রাচীন ভারতীয় উপমহাদেশের সংস্কৃতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch9" checked=""><span>ভারত ও সমকালীন বহির্বিশ্ব</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion "><div class="subject-header english" data-group="geography"><span>🌍 ভূগোল</span><span class="subject-arrow">▼</span></div><div class="subject-chapters "><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch1" checked=""><span>আকাশ ভরা সূর্য তারা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch2" checked=""><span>পৃথিবী কী গোল</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch3" checked=""><span>তুমি কোথায় আছ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch4" checked=""><span>পৃথিবীর আবর্তন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch5" checked=""><span>জল-স্থল-বাতাস</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch6" checked=""><span>বরফে ঢাকা মহাদেশ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch7" checked=""><span>আবহাওয়া ও জলবায়ু</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch8" checked=""><span>বায়ুদূষণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch9" checked=""><span>শব্দদূষণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch10" checked=""><span>আমাদের দেশ ভারত</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch11" checked=""><span>মানচিত্র</span><span class="q-count">[1]</span></label></div></div></div></div>
+<div id="subjectAccordions"><div class="subject-accordion open"><div class="subject-header gk" data-group="science"><span>🌿 পরিবেশ ও বিজ্ঞান</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch1" checked=""><span>পরিবেশ ও জীবজগতের পারস্পরিক নির্ভরতা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch2" checked=""><span>আমাদের চারপাশের ঘটনাসমূহ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch3" checked=""><span>মৌলিক, যৌগিক ও মিশ্র পদার্থ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch4" checked=""><span>শিলা ও খনিজ পদার্থ</span><span class="q-count">[77]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch5" checked=""><span>মাপজোক বা পরিমাপ</span><span class="q-count">[32]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch6" checked=""><span>বল ও শক্তির প্রাথমিক ধারণা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch7" checked=""><span>তরল ও গ্যাসীয় পদার্থের স্থিতি ও গতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch8" checked=""><span>মানুষের শরীর</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch9" checked=""><span>সাধারণ যন্ত্রসমূহ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch10" checked=""><span>জীববৈচিত্র্য ও তার শ্রেণিবিভাগ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch11" checked=""><span>কতকগুলি বিশেষ প্রাণীর বাসস্থান ও আচার-আচরণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="sci_ch12" checked=""><span>বর্জ্য পদার্থ</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion open"><div class="subject-header reasoning" data-group="history"><span>📜 ইতিহাস</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch1" checked=""><span>ইতিহাসের ধারণা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch2" checked=""><span>ভারতীয় উপমহাদেশে আদিম মানুষ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch3" checked=""><span>প্রাচীন ইতিহাসের ধারা: প্রথম পর্যায়</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch4" checked=""><span>প্রাচীন ইতিহাসের ধারা: দ্বিতীয় পর্যায়</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch5" checked=""><span>খ্রিস্টপূর্ব ষষ্ঠ শতকের ভারতীয় উপমহাদেশ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch6" checked=""><span>সাম্রাজ্য বিস্তার ও শাসন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch7" checked=""><span>অর্থনীতি ও জীবনযাত্রা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch8" checked=""><span>প্রাচীন ভারতীয় উপমহাদেশের সংস্কৃতি</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="his_ch9" checked=""><span>ভারত ও সমকালীন বহির্বিশ্ব</span><span class="q-count">[1]</span></label></div></div></div><div class="subject-accordion open"><div class="subject-header english" data-group="geography"><span>🌍 ভূগোল</span><span class="subject-arrow">▼</span></div><div class="subject-chapters open"><div class="subject-chapters-inner"><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch1" checked=""><span>আকাশ ভরা সূর্য তারা</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch2" checked=""><span>পৃথিবী কী গোল</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch3" checked=""><span>তুমি কোথায় আছ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch4" checked=""><span>পৃথিবীর আবর্তন</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch5" checked=""><span>জল-স্থল-বাতাস</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch6" checked=""><span>বরফে ঢাকা মহাদেশ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch7" checked=""><span>আবহাওয়া ও জলবায়ু</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch8" checked=""><span>বায়ুদূষণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch9" checked=""><span>শব্দদূষণ</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch10" checked=""><span>আমাদের দেশ ভারত</span><span class="q-count">[1]</span></label><label class="chapter-item"><input type="checkbox" class="chapter-cb" value="geo_ch11" checked=""><span>মানচিত্র</span><span class="q-count">[1]</span></label></div></div></div></div>
 <div class="subject-action-row">
 <div class="flex-row">
 <button id="selectAllBtn">Select All</button>
@@ -469,30 +477,11 @@ body { padding: 6px; }
 </div>
 </section>
 <section class="quiz-panel">
-<div class="questions-area" id="questionsArea">
-<div class="question-card" id="questionCardEl">
-<div class="question-meta">
-<span class="pill">3/139</span>
-<span class="pill">পরিবেশ ও বিজ্ঞান</span>
-<span class="pill">মৌলিক, যৌগিক ও মিশ্র পদার্থ</span>
-<span class="pill difficulty-medium">🟠 Medium</span>
-
-<span class="toggle-options-btn" id="toggleOptionsBtn" title="Hide Options">Hide</span>
-</div>
-<div class="question-text">3. বায়ুতে কোন গ্যাস সবচেয়ে বেশি আছে?</div>
-<div class="inline-edit-icon" id="inlineEditIcon" title="Click to edit question">✏️</div>
-<div class="options" id="optionsContainer" style=""><div class="option" data-opt="0"><span class="key">1</span><span>A. কার্বন ডাইঅক্সাইড</span></div><div class="option correct-answer" data-opt="1"><span class="key">2</span><span>B. নাইট্রোজেন</span></div><div class="option" data-opt="2"><span class="key">3</span><span>C. হাইড্রোজেন</span></div><div class="option" data-opt="3"><span class="key">4</span><span>D. অক্সিজেন</span></div></div>
-<div class="info show" id="noteBox">📖 বায়ুতে প্রায় ৭৮% নাইট্রোজেন আছে।</div>
-
-<div class="nav-buttons-large">
-<button id="prevQ">◀ Previous</button>
-<button id="nextQ">Next ▶</button>
-</div>
-</div></div>
+<div class="questions-area" id="questionsArea"><div class="question-card" style="text-align:center;padding:50px;">⬆️ Select subjects and click Generate</div></div>
 <aside class="sidebar">
-<div class="score-board" id="scoreBoard">🎯 Score: 2/139<br><span class="score-breakdown">✅2 | ❌0 | ⏭️137</span></div>
+<div class="score-board" id="scoreBoard">🎯 Score: 0/0<br><span class="score-breakdown">✅0 | ❌0 | ⏭️0</span></div>
 <div id="timerDisplay" style="display:none;"></div>
-<div id="navGrid" class="nav-grid"><div class="q-num answered-correct" data-idx="0">1</div><div class="q-num" data-idx="1">2</div><div class="q-num answered-correct current" data-idx="2">3</div><div class="q-num" data-idx="3">4</div><div class="q-num" data-idx="4">5</div><div class="q-num" data-idx="5">6</div><div class="q-num" data-idx="6">7</div><div class="q-num" data-idx="7">8</div><div class="q-num" data-idx="8">9</div><div class="q-num" data-idx="9">10</div><div class="q-num" data-idx="10">11</div><div class="q-num" data-idx="11">12</div><div class="q-num" data-idx="12">13</div><div class="q-num" data-idx="13">14</div><div class="q-num" data-idx="14">15</div><div class="q-num" data-idx="15">16</div><div class="q-num" data-idx="16">17</div><div class="q-num" data-idx="17">18</div><div class="q-num" data-idx="18">19</div><div class="q-num" data-idx="19">20</div><div class="q-num" data-idx="20">21</div><div class="q-num" data-idx="21">22</div><div class="q-num" data-idx="22">23</div><div class="q-num" data-idx="23">24</div><div class="q-num" data-idx="24">25</div><div class="q-num" data-idx="25">26</div><div class="q-num" data-idx="26">27</div><div class="q-num" data-idx="27">28</div><div class="q-num" data-idx="28">29</div><div class="q-num" data-idx="29">30</div><div class="q-num" data-idx="30">31</div><div class="q-num" data-idx="31">32</div><div class="q-num" data-idx="32">33</div><div class="q-num" data-idx="33">34</div><div class="q-num" data-idx="34">35</div><div class="q-num" data-idx="35">36</div><div class="q-num" data-idx="36">37</div><div class="q-num" data-idx="37">38</div><div class="q-num" data-idx="38">39</div><div class="q-num" data-idx="39">40</div><div class="q-num" data-idx="40">41</div><div class="q-num" data-idx="41">42</div><div class="q-num" data-idx="42">43</div><div class="q-num" data-idx="43">44</div><div class="q-num" data-idx="44">45</div><div class="q-num" data-idx="45">46</div><div class="q-num" data-idx="46">47</div><div class="q-num" data-idx="47">48</div><div class="q-num" data-idx="48">49</div><div class="q-num" data-idx="49">50</div><div class="q-num" data-idx="50">51</div><div class="q-num" data-idx="51">52</div><div class="q-num" data-idx="52">53</div><div class="q-num" data-idx="53">54</div><div class="q-num" data-idx="54">55</div><div class="q-num" data-idx="55">56</div><div class="q-num" data-idx="56">57</div><div class="q-num" data-idx="57">58</div><div class="q-num" data-idx="58">59</div><div class="q-num" data-idx="59">60</div><div class="q-num" data-idx="60">61</div><div class="q-num" data-idx="61">62</div><div class="q-num" data-idx="62">63</div><div class="q-num" data-idx="63">64</div><div class="q-num" data-idx="64">65</div><div class="q-num" data-idx="65">66</div><div class="q-num" data-idx="66">67</div><div class="q-num" data-idx="67">68</div><div class="q-num" data-idx="68">69</div><div class="q-num" data-idx="69">70</div><div class="q-num" data-idx="70">71</div><div class="q-num" data-idx="71">72</div><div class="q-num" data-idx="72">73</div><div class="q-num" data-idx="73">74</div><div class="q-num" data-idx="74">75</div><div class="q-num" data-idx="75">76</div><div class="q-num" data-idx="76">77</div><div class="q-num" data-idx="77">78</div><div class="q-num" data-idx="78">79</div><div class="q-num" data-idx="79">80</div><div class="q-num" data-idx="80">81</div><div class="q-num" data-idx="81">82</div><div class="q-num" data-idx="82">83</div><div class="q-num" data-idx="83">84</div><div class="q-num" data-idx="84">85</div><div class="q-num" data-idx="85">86</div><div class="q-num" data-idx="86">87</div><div class="q-num" data-idx="87">88</div><div class="q-num" data-idx="88">89</div><div class="q-num" data-idx="89">90</div><div class="q-num" data-idx="90">91</div><div class="q-num" data-idx="91">92</div><div class="q-num" data-idx="92">93</div><div class="q-num" data-idx="93">94</div><div class="q-num" data-idx="94">95</div><div class="q-num" data-idx="95">96</div><div class="q-num" data-idx="96">97</div><div class="q-num" data-idx="97">98</div><div class="q-num" data-idx="98">99</div><div class="q-num" data-idx="99">100</div><div class="q-num" data-idx="100">101</div><div class="q-num" data-idx="101">102</div><div class="q-num" data-idx="102">103</div><div class="q-num" data-idx="103">104</div><div class="q-num" data-idx="104">105</div><div class="q-num" data-idx="105">106</div><div class="q-num" data-idx="106">107</div><div class="q-num" data-idx="107">108</div><div class="q-num" data-idx="108">109</div><div class="q-num" data-idx="109">110</div><div class="q-num" data-idx="110">111</div><div class="q-num" data-idx="111">112</div><div class="q-num" data-idx="112">113</div><div class="q-num" data-idx="113">114</div><div class="q-num" data-idx="114">115</div><div class="q-num" data-idx="115">116</div><div class="q-num" data-idx="116">117</div><div class="q-num" data-idx="117">118</div><div class="q-num" data-idx="118">119</div><div class="q-num" data-idx="119">120</div><div class="q-num" data-idx="120">121</div><div class="q-num" data-idx="121">122</div><div class="q-num" data-idx="122">123</div><div class="q-num" data-idx="123">124</div><div class="q-num" data-idx="124">125</div><div class="q-num" data-idx="125">126</div><div class="q-num" data-idx="126">127</div><div class="q-num" data-idx="127">128</div><div class="q-num" data-idx="128">129</div><div class="q-num" data-idx="129">130</div><div class="q-num" data-idx="130">131</div><div class="q-num" data-idx="131">132</div><div class="q-num" data-idx="132">133</div><div class="q-num" data-idx="133">134</div><div class="q-num" data-idx="134">135</div><div class="q-num" data-idx="135">136</div><div class="q-num" data-idx="136">137</div><div class="q-num" data-idx="137">138</div><div class="q-num" data-idx="138">139</div></div>
+<div id="navGrid" class="nav-grid"></div>
 <button id="showScoreBtn" style="margin-top:10px;width:100%; background:var(--slate);">📊 Show Results</button>
 <div class="note-toggle" id="noteToggleRow"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answering</label></div>
 <button id="submitMockBtn" style="display:none; margin-top:8px; width:100%; background:var(--green);">✅ Submit Mock Test</button>
@@ -597,23 +586,45 @@ body { padding: 6px; }
 <div class="footer-contact">
 <span class="footer-social-row">
 <a href="mailto:arifbeldanga@gmail.com" class="footer-link email-link" title="ইমেইল করুন">
-<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
+<svg viewBox="0 0 24 24" width="20" height="20">
+<path fill="#4285F4" d="M2 6l10 7 10-7v12H2z"></path>
+<path fill="#FBBC04" d="M2 6l10 7 4-3.5L2 2z"></path>
+<path fill="#34A853" d="M22 6l-10 7-4-3.5L22 2z"></path>
+<path fill="#EA4335" d="M2 2h20v4L12 13 2 6z"></path>
+</svg>
 arifbeldanga@gmail.com
 </a>
 <span class="footer-divider">|</span>
 <a href="https://t.me/beldanga1" target="_blank" class="footer-link tg-link" title="টেলিগ্রামে যুক্ত হন" rel="noopener noreferrer">
-<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.87 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.938z"></path></svg>
+<svg viewBox="0 0 24 24" width="20" height="20" fill="#0088cc">
+<path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"></path>
+</svg>
 @beldanga1
 </a>
 <span class="footer-divider">|</span>
 <a href="https://instagram.com/arifhussain.x" target="_blank" class="footer-link ig-link" title="ইনস্টাগ্রামে ফলো করুন" rel="noopener noreferrer">
-<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.281.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.44-.645 1.44-1.44s-.645-1.44-1.44-1.44z"></path></svg>
-arifhussain.x
+<svg viewBox="0 0 24 24" width="20" height="20">
+<defs>
+<linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+<stop offset="0%" stop-color="#feda75"></stop>
+<stop offset="25%" stop-color="#fa7e1e"></stop>
+<stop offset="50%" stop-color="#d62976"></stop>
+<stop offset="75%" stop-color="#962fbf"></stop>
+<stop offset="100%" stop-color="#4f5bd5"></stop>
+</linearGradient>
+</defs>
+<rect x="1.5" y="1.5" width="21" height="21" rx="6" ry="6" fill="url(#ig-grad)"></rect>
+<circle cx="12" cy="12" r="4.5" fill="none" stroke="#ffffff" stroke-width="1.8"></circle>
+<circle cx="17.5" cy="6.5" r="1.3" fill="#ffffff"></circle>
+</svg>
+<span>arifhussain.x</span>
 </a>
 </span>
 <span class="footer-divider footer-divider-upi">|</span>
 <a href="upi://pay?pa=arho065-1@okicici&amp;pn=ArifHussain&amp;cu=INR" class="footer-link upi-link" title="সাপোর্ট করতে UPI পেমেন্ট করুন" rel="noopener">
-<svg viewBox="0 0 24 24" fill="#ff0000"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+<svg viewBox="0 0 24 24" fill="#ff0000" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+</svg>
 <span>Support &amp; Motivate : UPI arho065-1@okicici / 9564385573</span>
 </a>
 </div>
@@ -657,7 +668,7 @@ pwdInput.focus();
 })();
 (function() {
 const EDIT_PASSWORD = "Arif@956438?";
-const APP_VERSION = "class_vi_exam_quiz_v21_full";
+const APP_VERSION = "class_vi_exam_quiz_v22_final";
 const BANK_KEY = "CLASS_VI_QUIZ_BANK_" + APP_VERSION;
 const SESSION_KEY = "CLASS_VI_QUIZ_SESSION_" + APP_VERSION;
 const SELECTED_KEY = "CLASS_VI_QUIZ_SELECTED_" + APP_VERSION;
@@ -670,7 +681,7 @@ function loadAccordionState() {
     try {
         const saved = localStorage.getItem(ACCORDION_STATE_KEY);
         if (saved) openAccordions = new Set(JSON.parse(saved));
-        else openAccordions = new Set(); // Default closed
+        else openAccordions = new Set();
     } catch (e) { openAccordions = new Set(); }
 }
 function saveAccordionState() {
@@ -761,6 +772,12 @@ function getRandomColorClass() {
 const colors = ['gk', 'aptitude', 'reasoning', 'english', 'science_comp', 'current'];
 return colors[Math.floor(Math.random() * colors.length)];
 }
+function getRandomColorExcluding(excludeColors) {
+const allColors = ['gk', 'aptitude', 'reasoning', 'english', 'science_comp', 'current'];
+const available = allColors.filter(c => !excludeColors.includes(c));
+if (available.length === 0) return allColors[Math.floor(Math.random() * allColors.length)];
+return available[Math.floor(Math.random() * available.length)];
+}
 
 function populateSubjectsUI() {
 const groups = getSubjectGroups();
@@ -808,7 +825,10 @@ const name = $("newSubjectNameInput").value.trim();
 let style = $("newSubjectGroupStyle").value;
 if (!key || !name) return showError("Key and name দিতে হবে।");
 if (getSubjectGroups().some(g => g.key === key)) return showError("এই key আগে থেকেই আছে।");
-if (!style) style = getRandomColorClass(); // Random color if not selected
+if (!style) {
+const existingColors = getSubjectGroups().map(g => g.className).filter(Boolean);
+style = getRandomColorExcluding(existingColors);
+}
 questionBank.__subjectGroups__.push({ key, name, className: style });
 $("newSubjectKey").value = ''; $("newSubjectNameInput").value = ''; $("newSubjectGroupStyle").value = '';
 afterSubjectGroupChanged(); showSuccess("নতুন subject group যোগ হয়েছে।");
@@ -924,7 +944,7 @@ const editPanelHtml = (showPencil && isInlineEditUnlocked) ? `
 </div>` : '';
 const optHtml = q.o.map((opt, i) => {
 let cls = "option"; if (showResult && i === q.a) cls += " correct-answer"; if (showResult && userAnswers[currentIndex] === i && userAnswers[currentIndex] !== -1 && !answerStatus[currentIndex]) cls += " wrong-feedback"; if (quizMode === "mock" && !quizSubmitted && userAnswers[currentIndex] === i && answered) cls += " selected-mock"; 
-return `<div class="${cls}" data-opt="${i}"><span class="key">${i+1}</span><span>${String.fromCharCode(65+i)}. ${opt}</span></div>`; // Raw HTML for options
+return `<div class="${cls}" data-opt="${i}"><span class="key">${i+1}</span><span>${String.fromCharCode(65+i)}. ${opt}</span></div>`;
 }).join("");
 $("questionsArea").innerHTML = `
 <div class="question-card" id="questionCardEl">
@@ -1078,7 +1098,7 @@ function setQuizMode(mode) { quizMode = mode; updateModeButtons(); stopTimer(); 
 function applyTheme(theme) { document.documentElement.setAttribute('data-theme', theme); const btn = $('themeToggleBtn'); if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙'; }
 function toggleTheme() { const current = document.documentElement.getAttribute('data-theme') || 'light'; const next = current === 'dark' ? 'light' : 'dark'; applyTheme(next); localStorage.setItem(THEME_KEY, next); }
 function strictLocalNormalize(name) { if (!name) return ""; return name.replace(/[\u{1F000}-\u{1FFFF}]/gu, '').replace(/[^\w\u0980-\u09FF]/g, '').toLowerCase().trim(); }
-async function syncFromSheet(url) { if (!url) return; try { const res = await fetch(url, { mode: 'cors' }); if (!res.ok) throw new Error(`HTTP ${res.status}`); const tsv = await res.text(); const rows = tsv.split(/\r?\n/).filter(line => line.trim() !== ''); if (rows.length < 2) return; const dataRows = rows.slice(1); const parsedRows = []; const rawGroups = new Set(); const rawChapters = new Set(); for (const row of dataRows) { const cols = row.split('\t').map(c => c.trim()); if (cols.length < 8) continue; const gRaw = cols[0] || 'সাধারণ'; const cRaw = cols[1] || 'অশ্রেণীবদ্ধ'; const qText = cols[2]; const opts = [cols[3], cols[4], cols[5], cols[6]]; let correctIdx = parseInt(cols[7]); if (isNaN(correctIdx)) { const map = { 'A': 0, 'B': 1, 'C': 2, 'D': 3, 'a': 0, 'b': 1, 'c': 2, 'd': 3 }; const letter = cols[7].trim().toUpperCase(); if (letter in map) correctIdx = map[letter]; else continue; } if (correctIdx < 0 || correctIdx > 3) continue; const explanation = cols.length > 8 ? cols[8] : ''; const difficulty = cols.length > 9 ? cols[9].toLowerCase() : 'medium'; parsedRows.push({ gRaw, cRaw, qText, opts, correctIdx, explanation, difficulty }); rawGroups.add(gRaw); rawChapters.add(cRaw); } if (parsedRows.length === 0) return; const existingGroups = getSubjectGroups().map(g => g.name); const existingChapters = getSubjects().map(s => s.name); let groupMap = {}; let chapterMap = {}; try { const response = await fetch("https://openrouter.ai/api/v1/chat/completions", { method: "POST", headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json", "HTTP-Referer": window.location.href, "X-Title": "Quiz Sync" }, body: JSON.stringify({ model: "mistralai/mistral-7b-instruct:free", messages: [{ role: "system", content: "You are a data mapping assistant. Map the raw sheet names to the exact existing names. Return ONLY valid JSON with 'group_map' and 'chapter_map'. If a raw name doesn't match any existing name, use the raw name itself as the value." }, { role: "user", content: JSON.stringify({ existing_groups: existingGroups, existing_chapters: existingChapters, sheet_groups: Array.from(rawGroups), sheet_chapters: Array.from(rawChapters) }) }], temperature: 0.1 }) }); const data = await response.json(); if (data.error) throw new Error(data.error.message); const parsed = JSON.parse(data.choices[0].message.content.replace(/```json\n?|\n?```/g, '').trim()); groupMap = parsed.group_map || {}; chapterMap = parsed.chapter_map || {}; } catch (e) { console.warn("AI mapping failed, using local fallback", e); const localGMap = {}; rawGroups.forEach(r => { const norm = strictLocalNormalize(r); const match = existingGroups.find(eg => strictLocalNormalize(eg) === norm); localGMap[r] = match || r; }); groupMap = localGMap; const localCMap = {}; rawChapters.forEach(r => { const norm = strictLocalNormalize(r); const match = existingChapters.find(ec => strictLocalNormalize(ec) === norm); localCMap[r] = match || r; }); chapterMap = localCMap; } const chapterKeyMap = new Map(); for (let i = 0; i < parsedRows.length; i++) { const row = parsedRows[i]; const mappedG = groupMap[row.gRaw] || row.gRaw; const mappedC = chapterMap[row.cRaw] || row.cRaw; let group = questionBank.__subjectGroups__.find(g => g.name === mappedG); if (!group) { const key = mappedG.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g, '_') + '_g_' + Date.now() + i; group = { key, name: mappedG, className: "" }; questionBank.__subjectGroups__.push(group); } let chapter = questionBank.__subjects__.find(s => s.name === mappedC && s.group === group.key); if (!chapter) { chapter = questionBank.__subjects__.find(s => s.name === mappedC); if (!chapter) { const key = mappedC.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g, '_') + '_c_' + Date.now() + i; chapter = { key, name: mappedC, group: group.key, num: questionBank.__subjects__.length + 1 }; questionBank.__subjects__.push(chapter); questionBank[key] = []; } } chapterKeyMap.set(i, chapter.key); } const matchedKeys = new Set(chapterKeyMap.values()); matchedKeys.forEach(k => { questionBank[k] = []; }); for (let i = 0; i < parsedRows.length; i++) { const row = parsedRows[i]; const chapKey = chapterKeyMap.get(i); const q = normalizeQuestion({ q: row.qText, o: row.opts, a: row.correctIdx, note: row.explanation, difficulty: row.difficulty }); if (q) questionBank[chapKey].push(q); } saveBank(); safeSet(LAST_SYNC_KEY, Date.now().toString()); } catch (err) { console.warn("Silent sync failed:", err); } }
+async function syncFromSheet(url) { if (!url) return; try { const res = await fetch(url, { mode: 'cors' }); if (!res.ok) throw new Error(`HTTP ${res.status}`); const tsv = await res.text(); const rows = tsv.split(/\r?\n/).filter(line => line.trim() !== ''); if (rows.length < 2) return; const dataRows = rows.slice(1); const parsedRows = []; const rawGroups = new Set(); const rawChapters = new Set(); for (const row of dataRows) { const cols = row.split('\t').map(c => c.trim()); if (cols.length < 8) continue; const gRaw = cols[0] || 'সাধারণ'; const cRaw = cols[1] || 'অশ্রেণীবদ্ধ'; const qText = cols[2]; const opts = [cols[3], cols[4], cols[5], cols[6]]; let correctIdx = parseInt(cols[7]); if (isNaN(correctIdx)) { const map = { 'A': 0, 'B': 1, 'C': 2, 'D': 3, 'a': 0, 'b': 1, 'c': 2, 'd': 3 }; const letter = cols[7].trim().toUpperCase(); if (letter in map) correctIdx = map[letter]; else continue; } if (correctIdx < 0 || correctIdx > 3) continue; const explanation = cols.length > 8 ? cols[8] : ''; const difficulty = cols.length > 9 ? cols[9].toLowerCase() : 'medium'; parsedRows.push({ gRaw, cRaw, qText, opts, correctIdx, explanation, difficulty }); rawGroups.add(gRaw); rawChapters.add(cRaw); } if (parsedRows.length === 0) return; const existingGroups = getSubjectGroups().map(g => g.name); const existingChapters = getSubjects().map(s => s.name); let groupMap = {}; let chapterMap = {}; try { const response = await fetch("https://openrouter.ai/api/v1/chat/completions", { method: "POST", headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json", "HTTP-Referer": window.location.href, "X-Title": "Quiz Sync" }, body: JSON.stringify({ model: "mistralai/mistral-7b-instruct:free", messages: [{ role: "system", content: "You are a data mapping assistant. Map the raw sheet names to the exact existing names. Return ONLY valid JSON with 'group_map' and 'chapter_map'. If a raw name doesn't match any existing name, use the raw name itself as the value." }, { role: "user", content: JSON.stringify({ existing_groups: existingGroups, existing_chapters: existingChapters, sheet_groups: Array.from(rawGroups), sheet_chapters: Array.from(rawChapters) }) }], temperature: 0.1 }) }); const data = await response.json(); if (data.error) throw new Error(data.error.message); const parsed = JSON.parse(data.choices[0].message.content.replace(/```json\n?|\n?```/g, '').trim()); groupMap = parsed.group_map || {}; chapterMap = parsed.chapter_map || {}; } catch (e) { console.warn("AI mapping failed, using local fallback", e); const localGMap = {}; rawGroups.forEach(r => { const norm = strictLocalNormalize(r); const match = existingGroups.find(eg => strictLocalNormalize(eg) === norm); localGMap[r] = match || r; }); groupMap = localGMap; const localCMap = {}; rawChapters.forEach(r => { const norm = strictLocalNormalize(r); const match = existingChapters.find(ec => strictLocalNormalize(ec) === norm); localCMap[r] = match || r; }); chapterMap = localCMap; } const chapterKeyMap = new Map(); for (let i = 0; i < parsedRows.length; i++) { const row = parsedRows[i]; const mappedG = groupMap[row.gRaw] || row.gRaw; const mappedC = chapterMap[row.cRaw] || row.cRaw; let group = questionBank.__subjectGroups__.find(g => g.name === mappedG); if (!group) { const key = mappedG.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g, '_') + '_g_' + Date.now() + i; const existingColors = questionBank.__subjectGroups__.map(g => g.className).filter(Boolean); const newColor = getRandomColorExcluding(existingColors); group = { key, name: mappedG, className: newColor }; questionBank.__subjectGroups__.push(group); } let chapter = questionBank.__subjects__.find(s => s.name === mappedC && s.group === group.key); if (!chapter) { chapter = questionBank.__subjects__.find(s => s.name === mappedC); if (!chapter) { const key = mappedC.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g, '_') + '_c_' + Date.now() + i; chapter = { key, name: mappedC, group: group.key, num: questionBank.__subjects__.length + 1 }; questionBank.__subjects__.push(chapter); questionBank[key] = []; } } chapterKeyMap.set(i, chapter.key); } const matchedKeys = new Set(chapterKeyMap.values()); matchedKeys.forEach(k => { questionBank[k] = []; }); for (let i = 0; i < parsedRows.length; i++) { const row = parsedRows[i]; const chapKey = chapterKeyMap.get(i); const q = normalizeQuestion({ q: row.qText, o: row.opts, a: row.correctIdx, note: row.explanation, difficulty: row.difficulty }); if (q) questionBank[chapKey].push(q); } saveBank(); safeSet(LAST_SYNC_KEY, Date.now().toString()); } catch (err) { console.warn("Silent sync failed:", err); } }
 function autoLoadSheetIfNeeded() { const lastSync = parseInt(safeGet(LAST_SYNC_KEY) || "0"); if (Date.now() - lastSync > 30 * 60 * 1000 || !safeGet(BANK_KEY)) { syncFromSheet(SHEET_TSV_URL); } else { populateSubjectsUI(); } }
 window.autoLoadSheetIfNeeded = autoLoadSheetIfNeeded;
 function wireEvents() {
@@ -1119,7 +1139,7 @@ function initCredits() { const n = [65, 114, 105, 102, 32, 72, 117, 115, 115, 97
 function decodeEmbeddedBank() { if (typeof EMBEDDED_BANK === 'string' && EMBEDDED_BANK.length > 0) { try { const json = decodeURIComponent(escape(atob(EMBEDDED_BANK))); return JSON.parse(json); } catch (e) { console.warn("Failed to decode embedded bank."); } } return null; }
 function init() { const savedTheme = localStorage.getItem(THEME_KEY) || 'light'; applyTheme(savedTheme); loadAccordionState(); initCredits(); updateAllCounters(); populateSubjectsUI(); updateModeButtons(); wireEvents(); if (!loadQuizState()) { renderQuiz(); renderNav(); updateScore(); } updateTimerDisplay(); }
 let questionBank = normalizeBank(decodeEmbeddedBank() || loadJson(BANK_KEY, null) || buildDefaultBank());
-let selectedKeys = new Set(loadJson(SELECTED_KEY, [])); // Default empty
+let selectedKeys = new Set(loadJson(SELECTED_KEY, []));
 let currentQuestions = [], userAnswers = [], answerStatus = [], currentIndex = 0, totalQuestions = 0;
 let isEditUnlocked = false;
 let isInlineEditUnlocked = false;
