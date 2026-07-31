@@ -270,7 +270,7 @@
             <div class="logo-glow"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz" width="44" height="44"/></div>
             <div>
                 <div class="mega-title-text">MEGA QUIZ</div>
-                <div style="font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.3)" id="headerSub">Smart Class 10
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.3)" id="headerSub">Smart Class 10 Notes</div>
             </div>
         </a>
         <div class="flex items-center gap-4">
@@ -370,7 +370,6 @@ const CLASS_CONFIG={
 const classKey=(new URLSearchParams(window.location.search).get('class')||'10').toLowerCase();
 const CLASS_NAME=(CLASS_CONFIG[classKey]||CLASS_CONFIG['10']).name;
 const GOOGLE_SHEET_TSV_URL=(CLASS_CONFIG[classKey]||CLASS_CONFIG['10']).tsv;
-const CH_EMOJIS=
 const CH_EMOJIS=['📕','📗','📘','📙','📔','📒'];
 
 const QuotaManager={
