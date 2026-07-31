@@ -270,7 +270,7 @@
             <div class="logo-glow"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz" width="44" height="44"/></div>
             <div>
                 <div class="mega-title-text">MEGA QUIZ</div>
-                <div style="font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.3)">Smart Class 10 Notes</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.3)" id="headerSub">Smart Class 10
             </div>
         </a>
         <div class="flex items-center gap-4">
@@ -291,8 +291,8 @@
             </div>
         </aside>
         <div class="content-scroll" id="contentScroll">
-            <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 10</span></nav>
-            <h1 class="hero-title">Class 10 <span style="color:#f0c040">Notes</span></h1>
+            <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current" id="crumbClass">Class 10</span></nav>
+            <h1 class="hero-title"><span id="heroClass">Class 10</span> <span style="color:#f0c040">Notes</span></h1>
             <p class="hero-subtitle" id="dynamicSubtitle"></p>
             <div class="quota-bar">
                 <div class="quota-pill ok" id="quotaAI"><span>⚡ লোড হচ্ছে...</span></div>
@@ -355,7 +355,22 @@
     </footer>
 
 <script>
-const GOOGLE_SHEET_TSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
+const CLASS_CONFIG={
+    "5":{name:"Class 5",tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTxpBxo2TsVkwERn8vLB_QioPRcmb8jUq4j-Ty1lO2apcfh5INuD_EUtCCo0KTHozdv7OIziPCFezSt/pub?output=tsv"},
+    "6":{name:"Class 6",tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vREQlxiDlpTm6VhhE5hSE5eDHX-pBTkPWXUKmOg91Co0ajB26PU2j651imGRKJ11Z-Dzmi-ftdiIwjj/pub?output=tsv"},
+    "7":{name:"Class 7",tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRbivu3W0_RbadB9g7x-KbDTQ6kmfNg3074FEc6HONECtVfJctWS1EtdCzkHccQ8KQCUUhp6YEqahtu/pub?output=tsv"},
+    "8":{name:"Class 8",tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQVHdP2gFappkd8SYZQdXQx4W5n4OeKAjdPFtfRGwUv3k6iaTy8WeuAbZ-5kLKEZzUK9Bj6LrLUdm69/pub?output=tsv"},
+    "9":{name:"Class 9",tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSKbe6KpQd1_XJHeSel7-UFYZLHx85_oCcB-qDSgRxEPXZWlBLVTE14qDC8o10HWUqpi6_WLBZiUNPq/pub?output=tsv"},
+    "10":{name:"Class 10",tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv"},
+    "11science":{name:"Class 11 (Science)",tsv:"এখানে_CLASS11_SCIENCE_TSV_LINK"},
+    "11arts":{name:"Class 11 (Arts)",tsv:"এখানে_CLASS11_ARTS_TSV_LINK"},
+    "12science":{name:"Class 12 (Science)",tsv:"এখানে_CLASS12_SCIENCE_TSV_LINK"},
+    "12arts":{name:"Class 12 (Arts)",tsv:"এখানে_CLASS12_ARTS_TSV_LINK"}
+};
+const classKey=(new URLSearchParams(window.location.search).get('class')||'10').toLowerCase();
+const CLASS_NAME=(CLASS_CONFIG[classKey]||CLASS_CONFIG['10']).name;
+const GOOGLE_SHEET_TSV_URL=(CLASS_CONFIG[classKey]||CLASS_CONFIG['10']).tsv;
+const CH_EMOJIS=
 const CH_EMOJIS=['📕','📗','📘','📙','📔','📒'];
 
 const QuotaManager={
