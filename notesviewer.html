@@ -828,6 +828,10 @@ async function getAIExp(cardId,btn){
     lucide.createIcons();
 }
 
+document.title=CLASS_NAME+' Notes | Mega QUIZ';
+document.getElementById('heroClass').textContent=CLASS_NAME;
+document.getElementById('headerSub').textContent='Smart '+CLASS_NAME+' Notes';
+document.getElementById('crumbClass').textContent=CLASS_NAME;
 QuotaManager.init();
 loadSheet();
 console.log('✅ Mega QUIZ — Secure API + Chapter-based Smart AI Loaded');
