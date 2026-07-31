@@ -407,7 +407,44 @@ class SmartEngine {
             this.cache.set(key,t);return t;
         }catch(e){console.error('AI Error:',e);throw e}
     }
-    async explain(q,a){
+    async explain(q,a,subject,chapter){
+        const sub=(subject||'').toLowerCase();
+        const ch=(chapter||'').toLowerCase();
+        const isEnglish=/english|ইংরেজি/i.test(sub);
+        const isBangla=/bangla|বাংলা|bengali/i.test(sub);
+        const chapterIsGrammar=/grammar|ব্যাকরণ|byakaran/i.test(ch);
+        const questionIsGrammar=/grammar|ব্যাকরণ|সন্ধি|সমাস|কারক|বিভক্তি|প্রত্যয়|উপসর্গ|বাগধারা|one word|synonym|antonym|tense|\bvoice\b|narration|preposition|\barticle\b|parts of speech|idiom|phrase|clause|transformation|degrees of comparison|fill in the blank|right form of verb|punctuation|spelling/i.test(q);
+        const isGrammar=chapterIsGrammar||questionIsGrammar;
+
+        /* ══════════ ENGLISH SUBJECT ══════════ */
+        if(isEnglish){
+            if(isGrammar){
+                return await this.callAI(
+                    'তুমি WBBSE Class 10-এর English Grammar-এর সেরা শিক্ষক। Article, Preposition, Narration Change, Voice Change, Tense, Synonym-Antonym, One Word, Phrasal Verb, Idiom — সব rule তুমি খুব ভালো জানো। তুমি বাংলা medium-এর students দের বোঝাও।\n\nনিচের format-এ উত্তর দাও:\n\n**Answer:** — ইংরেজিতে সঠিক উত্তর\n\n**বাংলা অর্থ:** — answer-এর প্রতিটি কঠিন word-এর বাংলা meaning দাও\n\n📖 **নিয়ম (Rule):** — grammar rule টা ধাপে ধাপে একদম সহজ বাংলায় বোঝাও, যেন বাংলা medium-এর student-ও সহজে বুঝে যায়\n\n✍️ **আরও উদাহরণ:** — একই rule-এর আর ২টা উদাহরণ দাও (English sentence + বাংলা meaning)\n\n💡 **মনে রাখো:** — ১ লাইনের সহজ trick বাংলায়, যেন exam-এ মনে থাকে\n\nAnswer ইংরেজিতে, বাকি সব বাংলায়। Max 200 words।',
+                    'Class: 10 (WBBSE Board)\nSubject: English (Grammar)\n\nপ্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nRule সহ step-by-step বুঝিয়ে দাও:'
+                );
+            }
+            return await this.callAI(
+                'তুমি WBBSE Class 10-এর English সাহিত্যের (Literature) অভিজ্ঞ শিক্ষক। তুমি WBBSE Class 10 English syllabus-এর গল্প, কবিতা ও প্রবন্ধ জানো। প্রশ্নের উত্তর ওই নির্দিষ্ট story/poem থেকে reference দিয়ে দাও।\n\nনিচের format-এ উত্তর দাও:\n\n**Answer:** — ইংরেজিতে, story/poem থেকে সরাসরি reference দিয়ে ২-৩ sentence-এ উত্তর দাও\n\n📖 **সহজ ব্যাখ্যা:** — বাংলায় ২-৩ লাইনে বোঝাও (বাংলা medium students দের জন্য)\n\n🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ১টা উদাহরণ বাংলায়\n\n📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে\n\n💡 **মনে রাখো:** — ১ লাইনের সহজ trick বাংলায়\n\nউত্তর ইংরেজিতে, ব্যাখ্যা বাংলায়। Max 200 words।',
+                'Class: 10 (WBBSE Board)\nSubject: English (Literature)\n\nপ্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nWBBSE Class 10-এর story/poem অনুযায়ী উত্তর দাও:'
+            );
+        }
+
+        /* ══════════ BANGLA SUBJECT ══════════ */
+        if(isBangla){
+            if(isGrammar){
+                return await this.callAI(
+                    'তুমি WBBSE Class 10-এর বাংলা ব্যাকরণ শিক্ষক। নিচের format-এ উত্তর দাও:\n\n**উত্তর:** — সঠিক উত্তর দাও\n\n📌 **মনে রাখো:** — সহজ trick/নিয়ম দাও যেন পরীক্ষায় মনে থাকে\n\nশুধু উত্তর আর মনে রাখো। অতিরিক্ত ব্যাখ্যা দিও না। Max 80 words।',
+                    'Class: 10 (WBBSE Board)\nSubject: বাংলা (ব্যাকরণ)\n\nপ্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসংক্ষেপে উত্তর আর মনে রাখো দাও:'
+                );
+            }
+            return await this.callAI(
+                'তুমি WBBSE Class 10-এর বাংলা সাহিত্যের অভিজ্ঞ শিক্ষক। তুমি WBBSE Class 10 বাংলা syllabus-এর গল্প ও কবিতা জানো। প্রশ্নের উত্তর ওই নির্দিষ্ট গল্প/কবিতা থেকে reference দিয়ে দাও।\n\nশুধু উত্তর দাও, কোনো অতিরিক্ত ব্যাখ্যা, উদাহরণ বা key points দিও না।\n\n**উত্তর:** — গল্প/কবিতা থেকে সরাসরি reference দিয়ে ২-৩ লাইনে পরিষ্কার উত্তর দাও।\n\nMax 100 words।',
+                'Class: 10 (WBBSE Board)\nSubject: বাংলা (সাহিত্য)\n\nপ্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nWBBSE Class 10-এর গল্প/কবিতা অনুযায়ী শুধু উত্তর দাও:'
+            );
+        }
+
+        /* ══════════ OTHER SUBJECTS (Science, Math, etc.) ══════════ */
         const type=questionType(q);
         if(type==='quick'){
             return await this.callAI('তুমি Class 10-এর অভিজ্ঞ শিক্ষক। এটি পার্থক্য/তুলনা/ছক/সংজ্ঞা টাইপ প্রশ্ন — তাই লম্বা ব্যাখ্যা বা উদাহরণ দিও না। শুধু মূল পয়েন্টগুলো দাও, প্রতিটি ১ লাইনে, key terms **bold** করে। পরিষ্কার ও সংক্ষিপ্ত রাখো। Max 80 words।','প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসংক্ষেপে মূল পয়েন্ট দাও:');
@@ -728,7 +765,7 @@ function renderQuestions(rows){
         const colImg=r.image?r.image.trim():'';
         if(colImg&&/^https?:\/\//i.test(colImg))allImgs.push(colImg);
         const cid='card-'+Date.now()+'-'+i+'-'+Math.random().toString(36).slice(2,6);
-        html+='<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>'+allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('')+'<div class="a">'+smartA+'</div><button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button><div id="ai-panel-'+cid+'"></div></div>';
+        html+='<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>'+allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('')+'<div class="a">'+smartA+'</div><button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button><div id="ai-panel-'+cid+'"></div></div>';
     });
     return html;
 }
@@ -739,17 +776,35 @@ async function getAIExp(cardId,btn){
     if(!QuotaManager.canAI()){showToast('🔒 আজকের AI limit শেষ! আগামীকাল আবার আসো 😊','err');return}
     const q=decodeURIComponent(btn.dataset.q);
     const a=decodeURIComponent(btn.dataset.a);
+    const subject=decodeURIComponent(btn.dataset.subject||'');
+    const chapter=decodeURIComponent(btn.dataset.chapter||'');
     const mode=questionType(q);
+    const sub=subject.toLowerCase();
+    const ch=chapter.toLowerCase();
+    const isEnglish=/english|ইংরেজি/i.test(sub);
+    const isBangla=/bangla|বাংলা|bengali/i.test(sub);
+    const isGrammar=/grammar|ব্যাকরণ|byakaran/i.test(ch);
     btn.classList.add('loading');
     btn.innerHTML='<span class="spinner"></span> Thinking...';
     try{
-        const exp=await engine.explain(q,a);
+        const exp=await engine.explain(q,a,subject,chapter);
         QuotaManager.useAI();
-        const modeBadge=mode==='quick'?'<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">⚡ Quick Mode — সংক্ষিপ্ত</span>':'<span class="mode-badge">— উদাহরণসহ</span>';
+        let modeBadge;
+        if(isEnglish&&isGrammar){
+            modeBadge='<span class="mode-badge" style="background:rgba(168,85,247,0.12);color:#a855f7;border-color:rgba(168,85,247,0.25)">📐 English Grammar — Rule + বাংলা অর্থ</span>';
+        }else if(isEnglish){
+            modeBadge='<span class="mode-badge" style="background:rgba(59,130,246,0.12);color:#3b82f6;border-color:rgba(59,130,246,0.25)">📖 WBBSE English — Story/Poem + বাংলা অর্থ</span>';
+        }else if(isBangla&&isGrammar){
+            modeBadge='<span class="mode-badge" style="background:rgba(20,184,166,0.12);color:#14b8a6;border-color:rgba(20,184,166,0.25)">📐 বাংলা ব্যাকরণ — উত্তর + মনে রাখো</span>';
+        }else if(isBangla){
+            modeBadge='<span class="mode-badge" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.25)">📖 WBBSE বাংলা — গল্প/কবিতা ভিত্তিক</span>';
+        }else{
+            modeBadge=mode==='quick'?'<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">⚡ Quick Mode — সংক্ষিপ্ত</span>':'<span class="mode-badge">— উদাহরণসহ</span>';
+        }
         panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge"></span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
         btn.classList.remove('loading');
         btn.innerHTML='<i data-lucide="check" width="14"></i> Explained';
-        showToast(mode==='quick'?'⚡ সংক্ষিপ্ত উত্তর তৈরি!':'Explanation Ready','okk');
+        showToast('✅ Explanation Ready','okk');
     }catch(err){
         panel.innerHTML='<div class="ai-panel"><div class="ai-panel-content" style="color:#f43f5e">⚠️ '+err.message+'</div></div>';
         btn.classList.remove('loading');
@@ -760,7 +815,7 @@ async function getAIExp(cardId,btn){
 
 QuotaManager.init();
 loadSheet();
-console.log('✅ Mega QUIZ — Secure API (Serverless) Loaded');
+console.log('✅ Mega QUIZ — Secure API + Chapter-based Smart AI Loaded');
 </script>
 </body>
 </html>
