@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 6 Notes | Mega QUIZ</title>
+    <title>Class Class 6 | Mega QUIZ</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -270,7 +270,7 @@
             <div class="logo-glow"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz" width="44" height="44"/></div>
             <div>
                 <div class="mega-title-text">MEGA QUIZ</div>
-                <div style="font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.3)">Smart Class 6 Notes</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.3)">Smart Class Class 6</div>
             </div>
         </a>
         <div class="flex items-center gap-4">
@@ -291,8 +291,8 @@
             </div>
         </aside>
         <div class="content-scroll" id="contentScroll">
-            <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 6</span></nav>
-            <h1 class="hero-title">Class 6 <span style="color:#f0c040">Notes</span></h1>
+            <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current">Class 10</span></nav>
+            <h1 class="hero-title">Class 10 <span style="color:#f0c040">Notes</span></h1>
             <p class="hero-subtitle" id="dynamicSubtitle"></p>
             <div class="quota-bar">
                 <div class="quota-pill ok" id="quotaAI"><span>⚡ লোড হচ্ছে...</span></div>
@@ -356,9 +356,6 @@
 
 <script>
 const GOOGLE_SHEET_TSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vREQlxiDlpTm6VhhE5hSE5eDHX-pBTkPWXUKmOg91Co0ajB26PU2j651imGRKJ11Z-Dzmi-ftdiIwjj/pub?output=tsv";
-const GROQ_API_KEY="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";
-const GROQ_MODEL="llama-3.3-70b-versatile";
-const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
 const CH_EMOJIS=['📕','📗','📘','📙','📔','📒'];
 
 const QuotaManager={
@@ -404,18 +401,18 @@ class SmartEngine {
         const key=sys+'|||'+user;
         if(this.cache.has(key))return this.cache.get(key);
         try{
-            const r=await fetch(GROQ_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_API_KEY},body:JSON.stringify({model:GROQ_MODEL,messages:[{role:'system',content:sys},{role:'user',content:user}],temperature:0.7,max_tokens:1024})});
-            if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('AI '+r.status+': '+(e.error?.message||'Error'))}
-            const d=await r.json();const t=d.choices?.[0]?.message?.content||'';
+            const r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,user:user})});
+            if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('AI '+r.status+': '+(e.error||'Error'))}
+            const d=await r.json();const t=d.text||'';
             this.cache.set(key,t);return t;
         }catch(e){console.error('AI Error:',e);throw e}
     }
     async explain(q,a){
         const type=questionType(q);
         if(type==='quick'){
-            return await this.callAI('তুমি Class 6-এর অভিজ্ঞ শিক্ষক। এটি পার্থক্য/তুলনা/ছক/সংজ্ঞা টাইপ প্রশ্ন — তাই লম্বা ব্যাখ্যা বা উদাহরণ দিও না। শুধু মূল পয়েন্টগুলো দাও, প্রতিটি ১ লাইনে, key terms **bold** করে। পরিষ্কার ও সংক্ষিপ্ত রাখো। Max 80 words।','প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসংক্ষেপে মূল পয়েন্ট দাও:');
+            return await this.callAI('তুমি Class 10-এর অভিজ্ঞ শিক্ষক। এটি পার্থক্য/তুলনা/ছক/সংজ্ঞা টাইপ প্রশ্ন — তাই লম্বা ব্যাখ্যা বা উদাহরণ দিও না। শুধু মূল পয়েন্টগুলো দাও, প্রতিটি ১ লাইনে, key terms **bold** করে। পরিষ্কার ও সংক্ষিপ্ত রাখো। Max 80 words।','প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসংক্ষেপে মূল পয়েন্ট দাও:');
         }
-        return await this.callAI('তুমি একজন অভিজ্ঞ, স্নেহময় Class 6-এর শিক্ষক — যিনি কঠিন জিনিসও খুব সহজে বোঝান। নিচের format-এ ব্যাখ্যা করো:\n\n📖 **সহজ ব্যাখ্যা:** — ২-৩ লাইনে মূল কথা, একদম সহজ বাংলায়, যেন যে কেউ বুঝে যায়\n\n🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ২টা উদাহরণ দিয়ে বোঝাও (যেমন: বাজার, খেলা, রান্নাঘর, মোবাইল — এমন familiar জিনিস)\n\n📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে লেখো\n\n💡 **মনে রাখো:** — শেষে ১ লাইনের সহজ trick বা shortcut দাও\n\nআন্তরিক শিক্ষকের ভাষায় লেখো, কঠিন শব্দ এড়াও। Max 250 words।','প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসুন্দর করে বুঝিয়ে দাও:');
+        return await this.callAI('তুমি একজন অভিজ্ঞ, স্নেহময় Class 10-এর শিক্ষক — যিনি কঠিন জিনিসও খুব সহজে বোঝান। নিচের format-এ ব্যাখ্যা করো:\n\n📖 **সহজ ব্যাখ্যা:** — ২-৩ লাইনে মূল কথা, একদম সহজ বাংলায়, যেন যে কেউ বুঝে যায়\n\n🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ২টা উদাহরণ দিয়ে বোঝাও (যেমন: বাজার, খেলা, রান্নাঘর, মোবাইল — এমন familiar জিনিস)\n\n📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে লেখো\n\n💡 **মনে রাখো:** — শেষে ১ লাইনের সহজ trick বা shortcut দাও\n\nআন্তরিক শিক্ষকের ভাষায় লেখো, কঠিন শব্দ এড়াও। Max 250 words।','প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসুন্দর করে বুঝিয়ে দাও:');
     }
     async smartSearch(query,questions){
         const ql=questions.slice(0,60).map((r,i)=>i+'. ['+r.subject+'/'+r.chapter+'] '+r.question).join('\n');
@@ -451,7 +448,6 @@ class SmartEngine {
         let f=text;
         f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
         f=f.replace(/\*([^*]+)\*/g,'<em>$1</em>');
-        // 🆕 word-এর পর : থাকলে auto-bold (যেমন: জনন (Reproduction): ) — URL বাদে
         f=f.replace(/([^\s:<>\n][^:<>\n]{0,59}?)\s*:(?=\s|$)/g,function(m,term){
             return /https?|:\/\//i.test(term)?m:'<strong>'+term.trim()+':</strong>';
         });
@@ -577,7 +573,6 @@ function renderSubject(subject,loadFirst){
     dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন |';
     renderChapterList(subject);
     if(loadFirst!==false){const ch=getChapters(subject);if(ch.length)renderChapter(subject,ch[0])}
-    
 }
 function getChapters(s){return[...new Set(allData.filter(r=>r.subject===s).map(r=>r.chapter))].sort()}
 function getTopics(subject,chapter){
@@ -630,7 +625,6 @@ function renderChapterList(subject,filter){
             e.stopPropagation();
             const node=row.closest('.chapter-node');const ch=node.dataset.chapter;const tp=row.dataset.topic;
             if(tp==='__all__'){renderChapter(currentSubject,ch)}else{renderTopicView(currentSubject,ch,tp)}
-            
         });
     });
 }
@@ -696,7 +690,6 @@ function renderChapter(subject,chapter){
     lucide.createIcons();
     wireTypeBtns(rows,saq,broad,'grouped');
     activateChapterNode(chapter,null);
-    
 }
 
 function renderTopicView(subject,chapter,topic){
@@ -720,7 +713,6 @@ function renderTopicView(subject,chapter,topic){
     lucide.createIcons();
     wireTypeBtns(rows,saq,broad,'flat');
     activateChapterNode(chapter,topic);
-    
 }
 
 const IMG_URL_RE=/https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?/gi;
@@ -768,7 +760,7 @@ async function getAIExp(cardId,btn){
 
 QuotaManager.init();
 loadSheet();
-console.log('✅ Mega QUIZ — Fit Screen + Auto Bold Loaded');
+console.log('✅ Mega QUIZ — Secure API (Serverless) Loaded');
 </script>
 </body>
 </html>
