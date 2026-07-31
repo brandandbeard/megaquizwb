@@ -356,9 +356,6 @@
 
 <script>
 const GOOGLE_SHEET_TSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv";
-const GROQ_API_KEY="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";
-const GROQ_MODEL="llama-3.3-70b-versatile";
-const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
 const CH_EMOJIS=['📕','📗','📘','📙','📔','📒'];
 
 const QuotaManager={
@@ -404,9 +401,9 @@ class SmartEngine {
         const key=sys+'|||'+user;
         if(this.cache.has(key))return this.cache.get(key);
         try{
-            const r=await fetch(GROQ_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_API_KEY},body:JSON.stringify({model:GROQ_MODEL,messages:[{role:'system',content:sys},{role:'user',content:user}],temperature:0.7,max_tokens:1024})});
-            if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('AI '+r.status+': '+(e.error?.message||'Error'))}
-            const d=await r.json();const t=d.choices?.[0]?.message?.content||'';
+            const r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,user:user})});
+            if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('AI '+r.status+': '+(e.error||'Error'))}
+            const d=await r.json();const t=d.text||'';
             this.cache.set(key,t);return t;
         }catch(e){console.error('AI Error:',e);throw e}
     }
@@ -451,7 +448,6 @@ class SmartEngine {
         let f=text;
         f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
         f=f.replace(/\*([^*]+)\*/g,'<em>$1</em>');
-        // 🆕 word-এর পর : থাকলে auto-bold (যেমন: জনন (Reproduction): ) — URL বাদে
         f=f.replace(/([^\s:<>\n][^:<>\n]{0,59}?)\s*:(?=\s|$)/g,function(m,term){
             return /https?|:\/\//i.test(term)?m:'<strong>'+term.trim()+':</strong>';
         });
@@ -577,7 +573,6 @@ function renderSubject(subject,loadFirst){
     dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন |';
     renderChapterList(subject);
     if(loadFirst!==false){const ch=getChapters(subject);if(ch.length)renderChapter(subject,ch[0])}
-    
 }
 function getChapters(s){return[...new Set(allData.filter(r=>r.subject===s).map(r=>r.chapter))].sort()}
 function getTopics(subject,chapter){
@@ -630,7 +625,6 @@ function renderChapterList(subject,filter){
             e.stopPropagation();
             const node=row.closest('.chapter-node');const ch=node.dataset.chapter;const tp=row.dataset.topic;
             if(tp==='__all__'){renderChapter(currentSubject,ch)}else{renderTopicView(currentSubject,ch,tp)}
-            
         });
     });
 }
@@ -696,7 +690,6 @@ function renderChapter(subject,chapter){
     lucide.createIcons();
     wireTypeBtns(rows,saq,broad,'grouped');
     activateChapterNode(chapter,null);
-    
 }
 
 function renderTopicView(subject,chapter,topic){
@@ -720,7 +713,6 @@ function renderTopicView(subject,chapter,topic){
     lucide.createIcons();
     wireTypeBtns(rows,saq,broad,'flat');
     activateChapterNode(chapter,topic);
-    
 }
 
 const IMG_URL_RE=/https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?/gi;
@@ -768,7 +760,7 @@ async function getAIExp(cardId,btn){
 
 QuotaManager.init();
 loadSheet();
-console.log('✅ Mega QUIZ — Fit Screen + Auto Bold Loaded');
+console.log('✅ Mega QUIZ — Secure API (Serverless) Loaded');
 </script>
 </body>
 </html>
