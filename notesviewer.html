@@ -166,15 +166,11 @@
         .chart-container{position:relative;width:100%;max-width:600px;margin:16px auto;padding:20px;border-radius:16px;background:var(--chart-bg);border:1px solid var(--border);box-shadow:var(--shadow-card)}
         .chart-container canvas{max-height:350px}
         .chart-label{font-family:'Space Grotesk',sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);text-align:center;margin-bottom:12px}
-
-        /* ═══════ HTML CONTENT IN ANSWER — clean, no blank space ═══════ */
         .html-content-block{margin:10px 0;padding:0;border:none;background:transparent;overflow:hidden;max-width:100%}
         .html-content-block img,.html-content-block video,.html-content-block svg,.html-content-block table,.html-content-block canvas{max-width:100%;height:auto}
         .html-content-block img{border-radius:10px;margin:8px 0;display:block}
         .html-content-block video{border-radius:10px;display:block}
         .html-content-block iframe{width:100%;border:none;display:block;border-radius:12px;overflow:hidden}
-
-        /* ═══════ SIM CHIP (question card-এর ভিতরে) ═══════ */
         .sim-chip{display:inline-flex;align-items:center;gap:11px;margin-top:16px;padding:11px 18px;border-radius:13px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.82rem;border:1px solid rgba(168,85,247,0.3);background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(168,85,247,0.04));color:#a855f7;transition:all .3s;position:relative;overflow:hidden}
         .sim-chip::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(168,85,247,0.15) 50%,transparent 70%);transform:translateX(-100%);transition:transform .6s}
         .sim-chip:hover::after{transform:translateX(100%)}
@@ -182,8 +178,6 @@
         .sim-chip-ico{font-size:1.1rem}
         .sim-chip-name{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
         .sim-chip-play{padding:4px 12px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:.68rem;letter-spacing:.05em;box-shadow:0 3px 10px rgba(168,85,247,0.35)}
-
-        /* ═══════ SIM GRID (সিমুলেশন tab) ═══════ */
         .sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:8px}
         .sim-card{display:flex;align-items:center;gap:15px;padding:18px 20px;border-radius:16px;cursor:pointer;background:var(--bg-card);border:1px solid rgba(168,85,247,0.18);transition:all .3s;position:relative;overflow:hidden}
         .sim-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#7c3aed,#a855f7);transform:scaleY(0);transition:.3s;transform-origin:top}
@@ -197,8 +191,6 @@
         .sim-card-play{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:.75rem;flex-shrink:0;transition:.3s;box-shadow:0 4px 16px rgba(168,85,247,0.35)}
         .sim-card:hover .sim-card-play{transform:scale(1.18)}
         @media(max-width:768px){.sim-grid{grid-template-columns:1fr}}
-
-        /* ═══════ FULLSCREEN SIM OVERLAY (browser-এর মতো) ═══════ */
         #simOverlay{position:fixed;inset:0;z-index:10000;background:#0d1117;display:none;flex-direction:column}
         #simOverlay.active{display:flex;animation:ovIn .35s ease}
         @keyframes ovIn{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:scale(1)}}
@@ -214,7 +206,6 @@
         .sim-overlay-loader{position:absolute;inset:0;z-index:10001;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#0d1117;color:rgba(255,255,255,0.55);font-size:.95rem;font-family:'Noto Serif Bengali',serif;transition:opacity .35s}
         .sim-overlay-loader.gone{opacity:0;pointer-events:none}
         .sim-loader-ring{width:46px;height:46px;border:3px solid rgba(168,85,247,0.15);border-top-color:#a855f7;border-radius:50%;animation:spin 1s linear infinite}
-
         .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden;animation:panelIn .5s ease}
         @keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
         .ai-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#f97316,#fb923c,#fdba74)}
@@ -348,7 +339,6 @@
 
     <button class="fab-scroll" id="fabScroll" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i data-lucide="arrow-up" width="20"></i></button>
 
-    <!-- ═══════ FULLSCREEN SIMULATION OVERLAY ═══════ -->
     <div id="simOverlay">
         <div class="sim-overlay-loader" id="simLoader"><div class="sim-loader-ring"></div><p>🔬 সিমুলেশন লোড হচ্ছে...</p></div>
         <div class="sim-overlay-bar" id="simBar">
@@ -412,19 +402,11 @@ const GOOGLE_SHEET_TSV_URL=(CLASS_CONFIG[classKey]||CLASS_CONFIG['10']).tsv;
 const CH_EMOJIS=['📕','📗','📘','📙','📔','📒'];
 
 /* ═══════════════════════════════════════════════════════════
-   🔬 SIMULATION SYSTEM (Column-based)
+   🔬 SIMULATION SYSTEM
    ─────────────────────────────────────────────────────────
    Main Sheet-এ ২টা column:
-     • Stimulation     → URL / Raw HTML / Name
+     • Stimulation     → GitHub Pages URL (https://...)
      • StimulationName → Website-এ যে নাম দেখাবে
-   
-   Stimulation cell-এ যা দেওয়া যাবে:
-     1️⃣ URL       → https://xyz.netlify.app/snell.html
-     2️⃣ RAW HTML  → <!DOCTYPE html>... full code
-     3️⃣ NAME      → snell (Library sheet থেকে খুঁজবে — optional)
-   
-   📋 LIBRARY SHEET (optional, শুধু নাম use করলে):
-     Columns: Name | URL
 ═══════════════════════════════════════════════════════════ */
 const SIM_LIBRARY_TSV='এখানে_আপনার_লাইব্রেরি_শীট_TSV_LINK';
 let simLibrary=null;
@@ -466,11 +448,21 @@ async function openSimulation(idx,title){
     document.body.style.overflow='hidden';
     fr.classList.remove('loaded');
     ld.classList.remove('gone');
+    ld.innerHTML='<div class="sim-loader-ring"></div><p>🔬 সিমুলেশন লোড হচ্ছে...</p>';
     simBarShow();
-    const v=value.trim();
+    let v=value.trim();
+    /* http → https auto-fix (mixed content block এড়াতে) */
+    if(/^http:\/\//i.test(v))v='https://'+v.slice(7);
     if(/^https?:\/\//i.test(v)){
         fr.removeAttribute('srcdoc');
         fr.src=v;
+        /* 10 সেকেন্ডে load না হলে সমস্যার hint */
+        setTimeout(()=>{
+            if(ov.classList.contains('active')&&!fr.classList.contains('loaded')){
+                ld.classList.remove('gone');
+                ld.innerHTML='<p style="color:#fda4af;max-width:85%;text-align:center;line-height:1.9">⚠️ সিমুলেশন লোড হচ্ছে না!<br><span style="font-size:.82rem;opacity:.75">① Incognito-তে link খোলো — login চাইলে site PRIVATE, public করো<br>② সঠিক file URL দাও (যেমন: .../snell.html)<br>③ http নয় https ব্যবহার করো</span></p>';
+            }
+        },10000);
     }else if(/^<!doctype\s+html|^<html/i.test(v)){
         fr.removeAttribute('src');
         fr.srcdoc=v;
@@ -478,10 +470,7 @@ async function openSimulation(idx,title){
         await loadSimLibrary();
         const url=simLibrary?simLibrary[v.toLowerCase()]:null;
         if(url){fr.removeAttribute('srcdoc');fr.src=url}
-        else{
-            showToast('⚠️ "'+v+'" পাওয়া যায়নি! Stimulation column-এ URL দিন।','err');
-            closeSimOverlay();
-        }
+        else{showToast('⚠️ "'+v+'" পাওয়া যায়নি!','err');closeSimOverlay()}
     }
 }
 document.getElementById('simOverlayFrame').addEventListener('load',function(){
@@ -734,7 +723,6 @@ function wireTypeBtns(rows,saq,broad,simRows,mode){
         });
     });
 }
-/* 🔬 সিমুলেশন tab → card grid, click → fullscreen */
 function renderSimList(simRows){
     let h='<div class="sim-grid">';
     simRows.forEach(r=>{
@@ -794,7 +782,6 @@ function renderQuestions(rows){
         html+='<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>';
         html+=allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('');
         html+='<div class="a">'+smartA+'</div>';
-        /* 🔬 Simulation chip — StimulationName দেখাবে, click → fullscreen */
         if(r.stimulation&&r.stimulation.trim()){
             const si=simSave(r.stimulation);
             const nm=getSimTitle(r);
