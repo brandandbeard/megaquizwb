@@ -20,8 +20,8 @@
         ::-webkit-scrollbar-thumb:hover{background:rgba(240,192,64,0.4)}
         body.day ::-webkit-scrollbar-thumb{background:rgba(180,130,50,0.3)}
         body{font-family:'Noto Serif Bengali','Inter',sans-serif;min-height:100vh;overflow-x:hidden;font-size:18px;line-height:1.8;transition:background .4s,color .4s}
-        body.night{--bg-base:#06060f;--bg-card:rgba(20,20,46,0.4);--bg-card-hover:rgba(26,26,62,0.5);--bg-sidebar:rgba(10,10,26,0.4);--bg-header:rgba(6,6,15,0.7);--bg-footer:rgba(6,6,15,0.8);--text-primary:#e8e8f0;--text-secondary:rgba(255,255,255,0.45);--text-muted:rgba(255,255,255,0.25);--accent:#f0c040;--accent-dim:rgba(240,192,64,0.08);--border:rgba(255,255,255,0.04);--shadow-card:0 2px 8px rgba(0,0,0,0.4);--q-color:#f0c040;--a-color:rgba(255,255,255,0.85);--ai-glow:rgba(249,115,22,0.08);--ai-border:rgba(249,115,22,0.3);--chart-bg:rgba(20,20,46,0.6);--sim-bg:#0d1117;--sim-border:rgba(168,85,247,0.15)}
-        body.day{--bg-base:#FFF8E7;--bg-card:#FFFDF5;--bg-card-hover:#FFF9E6;--bg-sidebar:#FFFCF0;--bg-header:rgba(255,248,231,0.92);--bg-footer:#FFFCF0;--text-primary:#000000;--text-secondary:#050505;--text-muted:#111111;--accent:#B8860B;--accent-dim:rgba(184,134,11,0.08);--border:#E6D5B8;--shadow-card:0 1px 4px rgba(0,0,0,0.06);--q-color:#000000;--a-color:#000000;--ai-glow:rgba(249,115,22,0.05);--ai-border:rgba(249,115,22,0.2);--chart-bg:#FFFDF5;--sim-bg:#FFFDF5;--sim-border:rgba(168,85,247,0.18)}
+        body.night{--bg-base:#06060f;--bg-card:rgba(20,20,46,0.4);--bg-card-hover:rgba(26,26,62,0.5);--bg-sidebar:rgba(10,10,26,0.4);--bg-header:rgba(6,6,15,0.7);--bg-footer:rgba(6,6,15,0.8);--text-primary:#e8e8f0;--text-secondary:rgba(255,255,255,0.45);--text-muted:rgba(255,255,255,0.25);--accent:#f0c040;--accent-dim:rgba(240,192,64,0.08);--border:rgba(255,255,255,0.04);--shadow-card:0 2px 8px rgba(0,0,0,0.4);--q-color:#f0c040;--a-color:rgba(255,255,255,0.85);--ai-glow:rgba(249,115,22,0.08);--ai-border:rgba(249,115,22,0.3);--chart-bg:rgba(20,20,46,0.6)}
+        body.day{--bg-base:#FFF8E7;--bg-card:#FFFDF5;--bg-card-hover:#FFF9E6;--bg-sidebar:#FFFCF0;--bg-header:rgba(255,248,231,0.92);--bg-footer:#FFFCF0;--text-primary:#000000;--text-secondary:#050505;--text-muted:#111111;--accent:#B8860B;--accent-dim:rgba(184,134,11,0.08);--border:#E6D5B8;--shadow-card:0 1px 4px rgba(0,0,0,0.06);--q-color:#000000;--a-color:#000000;--ai-glow:rgba(249,115,22,0.05);--ai-border:rgba(249,115,22,0.2);--chart-bg:#FFFDF5}
         body{background:var(--bg-base);color:var(--text-primary)}
         body.day .ai-search-input::placeholder,body.day .search-bar input::placeholder{color:#333}
         .universe-bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(66,133,244,0.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(6,182,212,0.05) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(240,192,64,0.03) 0%,transparent 70%),#06060f}
@@ -110,7 +110,7 @@
         .quota-pill.out .fill{background:rgba(244,63,94,0.12)}
         @keyframes pillPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,0.25)}50%{box-shadow:0 0 14px 2px rgba(245,158,11,0.2)}}
         .quota-ip{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-muted);margin-left:auto;letter-spacing:.02em}
-        .toast{position:fixed;bottom:36px;left:50%;transform:translate(-50%,90px);z-index:500;padding:14px 28px;border-radius:14px;font-family:'Noto Serif Bengali',serif;font-size:.95rem;font-weight:600;background:rgba(20,20,46,0.96);border:1px solid rgba(240,192,64,0.3);color:var(--text-primary);box-shadow:0 12px 44px rgba(0,0,0,0.45);backdrop-filter:blur(12px);transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .4s;opacity:0;max-width:92vw;text-align:center;pointer-events:none}
+        .toast{position:fixed;bottom:36px;left:50%;transform:translate(-50%,90px);z-index:11000;padding:14px 28px;border-radius:14px;font-family:'Noto Serif Bengali',serif;font-size:.95rem;font-weight:600;background:rgba(20,20,46,0.96);border:1px solid rgba(240,192,64,0.3);color:var(--text-primary);box-shadow:0 12px 44px rgba(0,0,0,0.45);backdrop-filter:blur(12px);transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .4s;opacity:0;max-width:92vw;text-align:center;pointer-events:none}
         .toast.show{transform:translate(-50%,0);opacity:1}
         .toast.err{border-color:rgba(244,63,94,0.45);color:#fda4af}
         .toast.okk{border-color:rgba(52,168,83,0.45);color:#86efac}
@@ -150,12 +150,6 @@
         .tb-all-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.75rem;border:1px solid rgba(240,192,64,0.3);background:rgba(240,192,64,0.1);color:var(--accent);transition:all .3s;margin-left:auto}
         body.day .tb-all-btn{color:#8B6508}
         .tb-all-btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(240,192,64,0.2)}
-        .section-header{display:flex;align-items:center;gap:16px;margin-bottom:2rem;padding-bottom:16px;border-bottom:1px solid var(--border)}
-        .section-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
-        .icon-saq{background:linear-gradient(135deg,#06b6d4,#0891b2)}
-        .section-header h2{font-family:'Noto Serif Bengali',serif;font-size:1.2rem;font-weight:700;color:var(--text-primary)}
-        .badge-count{font-family:'Space Grotesk',sans-serif;border-radius:24px;padding:6px 18px;font-size:.75rem;font-weight:700;margin-left:auto;background:rgba(240,192,64,0.1);color:#f0c040;border:1px solid rgba(240,192,64,0.15)}
-        body.day .badge-count{background:rgba(184,134,11,0.08);color:#8B6508;border:1px solid rgba(184,134,11,0.15)}
         .question-card{border-radius:20px;padding:2rem 2.5rem;margin-bottom:20px;background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden;transition:all .5s;box-shadow:var(--shadow-card)}
         .question-card:hover{border-color:rgba(240,192,64,0.15);transform:translateY(-2px)}
         .question-card .q{display:flex;align-items:flex-start;gap:16px;font-size:clamp(1.3rem,3.5vw,2rem);font-weight:800;color:var(--q-color);margin-bottom:14px;line-height:1.5;font-family:'Noto Serif Bengali',serif}
@@ -180,22 +174,46 @@
         .html-content-block video{border-radius:10px;display:block}
         .html-content-block iframe{width:100%;border:none;display:block;border-radius:12px;overflow:hidden}
 
-        /* ═══════ SIMULATION — fixed height, no blank, scrollable ═══════ */
-        .sim-container{width:100%;margin:14px 0;border-radius:16px;overflow:hidden;position:relative;background:var(--sim-bg);border:1px solid var(--sim-border);box-shadow:0 3px 16px rgba(0,0,0,0.1);transition:box-shadow .3s,border-color .3s}
-        .sim-container:hover{box-shadow:0 5px 28px rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.3)}
-        body.day .sim-container{box-shadow:0 2px 10px rgba(0,0,0,0.04)}
-        .sim-header{display:flex;align-items:center;gap:10px;padding:9px 14px;background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(168,85,247,0.01));border-bottom:1px solid rgba(168,85,247,0.1)}
-        .sim-header .sim-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:.85rem;flex-shrink:0}
-        .sim-header .sim-title{font-family:'Space Grotesk',sans-serif;font-size:.7rem;font-weight:700;color:#a855f7;letter-spacing:.02em;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-        .sim-header .sim-badge{font-family:'Space Grotesk',sans-serif;font-size:.52rem;font-weight:700;padding:3px 9px;border-radius:9px;background:rgba(168,85,247,0.1);color:#a855f7;border:1px solid rgba(168,85,247,0.2);letter-spacing:.06em;text-transform:uppercase;flex-shrink:0}
-        .sim-body{position:relative;width:100%;height:clamp(300px,52vh,520px);overflow:hidden}
-        .sim-body iframe{width:100%;height:100%;border:none;display:block}
-        .sim-fullscreen-btn{position:absolute;top:8px;right:8px;z-index:10;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.12);color:#fff;font-size:.85rem;transition:all .25s;backdrop-filter:blur(6px)}
-        .sim-fullscreen-btn:hover{background:rgba(168,85,247,0.7);transform:scale(1.1)}
-        .sim-container.fullscreen-mode{position:fixed;inset:0;z-index:9999;border-radius:0;margin:0}
-        .sim-container.fullscreen-mode .sim-body{height:100vh}
-        .sim-container.fullscreen-mode .sim-header{display:none}
-        .sim-container.fullscreen-mode .sim-fullscreen-btn{top:14px;right:14px;width:44px;height:44px;font-size:1.2rem}
+        /* ═══════ SIM CHIP (question card-এর ভিতরে) ═══════ */
+        .sim-chip{display:inline-flex;align-items:center;gap:11px;margin-top:16px;padding:11px 18px;border-radius:13px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.82rem;border:1px solid rgba(168,85,247,0.3);background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(168,85,247,0.04));color:#a855f7;transition:all .3s;position:relative;overflow:hidden}
+        .sim-chip::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(168,85,247,0.15) 50%,transparent 70%);transform:translateX(-100%);transition:transform .6s}
+        .sim-chip:hover::after{transform:translateX(100%)}
+        .sim-chip:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(168,85,247,0.28);border-color:rgba(168,85,247,0.55)}
+        .sim-chip-ico{font-size:1.1rem}
+        .sim-chip-name{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .sim-chip-play{padding:4px 12px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:.68rem;letter-spacing:.05em;box-shadow:0 3px 10px rgba(168,85,247,0.35)}
+
+        /* ═══════ SIM GRID (সিমুলেশন tab) ═══════ */
+        .sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:8px}
+        .sim-card{display:flex;align-items:center;gap:15px;padding:18px 20px;border-radius:16px;cursor:pointer;background:var(--bg-card);border:1px solid rgba(168,85,247,0.18);transition:all .3s;position:relative;overflow:hidden}
+        .sim-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#7c3aed,#a855f7);transform:scaleY(0);transition:.3s;transform-origin:top}
+        .sim-card:hover{transform:translateY(-3px);border-color:rgba(168,85,247,0.45);box-shadow:0 10px 32px rgba(168,85,247,0.14)}
+        .sim-card:hover::before{transform:scaleY(1)}
+        .sim-card-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;background:linear-gradient(135deg,rgba(168,85,247,0.16),rgba(168,85,247,0.05));border:1px solid rgba(168,85,247,0.22);flex-shrink:0;transition:transform .3s}
+        .sim-card:hover .sim-card-icon{transform:scale(1.1) rotate(-6deg)}
+        .sim-card-info{flex:1;min-width:0}
+        .sim-card-info h4{font-family:'Noto Serif Bengali',serif;font-size:1rem;font-weight:700;color:var(--text-primary);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .sim-card-info p{font-family:'Space Grotesk',sans-serif;font-size:.63rem;color:var(--text-muted);letter-spacing:.04em;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .sim-card-play{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:.75rem;flex-shrink:0;transition:.3s;box-shadow:0 4px 16px rgba(168,85,247,0.35)}
+        .sim-card:hover .sim-card-play{transform:scale(1.18)}
+        @media(max-width:768px){.sim-grid{grid-template-columns:1fr}}
+
+        /* ═══════ FULLSCREEN SIM OVERLAY (browser-এর মতো) ═══════ */
+        #simOverlay{position:fixed;inset:0;z-index:10000;background:#0d1117;display:none;flex-direction:column}
+        #simOverlay.active{display:flex;animation:ovIn .35s ease}
+        @keyframes ovIn{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:scale(1)}}
+        #simOverlayFrame{flex:1;width:100%;height:100%;border:none;background:#0d1117;opacity:0;transition:opacity .45s}
+        #simOverlayFrame.loaded{opacity:1}
+        .sim-overlay-bar{position:absolute;top:0;left:0;right:0;z-index:10002;display:flex;align-items:center;gap:12px;padding:14px 18px;background:linear-gradient(180deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.4) 60%,transparent 100%);transition:opacity .45s,transform .45s}
+        .sim-overlay-bar.hidden{opacity:0;transform:translateY(-110%);pointer-events:none}
+        .sim-back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:26px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.8rem;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.22);color:#fff;backdrop-filter:blur(12px);transition:all .25s;flex-shrink:0}
+        .sim-back-btn:hover{background:rgba(244,63,94,0.75);border-color:rgba(244,63,94,0.9);transform:translateX(-3px)}
+        .sim-overlay-title{flex:1;text-align:center;font-family:'Noto Serif Bengali',serif;font-size:.9rem;font-weight:600;color:rgba(255,255,255,0.8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px}
+        .sim-fs-btn{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.22);color:#fff;backdrop-filter:blur(12px);transition:all .25s;flex-shrink:0}
+        .sim-fs-btn:hover{background:rgba(168,85,247,0.65);transform:scale(1.12)}
+        .sim-overlay-loader{position:absolute;inset:0;z-index:10001;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#0d1117;color:rgba(255,255,255,0.55);font-size:.95rem;font-family:'Noto Serif Bengali',serif;transition:opacity .35s}
+        .sim-overlay-loader.gone{opacity:0;pointer-events:none}
+        .sim-loader-ring{width:46px;height:46px;border:3px solid rgba(168,85,247,0.15);border-top-color:#a855f7;border-radius:50%;animation:spin 1s linear infinite}
 
         .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden;animation:panelIn .5s ease}
         @keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -235,12 +253,6 @@
         body.day .contact-icon{background:#FFFDF5;border:1px solid #E6D5B8}
         .contact-link:hover .contact-icon{transform:scale(1.12) rotate(-4deg)}
         .contact-icon svg{display:block}
-        .contact-icon.gmail{box-shadow:0 0 14px rgba(234,67,53,0.18)}
-        .contact-link:hover .contact-icon.gmail{box-shadow:0 0 20px rgba(234,67,53,0.35)}
-        .contact-icon.insta{box-shadow:0 0 14px rgba(225,48,108,0.18)}
-        .contact-link:hover .contact-icon.insta{box-shadow:0 0 20px rgba(225,48,108,0.35)}
-        .contact-icon.tg{box-shadow:0 0 14px rgba(34,158,217,0.18)}
-        .contact-link:hover .contact-icon.tg{box-shadow:0 0 20px rgba(34,158,217,0.35)}
         .footer-bottom{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-family:'Space Grotesk',sans-serif;font-size:.7rem;color:var(--text-muted);max-width:1200px;margin-left:auto;margin-right:auto;flex-wrap:wrap;gap:.5rem}
         #themeToggle{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s}
         body.night #themeToggle{border:2px solid #f0c040;background:#FFF8E7}
@@ -276,15 +288,10 @@
             .type-btn{padding:.55rem .9rem;font-size:.72rem;gap:5px}
             .chapter-banner-text h3{font-size:1.4rem}
             .question-card .a{padding:12px 14px}
-            .sim-body{height:clamp(260px,48vh,400px)}
-            .sim-header{padding:7px 10px}
-            .sim-header .sim-title{font-size:.62rem}
             .toggle-group{width:100%;justify-content:center}
+            .sim-overlay-title{display:none}
         }
-        @media(max-width:480px){
-            .type-btn{padding:.5rem .7rem;font-size:.68rem}
-            .sim-body{height:clamp(220px,42vh,320px)}
-        }
+        @media(max-width:480px){.type-btn{padding:.5rem .7rem;font-size:.68rem}}
     </style>
 </head>
 <body class="night">
@@ -341,6 +348,17 @@
 
     <button class="fab-scroll" id="fabScroll" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i data-lucide="arrow-up" width="20"></i></button>
 
+    <!-- ═══════ FULLSCREEN SIMULATION OVERLAY ═══════ -->
+    <div id="simOverlay">
+        <div class="sim-overlay-loader" id="simLoader"><div class="sim-loader-ring"></div><p>🔬 সিমুলেশন লোড হচ্ছে...</p></div>
+        <div class="sim-overlay-bar" id="simBar">
+            <button class="sim-back-btn" onclick="closeSimOverlay()"><i data-lucide="arrow-left" width="15"></i> ফিরে যান</button>
+            <span class="sim-overlay-title" id="simOverlayTitle"></span>
+            <button class="sim-fs-btn" onclick="simTrueFS()" title="Full Screen"><i data-lucide="maximize" width="15"></i></button>
+        </div>
+        <iframe id="simOverlayFrame" allow="fullscreen; accelerometer; gyroscope; autoplay" allowfullscreen></iframe>
+    </div>
+
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
@@ -359,15 +377,15 @@
             <div class="footer-col">
                 <h4>Contact</h4>
                 <a href="mailto:arifbeldanga@gmail.com" class="contact-link">
-                    <span class="contact-icon gmail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg></span>
+                    <span class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg></span>
                     arifbeldanga@gmail.com
                 </a>
                 <a href="https://instagram.com/arifhussain.x" target="_blank" class="contact-link">
-                    <span class="contact-icon insta"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19"><defs><linearGradient id="igG" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"/><stop offset="25%" stop-color="#F77737"/><stop offset="50%" stop-color="#E1306C"/><stop offset="75%" stop-color="#C13584"/><stop offset="100%" stop-color="#833AB4"/></linearGradient></defs><path fill="url(#igG)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></span>
+                    <span class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19"><defs><linearGradient id="igG" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"/><stop offset="25%" stop-color="#F77737"/><stop offset="50%" stop-color="#E1306C"/><stop offset="75%" stop-color="#C13584"/><stop offset="100%" stop-color="#833AB4"/></linearGradient></defs><path fill="url(#igG)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></span>
                     arifhussain.x
                 </a>
                 <a href="https://t.me/beldanga1" target="_blank" class="contact-link">
-                    <span class="contact-icon tg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19"><path fill="#229ED9" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></span>
+                    <span class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19"><path fill="#229ED9" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></span>
                     @beldanga1
                 </a>
             </div>
@@ -392,6 +410,107 @@ const classKey=(new URLSearchParams(window.location.search).get('class')||'10').
 const CLASS_NAME=(CLASS_CONFIG[classKey]||CLASS_CONFIG['10']).name;
 const GOOGLE_SHEET_TSV_URL=(CLASS_CONFIG[classKey]||CLASS_CONFIG['10']).tsv;
 const CH_EMOJIS=['📕','📗','📘','📙','📔','📒'];
+
+/* ═══════════════════════════════════════════════════════════
+   🔬 SIMULATION SYSTEM (Column-based)
+   ─────────────────────────────────────────────────────────
+   Main Sheet-এ ২টা column:
+     • Stimulation     → URL / Raw HTML / Name
+     • StimulationName → Website-এ যে নাম দেখাবে
+   
+   Stimulation cell-এ যা দেওয়া যাবে:
+     1️⃣ URL       → https://xyz.netlify.app/snell.html
+     2️⃣ RAW HTML  → <!DOCTYPE html>... full code
+     3️⃣ NAME      → snell (Library sheet থেকে খুঁজবে — optional)
+   
+   📋 LIBRARY SHEET (optional, শুধু নাম use করলে):
+     Columns: Name | URL
+═══════════════════════════════════════════════════════════ */
+const SIM_LIBRARY_TSV='এখানে_আপনার_লাইব্রেরি_শীট_TSV_LINK';
+let simLibrary=null;
+const SIM_STORE=[];
+function simSave(v){SIM_STORE.push(v);return SIM_STORE.length-1}
+function simDisplayName(v){const t=(v||'').trim();if(/^https?:\/\//i.test(t))return 'সিমুলেশন';if(/^<!doctype|^<html/i.test(t))return 'ইন্টারঅ্যাক্টিভ সিমুলেশন';return t||'সিমুলেশন'}
+function getSimTitle(r){
+    if(r.simname&&r.simname.trim())return r.simname.trim();
+    return simDisplayName(r.stimulation);
+}
+async function loadSimLibrary(){
+    if(simLibrary)return;
+    simLibrary={};
+    if(!SIM_LIBRARY_TSV||SIM_LIBRARY_TSV.includes('এখানে'))return;
+    try{
+        const r=await fetch(SIM_LIBRARY_TSV,{cache:'no-store'});
+        const tsv=await r.text();
+        tsv.split(/\r?\n/).filter(l=>l.trim()).slice(1).forEach(l=>{
+            const c=l.split('\t');
+            if(c[0]&&c[1])simLibrary[c[0].trim().toLowerCase()]=c[1].trim();
+        });
+    }catch(e){console.warn('Sim library load failed',e)}
+}
+let simBarTimer=null;
+function simBarShow(){
+    const bar=document.getElementById('simBar');
+    bar.classList.remove('hidden');
+    clearTimeout(simBarTimer);
+    simBarTimer=setTimeout(()=>bar.classList.add('hidden'),2600);
+}
+async function openSimulation(idx,title){
+    const value=SIM_STORE[idx];
+    if(!value)return;
+    const ov=document.getElementById('simOverlay');
+    const fr=document.getElementById('simOverlayFrame');
+    const ld=document.getElementById('simLoader');
+    document.getElementById('simOverlayTitle').textContent=title||'সিমুলেশন';
+    ov.classList.add('active');
+    document.body.style.overflow='hidden';
+    fr.classList.remove('loaded');
+    ld.classList.remove('gone');
+    simBarShow();
+    const v=value.trim();
+    if(/^https?:\/\//i.test(v)){
+        fr.removeAttribute('srcdoc');
+        fr.src=v;
+    }else if(/^<!doctype\s+html|^<html/i.test(v)){
+        fr.removeAttribute('src');
+        fr.srcdoc=v;
+    }else{
+        await loadSimLibrary();
+        const url=simLibrary?simLibrary[v.toLowerCase()]:null;
+        if(url){fr.removeAttribute('srcdoc');fr.src=url}
+        else{
+            showToast('⚠️ "'+v+'" পাওয়া যায়নি! Stimulation column-এ URL দিন।','err');
+            closeSimOverlay();
+        }
+    }
+}
+document.getElementById('simOverlayFrame').addEventListener('load',function(){
+    if(!document.getElementById('simOverlay').classList.contains('active'))return;
+    this.classList.add('loaded');
+    document.getElementById('simLoader').classList.add('gone');
+    simBarShow();
+});
+function closeSimOverlay(){
+    if(document.fullscreenElement){try{document.exitFullscreen()}catch(e){}}
+    const ov=document.getElementById('simOverlay');
+    const fr=document.getElementById('simOverlayFrame');
+    ov.classList.remove('active');
+    fr.removeAttribute('src');fr.removeAttribute('srcdoc');
+    fr.classList.remove('loaded');
+    document.body.style.overflow='';
+}
+function simTrueFS(){
+    const ov=document.getElementById('simOverlay');
+    if(!document.fullscreenElement){
+        if(ov.requestFullscreen)ov.requestFullscreen();
+        else if(ov.webkitRequestFullscreen)ov.webkitRequestFullscreen();
+    }else{try{document.exitFullscreen()}catch(e){}}
+}
+document.getElementById('simOverlay').addEventListener('mousemove',simBarShow);
+document.getElementById('simOverlay').addEventListener('touchstart',simBarShow,{passive:true});
+document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&document.getElementById('simOverlay').classList.contains('active'))closeSimOverlay();
+});
 
 const QuotaManager={
     AI_DAILY_LIMIT:50,ip:null,data:null,
@@ -467,34 +586,6 @@ class SmartEngine{
 }
 const engine=new SmartEngine();
 
-/* ═══════ SIMULATION RENDERER ═══════ */
-function renderSimulation(simHTML,title){
-    if(!simHTML||!simHTML.trim())return'';
-    const dk=document.body.classList.contains('night');
-    const bg=dk?'#0d1117':'#FFF8E7',tc=dk?'#e6edf3':'#000000';
-    const css='<style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:'+bg+'!important;color:'+tc+'!important}*,*::before,*::after{box-sizing:border-box}canvas,img,video,svg{max-width:100%;height:auto}body{overflow-y:auto;padding:10px;display:flex;flex-direction:column;align-items:center}@media(max-width:600px){body{padding:6px}.controls-panel{padding:10px!important;gap:8px!important}.slider-group input[type=range]{width:110px!important}.media-btn{padding:8px 10px!important;font-size:.78em!important}.data-card{min-width:60px!important;padding:7px!important}.data-card .val{font-size:1.1em!important}.app-header h1{font-size:1.1em!important}}</style>';
-    let m=simHTML;
-    if(/<\/head>/i.test(m))m=m.replace(/<\/head>/i,css+'</head>');
-    else if(/<body/i.test(m))m=m.replace(/<body/i,css+'<body');
-    else m=css+m;
-    const sid='sim-'+Date.now()+'-'+Math.random().toString(36).slice(2,6);
-    const dt=title||'ইন্টারঅ্যাক্টিভ সিমুলেশন';
-    return '<div class="sim-container" id="wrap-'+sid+'">'
-        +'<div class="sim-header"><span class="sim-icon">🔬</span><span class="sim-title">'+escAttr(dt)+'</span><span class="sim-badge">Interactive</span></div>'
-        +'<div class="sim-body">'
-        +'<button class="sim-fullscreen-btn" onclick="toggleSimFS(\'wrap-'+sid+'\')">⛶</button>'
-        +'<iframe srcdoc="'+escAttr(m)+'" style="width:100%;height:100%;border:none;background:'+bg+'" loading="lazy" allowfullscreen></iframe>'
-        +'</div></div>';
-}
-function toggleSimFS(id){
-    const w=document.getElementById(id);if(!w)return;
-    w.classList.toggle('fullscreen-mode');
-    const b=w.querySelector('.sim-fullscreen-btn');
-    if(w.classList.contains('fullscreen-mode')){b.textContent='✕';document.body.style.overflow='hidden'}
-    else{b.textContent='⛶';document.body.style.overflow=''}
-}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.sim-container.fullscreen-mode').forEach(w=>{w.classList.remove('fullscreen-mode');const b=w.querySelector('.sim-fullscreen-btn');if(b)b.textContent='⛶'});document.body.style.overflow=''}});
-
 const dynamicContent=document.getElementById('dynamicContent');
 const dynamicSubtitle=document.getElementById('dynamicSubtitle');
 const sidebarEl=document.getElementById('sidebar');
@@ -547,14 +638,15 @@ async function loadSheet(){
         const lines=tsv.split(/\r?\n/).filter(l=>l.trim());
         if(lines.length<2)throw new Error('ডাটা নেই');
         const header=lines[0].split('\t').map(h=>h.trim().toLowerCase());
-        const idx={subject:header.indexOf('subject'),chapter:header.indexOf('chapter'),topic:header.indexOf('topic'),topicimage:header.indexOf('topicimage'),question:header.indexOf('question'),answer:header.indexOf('answer'),type:header.indexOf('type'),image:header.indexOf('image'),stimulation:header.indexOf('stimulation')};
+        const idx={subject:header.indexOf('subject'),chapter:header.indexOf('chapter'),topic:header.indexOf('topic'),topicimage:header.indexOf('topicimage'),question:header.indexOf('question'),answer:header.indexOf('answer'),type:header.indexOf('type'),image:header.indexOf('image'),stimulation:header.indexOf('stimulation'),simname:header.indexOf('stimulationname')};
         if(idx.subject===-1)idx.subject=0;if(idx.chapter===-1)idx.chapter=1;if(idx.topic===-1)idx.topic=2;if(idx.question===-1)idx.question=4;if(idx.answer===-1)idx.answer=5;
+        if(idx.simname===-1)idx.simname=header.indexOf('simname');
         const rows=[];
         for(let i=1;i<lines.length;i++){
             const cols=lines[i].split('\t');
             const get=j=>(j>=0&&j<cols.length)?cols[j].trim():'';
-            const subject=get(idx.subject)||'General',chapter=get(idx.chapter)||'Misc',topic=get(idx.topic)||'',topicimage=get(idx.topicimage)||'',question=get(idx.question)||'',answer=get(idx.answer)||'',type=get(idx.type)||'',image=get(idx.image)||'',stimulation=(idx.stimulation>=0)?get(idx.stimulation):'';
-            if(question||answer)rows.push({subject,chapter,topic,topicimage,question,answer,type,image,stimulation});
+            const subject=get(idx.subject)||'General',chapter=get(idx.chapter)||'Misc',topic=get(idx.topic)||'',topicimage=get(idx.topicimage)||'',question=get(idx.question)||'',answer=get(idx.answer)||'',type=get(idx.type)||'',image=get(idx.image)||'',stimulation=(idx.stimulation>=0)?get(idx.stimulation):'',simname=(idx.simname>=0)?get(idx.simname):'';
+            if(question||answer)rows.push({subject,chapter,topic,topicimage,question,answer,type,image,stimulation,simname});
         }
         if(!rows.length)throw new Error('কোনো প্রশ্ন নেই');
         allData=rows;buildNav();renderSubject('');
@@ -579,7 +671,7 @@ function renderSubject(subject,loadFirst){
 function getChapters(s){return[...new Set(allData.filter(r=>r.subject===s).map(r=>r.chapter))].sort()}
 function getTopics(subject,chapter){const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);const m=new Map();rows.forEach(r=>{const t=topicOf(r);if(!m.has(t))m.set(t,0);m.set(t,m.get(t)+1)});return[...m.entries()].map(([name,count])=>({name,count}))}
 function getTopicImage(subject,chapter,topic){const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter&&topicOf(r)===topic);for(const r of rows){const ti=r.topicimage?r.topicimage.trim():'';if(ti&&/^https?:\/\//i.test(ti))return ti}return null}
-function getSimulations(rows){return rows.filter(r=>r.stimulation&&r.stimulation.trim().length>10)}
+function getSimulations(rows){return rows.filter(r=>r.stimulation&&r.stimulation.trim())}
 
 function renderChapterList(subject,filter){
     filter=(filter||'').toLowerCase();
@@ -642,14 +734,19 @@ function wireTypeBtns(rows,saq,broad,simRows,mode){
         });
     });
 }
+/* 🔬 সিমুলেশন tab → card grid, click → fullscreen */
 function renderSimList(simRows){
-    let h='';
-    simRows.forEach((r,i)=>{
-        const title=r.question||r.topic||('সিমুলেশন '+(i+1));
-        h+='<div style="margin-bottom:20px"><div style="font-family:Noto Serif Bengali,serif;font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:8px;padding-left:4px">📌 '+escAttr(title)+'</div>';
-        h+=renderSimulation(r.stimulation,title);
-        h+='</div>';
+    let h='<div class="sim-grid">';
+    simRows.forEach(r=>{
+        const si=simSave(r.stimulation);
+        const nm=getSimTitle(r);
+        h+='<div class="sim-card" onclick="openSimulation('+si+',\''+escJs(nm)+'\')">'
+          +'<div class="sim-card-icon">🔬</div>'
+          +'<div class="sim-card-info"><h4>'+escAttr(nm)+'</h4><p>'+escAttr(r.subject)+' › '+escAttr(r.chapter)+' › '+escAttr(topicOf(r))+'</p></div>'
+          +'<span class="sim-card-play">▶</span>'
+          +'</div>';
     });
+    h+='</div>';
     return h;
 }
 
@@ -697,7 +794,12 @@ function renderQuestions(rows){
         html+='<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>';
         html+=allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('');
         html+='<div class="a">'+smartA+'</div>';
-        if(r.stimulation&&r.stimulation.trim().length>10)html+=renderSimulation(r.stimulation,r.question||'সিমুলেশন');
+        /* 🔬 Simulation chip — StimulationName দেখাবে, click → fullscreen */
+        if(r.stimulation&&r.stimulation.trim()){
+            const si=simSave(r.stimulation);
+            const nm=getSimTitle(r);
+            html+='<button class="sim-chip" onclick="openSimulation('+si+',\''+escJs(nm)+'\')"><span class="sim-chip-ico">🔬</span><span class="sim-chip-name">'+escAttr(nm)+'</span><span class="sim-chip-play">▶ চালু</span></button>';
+        }
         html+='<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button><div id="ai-panel-'+cid+'"></div></div>';
     });
     return html;
