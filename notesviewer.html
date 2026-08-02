@@ -20,8 +20,8 @@
         ::-webkit-scrollbar-thumb:hover{background:rgba(240,192,64,0.4)}
         body.day ::-webkit-scrollbar-thumb{background:rgba(180,130,50,0.3)}
         body{font-family:'Noto Serif Bengali','Inter',sans-serif;min-height:100vh;overflow-x:hidden;font-size:18px;line-height:1.8;transition:background .4s,color .4s}
-        body.night{--bg-base:#06060f;--bg-card:rgba(20,20,46,0.4);--bg-card-hover:rgba(26,26,62,0.5);--bg-sidebar:rgba(10,10,26,0.4);--bg-header:rgba(6,6,15,0.7);--bg-footer:rgba(6,6,15,0.8);--text-primary:#e8e8f0;--text-secondary:rgba(255,255,255,0.45);--text-muted:rgba(255,255,255,0.25);--accent:#f0c040;--accent-dim:rgba(240,192,64,0.08);--border:rgba(255,255,255,0.04);--shadow-card:0 2px 8px rgba(0,0,0,0.4);--q-color:#f0c040;--a-color:rgba(255,255,255,0.85);--ai-glow:rgba(249,115,22,0.08);--ai-border:rgba(249,115,22,0.3);--chart-bg:rgba(20,20,46,0.6)}
-        body.day{--bg-base:#FFF8E7;--bg-card:#FFFDF5;--bg-card-hover:#FFF9E6;--bg-sidebar:#FFFCF0;--bg-header:rgba(255,248,231,0.92);--bg-footer:#FFFCF0;--text-primary:#000000;--text-secondary:#050505;--text-muted:#111111;--accent:#B8860B;--accent-dim:rgba(184,134,11,0.08);--border:#E6D5B8;--shadow-card:0 1px 4px rgba(0,0,0,0.06);--q-color:#000000;--a-color:#000000;--ai-glow:rgba(249,115,22,0.05);--ai-border:rgba(249,115,22,0.2);--chart-bg:#FFFDF5}
+        body.night{--bg-base:#06060f;--bg-card:rgba(20,20,46,0.4);--bg-card-hover:rgba(26,26,62,0.5);--bg-sidebar:rgba(10,10,26,0.4);--bg-header:rgba(6,6,15,0.7);--bg-footer:rgba(6,6,15,0.8);--text-primary:#e8e8f0;--text-secondary:rgba(255,255,255,0.45);--text-muted:rgba(255,255,255,0.25);--accent:#f0c040;--accent-dim:rgba(240,192,64,0.08);--border:rgba(255,255,255,0.04);--shadow-card:0 2px 8px rgba(0,0,0,0.4);--q-color:#f0c040;--a-color:rgba(255,255,255,0.85);--ai-glow:rgba(249,115,22,0.08);--ai-border:rgba(249,115,22,0.3);--chart-bg:rgba(20,20,46,0.6);--sim-bg:rgba(13,17,23,0.95);--sim-border:rgba(240,192,64,0.12)}
+        body.day{--bg-base:#FFF8E7;--bg-card:#FFFDF5;--bg-card-hover:#FFF9E6;--bg-sidebar:#FFFCF0;--bg-header:rgba(255,248,231,0.92);--bg-footer:#FFFCF0;--text-primary:#000000;--text-secondary:#050505;--text-muted:#111111;--accent:#B8860B;--accent-dim:rgba(184,134,11,0.08);--border:#E6D5B8;--shadow-card:0 1px 4px rgba(0,0,0,0.06);--q-color:#000000;--a-color:#000000;--ai-glow:rgba(249,115,22,0.05);--ai-border:rgba(249,115,22,0.2);--chart-bg:#FFFDF5;--sim-bg:#FFFDF5;--sim-border:rgba(184,134,11,0.15)}
         body{background:var(--bg-base);color:var(--text-primary)}
         body.day .ai-search-input::placeholder,body.day .search-bar input::placeholder{color:#333}
         .universe-bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(66,133,244,0.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(6,182,212,0.05) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(240,192,64,0.03) 0%,transparent 70%),#06060f}
@@ -123,11 +123,15 @@
         .chapter-banner-text{position:absolute;bottom:24px;left:30px;z-index:2}
         .chapter-banner-text h3{font-family:'Noto Serif Bengali',serif;font-size:2rem;font-weight:800;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,0.95),0 0 26px rgba(0,0,0,0.65)}
         .banner-subtitle{font-family:'Noto Serif Bengali','Space Grotesk',sans-serif;font-size:.82rem;letter-spacing:normal;color:#fff;margin-top:6px;font-weight:600;text-shadow:0 1px 5px rgba(0,0,0,0.95),0 0 14px rgba(0,0,0,0.65)}
-        .toggle-group{display:inline-flex;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:5px;margin-bottom:1.4rem}
+        .toggle-group{display:inline-flex;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:5px;margin-bottom:1.4rem;flex-wrap:wrap;gap:4px}
         body.day .toggle-group{background:#FFF9E6;border:1px solid #E6D5B8}
-        .type-btn{padding:.7rem 2rem;border-radius:12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;border:none;background:transparent;color:var(--text-muted);transition:all .3s;display:flex;align-items:center;gap:8px}
+        .type-btn{padding:.7rem 1.6rem;border-radius:12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem;border:none;background:transparent;color:var(--text-muted);transition:all .3s;display:flex;align-items:center;gap:8px;white-space:nowrap}
         .type-btn.active{color:#06060f;background:rgba(255,255,255,0.8);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
         body.day .type-btn.active{color:#000;background:#FFF5D6;border:1px solid #B8860B}
+        .type-btn.sim-btn{color:#a855f7}
+        .type-btn.sim-btn.active{color:#fff;background:linear-gradient(135deg,#7c3aed,#a855f7);box-shadow:0 2px 12px rgba(168,85,247,0.3)}
+        body.day .type-btn.sim-btn{color:#7c3aed}
+        body.day .type-btn.sim-btn.active{color:#fff;background:linear-gradient(135deg,#7c3aed,#a855f7)}
         .topic-divider{display:flex;align-items:center;gap:13px;margin:2.4rem 0 1.5rem;padding-bottom:11px;border-bottom:1px dashed rgba(240,192,64,0.28)}
         body.day .topic-divider{border-bottom-color:rgba(184,134,11,0.3)}
         .topic-divider:first-child{margin-top:.5rem}
@@ -168,13 +172,30 @@
         .chart-container{position:relative;width:100%;max-width:600px;margin:16px auto;padding:20px;border-radius:16px;background:var(--chart-bg);border:1px solid var(--border);box-shadow:var(--shadow-card)}
         .chart-container canvas{max-height:350px}
         .chart-label{font-family:'Space Grotesk',sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);text-align:center;margin-bottom:12px}
-        .html-content-block{margin:14px 0;padding:16px;border-radius:14px;border:1px solid rgba(168,85,247,0.2);background:var(--bg-card);overflow:hidden;position:relative;transition:border-color .3s;max-width:100%}
-        .html-content-block:hover{border-color:rgba(168,85,247,0.4)}
-        .html-content-block::after{content:'⚡ RICH CONTENT';position:absolute;top:8px;right:10px;font-family:'Space Grotesk',sans-serif;font-size:.5rem;font-weight:700;letter-spacing:.15em;color:rgba(168,85,247,0.5);pointer-events:none}
+
+        /* ═══════ SEAMLESS HTML CONTENT (no ugly box) ═══════ */
+        .html-content-block{margin:14px 0;padding:0;border:none;background:transparent;overflow:hidden;position:relative;max-width:100%}
         .html-content-block img,.html-content-block video,.html-content-block svg,.html-content-block table,.html-content-block canvas{max-width:100%;height:auto}
         .html-content-block img{border-radius:10px;margin:8px 0;display:block}
-        .html-content-block iframe{width:100%;min-height:340px;border:none;border-radius:10px;background:#fff;overflow:hidden}
+        .html-content-block iframe{width:100%;border:none;border-radius:0;background:transparent;overflow:hidden;display:block}
         .html-content-block video{border-radius:10px;display:block}
+
+        /* ═══════ SIMULATION CONTAINER (seamless, responsive) ═══════ */
+        .sim-container{width:100%;margin:16px 0;border-radius:20px;overflow:hidden;position:relative;background:var(--sim-bg);border:1px solid var(--sim-border);box-shadow:0 4px 24px rgba(0,0,0,0.15);transition:all .4s}
+        .sim-container:hover{box-shadow:0 8px 40px rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.2)}
+        body.day .sim-container{box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+        .sim-container iframe{width:100%;border:none;display:block;background:transparent;min-height:400px}
+        .sim-header{display:flex;align-items:center;gap:12px;padding:14px 20px;background:linear-gradient(135deg,rgba(168,85,247,0.08),rgba(168,85,247,0.02));border-bottom:1px solid rgba(168,85,247,0.12)}
+        .sim-header .sim-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:1.1rem;flex-shrink:0}
+        .sim-header .sim-title{font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:700;color:#a855f7;letter-spacing:.05em}
+        .sim-header .sim-badge{margin-left:auto;font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:700;padding:4px 12px;border-radius:12px;background:rgba(168,85,247,0.1);color:#a855f7;border:1px solid rgba(168,85,247,0.2);letter-spacing:.08em;text-transform:uppercase}
+        .sim-fullscreen-btn{position:absolute;top:12px;right:12px;z-index:10;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);color:#fff;transition:all .3s;backdrop-filter:blur(8px)}
+        .sim-fullscreen-btn:hover{background:rgba(168,85,247,0.6);transform:scale(1.1)}
+        .sim-container.fullscreen-mode{position:fixed;inset:0;z-index:9999;border-radius:0;margin:0;max-width:100%;max-height:100vh}
+        .sim-container.fullscreen-mode iframe{height:100vh!important;min-height:100vh}
+        .sim-container.fullscreen-mode .sim-header{display:none}
+        .sim-container.fullscreen-mode .sim-fullscreen-btn{top:16px;right:16px;width:48px;height:48px;font-size:1.3rem}
+
         .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden;animation:panelIn .5s ease}
         @keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
         .ai-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#f97316,#fb923c,#fdba74)}
@@ -251,9 +272,16 @@
             .chapter-banner img{height:200px}
             .chart-container{padding:12px}
             .quota-ip{margin-left:0;width:100%}
-            .type-btn{padding:.6rem 1.1rem;font-size:.8rem}
+            .type-btn{padding:.6rem 1rem;font-size:.75rem}
             .chapter-banner-text h3{font-size:1.4rem}
             .question-card .a{padding:12px 14px}
+            .sim-container iframe{min-height:320px}
+            .sim-header{padding:10px 14px}
+            .toggle-group{width:100%;justify-content:center}
+        }
+        @media(max-width:480px){
+            .type-btn{padding:.5rem .8rem;font-size:.7rem;gap:5px}
+            .sim-container iframe{min-height:280px}
         }
     </style>
 </head>
@@ -429,51 +457,34 @@ class SmartEngine {
         const chapterIsGrammar=/grammar|ব্যাকরণ|byakaran/i.test(ch);
         const questionIsGrammar=/grammar|ব্যাকরণ|সন্ধি|সমাস|কারক|বিভক্তি|প্রত্যয়|উপসর্গ|বাগধারা|one word|synonym|antonym|tense|\bvoice\b|narration|preposition|\barticle\b|parts of speech|idiom|phrase|clause|transformation|degrees of comparison|fill in the blank|right form of verb|punctuation|spelling/i.test(q);
         const isGrammar=chapterIsGrammar||questionIsGrammar;
-
-        /* ══════════ ENGLISH SUBJECT ══════════ */
         if(isEnglish){
             if(isGrammar){
-                return await this.callAI(
-                    'তুমি WBBSE Class 10-এর English Grammar-এর সেরা শিক্ষক। Article, Preposition, Narration Change, Voice Change, Tense, Synonym-Antonym, One Word, Phrasal Verb, Idiom — সব rule তুমি খুব ভালো জানো। তুমি বাংলা medium-এর students দের বোঝাও।\n\nনিচের format-এ উত্তর দাও:\n\n**Answer:** — ইংরেজিতে সঠিক উত্তর\n\n**বাংলা অর্থ:** — answer-এর প্রতিটি কঠিন word-এর বাংলা meaning দাও\n\n📖 **নিয়ম (Rule):** — grammar rule টা ধাপে ধাপে একদম সহজ বাংলায় বোঝাও, যেন বাংলা medium-এর student-ও সহজে বুঝে যায়\n\n✍️ **আরও উদাহরণ:** — একই rule-এর আর ২টা উদাহরণ দাও (English sentence + বাংলা meaning)\n\n💡 **মনে রাখো:** — ১ লাইনের সহজ trick বাংলায়, যেন exam-এ মনে থাকে\n\nAnswer ইংরেজিতে, বাকি সব বাংলায়। Max 200 words।',
-                    'Class: 10 (WBBSE Board)\nSubject: English (Grammar)\n\nপ্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nRule সহ step-by-step বুঝিয়ে দাও:'
-                );
+                return await this.callAI('তুমি WBBSE Class 10-এর English Grammar-এর সেরা শিক্ষক।\n\n**Answer:** — ইংরেজিতে সঠিক উত্তর\n\n**বাংলা অর্থ:** — answer-এর প্রতিটি কঠিন word-এর বাংলা meaning\n\n📖 **নিয়ম (Rule):** — grammar rule সহজ বাংলায়\n\n✍️ **আরও উদাহরণ:** — ২টা উদাহরণ\n\n💡 **মনে রাখো:** — ১ লাইনের trick\n\nMax 200 words।','Class: 10\nSubject: English (Grammar)\n\nপ্রশ্ন: '+q+'\nউত্তর: '+a);
             }
-            return await this.callAI(
-                'তুমি WBBSE Class 10-এর English সাহিত্যের (Literature) অভিজ্ঞ শিক্ষক। তুমি WBBSE Class 10 English syllabus-এর গল্প, কবিতা ও প্রবন্ধ জানো। প্রশ্নের উত্তর ওই নির্দিষ্ট story/poem থেকে reference দিয়ে দাও।\n\nনিচের format-এ উত্তর দাও:\n\n**Answer:** — ইংরেজিতে, story/poem থেকে সরাসরি reference দিয়ে ২-৩ sentence-এ উত্তর দাও\n\n📖 **সহজ ব্যাখ্যা:** — বাংলায় ২-৩ লাইনে বোঝাও (বাংলা medium students দের জন্য)\n\n🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ১টা উদাহরণ বাংলায়\n\n📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে\n\n💡 **মনে রাখো:** — ১ লাইনের সহজ trick বাংলায়\n\nউত্তর ইংরেজিতে, ব্যাখ্যা বাংলায়। Max 200 words।',
-                'Class: 10 (WBBSE Board)\nSubject: English (Literature)\n\nপ্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nWBBSE Class 10-এর story/poem অনুযায়ী উত্তর দাও:'
-            );
+            return await this.callAI('তুমি WBBSE Class 10-এর English সাহিত্যের শিক্ষক।\n\n**Answer:** — ইংরেজিতে, reference দিয়ে\n\n📖 **সহজ ব্যাখ্যা:** — বাংলায়\n\n🌍 **বাস্তব উদাহরণ:**\n\n📌 **Key Points:**\n\n💡 **মনে রাখো:**\n\nMax 200 words।','Class: 10\nSubject: English (Literature)\n\nপ্রশ্ন: '+q+'\nউত্তর: '+a);
         }
-
-        /* ══════════ BANGLA SUBJECT ══════════ */
         if(isBangla){
             if(isGrammar){
-                return await this.callAI(
-                    'তুমি WBBSE Class 10-এর বাংলা ব্যাকরণ শিক্ষক। নিচের format-এ উত্তর দাও:\n\n**উত্তর:** — সঠিক উত্তর দাও\n\n📌 **মনে রাখো:** — সহজ trick/নিয়ম দাও যেন পরীক্ষায় মনে থাকে\n\nশুধু উত্তর আর মনে রাখো। অতিরিক্ত ব্যাখ্যা দিও না। Max 80 words।',
-                    'Class: 10 (WBBSE Board)\nSubject: বাংলা (ব্যাকরণ)\n\nপ্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসংক্ষেপে উত্তর আর মনে রাখো দাও:'
-                );
+                return await this.callAI('তুমি WBBSE Class 10-এর বাংলা ব্যাকরণ শিক্ষক।\n\n**উত্তর:**\n\n📌 **মনে রাখো:**\n\nMax 80 words।','প্রশ্ন: '+q+'\nউত্তর: '+a);
             }
-            return await this.callAI(
-                'তুমি WBBSE Class 10-এর বাংলা সাহিত্যের অভিজ্ঞ শিক্ষক। তুমি WBBSE Class 10 বাংলা syllabus-এর গল্প ও কবিতা জানো। প্রশ্নের উত্তর ওই নির্দিষ্ট গল্প/কবিতা থেকে reference দিয়ে দাও।\n\nশুধু উত্তর দাও, কোনো অতিরিক্ত ব্যাখ্যা, উদাহরণ বা key points দিও না।\n\n**উত্তর:** — গল্প/কবিতা থেকে সরাসরি reference দিয়ে ২-৩ লাইনে পরিষ্কার উত্তর দাও।\n\nMax 100 words।',
-                'Class: 10 (WBBSE Board)\nSubject: বাংলা (সাহিত্য)\n\nপ্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nWBBSE Class 10-এর গল্প/কবিতা অনুযায়ী শুধু উত্তর দাও:'
-            );
+            return await this.callAI('তুমি WBBSE Class 10-এর বাংলা সাহিত্যের শিক্ষক।\n\n**উত্তর:** — গল্প/কবিতা থেকে reference দিয়ে ২-৩ লাইনে।\n\nMax 100 words।','প্রশ্ন: '+q+'\nউত্তর: '+a);
         }
-
-        /* ══════════ OTHER SUBJECTS (Science, Math, etc.) ══════════ */
         const type=questionType(q);
         if(type==='quick'){
-            return await this.callAI('তুমি Class 10-এর অভিজ্ঞ শিক্ষক। এটি পার্থক্য/তুলনা/ছক/সংজ্ঞা টাইপ প্রশ্ন — তাই লম্বা ব্যাখ্যা বা উদাহরণ দিও না। শুধু মূল পয়েন্টগুলো দাও, প্রতিটি ১ লাইনে, key terms **bold** করে। পরিষ্কার ও সংক্ষিপ্ত রাখো। Max 80 words।','প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসংক্ষেপে মূল পয়েন্ট দাও:');
+            return await this.callAI('তুমি Class 10-এর শিক্ষক। সংক্ষিপ্ত পয়েন্ট দাও, **bold** করে। Max 80 words।','প্রশ্ন: '+q+'\nউত্তর: '+a);
         }
-        return await this.callAI('তুমি একজন অভিজ্ঞ, স্নেহময় Class 10-এর শিক্ষক — যিনি কঠিন জিনিসও খুব সহজে বোঝান। নিচের format-এ ব্যাখ্যা করো:\n\n📖 **সহজ ব্যাখ্যা:** — ২-৩ লাইনে মূল কথা, একদম সহজ বাংলায়, যেন যে কেউ বুঝে যায়\n\n🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ২টা উদাহরণ দিয়ে বোঝাও (যেমন: বাজার, খেলা, রান্নাঘর, মোবাইল — এমন familiar জিনিস)\n\n📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে লেখো\n\n💡 **মনে রাখো:** — শেষে ১ লাইনের সহজ trick বা shortcut দাও\n\nআন্তরিক শিক্ষকের ভাষায় লেখো, কঠিন শব্দ এড়াও। Max 250 words।','প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসুন্দর করে বুঝিয়ে দাও:');
+        return await this.callAI('তুমি Class 10-এর শিক্ষক।\n\n📖 **সহজ ব্যাখ্যা:**\n\n🌍 **বাস্তব উদাহরণ:**\n\n📌 **Key Points:**\n\n💡 **মনে রাখো:**\n\nMax 250 words।','প্রশ্ন: '+q+'\nউত্তর: '+a);
     }
     async smartSearch(query,questions){
         const ql=questions.slice(0,60).map((r,i)=>i+'. ['+r.subject+'/'+r.chapter+'] '+r.question).join('\n');
-        const res=await this.callAI('Smart search engine। শুধু JSON array: [{"index":0,"reason":"...","relevance":95}] Max 5। শুধু JSON।','Query: "'+query+'"\n\nQuestions:\n'+ql);
+        const res=await this.callAI('Smart search engine। শুধু JSON array: [{"index":0,"reason":"...","relevance":95}] Max 5।','Query: "'+query+'"\n\nQuestions:\n'+ql);
         try{return JSON.parse(res.replace(/```json?\n?/g,'').replace(/```/g,'').trim())}catch{return[]}
     }
     render(text){
         if(!text)return'';
+        /* ═══ FULL HTML DOCUMENT → seamless iframe (no ugly box) ═══ */
         if(/<!doctype\s+html|<html[\s>]/i.test(text)){
-            return '<div class="html-content-block" style="padding:8px"><iframe srcdoc="'+escAttr(text)+'" style="width:100%;min-height:380px;border:none;border-radius:10px;background:#ffffff" loading="lazy"></iframe></div>';
+            return this._renderSeamlessHTML(text);
         }
         let out='';const lines=text.split('\n');let htmlBuffer=[],textBuffer=[];
         for(let i=0;i<lines.length;i++){
@@ -491,6 +502,50 @@ class SmartEngine {
         if(textBuffer.length)out+=this._renderText(textBuffer.join('\n'));
         return out;
     }
+    /* ═══ SEAMLESS HTML RENDERER — blends with page, auto-height ═══ */
+    _renderSeamlessHTML(html){
+        const isDark=document.body.classList.contains('night');
+        const bgColor=isDark?'#06060f':'#FFF8E7';
+        const textColor=isDark?'#e8e8f0':'#000000';
+        /* Inject parent theme CSS into the HTML so it blends perfectly */
+        const themeInjection='<style>body{margin:0;padding:16px;background:'+bgColor+'!important;color:'+textColor+'!important;font-family:"Noto Serif Bengali","Inter",sans-serif;overflow-x:hidden}*,*::before,*::after{box-sizing:border-box}img,video,canvas,svg,table{max-width:100%;height:auto}</style>';
+        let modifiedHTML=html;
+        if(/<\/head>/i.test(modifiedHTML)){
+            modifiedHTML=modifiedHTML.replace(/<\/head>/i,themeInjection+'</head>');
+        }else if(/<body/i.test(modifiedHTML)){
+            modifiedHTML=modifiedHTML.replace(/<body/i,themeInjection+'<body');
+        }else{
+            modifiedHTML=themeInjection+modifiedHTML;
+        }
+        /* Add auto-resize script */
+        const resizeScript='<script>window.addEventListener("load",function(){function sendH(){var h=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,document.body.offsetHeight,document.documentElement.offsetHeight);window.parent.postMessage({type:"iframe-resize",height:h+20},"*")}sendH();setTimeout(sendH,300);setTimeout(sendH,1000);new MutationObserver(sendH).observe(document.body,{childList:true,subtree:true,attributes:true});window.addEventListener("resize",sendH)});window.addEventListener("message",function(e){if(e.data&&e.data.type==="theme-change"){document.body.style.background=e.data.bg;document.body.style.color=e.data.color}});<\/script>';
+        if(/<\/body>/i.test(modifiedHTML)){
+            modifiedHTML=modifiedHTML.replace(/<\/body>/i,resizeScript+'</body>');
+        }else{
+            modifiedHTML+=resizeScript;
+        }
+        const frameId='seamless-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);
+        setTimeout(()=>{
+            const setupResize=()=>{
+                const handler=(e)=>{
+                    if(e.data&&e.data.type==='iframe-resize'){
+                        const frames=document.querySelectorAll('iframe[data-seamless]');
+                        frames.forEach(f=>{
+                            try{
+                                if(f.contentWindow===e.source){f.style.height=e.data.height+'px'}
+                            }catch(ex){}
+                        });
+                    }
+                };
+                if(!window._seamlessResizeBound){
+                    window.addEventListener('message',handler);
+                    window._seamlessResizeBound=true;
+                }
+            };
+            setupResize();
+        },50);
+        return '<div class="html-content-block"><iframe data-seamless id="'+frameId+'" srcdoc="'+escAttr(modifiedHTML)+'" style="width:100%;min-height:200px;border:none;background:transparent;overflow:hidden" loading="lazy" scrolling="no"></iframe></div>';
+    }
     _isHTML(s){return /<[a-z][\s\S]*>/i.test(s)||/<\/[a-z]+>/i.test(s)||s.startsWith('<!')}
     _isImageURL(s){return /^https?:\/\/.+\.(png|jpg|jpeg|gif|svg|webp|bmp|avif)(\?.*)?$/i.test(s.trim())}
     _isVideoURL(s){return /^https?:\/\/.+\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(s.trim())}
@@ -499,9 +554,7 @@ class SmartEngine {
         let f=text;
         f=f.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
         f=f.replace(/\*([^*]+)\*/g,'<em>$1</em>');
-        f=f.replace(/([^\s:<>\n][^:<>\n]{0,59}?)\s*:(?=\s|$)/g,function(m,term){
-            return /https?|:\/\//i.test(term)?m:'<strong>'+term.trim()+':</strong>';
-        });
+        f=f.replace(/([^\s:<>\n][^:<>\n]{0,59}?)\s*:(?=\s|$)/g,function(m,term){return /https?|:\/\//i.test(term)?m:'<strong>'+term.trim()+':</strong>'});
         f=f.replace(/^(\d+)[.)]\s+(.+)$/gm,'<li>$2</li>');
         f=f.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ol style="padding-left:20px;margin:8px 0">$1</ol>');
         f=f.replace(/^[-•*]\s+(.+)$/gm,'<li>$1</li>');
@@ -528,6 +581,76 @@ class SmartEngine {
 }
 const engine=new SmartEngine();
 
+/* ═══════ SIMULATION RENDERER ═══════ */
+function renderSimulation(simHTML,title){
+    if(!simHTML||!simHTML.trim())return '';
+    const isDark=document.body.classList.contains('night');
+    const bgColor=isDark?'#0d1117':'#FFF8E7';
+    const textColor=isDark?'#e6edf3':'#000000';
+    /* Inject responsive + theme CSS into simulation */
+    const simThemeCSS='<style>html,body{margin:0;padding:0;width:100%;overflow-x:hidden;background:'+bgColor+'!important;color:'+textColor+'!important}*,*::before,*::after{box-sizing:border-box}canvas,img,video,svg{max-width:100%;height:auto}@media(max-width:600px){body{padding:8px!important}.controls-panel{padding:12px!important;gap:10px!important}.slider-group input[type=range]{width:120px!important}.media-btn{padding:8px 12px!important;font-size:.8em!important}.data-card{min-width:70px!important;padding:8px 10px!important}.data-card .val{font-size:1.2em!important}.app-header h1{font-size:1.2em!important}}</style>';
+    const simResizeScript='<script>window.addEventListener("load",function(){function sendH(){var h=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,document.body.offsetHeight,document.documentElement.offsetHeight);window.parent.postMessage({type:"sim-resize",height:h+10},"*")}sendH();setTimeout(sendH,200);setTimeout(sendH,600);setTimeout(sendH,1500);new MutationObserver(sendH).observe(document.body,{childList:true,subtree:true,attributes:true});window.addEventListener("resize",sendH);setInterval(sendH,2000)});<\/script>';
+    let modified=simHTML;
+    if(/<\/head>/i.test(modified)){
+        modified=modified.replace(/<\/head>/i,simThemeCSS+'</head>');
+    }else if(/<body/i.test(modified)){
+        modified=modified.replace(/<body/i,simThemeCSS+'<body');
+    }else{
+        modified=simThemeCSS+modified;
+    }
+    if(/<\/body>/i.test(modified)){
+        modified=modified.replace(/<\/body>/i,simResizeScript+'</body>');
+    }else{
+        modified+=simResizeScript;
+    }
+    const simId='sim-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);
+    setTimeout(()=>{
+        if(!window._simResizeBound){
+            window.addEventListener('message',(e)=>{
+                if(e.data&&e.data.type==='sim-resize'){
+                    document.querySelectorAll('iframe[data-sim]').forEach(f=>{
+                        try{if(f.contentWindow===e.source){f.style.height=e.data.height+'px'}}catch(ex){}
+                    });
+                }
+            });
+            window._simResizeBound=true;
+        }
+    },50);
+    const displayTitle=title||'ইন্টারঅ্যাক্টিভ সিমুলেশন';
+    return '<div class="sim-container" id="wrap-'+simId+'">'
+        +'<div class="sim-header">'
+        +'<span class="sim-icon">🔬</span>'
+        +'<span class="sim-title">'+escAttr(displayTitle)+'</span>'
+        +'<span class="sim-badge">Interactive</span>'
+        +'</div>'
+        +'<button class="sim-fullscreen-btn" onclick="toggleSimFullscreen(\'wrap-'+simId+'\')" title="Fullscreen">⛶</button>'
+        +'<iframe data-sim id="'+simId+'" srcdoc="'+escAttr(modified)+'" style="width:100%;min-height:420px;border:none;background:transparent" loading="lazy" allowfullscreen></iframe>'
+        +'</div>';
+}
+function toggleSimFullscreen(wrapId){
+    const wrap=document.getElementById(wrapId);
+    if(!wrap)return;
+    wrap.classList.toggle('fullscreen-mode');
+    const btn=wrap.querySelector('.sim-fullscreen-btn');
+    if(wrap.classList.contains('fullscreen-mode')){
+        btn.textContent='✕';
+        document.body.style.overflow='hidden';
+    }else{
+        btn.textContent='⛶';
+        document.body.style.overflow='';
+    }
+}
+/* Close fullscreen on Escape */
+document.addEventListener('keydown',(e)=>{
+    if(e.key==='Escape'){
+        document.querySelectorAll('.sim-container.fullscreen-mode').forEach(w=>{
+            w.classList.remove('fullscreen-mode');
+            w.querySelector('.sim-fullscreen-btn').textContent='⛶';
+        });
+        document.body.style.overflow='';
+    }
+});
+
 const dynamicContent=document.getElementById('dynamicContent');
 const dynamicSubtitle=document.getElementById('dynamicSubtitle');
 const sidebarEl=document.getElementById('sidebar');
@@ -546,7 +669,18 @@ let allData=[],currentSubject=null,currentChapter=null,currentTopic=null;
 (function(){const c=document.getElementById('stars');for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';const z=Math.random()*2+1;s.style.width=z+'px';s.style.height=z+'px';s.style.setProperty('--duration',(Math.random()*3+2)+'s');s.style.setProperty('--delay',(Math.random()*5)+'s');c.appendChild(s)}})();
 window.addEventListener('scroll',()=>{const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;progressBar.style.width=(st/dh)*100+'%';fabScroll.classList.toggle('visible',st>500)});
 function setThemeIcon(n){document.getElementById('themeToggle').innerHTML='<i data-lucide="'+n+'" width="18"></i>';lucide.createIcons()}
-document.getElementById('themeToggle').addEventListener('click',()=>{const isN=document.body.classList.contains('night');document.body.classList.remove('night','day');document.body.classList.add(isN?'day':'night');setThemeIcon(isN?'moon':'sun')});
+document.getElementById('themeToggle').addEventListener('click',()=>{
+    const isN=document.body.classList.contains('night');
+    document.body.classList.remove('night','day');
+    document.body.classList.add(isN?'day':'night');
+    setThemeIcon(isN?'moon':'sun');
+    /* Notify all seamless iframes of theme change */
+    const newBg=isN?'#FFF8E7':'#06060f';
+    const newColor=isN?'#000000':'#e8e8f0';
+    document.querySelectorAll('iframe[data-seamless],iframe[data-sim]').forEach(f=>{
+        try{f.contentWindow.postMessage({type:'theme-change',bg:newBg,color:newColor},'*')}catch(e){}
+    });
+});
 function closeMobileSidebar(){sidebarEl.classList.remove('open');toggleIcon.textContent='☰'}
 sidebarToggleBtn.addEventListener('click',e=>{
     e.stopPropagation();
@@ -570,7 +704,7 @@ async function doSearch(query){
             QuotaManager.useAI();
             if(aiRes.length)renderSR(aiRes.map(r=>({...allData[r.index],idx:r.index,score:r.relevance/100,reason:r.reason})),query);
             else aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">😅 কিছু পাওয়া যায়নি</div>';
-        }else{aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">🔒 আজকের AI limit শেষ! আগামীকাল আসো 😊</div>'}
+        }else{aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">🔒 আজকের AI limit শেষ!</div>'}
     }catch(e){
         const local=allData.map((r,i)=>({...r,idx:i,score:fuzzy(query,r.question+' '+r.answer)})).filter(r=>r.score>0.1).sort((a,b)=>b.score-a.score).slice(0,5);
         renderSR(local,query);
@@ -594,14 +728,37 @@ async function loadSheet(){
         const lines=tsv.split(/\r?\n/).filter(l=>l.trim());
         if(lines.length<2)throw new Error('ডাটা নেই');
         const header=lines[0].split('\t').map(h=>h.trim().toLowerCase());
-        const idx={subject:header.indexOf('subject'),chapter:header.indexOf('chapter'),topic:header.indexOf('topic'),topicimage:header.indexOf('topicimage'),question:header.indexOf('question'),answer:header.indexOf('answer'),type:header.indexOf('type'),image:header.indexOf('image')};
-        if(idx.subject===-1)idx.subject=0;if(idx.chapter===-1)idx.chapter=1;if(idx.topic===-1)idx.topic=2;if(idx.question===-1)idx.question=4;if(idx.answer===-1)idx.answer=5;
+        const idx={
+            subject:header.indexOf('subject'),
+            chapter:header.indexOf('chapter'),
+            topic:header.indexOf('topic'),
+            topicimage:header.indexOf('topicimage'),
+            question:header.indexOf('question'),
+            answer:header.indexOf('answer'),
+            type:header.indexOf('type'),
+            image:header.indexOf('image'),
+            stimulation:header.indexOf('stimulation')
+        };
+        if(idx.subject===-1)idx.subject=0;
+        if(idx.chapter===-1)idx.chapter=1;
+        if(idx.topic===-1)idx.topic=2;
+        if(idx.question===-1)idx.question=4;
+        if(idx.answer===-1)idx.answer=5;
+        if(idx.stimulation===-1)idx.stimulation=header.indexOf('stimulation');
         const rows=[];
         for(let i=1;i<lines.length;i++){
             const cols=lines[i].split('\t');
             const get=j=>(j>=0&&j<cols.length)?cols[j].trim():'';
-            const subject=get(idx.subject)||'General',chapter=get(idx.chapter)||'Misc',topic=get(idx.topic)||'',topicimage=get(idx.topicimage)||'',question=get(idx.question)||'',answer=get(idx.answer)||'',type=get(idx.type)||'',image=get(idx.image)||'';
-            if(question||answer)rows.push({subject,chapter,topic,topicimage,question,answer,type,image});
+            const subject=get(idx.subject)||'General';
+            const chapter=get(idx.chapter)||'Misc';
+            const topic=get(idx.topic)||'';
+            const topicimage=get(idx.topicimage)||'';
+            const question=get(idx.question)||'';
+            const answer=get(idx.answer)||'';
+            const type=get(idx.type)||'';
+            const image=get(idx.image)||'';
+            const stimulation=(idx.stimulation>=0)?get(idx.stimulation):'';
+            if(question||answer)rows.push({subject,chapter,topic,topicimage,question,answer,type,image,stimulation});
         }
         if(!rows.length)throw new Error('কোনো প্রশ্ন নেই');
         allData=rows;buildNav();renderSubject('');
@@ -634,11 +791,11 @@ function getTopics(subject,chapter){
 }
 function getTopicImage(subject,chapter,topic){
     const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter&&topicOf(r)===topic);
-    for(const r of rows){
-        const ti=r.topicimage?r.topicimage.trim():'';
-        if(ti&&/^https?:\/\//i.test(ti))return ti;
-    }
+    for(const r of rows){const ti=r.topicimage?r.topicimage.trim():'';if(ti&&/^https?:\/\//i.test(ti))return ti}
     return null;
+}
+function getSimulations(rows){
+    return rows.filter(r=>r.stimulation&&r.stimulation.trim().length>10);
 }
 
 function renderChapterList(subject,filter){
@@ -710,16 +867,34 @@ function buildGrouped(rows){
     });
     return h;
 }
-function toggleGroupHTML(rows,saq,broad){
-    return '<div class="toggle-group"><button class="type-btn active" data-type="all">📚 সব ('+rows.length+')</button><button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত ('+saq.length+')</button><button class="type-btn" data-type="broad">📝 ব্যাখ্যামূলক ('+broad.length+')</button></div>';
+function toggleGroupHTML(rows,saq,broad,simCount){
+    let h='<div class="toggle-group">';
+    h+='<button class="type-btn active" data-type="all">📚 সব ('+rows.length+')</button>';
+    h+='<button class="type-btn" data-type="saq">✏️ সংক্ষিপ্ত ('+saq.length+')</button>';
+    h+='<button class="type-btn" data-type="broad">📝 ব্যাখ্যামূলক ('+broad.length+')</button>';
+    if(simCount>0){
+        h+='<button class="type-btn sim-btn" data-type="sim">🔬 সিমুলেশন ('+simCount+')</button>';
+    }
+    h+='</div>';
+    return h;
 }
-function wireTypeBtns(rows,saq,broad,mode){
+function wireTypeBtns(rows,saq,broad,simRows,mode){
     mode=mode||'grouped';
     document.querySelectorAll('.type-btn').forEach(btn=>{
         btn.addEventListener('click',function(){
             document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
             this.classList.add('active');
             const t=this.dataset.type,c=document.getElementById('questionContainer');
+            if(t==='sim'){
+                /* Show simulations */
+                if(simRows&&simRows.length){
+                    c.innerHTML=renderSimulationsList(simRows);
+                }else{
+                    c.innerHTML='<div class="empty-state" style="padding:2rem"><p>🔬 এই টপিকে কোনো সিমুলেশন নেই</p></div>';
+                }
+                lucide.createIcons();
+                return;
+            }
             let f=rows;
             if(t==='saq')f=saq;else if(t==='broad')f=broad;
             const empty=mode==='flat'?'😅 এই টপিকে এই ধরনের প্রশ্ন নেই':'😅 এই ধরনের প্রশ্ন নেই';
@@ -728,6 +903,17 @@ function wireTypeBtns(rows,saq,broad,mode){
         });
     });
 }
+function renderSimulationsList(simRows){
+    let h='';
+    simRows.forEach((r,i)=>{
+        const title=r.question||r.topic||('সিমুলেশন '+(i+1));
+        h+='<div style="margin-bottom:24px">';
+        h+='<div style="font-family:Noto Serif Bengali,serif;font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;padding-left:4px">📌 '+escAttr(title)+'</div>';
+        h+=renderSimulation(r.stimulation,title);
+        h+='</div>';
+    });
+    return h;
+}
 
 function renderChapter(subject,chapter){
     currentChapter=chapter;currentTopic=null;
@@ -735,11 +921,12 @@ function renderChapter(subject,chapter){
     if(!rows.length){dynamicContent.innerHTML='<div class="empty-state"><p>এই চ্যাপ্টারে প্রশ্ন নেই।</p></div>';return}
     const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
     const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
+    const simRows=getSimulations(rows);
     dynamicContent.innerHTML=bannerHTML(subject,chapter,rows,null)
-        +toggleGroupHTML(rows,saq,broad)
+        +toggleGroupHTML(rows,saq,broad,simRows.length)
         +'<div id="questionContainer">'+buildGrouped(rows)+'</div>';
     lucide.createIcons();
-    wireTypeBtns(rows,saq,broad,'grouped');
+    wireTypeBtns(rows,saq,broad,simRows,'grouped');
     activateChapterNode(chapter,null);
 }
 
@@ -750,6 +937,7 @@ function renderTopicView(subject,chapter,topic){
     if(!rows.length){renderChapter(subject,chapter);return}
     const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
     const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
+    const simRows=getSimulations(rows);
     const topicImg=getTopicImage(subject,chapter,topic);
     const bannerImg=topicImg||'https://picsum.photos/seed/'+encodeURIComponent(topic)+'/1200/380';
     dynamicContent.innerHTML=bannerHTML(subject,chapter,all,bannerImg)
@@ -759,10 +947,10 @@ function renderTopicView(subject,chapter,topic){
         +'<span class="tb-count">'+rows.length+' টি প্রশ্ন</span>'
         +'<button class="tb-all-btn" onclick="renderChapter(\''+escJs(subject)+'\',\''+escJs(chapter)+'\')">সব প্রশ্ন <i data-lucide="arrow-right" width="13"></i></button>'
         +'</div>'
-        +toggleGroupHTML(rows,saq,broad)
+        +toggleGroupHTML(rows,saq,broad,simRows.length)
         +'<div id="questionContainer">'+renderQuestions(rows)+'</div>';
     lucide.createIcons();
-    wireTypeBtns(rows,saq,broad,'flat');
+    wireTypeBtns(rows,saq,broad,simRows,'flat');
     activateChapterNode(chapter,topic);
 }
 
@@ -779,7 +967,12 @@ function renderQuestions(rows){
         const colImg=r.image?r.image.trim():'';
         if(colImg&&/^https?:\/\//i.test(colImg))allImgs.push(colImg);
         const cid='card-'+Date.now()+'-'+i+'-'+Math.random().toString(36).slice(2,6);
-        html+='<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>'+allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('')+'<div class="a">'+smartA+'</div><button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button><div id="ai-panel-'+cid+'"></div></div>';
+        html+='<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>'+allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('')+'<div class="a">'+smartA+'</div>';
+        /* Inline simulation if present for this question */
+        if(r.stimulation&&r.stimulation.trim().length>10){
+            html+=renderSimulation(r.stimulation,r.question||'সিমুলেশন');
+        }
+        html+='<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button><div id="ai-panel-'+cid+'"></div></div>';
     });
     return html;
 }
@@ -787,7 +980,7 @@ function renderQuestions(rows){
 async function getAIExp(cardId,btn){
     const panel=document.getElementById('ai-panel-'+cardId);
     if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="graduation-cap" width="14"></i> AI Explanation';lucide.createIcons();return}
-    if(!QuotaManager.canAI()){showToast('🔒 আজকের AI limit শেষ! আগামীকাল আবার আসো 😊','err');return}
+    if(!QuotaManager.canAI()){showToast('🔒 আজকের AI limit শেষ!','err');return}
     const q=decodeURIComponent(btn.dataset.q);
     const a=decodeURIComponent(btn.dataset.a);
     const subject=decodeURIComponent(btn.dataset.subject||'');
@@ -804,18 +997,12 @@ async function getAIExp(cardId,btn){
         const exp=await engine.explain(q,a,subject,chapter);
         QuotaManager.useAI();
         let modeBadge;
-        if(isEnglish&&isGrammar){
-            modeBadge='<span class="mode-badge" style="background:rgba(168,85,247,0.12);color:#a855f7;border-color:rgba(168,85,247,0.25)">📐 English Grammar — Rule + বাংলা অর্থ</span>';
-        }else if(isEnglish){
-            modeBadge='<span class="mode-badge" style="background:rgba(59,130,246,0.12);color:#3b82f6;border-color:rgba(59,130,246,0.25)">📖 WBBSE English — Story/Poem + বাংলা অর্থ</span>';
-        }else if(isBangla&&isGrammar){
-            modeBadge='<span class="mode-badge" style="background:rgba(20,184,166,0.12);color:#14b8a6;border-color:rgba(20,184,166,0.25)">📐 বাংলা ব্যাকরণ — উত্তর + মনে রাখো</span>';
-        }else if(isBangla){
-            modeBadge='<span class="mode-badge" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.25)">📖 WBBSE বাংলা — গল্প/কবিতা ভিত্তিক</span>';
-        }else{
-            modeBadge=mode==='quick'?'<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">⚡ Quick Mode — সংক্ষিপ্ত</span>':'<span class="mode-badge">— উদাহরণসহ</span>';
-        }
-        panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge"></span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
+        if(isEnglish&&isGrammar)modeBadge='<span class="mode-badge" style="background:rgba(168,85,247,0.12);color:#a855f7;border-color:rgba(168,85,247,0.25)">📐 English Grammar</span>';
+        else if(isEnglish)modeBadge='<span class="mode-badge" style="background:rgba(59,130,246,0.12);color:#3b82f6;border-color:rgba(59,130,246,0.25)">📖 WBBSE English</span>';
+        else if(isBangla&&isGrammar)modeBadge='<span class="mode-badge" style="background:rgba(20,184,166,0.12);color:#14b8a6;border-color:rgba(20,184,166,0.25)">📐 বাংলা ব্যাকরণ</span>';
+        else if(isBangla)modeBadge='<span class="mode-badge" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.25)">📖 WBBSE বাংলা</span>';
+        else modeBadge=mode==='quick'?'<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">⚡ Quick</span>':'<span class="mode-badge">বিস্তারিত</span>';
+        panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge">AI</span>'+modeBadge+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
         btn.classList.remove('loading');
         btn.innerHTML='<i data-lucide="check" width="14"></i> Explained';
         showToast('✅ Explanation Ready','okk');
@@ -833,7 +1020,7 @@ document.getElementById('headerSub').textContent='Smart '+CLASS_NAME+' Notes';
 document.getElementById('crumbClass').textContent=CLASS_NAME;
 QuotaManager.init();
 loadSheet();
-console.log('✅ Mega QUIZ — Secure API + Chapter-based Smart AI Loaded');
+console.log('✅ Mega QUIZ — Seamless HTML + Simulation Engine Loaded');
 </script>
 </body>
 </html>
