@@ -229,9 +229,13 @@
         .ai-search-result-item{padding:14px 18px;border-radius:12px;margin-bottom:8px;cursor:pointer;background:var(--accent-dim);border:1px solid var(--border);transition:all .3s}
         .ai-search-result-item:hover{border-color:var(--accent);transform:translateX(4px)}
         .progress-bar{position:fixed;top:72px;left:0;height:2px;background:linear-gradient(90deg,#f0c040,#f59e0b);z-index:201;transition:width .3s}
-        .fab-scroll{position:fixed;bottom:32px;right:32px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f0c040,#f59e0b);border:none;color:#06060f;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 30px rgba(240,192,64,0.3);transition:.3s;z-index:100;opacity:0;transform:translateY(20px)}
+        .fab-stack{position:fixed;bottom:32px;right:32px;z-index:100;display:flex;flex-direction:column;gap:12px;opacity:0;transform:translateY(20px);transition:.3s;pointer-events:none}
+        .fab-stack.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+        .fab-scroll{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f0c040,#f59e0b);border:none;color:#06060f;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 30px rgba(240,192,64,0.3);transition:.3s}
+        .fab-scroll:hover{transform:scale(1.12)}
+        .fab-scroll.fab-down{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;box-shadow:0 8px 30px rgba(168,85,247,0.35)}
         body.day .fab-scroll{background:linear-gradient(135deg,#B8860B,#8B6508);color:#FFF}
-        .fab-scroll.visible{opacity:1;transform:translateY(0)}
+        body.day .fab-scroll.fab-down{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff}
         footer{position:relative;z-index:1;background:var(--bg-footer);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:3rem 2rem 1.5rem;margin-top:3rem}
         body.day footer{background:#FFFCF0;border-top:1px solid #E6D5B8}
         .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;max-width:1200px;margin:0 auto}
@@ -337,7 +341,7 @@
         </div>
     </div>
 
-    <button class="fab-scroll" id="fabScroll" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i data-lucide="arrow-up" width="20"></i></button>
+    <div class="fab-stack" id="fabStack">     <button class="fab-scroll" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="উপরে যাও"><i data-lucide="arrow-up" width="20"></i></button>     <button class="fab-scroll fab-down" onclick="scrollToBottom()" title="একদম নিচে যাও"><i data-lucide="arrow-down" width="20"></i></button> </div>
 
     <div id="simOverlay">
         <div class="sim-overlay-loader" id="simLoader"><div class="sim-loader-ring"></div><p>🔬 সিমুলেশন লোড হচ্ছে...</p></div>
@@ -581,7 +585,7 @@ const sidebarEl=document.getElementById('sidebar');
 const sidebarToggleBtn=document.getElementById('sidebarToggle');
 const toggleIcon=document.getElementById('toggleIcon');
 const progressBar=document.getElementById('progressBar');
-const fabScroll=document.getElementById('fabScroll');
+const fabStack=document.getElementById('fabStack');
 const subjectListEl=document.getElementById('subjectList');
 const chapterListEl=document.getElementById('chapterList');
 const chapterSectionEl=document.getElementById('chapterSection');
@@ -591,7 +595,7 @@ const aiSearchResults=document.getElementById('aiSearchResults');
 let allData=[],currentSubject=null,currentChapter=null,currentTopic=null;
 
 (function(){const c=document.getElementById('stars');for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';const z=Math.random()*2+1;s.style.width=z+'px';s.style.height=z+'px';s.style.setProperty('--duration',(Math.random()*3+2)+'s');s.style.setProperty('--delay',(Math.random()*5)+'s');c.appendChild(s)}})();
-window.addEventListener('scroll',()=>{const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;progressBar.style.width=(st/dh)*100+'%';fabScroll.classList.toggle('visible',st>500)});
+window.addEventListener('scroll',()=>{const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;progressBar.style.width=(st/dh)*100+'%';fabStack.classList.toggle('visible',st>300)}); function scrollToBottom(){window.scrollTo({top:document.documentElement.scrollHeight,behavior:'smooth'})}
 function setThemeIcon(n){document.getElementById('themeToggle').innerHTML='<i data-lucide="'+n+'" width="18"></i>';lucide.createIcons()}
 document.getElementById('themeToggle').addEventListener('click',()=>{const isN=document.body.classList.contains('night');document.body.classList.remove('night','day');document.body.classList.add(isN?'day':'night');setThemeIcon(isN?'moon':'sun')});
 function closeMobileSidebar(){sidebarEl.classList.remove('open');toggleIcon.textContent='☰'}
