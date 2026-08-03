@@ -237,7 +237,8 @@
         /* ═══ VID overlay ═══ */
         #vidOverlay{position:fixed;inset:0;z-index:10000;background:#0a0a12;display:none;flex-direction:column}
         #vidOverlay.active{display:flex;animation:ovIn .35s ease}
-        #vidFrame{flex:1;width:100%;min-height:0;border:none;background:#000}
+                #vidYtWrap{flex:1;width:100%;min-height:0;position:relative;background:#000}
+        #vidYtWrap iframe{width:100%!important;height:100%!important;border:none;display:block}
         #vidFile{flex:1;width:100%;min-height:0;background:#000;display:none;object-fit:contain;outline:none}
         .vid-loader{position:absolute;inset:0;z-index:10001;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#0a0a12;color:rgba(255,255,255,.55);font-size:.95rem;font-family:'Noto Serif Bengali',serif;pointer-events:none;transition:opacity .4s}
         .vid-loader.gone{opacity:0}
@@ -410,7 +411,7 @@
             <span class="vid-title" id="vidTitle"></span>
             <button class="vid-fs-btn" onclick="vidTrueFS()" title="Full Screen"><i data-lucide="maximize" width="15"></i></button>
         </div>
-        <iframe id="vidFrame" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        <div id="vidYtWrap" style="display:none"><div id="vidYtPlayer"></div></div>
         <video id="vidFile" controls playsinline preload="metadata"></video>
         <div class="vid-hint"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""/><span class="vh-brand">MEGA QUIZ · By Arif Hussain</span><span class="vh-sep">•</span><span>📚 শুধু পড়ার জন্য — কোনো distraction নেই</span></div>
     </div>
@@ -600,34 +601,70 @@ function parseYouTube(raw){
     if(m)id=m[1];
     return {id,start:ts.start};
 }
+
+/* ── YouTube IFrame API — video শেষ হলে auto-close, যাতে "more videos" না দেখায় ── */
+let ytApiCallbacks=[],ytPlayer=null;
+function loadYtApi(cb){
+    if(window.YT&&window.YT.Player){cb();return;}
+    ytApiCallbacks.push(cb);
+    if(window.__ytApiLoading)return;
+    window.__ytApiLoading=true;
+    window.onYouTubeIframeAPIReady=function(){
+        ytApiCallbacks.forEach(f=>{try{f()}catch(e){}});
+        ytApiCallbacks=[];
+    };
+    const tag=document.createElement('script');
+    tag.src='https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+}
+function onYtStateChange(event){
+    if(event.data===window.YT.PlayerState.ENDED){
+        closeVideo(true);
+    }
+}
+
 /* open video — YouTube OR direct video file */
 let vidHistoryPushed=false,vidWantPush=false;
 function openVideo(idx,title){
     const raw=VID_STORE[idx];
     if(!raw)return;
     const ov=document.getElementById('vidOverlay');
-    const fr=document.getElementById('vidFrame');
     const vf=document.getElementById('vidFile');
+    const wrap=document.getElementById('vidYtWrap');
     const ld=document.getElementById('vidLoader');
     document.getElementById('vidTitle').textContent=title||'📺 Video';
     ld.classList.remove('gone');
     ov.classList.add('active');
     document.body.style.overflow='hidden';
     vidBarShow();
-    fr.style.display='none';
+    wrap.style.display='none';
     vf.style.display='none';
     vf.pause();
     const yt=parseYouTube(raw);
     if(yt.id){
-        let url='https://www.youtube-nocookie.com/embed/'+yt.id+'?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1';
-        if(yt.start>0)url+='&start='+yt.start;
-        vf.removeAttribute('src');
-        fr.style.display='block';
-        fr.src=url;
         vidWantPush=true;
+        vf.removeAttribute('src');
+        wrap.style.display='block';
+        wrap.innerHTML='<div id="vidYtPlayer"></div>';
+        loadYtApi(function(){
+            if(ytPlayer){try{ytPlayer.destroy();}catch(e){}ytPlayer=null;}
+            ytPlayer=new window.YT.Player('vidYtPlayer',{
+                videoId:yt.id,
+                width:'100%',
+                height:'100%',
+                playerVars:{autoplay:1,rel:0,modestbranding:1,iv_load_policy:3,playsinline:1,start:yt.start||0,controls:1,fs:1},
+                events:{
+                    onStateChange:onYtStateChange,
+                    onReady:function(){
+                        document.getElementById('vidLoader').classList.add('gone');
+                        vidBarShow();
+                        if(vidWantPush){vidWantPush=false;if(!vidHistoryPushed){try{history.pushState({mqvid:1},'');vidHistoryPushed=true;}catch(e){}}}
+                    }
+                }
+            });
+        });
     }else{
         const ts=parseTimeSpan(raw);
-        fr.src='about:blank';
         vf.style.display='block';
         vf.src=ts.clean;
         if(ts.start>0){vf.addEventListener('loadedmetadata',function h(){vf.currentTime=ts.start;vf.removeEventListener('loadedmetadata',h)});}
@@ -635,13 +672,6 @@ function openVideo(idx,title){
         if(!vidHistoryPushed){try{history.pushState({mqvid:1},'');vidHistoryPushed=true;}catch(e){}}
     }
 }
-document.getElementById('vidFrame').addEventListener('load',function(){
-    if(!document.getElementById('vidOverlay').classList.contains('active'))return;
-    if(!this.src||this.src==='about:blank')return;
-    document.getElementById('vidLoader').classList.add('gone');
-    vidBarShow();
-    if(vidWantPush){vidWantPush=false;if(!vidHistoryPushed){try{history.pushState({mqvid:1},'');vidHistoryPushed=true;}catch(e){}}}
-});
 document.getElementById('vidFile').addEventListener('loadeddata',function(){
     if(!document.getElementById('vidOverlay').classList.contains('active'))return;
     document.getElementById('vidLoader').classList.add('gone');
@@ -653,9 +683,11 @@ function closeVideo(popHistory){
     vidWantPush=false;
     if(document.fullscreenElement){try{document.exitFullscreen()}catch(e){}}
     ov.classList.remove('active');
-    const fr=document.getElementById('vidFrame');
+    if(ytPlayer){try{ytPlayer.destroy();}catch(e){}ytPlayer=null;}
+    const wrap=document.getElementById('vidYtWrap');
+    wrap.innerHTML='';
+    wrap.style.display='none';
     const vf=document.getElementById('vidFile');
-    fr.src='about:blank';fr.style.display='none';
     vf.pause();vf.removeAttribute('src');vf.load();vf.style.display='none';
     document.body.style.overflow='';
     if(popHistory&&vidHistoryPushed){vidHistoryPushed=false;try{history.back()}catch(e){}}
