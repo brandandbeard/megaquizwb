@@ -175,7 +175,7 @@
         .html-content-block iframe{width:100%;border:none;display:block;border-radius:12px;overflow:hidden}
 
         /* ═══ SIM chip ═══ */
-        .sim-chip{display:inline-flex;align-items:center;gap:11px;margin-top:16px;padding:11px 18px;border-radius:13px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.82rem;border:1px solid rgba(168,85,247,0.3);background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(168,85,247,0.04));color:#a855f7;transition:all .3s;position:relative;overflow:hidden}
+        .sim-chip{display:inline-flex;align-items:center;gap:11px;padding:11px 18px;border-radius:13px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.82rem;border:1px solid rgba(168,85,247,0.3);background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(168,85,247,0.04));color:#a855f7;transition:all .3s;position:relative;overflow:hidden}
         .sim-chip::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(168,85,247,0.15) 50%,transparent 70%);transform:translateX(-100%);transition:transform .6s}
         .sim-chip:hover::after{transform:translateX(100%)}
         .sim-chip:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(168,85,247,0.28);border-color:rgba(168,85,247,0.55)}
@@ -183,12 +183,21 @@
         .sim-chip-name{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
         .sim-chip-play{padding:4px 12px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:.68rem;letter-spacing:.05em;box-shadow:0 3px 10px rgba(168,85,247,0.35)}
         /* ═══ VID chip ═══ */
-        .vid-chip{display:inline-flex;align-items:center;gap:11px;margin-top:16px;margin-left:8px;padding:11px 18px;border-radius:13px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.82rem;border:1px solid rgba(244,63,94,.35);background:linear-gradient(135deg,rgba(244,63,94,.12),rgba(244,63,94,.04));color:#f87171;transition:all .3s;position:relative;overflow:hidden}
+        .vid-chip{display:inline-flex;align-items:center;gap:11px;padding:11px 18px;border-radius:13px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.82rem;border:1px solid rgba(244,63,94,.35);background:linear-gradient(135deg,rgba(244,63,94,.12),rgba(244,63,94,.04));color:#f87171;transition:all .3s;position:relative;overflow:hidden}
         .vid-chip::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(244,63,94,.15) 50%,transparent 70%);transform:translateX(-100%);transition:transform .6s}
         .vid-chip:hover::after{transform:translateX(100%)}
         .vid-chip:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(244,63,94,.28);border-color:rgba(244,63,94,.6)}
         .vid-chip-name{max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
         .vid-chip-play{padding:4px 12px;border-radius:8px;background:linear-gradient(135deg,#dc2626,#f43f5e);color:#fff;font-size:.68rem;letter-spacing:.05em;box-shadow:0 3px 10px rgba(244,63,94,.35)}
+        /* ═══ ৩টা button একই height + এক লাইনে ═══ */
+        .action-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:stretch}
+        .action-row .sim-chip,.action-row .vid-chip,.action-row .ai-btn{margin:0;height:46px;padding:0 18px;display:inline-flex;align-items:center;gap:10px}
+        /* ═══ overlay brand (logo + By Arif Hussain) ═══ */
+        .ov-brand{display:flex;align-items:center;gap:8px;flex-shrink:0}
+        .ov-brand img{width:26px;height:26px;border-radius:7px;object-fit:cover}
+        .ov-brand .ovb-txt{display:flex;flex-direction:column;line-height:1.15}
+        .ov-brand .ovb-name{font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:800;letter-spacing:.1em;color:#f0c040}
+        .ov-brand .ovb-by{font-family:'Space Grotesk',sans-serif;font-size:.48rem;letter-spacing:.08em;color:rgba(255,255,255,.55);text-transform:uppercase}
 
         /* ═══ SIM grid + cards ═══ */
         .sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:8px}
@@ -216,10 +225,8 @@
         @keyframes ovIn{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:scale(1)}}
         #simOverlayFrame{flex:1;width:100%;height:100%;border:none;background:#0d1117;opacity:0;transition:opacity .45s}
         #simOverlayFrame.loaded{opacity:1}
-        .sim-overlay-bar{position:absolute;top:0;left:0;right:0;z-index:10002;display:flex;align-items:center;gap:12px;padding:14px 18px;background:linear-gradient(180deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.4) 60%,transparent 100%);transition:opacity .45s,transform .45s}
+        .sim-overlay-bar{position:absolute;top:0;left:0;right:0;z-index:10002;display:flex;align-items:center;gap:14px;padding:14px 18px;background:linear-gradient(180deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.4) 60%,transparent 100%);transition:opacity .45s,transform .45s}
         .sim-overlay-bar.hidden{opacity:0;transform:translateY(-110%);pointer-events:none}
-        .sim-back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:26px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.8rem;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.22);color:#fff;backdrop-filter:blur(12px);transition:all .25s;flex-shrink:0}
-        .sim-back-btn:hover{background:rgba(244,63,94,0.75);border-color:rgba(244,63,94,0.9);transform:translateX(-3px)}
         .sim-overlay-title{flex:1;text-align:center;font-family:'Noto Serif Bengali',serif;font-size:.9rem;font-weight:600;color:rgba(255,255,255,0.8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px}
         .sim-fs-btn{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.22);color:#fff;backdrop-filter:blur(12px);transition:all .25s;flex-shrink:0}
         .sim-fs-btn:hover{background:rgba(168,85,247,0.65);transform:scale(1.12)}
@@ -230,18 +237,20 @@
         /* ═══ VID overlay ═══ */
         #vidOverlay{position:fixed;inset:0;z-index:10000;background:#0a0a12;display:none;flex-direction:column}
         #vidOverlay.active{display:flex;animation:ovIn .35s ease}
-        #vidFrame{flex:1;width:100%;height:100%;border:none;background:#000}
+        #vidFrame{flex:1;width:100%;min-height:0;border:none;background:#000}
+        #vidFile{flex:1;width:100%;min-height:0;background:#000;display:none;object-fit:contain;outline:none}
         .vid-loader{position:absolute;inset:0;z-index:10001;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#0a0a12;color:rgba(255,255,255,.55);font-size:.95rem;font-family:'Noto Serif Bengali',serif;pointer-events:none;transition:opacity .4s}
         .vid-loader.gone{opacity:0}
         .vid-ring{width:44px;height:44px;border:3px solid rgba(244,63,94,.15);border-top-color:#f43f5e;border-radius:50%;animation:spin 1s linear infinite}
         .vid-bar{position:absolute;top:0;left:0;right:0;z-index:10002;display:flex;align-items:center;gap:12px;padding:12px 16px;background:linear-gradient(180deg,rgba(0,0,0,.88),rgba(0,0,0,.4) 70%,transparent);transition:opacity .4s,transform .4s}
         .vid-bar.hidden{opacity:0;transform:translateY(-110%);pointer-events:none}
-        .vid-back-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:24px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.78rem;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);color:#fff;backdrop-filter:blur(12px);transition:.25s;flex-shrink:0}
-        .vid-back-btn:hover{background:rgba(244,63,94,.75);transform:translateX(-3px)}
         .vid-title{flex:1;text-align:center;font-size:.88rem;font-weight:600;color:rgba(255,255,255,.85);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
         .vid-fs-btn{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);color:#fff;backdrop-filter:blur(12px);transition:.25s;flex-shrink:0}
         .vid-fs-btn:hover{background:rgba(244,63,94,.65);transform:scale(1.1)}
-        .vid-hint{text-align:center;font-family:'Space Grotesk',sans-serif;font-size:.58rem;letter-spacing:.08em;color:rgba(255,255,255,.4);background:rgba(0,0,0,.5);padding:6px}
+        .vid-hint{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-size:.58rem;letter-spacing:.08em;color:rgba(255,255,255,.4);background:rgba(0,0,0,.5);padding:7px 12px}
+        .vid-hint img{width:16px;height:16px;border-radius:4px;object-fit:cover;flex-shrink:0}
+        .vid-hint .vh-brand{font-weight:700;color:rgba(255,255,255,.6)}
+        .vid-hint .vh-sep{opacity:.4}
 
         .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden;animation:panelIn .5s ease}
         @keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -266,8 +275,6 @@
         .ai-search-result-item{padding:14px 18px;border-radius:12px;margin-bottom:8px;cursor:pointer;background:var(--accent-dim);border:1px solid var(--border);transition:all .3s}
         .ai-search-result-item:hover{border-color:var(--accent);transform:translateX(4px)}
         .progress-bar{position:fixed;top:72px;left:0;height:2px;background:linear-gradient(90deg,#f0c040,#f59e0b);z-index:201;transition:width .3s}
-
-        /* ═══ FAB stack (up + down) ═══ */
         .fab-stack{position:fixed;bottom:32px;right:32px;z-index:100;display:flex;flex-direction:column;gap:12px;opacity:0;transform:translateY(20px);transition:.3s;pointer-events:none}
         .fab-stack.visible{opacity:1;transform:translateY(0);pointer-events:auto}
         .fab-scroll{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f0c040,#f59e0b);border:none;color:#06060f;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 30px rgba(240,192,64,0.3);transition:.3s}
@@ -275,7 +282,6 @@
         .fab-scroll.fab-down{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;box-shadow:0 8px 30px rgba(168,85,247,0.35)}
         body.day .fab-scroll{background:linear-gradient(135deg,#B8860B,#8B6508);color:#FFF}
         body.day .fab-scroll.fab-down{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff}
-
         footer{position:relative;z-index:1;background:var(--bg-footer);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:3rem 2rem 1.5rem;margin-top:3rem}
         body.day footer{background:#FFFCF0;border-top:1px solid #E6D5B8}
         .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;max-width:1200px;margin:0 auto}
@@ -381,33 +387,32 @@
         </div>
     </div>
 
-    <!-- up + down buttons -->
     <div class="fab-stack" id="fabStack">
         <button class="fab-scroll" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="উপরে যাও"><i data-lucide="arrow-up" width="20"></i></button>
         <button class="fab-scroll fab-down" onclick="scrollToBottom()" title="নিচে যাও"><i data-lucide="arrow-down" width="20"></i></button>
     </div>
 
-    <!-- SIM overlay -->
+    <!-- SIM overlay (no back button — browser back দিয়ে বন্ধ হবে) -->
     <div id="simOverlay">
         <div class="sim-overlay-loader" id="simLoader"><div class="sim-loader-ring"></div><p>🔬 সিমুলেশন লোড হচ্ছে...</p></div>
         <div class="sim-overlay-bar" id="simBar">
-            <button class="sim-back-btn" onclick="closeSimOverlay()"><i data-lucide="arrow-left" width="15"></i> ফিরে যান</button>
+            <div class="ov-brand"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz"/><span class="ovb-txt"><span class="ovb-name">MEGA QUIZ</span><span class="ovb-by">By Arif Hussain</span></span></div>
             <span class="sim-overlay-title" id="simOverlayTitle"></span>
             <button class="sim-fs-btn" onclick="simTrueFS()" title="Full Screen"><i data-lucide="maximize" width="15"></i></button>
         </div>
         <iframe id="simOverlayFrame" allow="fullscreen; accelerometer; gyroscope; autoplay" allowfullscreen></iframe>
     </div>
 
-    <!-- VID overlay -->
+    <!-- VID overlay (no back button) -->
     <div id="vidOverlay">
         <div class="vid-loader" id="vidLoader"><div class="vid-ring"></div><p>🎬 Video লোড হচ্ছে...</p></div>
         <div class="vid-bar" id="vidBar">
-            <button class="vid-back-btn" onclick="closeVideo()"><i data-lucide="arrow-left" width="15"></i> ফিরে যান</button>
             <span class="vid-title" id="vidTitle"></span>
             <button class="vid-fs-btn" onclick="vidTrueFS()" title="Full Screen"><i data-lucide="maximize" width="15"></i></button>
         </div>
         <iframe id="vidFrame" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-        <div class="vid-hint">📚 শুধু পড়ার জন্য — কোনো distraction নেই</div>
+        <video id="vidFile" controls playsinline preload="metadata"></video>
+        <div class="vid-hint"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""/><span class="vh-brand">MEGA QUIZ · By Arif Hussain</span><span class="vh-sep">•</span><span>📚 শুধু পড়ার জন্য — কোনো distraction নেই</span></div>
     </div>
 
     <footer>
@@ -462,15 +467,6 @@ const CLASS_NAME=(CLASS_CONFIG[classKey]||CLASS_CONFIG['10']).name;
 const GOOGLE_SHEET_TSV_URL=(CLASS_CONFIG[classKey]||CLASS_CONFIG['10']).tsv;
 const CH_EMOJIS=['📕','📗','📘','📙','📔','📒'];
 
-/* ═══════════════════════════════════════════════════════════
-   🔬 SIMULATION + 📺 VIDEO SYSTEM
-   ─────────────────────────────────────────────────────────
-   Sheet-এ ৪টা নতুন column:
-     • Stimulation     → sim URL / raw HTML / name
-     • StimulationName → website-এ যে নাম দেখাবে
-     • Video           → YouTube link (optional #00:05:30 time)
-     • VideoName       → video button-এর নাম
-═══════════════════════════════════════════════════════════ */
 const SIM_LIBRARY_TSV='এখানে_আপনার_লাইব্রেরি_শীট_TSV_LINK';
 let simLibrary=null;
 const SIM_STORE=[];
@@ -494,7 +490,7 @@ async function loadSimLibrary(){
     }catch(e){console.warn('Sim library load failed',e)}
 }
 
-/* ── SIM overlay bar ── */
+/* ── SIM bar ── */
 let simBarTimer=null;
 function simBarShow(){
     const bar=document.getElementById('simBar');
@@ -503,8 +499,8 @@ function simBarShow(){
     simBarTimer=setTimeout(()=>bar.classList.add('hidden'),2600);
 }
 
-/* ── open simulation (browser back support) ── */
-let simHistoryPushed=false;
+/* ── open simulation (back-button fix: pushState AFTER iframe loads) ── */
+let simHistoryPushed=false,simWantPush=false;
 async function openSimulation(idx,title){
     const value=SIM_STORE[idx];
     if(!value)return;
@@ -518,6 +514,7 @@ async function openSimulation(idx,title){
     ld.classList.remove('gone');
     ld.innerHTML='<div class="sim-loader-ring"></div><p>🔬 সিমুলেশন লোড হচ্ছে...</p>';
     simBarShow();
+    simWantPush=true;
     let v=value.trim();
     if(/^http:\/\//i.test(v))v='https://'+v.slice(7);
     if(/^https?:\/\//i.test(v)){
@@ -526,7 +523,7 @@ async function openSimulation(idx,title){
         setTimeout(()=>{
             if(ov.classList.contains('active')&&!fr.classList.contains('loaded')){
                 ld.classList.remove('gone');
-                ld.innerHTML='<p style="color:#fda4af;max-width:85%;text-align:center;line-height:1.9">⚠️ সিমুলেশন লোড হচ্ছে না!<br><span style="font-size:.82rem;opacity:.75">① Incognito-তে link খোলো — login চাইলে site PRIVATE, public করো<br>② সঠিক file URL দাও (যেমন: .../snell.html)<br>③ http নয় https ব্যবহার করো</span></p>';
+                ld.innerHTML='<p style="color:#fda4af;max-width:85%;text-align:center;line-height:1.9">⚠️ সিমুলেশন লোড হচ্ছে না!<br><span style="font-size:.82rem;opacity:.75">① Incognito-তে link খোলো — site PRIVATE কিনা দেখো<br>② সঠিক file URL দাও<br>③ https ব্যবহার করো</span></p>';
             }
         },10000);
     }else if(/^<!doctype\s+html|^<html/i.test(v)){
@@ -535,27 +532,31 @@ async function openSimulation(idx,title){
     }else{
         await loadSimLibrary();
         const url=simLibrary?simLibrary[v.toLowerCase()]:null;
-        if(url){fr.removeAttribute('srcdoc');fr.src=url}
-        else{showToast('⚠️ "'+v+'" পাওয়া যায়নি!','err');closeSimOverlay();return}
+        if(url){fr.removeAttribute('srcdoc');fr.src=url;}
+        else{showToast('⚠️ "'+v+'" পাওয়া যায়নি!','err');simWantPush=false;closeSimOverlay(false);return}
     }
-    if(!simHistoryPushed){try{history.pushState({mqsim:1},'');simHistoryPushed=true}catch(e){}}
 }
 document.getElementById('simOverlayFrame').addEventListener('load',function(){
     if(!document.getElementById('simOverlay').classList.contains('active'))return;
     this.classList.add('loaded');
     document.getElementById('simLoader').classList.add('gone');
     simBarShow();
+    if(simWantPush){
+        simWantPush=false;
+        if(!simHistoryPushed){try{history.pushState({mqsim:1},'');simHistoryPushed=true;}catch(e){}}
+    }
 });
-function closeSimOverlay(fromPopstate){
+function closeSimOverlay(popHistory){
     const ov=document.getElementById('simOverlay');
     if(!ov.classList.contains('active'))return;
+    simWantPush=false;
     if(document.fullscreenElement){try{document.exitFullscreen()}catch(e){}}
     ov.classList.remove('active');
     const fr=document.getElementById('simOverlayFrame');
     fr.removeAttribute('src');fr.removeAttribute('srcdoc');
     fr.classList.remove('loaded');
     document.body.style.overflow='';
-    if(!fromPopstate&&simHistoryPushed){simHistoryPushed=false;try{history.back()}catch(e){}}
+    if(popHistory&&simHistoryPushed){simHistoryPushed=false;try{history.back()}catch(e){}}
     else simHistoryPushed=false;
 }
 function simTrueFS(){
@@ -568,7 +569,7 @@ function simTrueFS(){
 document.getElementById('simOverlay').addEventListener('mousemove',simBarShow);
 document.getElementById('simOverlay').addEventListener('touchstart',simBarShow,{passive:true});
 
-/* ── VID overlay bar ── */
+/* ── VID bar ── */
 let vidBarTimer=null;
 function vidBarShow(){
     const bar=document.getElementById('vidBar');
@@ -576,9 +577,8 @@ function vidBarShow(){
     clearTimeout(vidBarTimer);
     vidBarTimer=setTimeout(()=>bar.classList.add('hidden'),2600);
 }
-/* YouTube link + time parse */
-function parseYouTube(raw){
-    let t=(raw||'').trim();
+/* time span parser (YouTube + direct video) */
+function parseTimeSpan(t){
     let start=0;
     const hm=t.match(/#(\d{1,2}):(\d{1,2}):(\d{1,2})/);
     const mm=t.match(/#(\d{1,2}):(\d{1,2})/);
@@ -588,48 +588,77 @@ function parseYouTube(raw){
     else if(mm){start=parseInt(mm[1])*60+parseInt(mm[2]);t=t.replace(/#\d{1,2}:\d{1,2}/,'')}
     else if(ss){start=parseInt(ss[1]);t=t.replace(/#\d+\s*s\b/i,'')}
     else if(tm){start=parseInt(tm[1]);t=t.replace(/[#&?]t=\d+/,'')}
-    t=t.trim();
-    let id=null,m;
+    return {clean:t.trim(),start};
+}
+function parseYouTube(raw){
+    const ts=parseTimeSpan((raw||'').trim());
+    let t=ts.clean,id=null,m;
     if(/youtu\.be\//i.test(t))m=t.match(/youtu\.be\/([a-z0-9_-]{6,})/i);
     else if(/\/shorts\//i.test(t))m=t.match(/\/shorts\/([a-z0-9_-]{6,})/i);
     else if(/\/embed\//i.test(t))m=t.match(/\/embed\/([a-z0-9_-]{6,})/i);
     else m=t.match(/[?&]v=([a-z0-9_-]{6,})/i)||t.match(/^([a-z0-9_-]{11})$/i);
     if(m)id=m[1];
-    return {id,start};
+    return {id,start:ts.start};
 }
-/* open video (distraction-free, browser back support) */
-let vidHistoryPushed=false;
+/* open video — YouTube OR direct video file */
+let vidHistoryPushed=false,vidWantPush=false;
 function openVideo(idx,title){
     const raw=VID_STORE[idx];
     if(!raw)return;
-    const p=parseYouTube(raw);
-    if(!p.id){showToast('⚠️ সঠিক YouTube link দাও!','err');return}
     const ov=document.getElementById('vidOverlay');
     const fr=document.getElementById('vidFrame');
+    const vf=document.getElementById('vidFile');
     const ld=document.getElementById('vidLoader');
     document.getElementById('vidTitle').textContent=title||'📺 Video';
     ld.classList.remove('gone');
     ov.classList.add('active');
     document.body.style.overflow='hidden';
     vidBarShow();
-    let url='https://www.youtube-nocookie.com/embed/'+p.id+'?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1';
-    if(p.start>0)url+='&start='+p.start;
-    fr.src=url;
-    if(!vidHistoryPushed){try{history.pushState({mqvid:1},'');vidHistoryPushed=true}catch(e){}}
+    fr.style.display='none';
+    vf.style.display='none';
+    vf.pause();
+    const yt=parseYouTube(raw);
+    if(yt.id){
+        let url='https://www.youtube-nocookie.com/embed/'+yt.id+'?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1';
+        if(yt.start>0)url+='&start='+yt.start;
+        vf.removeAttribute('src');
+        fr.style.display='block';
+        fr.src=url;
+        vidWantPush=true;
+    }else{
+        const ts=parseTimeSpan(raw);
+        fr.src='about:blank';
+        vf.style.display='block';
+        vf.src=ts.clean;
+        if(ts.start>0){vf.addEventListener('loadedmetadata',function h(){vf.currentTime=ts.start;vf.removeEventListener('loadedmetadata',h)});}
+        vf.load();
+        if(!vidHistoryPushed){try{history.pushState({mqvid:1},'');vidHistoryPushed=true;}catch(e){}}
+    }
 }
 document.getElementById('vidFrame').addEventListener('load',function(){
+    if(!document.getElementById('vidOverlay').classList.contains('active'))return;
+    if(!this.src||this.src==='about:blank')return;
+    document.getElementById('vidLoader').classList.add('gone');
+    vidBarShow();
+    if(vidWantPush){vidWantPush=false;if(!vidHistoryPushed){try{history.pushState({mqvid:1},'');vidHistoryPushed=true;}catch(e){}}}
+});
+document.getElementById('vidFile').addEventListener('loadeddata',function(){
     if(!document.getElementById('vidOverlay').classList.contains('active'))return;
     document.getElementById('vidLoader').classList.add('gone');
     vidBarShow();
 });
-function closeVideo(fromPopstate){
+function closeVideo(popHistory){
     const ov=document.getElementById('vidOverlay');
     if(!ov.classList.contains('active'))return;
+    vidWantPush=false;
     if(document.fullscreenElement){try{document.exitFullscreen()}catch(e){}}
     ov.classList.remove('active');
-    document.getElementById('vidFrame').src='';
+    const fr=document.getElementById('vidFrame');
+    const vf=document.getElementById('vidFile');
+    fr.src='about:blank';fr.style.display='none';
+    vf.pause();vf.removeAttribute('src');vf.load();vf.style.display='none';
     document.body.style.overflow='';
-    if(!fromPopstate&&vidHistoryPushed){vidHistoryPushed=false;try{history.back()}catch(e){}}
+    if(popHistory&&vidHistoryPushed){vidHistoryPushed=false;try{history.back()}catch(e){}}
     else vidHistoryPushed=false;
 }
 function vidTrueFS(){
@@ -642,16 +671,16 @@ function vidTrueFS(){
 document.getElementById('vidOverlay').addEventListener('mousemove',vidBarShow);
 document.getElementById('vidOverlay').addEventListener('touchstart',vidBarShow,{passive:true});
 
-/* ⭐ Browser back / mobile swipe-back → overlay বন্ধ হবে, page ছেড়ে যাবে না */
+/* ⭐ Browser back / mobile back → একবারেই overlay বন্ধ হবে */
 window.addEventListener('popstate',()=>{
-    if(document.getElementById('simOverlay').classList.contains('active'))closeSimOverlay(true);
-    else if(document.getElementById('vidOverlay').classList.contains('active'))closeVideo(true);
+    if(document.getElementById('simOverlay').classList.contains('active'))closeSimOverlay(false);
+    else if(document.getElementById('vidOverlay').classList.contains('active'))closeVideo(false);
 });
 /* Escape → overlay close */
 document.addEventListener('keydown',e=>{
     if(e.key!=='Escape')return;
-    if(document.getElementById('vidOverlay').classList.contains('active'))closeVideo();
-    else if(document.getElementById('simOverlay').classList.contains('active'))closeSimOverlay();
+    if(document.getElementById('vidOverlay').classList.contains('active'))closeVideo(true);
+    else if(document.getElementById('simOverlay').classList.contains('active'))closeSimOverlay(true);
 });
 
 const QuotaManager={
@@ -960,6 +989,7 @@ function renderQuestions(rows){
         html+='<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>';
         html+=allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('');
         html+='<div class="a">'+smartA+'</div>';
+        html+='<div class="action-row">';
         if(r.stimulation&&r.stimulation.trim()){
             const si=simSave(r.stimulation);
             const nm=getSimTitle(r);
@@ -970,7 +1000,8 @@ function renderQuestions(rows){
             const vnm=getVideoTitle(r);
             html+='<button class="vid-chip" onclick="openVideo('+vi+',\''+escJs(vnm)+'\')"><span class="sim-chip-ico">📺</span><span class="vid-chip-name">'+escAttr(vnm)+'</span><span class="vid-chip-play">▶ দেখো</span></button>';
         }
-        html+='<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button><div id="ai-panel-'+cid+'"></div></div>';
+        html+='<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button>';
+        html+='</div><div id="ai-panel-'+cid+'"></div></div>';
     });
     return html;
 }
