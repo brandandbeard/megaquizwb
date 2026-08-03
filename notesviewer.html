@@ -2,7 +2,7 @@
 <html lang="bn" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=yes">
 <title>Class 10 Notes | Mega QUIZ</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -214,15 +214,9 @@ body.day .smart-table th{color:#8B6508}
 #simOverlay{position:fixed;inset:0;z-index:10000;background:#0d1117;display:none;flex-direction:column}
 #simOverlay.active{display:flex;animation:ovIn .35s ease}
 @keyframes ovIn{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:scale(1)}}
-/* frame wrapper: default fit-to-screen, zoom করলে scroll হবে */
-#simOverlayFrameWrap{flex:1;width:100%;min-height:0;overflow:hidden;position:relative}
-#simOverlayFrameWrap.scrollable{overflow:auto;-webkit-overflow-scrolling:touch}
-#simOverlayFrameWrap.scrollable::-webkit-scrollbar{width:10px;height:10px}
-#simOverlayFrameWrap.scrollable::-webkit-scrollbar-track{background:rgba(255,255,255,.04)}
-#simOverlayFrameWrap.scrollable::-webkit-scrollbar-thumb{background:rgba(240,192,64,.45);border-radius:10px}
-#simOverlayFrameWrap.scrollable::-webkit-scrollbar-thumb:hover{background:rgba(240,192,64,.7)}
-.sim-fit-inner{width:100%;height:100%;transform-origin:center center;transition:transform .25s ease}
-#simOverlayFrame{width:100%;height:100%;border:none;display:block;background:#0d1117;opacity:0;transition:opacity .45s}
+/* Zoom box: fixed size থাকে, ভিতরের content scale হয় */
+#simZoomWrap{flex:1;width:100%;min-height:0;position:relative;overflow:hidden;background:#0d1117}
+#simOverlayFrame{position:absolute;left:50%;top:50%;border:none;display:block;background:#0d1117;opacity:0;transition:opacity .45s;transform:translate(-50%,-50%) scale(1);transform-origin:center center}
 #simOverlayFrame.loaded{opacity:1}
 .sim-overlay-bar{position:absolute;top:0;left:0;right:0;z-index:10002;display:flex;align-items:center;gap:14px;padding:14px 18px;background:linear-gradient(180deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.4) 60%,transparent 100%);transition:opacity .45s,transform .45s;pointer-events:none}
 .sim-overlay-bar.hidden{opacity:0;transform:translateY(-110%)}
@@ -232,15 +226,12 @@ body.day .smart-table th{color:#8B6508}
 .sim-overlay-loader{position:absolute;inset:0;z-index:10001;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#0d1117;color:rgba(255,255,255,0.55);font-size:.95rem;font-family:'Noto Serif Bengali',serif;transition:opacity .35s}
 .sim-overlay-loader.gone{opacity:0;pointer-events:none}
 .sim-loader-ring{width:46px;height:46px;border:3px solid rgba(168,85,247,0.15);border-top-color:#a855f7;border-radius:50%;animation:spin 1s linear infinite}
-/* Zoom controls — শুধু LANDSCAPE mode-এ দেখাবে, portrait-এ লুকানো থাকবে */
-.sim-zoom-ui{position:absolute;bottom:24px;right:24px;z-index:10003;flex-direction:column;gap:10px;display:none;align-items:center}
-@media (orientation:landscape){
-.sim-zoom-ui{display:flex}
-}
-.sim-zoom-btn{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.55);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);transition:.25s;box-shadow:0 4px 16px rgba(0,0,0,.3)}
-.sim-zoom-btn:active{transform:scale(.92);background:rgba(168,85,247,.7)}
-.sim-zoom-btn.fit-active{background:rgba(240,192,64,.9);color:#06060f;border-color:#f0c040}
-.sim-zoom-lbl{font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:700;color:rgba(255,255,255,.9);background:rgba(0,0,0,.6);padding:3px 10px;border-radius:20px;backdrop-filter:blur(8px);min-width:46px;text-align:center}
+/* Zoom controls — আঙুল দিয়ে pinch + buttons */
+.sim-zoom-ctrl{position:absolute;right:18px;top:50%;transform:translateY(-50%);z-index:10003;display:flex;flex-direction:column;gap:12px;align-items:center;transition:opacity .4s}
+.sim-zoom-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.55);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);transition:.25s;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+.sim-zoom-btn:active{transform:scale(.9);background:rgba(168,85,247,.75)}
+.sim-zoom-btn.fit-active{background:rgba(240,192,64,.92);color:#06060f;border-color:#f0c040}
+.sim-zoom-lbl{font-family:'Space Grotesk',sans-serif;font-size:.62rem;font-weight:700;color:#fff;background:rgba(0,0,0,.6);padding:3px 8px;border-radius:20px;backdrop-filter:blur(8px);min-width:48px;text-align:center}
 
 /* ═══ VID overlay ═══ */
 #vidOverlay{position:fixed;inset:0;z-index:10000;background:#0a0a12;display:none;flex-direction:column}
@@ -340,8 +331,8 @@ body.day .sidebar{background:#FFFCF0}
 .question-card .a{padding:12px 14px}
 .toggle-group{width:100%;justify-content:center}
 .sim-overlay-title,.vid-title{display:none}
-.sim-zoom-ui{bottom:20px;right:16px}
-.sim-zoom-btn{width:50px;height:50px}
+.sim-zoom-ctrl{right:12px}
+.sim-zoom-btn{width:52px;height:52px}
 }
 @media(max-width:480px){.type-btn{padding:.5rem .7rem;font-size:.68rem}}
 </style>
@@ -411,17 +402,16 @@ body.day .sidebar{background:#FFFCF0}
         <span class="sim-overlay-title" id="simOverlayTitle"></span>
         <button class="sim-fs-btn" onclick="simTrueFS()" title="Full Screen"><i data-lucide="maximize" width="15"></i></button>
     </div>
-    <div id="simOverlayFrameWrap">
-        <div class="sim-fit-inner" id="simFitInner">
-            <iframe id="simOverlayFrame" allow="fullscreen; accelerometer; gyroscope; autoplay" allowfullscreen></iframe>
-        </div>
+    <!-- Zoom box: fixed size, ভিতরের content scale হয় -->
+    <div id="simZoomWrap">
+        <iframe id="simOverlayFrame" allow="fullscreen; accelerometer; gyroscope; autoplay" allowfullscreen></iframe>
     </div>
-    <!-- Zoom controls — শুধু landscape-এ দেখাবে -->
-    <div class="sim-zoom-ui" id="simZoomUi">
-        <button class="sim-zoom-btn" onclick="simZoomIn()" title="Zoom In (বড় করো)"><i data-lucide="plus" width="20"></i></button>
+    <!-- Zoom controls -->
+    <div class="sim-zoom-ctrl" id="simZoomCtrl">
+        <button class="sim-zoom-btn" onclick="simZoomIn()" title="Zoom In (বড় করো)"><i data-lucide="plus" width="22"></i></button>
         <span class="sim-zoom-lbl" id="simZoomLbl">Fit</span>
-        <button class="sim-zoom-btn" onclick="simZoomOut()" title="Zoom Out (ছোট করো)"><i data-lucide="minus" width="20"></i></button>
-        <button class="sim-zoom-btn fit-active" id="simFitBtn" onclick="simFitToScreen()" title="Fit to Screen"><i data-lucide="maximize-2" width="20"></i></button>
+        <button class="sim-zoom-btn" onclick="simZoomOut()" title="Zoom Out (ছোট করো — বেশি অংশ দেখো)"><i data-lucide="minus" width="22"></i></button>
+        <button class="sim-zoom-btn fit-active" id="simFitBtn" onclick="simFitReset()" title="Fit to Screen"><i data-lucide="maximize-2" width="22"></i></button>
     </div>
 </div>
 
@@ -536,63 +526,81 @@ function exitFS(){
 let simBarTimer=null;
 function simBarShow(){
     const bar=document.getElementById('simBar');
-    if(!bar)return;
-    bar.classList.remove('hidden');
+    const ctrl=document.getElementById('simZoomCtrl');
+    if(bar){bar.classList.remove('hidden');}
+    if(ctrl){ctrl.style.opacity='1';}
     clearTimeout(simBarTimer);
-    simBarTimer=setTimeout(()=>bar.classList.add('hidden'),2600);
+    simBarTimer=setTimeout(()=>{
+        if(bar)bar.classList.add('hidden');
+        if(ctrl)ctrl.style.opacity='0.35';
+    },2600);
 }
 
-/* ═══ Simulation Zoom + Fit-to-Screen system ═══
-   Portrait-এ সব কিছু আগের মতো perfect fit থাকে (scale=1, 100%)।
-   শুধু landscape-এ zoom controls দেখায়, কারণ TV mirror-এ দরকার। */
-let simScale=1,simFitMode=true;
-const SIM_MIN=0.3,SIM_MAX=3;
+/* ═══════════════════════════════════════════════
+   Simulation Zoom System
+   - Box same size থাকে, ভিতরের content scale হয়
+   - Zoom out → simulation-এর বেশি অংশ দেখা যায়
+   - Zoom in → বড় করে দেখা যায়
+   - Pinch (দুই আঙুল) + buttons দুইভাবেই কাজ করে
+═══════════════════════════════════════════════ */
+let simZoom=1,simFitMode=true;
+const SIMZ_MIN=0.25,SIMZ_MAX=4,SIMZ_STEP=0.15;
 function simApplyZoom(){
-    const inner=document.getElementById('simFitInner');
-    const wrap=document.getElementById('simOverlayFrameWrap');
-    if(!inner||!wrap)return;
-    inner.style.transform='scale('+simScale+')';
-    if(simScale>1){wrap.classList.add('scrollable');}
-    else{wrap.classList.remove('scrollable');wrap.scrollTop=0;wrap.scrollLeft=0;}
+    const wrap=document.getElementById('simZoomWrap');
+    const fr=document.getElementById('simOverlayFrame');
+    if(!wrap||!fr)return;
+    const bw=wrap.clientWidth,bh=wrap.clientHeight;
+    if(bw<=0||bh<=0)return;
+    fr.style.width=(bw/simZoom)+'px';
+    fr.style.height=(bh/simZoom)+'px';
+    fr.style.transform='translate(-50%,-50%) scale('+simZoom+')';
     const lbl=document.getElementById('simZoomLbl');
-    if(lbl)lbl.textContent=simFitMode?'Fit':Math.round(simScale*100)+'%';
-    const fitBtn=document.getElementById('simFitBtn');
-    if(fitBtn)fitBtn.classList.toggle('fit-active',simFitMode);
-}
-function simFitToScreen(){
-    simFitMode=true;simScale=1;
-    simApplyZoom();
+    if(lbl)lbl.textContent=simFitMode?'Fit':Math.round(simZoom*100)+'%';
+    const fb=document.getElementById('simFitBtn');
+    if(fb)fb.classList.toggle('fit-active',simFitMode);
 }
 function simZoomIn(){
     simFitMode=false;
-    simScale=Math.min(SIM_MAX,Math.round((simScale+0.1)*10)/10);
-    simApplyZoom();
+    simZoom=Math.min(SIMZ_MAX,Math.round((simZoom+SIMZ_STEP)*100)/100);
+    simApplyZoom();simBarShow();
 }
 function simZoomOut(){
     simFitMode=false;
-    simScale=Math.max(SIM_MIN,Math.round((simScale-0.1)*10)/10);
-    simApplyZoom();
+    simZoom=Math.max(SIMZ_MIN,Math.round((simZoom-SIMZ_STEP)*100)/100);
+    simApplyZoom();simBarShow();
 }
-/* pinch-to-zoom (landscape-এ দুই আঙুল দিয়ে) */
+function simFitReset(){
+    simFitMode=true;simZoom=1;
+    simApplyZoom();simBarShow();
+}
+/* Pinch-to-zoom: দুই আঙুল দিয়ে ছোট/বড় করো */
 (function(){
-    let pinchDist=0,pinchScale=1;
+    let startDist=0,startZoom=1,pinching=false;
     const ov=document.getElementById('simOverlay');
+    function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}
     ov.addEventListener('touchstart',function(e){
-        if(e.touches.length===2){
-            pinchDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-            pinchScale=simScale;
-        }
+        if(e.touches.length===2){pinching=true;startDist=dist(e.touches);startZoom=simZoom;}
     },{passive:true});
     ov.addEventListener('touchmove',function(e){
-        if(e.touches.length===2&&pinchDist>0){
-            const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-            simFitMode=false;
-            simScale=Math.min(SIM_MAX,Math.max(SIM_MIN,pinchScale*(d/pinchDist)));
-            simApplyZoom();
+        if(pinching&&e.touches.length===2){
+            const d=dist(e.touches);
+            if(startDist>0){
+                simFitMode=false;
+                simZoom=Math.min(SIMZ_MAX,Math.max(SIMZ_MIN,startZoom*(d/startDist)));
+                simApplyZoom();
+            }
         }
     },{passive:true});
-    ov.addEventListener('touchend',function(e){if(e.touches.length<2)pinchDist=0;},{passive:true});
+    ov.addEventListener('touchend',function(e){
+        if(e.touches.length<2){pinching=false;startDist=0;}
+    },{passive:true});
 })();
+/* Orientation change / resize হলে zoom আবার apply করো */
+window.addEventListener('resize',function(){
+    if(document.getElementById('simOverlay').classList.contains('active')){
+        setTimeout(simApplyZoom,150);
+    }
+});
 
 /* ── open simulation ── */
 let simHistoryPushed=false,simWantPush=false;
@@ -609,7 +617,7 @@ async function openSimulation(idx,title){
     ld.classList.remove('gone');
     ld.innerHTML='<div class="sim-loader-ring"></div><p>🔬 সিমুলেশন লোড হচ্ছে...</p>';
     simBarShow();
-    simFitToScreen(); /* সবসময় fit-to-screen দিয়ে শুরু */
+    simFitReset(); /* সবসময় fit দিয়ে শুরু — portrait/landscape দুটোতেই perfect */
     simWantPush=true;
     let v=value.trim();
     if(/^http:\/\//i.test(v))v='https://'+v.slice(7);
@@ -631,12 +639,14 @@ async function openSimulation(idx,title){
         if(url){fr.removeAttribute('srcdoc');fr.src=url;}
         else{showToast('⚠️ "'+v+'" পাওয়া যায়নি!','err');simWantPush=false;closeSimOverlay(false);return}
     }
+    setTimeout(simApplyZoom,100);
 }
 document.getElementById('simOverlayFrame').addEventListener('load',function(){
     if(!document.getElementById('simOverlay').classList.contains('active'))return;
     this.classList.add('loaded');
     document.getElementById('simLoader').classList.add('gone');
     simBarShow();
+    simApplyZoom();
     if(simWantPush){
         simWantPush=false;
         if(!simHistoryPushed){try{history.pushState({mqsim:1},'');simHistoryPushed=true;}catch(e){}}
@@ -651,19 +661,18 @@ function closeSimOverlay(popHistory){
     const fr=document.getElementById('simOverlayFrame');
     fr.removeAttribute('src');fr.removeAttribute('srcdoc');
     fr.classList.remove('loaded');
-    simFitToScreen();
+    simFitMode=true;simZoom=1;
     document.body.style.overflow='';
     if(popHistory&&simHistoryPushed){simHistoryPushed=false;try{history.back()}catch(e){}}
     else simHistoryPushed=false;
 }
 function simTrueFS(){
     const ov=document.getElementById('simOverlay');
-    if(!document.fullscreenElement&&!document.webkitFullscreenElement){enterFS(ov);}
-    else{exitFS();}
+    if(!document.fullscreenElement&&!document.webkitFullscreenElement){enterFS(ov);setTimeout(simApplyZoom,200);}
+    else{exitFS();setTimeout(simApplyZoom,200);}
 }
 document.getElementById('simOverlay').addEventListener('mousemove',simBarShow);
 document.getElementById('simOverlay').addEventListener('touchstart',simBarShow,{passive:true});
-document.getElementById('simOverlay').addEventListener('touchend',simBarShow,{passive:true});
 
 /* ── VID bar ── */
 let vidBarTimer=null;
@@ -790,7 +799,6 @@ function vidTrueFS(){
 }
 document.getElementById('vidOverlay').addEventListener('mousemove',vidBarShow);
 document.getElementById('vidOverlay').addEventListener('touchstart',vidBarShow,{passive:true});
-document.getElementById('vidOverlay').addEventListener('touchend',vidBarShow,{passive:true});
 
 /* ⭐ Browser back → একবারেই overlay বন্ধ */
 window.addEventListener('popstate',()=>{
