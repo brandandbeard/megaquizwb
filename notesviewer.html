@@ -214,7 +214,6 @@ body.day .smart-table th{color:#8B6508}
 #simOverlay{position:fixed;inset:0;z-index:10000;background:#0d1117;display:none;flex-direction:column}
 #simOverlay.active{display:flex;animation:ovIn .35s ease}
 @keyframes ovIn{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:scale(1)}}
-/* Zoom box: fixed size থাকে, ভিতরের content scale হয় */
 #simZoomWrap{flex:1;width:100%;min-height:0;position:relative;overflow:hidden;background:#0d1117}
 #simOverlayFrame{position:absolute;left:50%;top:50%;border:none;display:block;background:#0d1117;opacity:0;transition:opacity .45s;transform:translate(-50%,-50%) scale(1);transform-origin:center center}
 #simOverlayFrame.loaded{opacity:1}
@@ -226,7 +225,6 @@ body.day .smart-table th{color:#8B6508}
 .sim-overlay-loader{position:absolute;inset:0;z-index:10001;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#0d1117;color:rgba(255,255,255,0.55);font-size:.95rem;font-family:'Noto Serif Bengali',serif;transition:opacity .35s}
 .sim-overlay-loader.gone{opacity:0;pointer-events:none}
 .sim-loader-ring{width:46px;height:46px;border:3px solid rgba(168,85,247,0.15);border-top-color:#a855f7;border-radius:50%;animation:spin 1s linear infinite}
-/* Zoom controls — আঙুল দিয়ে pinch + buttons */
 .sim-zoom-ctrl{position:absolute;right:18px;top:50%;transform:translateY(-50%);z-index:10003;display:flex;flex-direction:column;gap:12px;align-items:center;transition:opacity .4s}
 .sim-zoom-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.55);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);transition:.25s;box-shadow:0 4px 16px rgba(0,0,0,.35)}
 .sim-zoom-btn:active{transform:scale(.9);background:rgba(168,85,247,.75)}
@@ -402,15 +400,13 @@ body.day .sidebar{background:#FFFCF0}
         <span class="sim-overlay-title" id="simOverlayTitle"></span>
         <button class="sim-fs-btn" onclick="simTrueFS()" title="Full Screen"><i data-lucide="maximize" width="15"></i></button>
     </div>
-    <!-- Zoom box: fixed size, ভিতরের content scale হয় -->
     <div id="simZoomWrap">
         <iframe id="simOverlayFrame" allow="fullscreen; accelerometer; gyroscope; autoplay" allowfullscreen></iframe>
     </div>
-    <!-- Zoom controls -->
     <div class="sim-zoom-ctrl" id="simZoomCtrl">
-        <button class="sim-zoom-btn" onclick="simZoomIn()" title="Zoom In (বড় করো)"><i data-lucide="plus" width="22"></i></button>
+        <button class="sim-zoom-btn" onclick="simZoomIn()" title="Zoom In"><i data-lucide="plus" width="22"></i></button>
         <span class="sim-zoom-lbl" id="simZoomLbl">Fit</span>
-        <button class="sim-zoom-btn" onclick="simZoomOut()" title="Zoom Out (ছোট করো — বেশি অংশ দেখো)"><i data-lucide="minus" width="22"></i></button>
+        <button class="sim-zoom-btn" onclick="simZoomOut()" title="Zoom Out"><i data-lucide="minus" width="22"></i></button>
         <button class="sim-zoom-btn fit-active" id="simFitBtn" onclick="simFitReset()" title="Fit to Screen"><i data-lucide="maximize-2" width="22"></i></button>
     </div>
 </div>
@@ -503,7 +499,6 @@ async function loadSimLibrary(){
     }catch(e){console.warn('Sim library load failed',e)}
 }
 
-/* ═══ Fullscreen helper (landscape lock সহ) ═══ */
 function enterFS(ov){
     const req=ov.requestFullscreen||ov.webkitRequestFullscreen||ov.msRequestFullscreen;
     if(!req)return;
@@ -523,7 +518,6 @@ function exitFS(){
     }catch(e){}
 }
 
-/* ── SIM bar ── */
 let simBarTimer=null;
 function simBarShow(){
     const bar=document.getElementById('simBar');
@@ -537,13 +531,6 @@ function simBarShow(){
     },2600);
 }
 
-/* ═══════════════════════════════════════════════
-   Simulation Zoom System
-   - Box same size থাকে, ভিতরের content scale হয়
-   - Zoom out → simulation-এর বেশি অংশ দেখা যায়
-   - Zoom in → বড় করে দেখা যায়
-   - Pinch (দুই আঙুল) + buttons দুইভাবেই কাজ করে
-═══════════════════════════════════════════════ */
 let simZoom=1,simFitMode=true;
 const SIMZ_MIN=0.25,SIMZ_MAX=4,SIMZ_STEP=0.15;
 function simApplyZoom(){
@@ -560,50 +547,19 @@ function simApplyZoom(){
     const fb=document.getElementById('simFitBtn');
     if(fb)fb.classList.toggle('fit-active',simFitMode);
 }
-function simZoomIn(){
-    simFitMode=false;
-    simZoom=Math.min(SIMZ_MAX,Math.round((simZoom+SIMZ_STEP)*100)/100);
-    simApplyZoom();simBarShow();
-}
-function simZoomOut(){
-    simFitMode=false;
-    simZoom=Math.max(SIMZ_MIN,Math.round((simZoom-SIMZ_STEP)*100)/100);
-    simApplyZoom();simBarShow();
-}
-function simFitReset(){
-    simFitMode=true;simZoom=1;
-    simApplyZoom();simBarShow();
-}
-/* Pinch-to-zoom: দুই আঙুল দিয়ে ছোট/বড় করো */
+function simZoomIn(){simFitMode=false;simZoom=Math.min(SIMZ_MAX,Math.round((simZoom+SIMZ_STEP)*100)/100);simApplyZoom();simBarShow()}
+function simZoomOut(){simFitMode=false;simZoom=Math.max(SIMZ_MIN,Math.round((simZoom-SIMZ_STEP)*100)/100);simApplyZoom();simBarShow()}
+function simFitReset(){simFitMode=true;simZoom=1;simApplyZoom();simBarShow()}
 (function(){
     let startDist=0,startZoom=1,pinching=false;
     const ov=document.getElementById('simOverlay');
     function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}
-    ov.addEventListener('touchstart',function(e){
-        if(e.touches.length===2){pinching=true;startDist=dist(e.touches);startZoom=simZoom;}
-    },{passive:true});
-    ov.addEventListener('touchmove',function(e){
-        if(pinching&&e.touches.length===2){
-            const d=dist(e.touches);
-            if(startDist>0){
-                simFitMode=false;
-                simZoom=Math.min(SIMZ_MAX,Math.max(SIMZ_MIN,startZoom*(d/startDist)));
-                simApplyZoom();
-            }
-        }
-    },{passive:true});
-    ov.addEventListener('touchend',function(e){
-        if(e.touches.length<2){pinching=false;startDist=0;}
-    },{passive:true});
+    ov.addEventListener('touchstart',function(e){if(e.touches.length===2){pinching=true;startDist=dist(e.touches);startZoom=simZoom;}},{passive:true});
+    ov.addEventListener('touchmove',function(e){if(pinching&&e.touches.length===2){const d=dist(e.touches);if(startDist>0){simFitMode=false;simZoom=Math.min(SIMZ_MAX,Math.max(SIMZ_MIN,startZoom*(d/startDist)));simApplyZoom();}}},{passive:true});
+    ov.addEventListener('touchend',function(e){if(e.touches.length<2){pinching=false;startDist=0;}},{passive:true});
 })();
-/* Orientation change / resize হলে zoom আবার apply করো */
-window.addEventListener('resize',function(){
-    if(document.getElementById('simOverlay').classList.contains('active')){
-        setTimeout(simApplyZoom,150);
-    }
-});
+window.addEventListener('resize',function(){if(document.getElementById('simOverlay').classList.contains('active')){setTimeout(simApplyZoom,150);}});
 
-/* ── open simulation ── */
 let simHistoryPushed=false,simWantPush=false;
 async function openSimulation(idx,title){
     const value=SIM_STORE[idx];
@@ -618,7 +574,7 @@ async function openSimulation(idx,title){
     ld.classList.remove('gone');
     ld.innerHTML='<div class="sim-loader-ring"></div><p>🔬 সিমুলেশন লোড হচ্ছে...</p>';
     simBarShow();
-    simFitReset(); /* সবসময় fit দিয়ে শুরু — portrait/landscape দুটোতেই perfect */
+    simFitReset();
     simWantPush=true;
     let v=value.trim();
     if(/^http:\/\//i.test(v))v='https://'+v.slice(7);
@@ -675,7 +631,6 @@ function simTrueFS(){
 document.getElementById('simOverlay').addEventListener('mousemove',simBarShow);
 document.getElementById('simOverlay').addEventListener('touchstart',simBarShow,{passive:true});
 
-/* ── VID bar ── */
 let vidBarTimer=null;
 function vidBarShow(){
     const bar=document.getElementById('vidBar');
@@ -706,7 +661,6 @@ function parseYouTube(raw){
     if(m)id=m[1];
     return {id,start:ts.start};
 }
-/* ── YouTube IFrame API — video শেষে auto-close ── */
 let ytApiCallbacks=[],ytPlayer=null;
 function loadYtApi(cb){
     if(window.YT&&window.YT.Player){cb();return;}
@@ -801,7 +755,6 @@ function vidTrueFS(){
 document.getElementById('vidOverlay').addEventListener('mousemove',vidBarShow);
 document.getElementById('vidOverlay').addEventListener('touchstart',vidBarShow,{passive:true});
 
-/* ⭐ Browser back → একবারেই overlay বন্ধ */
 window.addEventListener('popstate',()=>{
     if(document.getElementById('simOverlay').classList.contains('active'))closeSimOverlay(false);
     else if(document.getElementById('vidOverlay').classList.contains('active'))closeVideo(false);
@@ -830,21 +783,95 @@ const QuotaManager={
 function showToast(msg,type){const t=document.createElement('div');t.className='toast '+(type||'');t.innerHTML=msg;document.body.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),450)},3200)}
 function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function escJs(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
-function questionType(q){const t=(q||'').toLowerCase();if(/পার্থক্য|তুলনা|ভিন্নতা|মিল-অমিল|মিল ও অমিল|অমিল|difference|compare|contrast|versus|\bvs\b/i.test(t))return'quick';if(/ছক|টেবিল|table|chart|লেখচিত্র|graph|নামকরণ|তালিকা|list|এক শব্দে|এক কথায়|one word|সংজ্ঞা দাও|সংজ্ঞা লেখো|define|চিহ্নিত/i.test(t))return'quick';return'full'}
 function topicOf(r){return(r.topic&&r.topic.trim())||'সাধারণ প্রশ্ন'}
 
 class SmartEngine{
     constructor(){this.cache=new Map();this.chartId=0}
     async callAI(sys,user){const key=sys+'|||'+user;if(this.cache.has(key))return this.cache.get(key);try{const r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,user:user})});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('AI '+r.status+': '+(e.error||'Error'))}const d=await r.json();const t=d.text||'';this.cache.set(key,t);return t}catch(e){console.error('AI Error:',e);throw e}}
-    async explain(q,a,subject,chapter){
+
+    async explain(q,a,subject,chapter,qtype){
         const sub=(subject||'').toLowerCase(),ch=(chapter||'').toLowerCase();
-        const isEnglish=/english|ইংরেজি/i.test(sub),isBangla=/bangla|বাংলা|bengali/i.test(sub);
-        const isGrammar=/grammar|ব্যাকরণ|byakaran/i.test(ch)||/grammar|ব্যাকরণ|সন্ধি|সমাস|কারক|বিভক্তি|প্রত্যয়|উপসর্গ|বাগধারা|one word|synonym|antonym|tense|\bvoice\b|narration|preposition|\barticle\b|parts of speech|idiom|phrase|clause|transformation|degrees of comparison|fill in the blank|right form of verb|punctuation|spelling/i.test(q);
-        if(isEnglish){if(isGrammar)return await this.callAI('তুমি WBBSE Class 10 English Grammar শিক্ষক।\n\n**Answer:**\n\n**বাংলা অর্থ:**\n\n📖 **নিয়ম:**\n\n✍️ **উদাহরণ:**\n\n💡 **মনে রাখো:**\n\nMax 200 words।','প্রশ্ন: '+q+'\nউত্তর: '+a);return await this.callAI('তুমি WBBSE Class 10 English Literature শিক্ষক।\n\n**Answer:**\n\n📖 **ব্যাখ্যা:**\n\n📌 **Key Points:**\n\n💡 **মনে রাখো:**\n\nMax 200 words।','প্রশ্ন: '+q+'\nউত্তর: '+a)}
-        if(isBangla){if(isGrammar)return await this.callAI('তুমি WBBSE Class 10 বাংলা ব্যাকরণ শিক্ষক।\n\n**উত্তর:**\n\n📌 **মনে রাখো:**\n\nMax 80 words।','প্রশ্ন: '+q+'\nউত্তর: '+a);return await this.callAI('তুমি WBBSE Class 10 বাংলা সাহিত্য শিক্ষক।\n\n**উত্তর:**\n\nMax 100 words।','প্রশ্ন: '+q+'\nউত্তর: '+a)}
-        if(questionType(q)==='quick')return await this.callAI('Class 10 শিক্ষক। সংক্ষিপ্ত পয়েন্ট, **bold**। Max 80 words।','প্রশ্ন: '+q+'\nউত্তর: '+a);
-        return await this.callAI('Class 10 শিক্ষক।\n\n📖 **ব্যাখ্যা:**\n\n🌍 **উদাহরণ:**\n\n📌 **Key Points:**\n\n💡 **মনে রাখো:**\n\nMax 250 words।','প্রশ্ন: '+q+'\nউত্তর: '+a);
+        const qt=(qtype||'').toLowerCase().trim();
+        const isSAQ=(qt==='saq'||qt==='short');
+        const ansStyle=isSAQ
+            ?'এটি SAQ (সংক্ষিপ্ত উত্তরীয়) প্রশ্ন — উত্তর ছোট ও precise রাখো, ২-৪ লাইনের মধ্যে, সরাসরি মূল point-এ এসো। অপ্রয়োজনীয় ভূমিকা দিও না।'
+            :'এটি Broad/দীর্ঘ উত্তরীয় প্রশ্ন — উত্তর বিস্তারিত ও সম্পূর্ণ দাও, point-wise করে লেখো, যেন পরীক্ষায় full marks পাওয়া যায়।';
+
+        const isEnglish=/english|ইংরেজি/i.test(sub);
+        const isBangla=/bangla|বাংলা|bengali/i.test(sub);
+        const isScience=/science|বিজ্ঞান|পরিবেশ|biology|chemistry|physics|life|physical/i.test(sub);
+        const isHistory=/history|ইতিহাস/i.test(sub);
+        const isGeo=/geography|ভূগোল/i.test(sub);
+        const isMath=/math|গণিত|অঙ্ক|arithmetic|algebra|geometry|জ্যামিতি|বীজগণিত|ত্রিকোণমিতি/i.test(sub);
+        const isGrammar=/grammar|ব্যাকরণ|byakaran/i.test(ch)||/grammar/i.test(sub);
+
+        /* ═══ ENGLISH ═══ */
+        if(isEnglish){
+            if(isGrammar){
+                return await this.callAI(
+                    'তুমি WBBSE বোর্ডের একজন expert English Grammar শিক্ষক। Article, Preposition, Tense, Voice Change, Narration Change, Synonym-Antonym, One Word Substitution, Phrasal Verb, Idiom — সব rule তুমি খুব ভালো জানো এবং বাংলা medium-এর ছাত্রদের সহজে বোঝাও।\n\nনিচের format-এ উত্তর দাও:\n\n**Answer:** — ইংরেজিতে সঠিক উত্তর দাও।\n**বিকল্প উত্তর:** — যদি অন্য কোনো উত্তরও সঠিক হয়, সেটাও দাও। (না থাকলে এই line বাদ দাও)\n📖 **নিয়ম:** — Grammar rule-টা ধাপে ধাপে একদম সহজ বাংলায় বোঝাও।\n✍️ **উদাহরণ:** — একই rule-এর আর ১-২টা উদাহরণ দাও।\n**বাংলা অর্থ:** — উত্তরের বাংলা মানে দাও।\n\nMax 200 words।',
+                    'প্রশ্ন: '+q+'\nReference উত্তর: '+a+'\n\nসঠিক উত্তর ও নিয়ম দাও:'
+                );
+            }
+            return await this.callAI(
+                'তুমি WBBSE (West Bengal Board) এর একজন expert English সাহিত্যের শিক্ষক। WBBSE syllabus-এর প্রতিটি class-এর গল্প, কবিতা ও প্রবন্ধ তোমার খুব ভালো জানা।\n\nClass: '+CLASS_NAME+'\nChapter: '+chapter+'\n\nউপরের Class ও Chapter দেখে সঠিক story/poem-টি চিনে নাও।\n\nনিয়ম:\n'+ansStyle+'\n- উত্তর অবশ্যই **ইংরেজিতে** লিখতে হবে।\n- এমন ভাষায় লেখো যেন একজন মেধাবী ছাত্র পরীক্ষায় নিজে লিখেছে — robotic বা AI-generated যেন মনে না হয়।\n- Story/poem থেকে সঠিক reference দাও (চরিত্রের নাম, ঘটনা, প্রাসঙ্গিক line)।\n- পরীক্ষায় full marks পাওয়ার মতো সম্পূর্ণ ও accurate উত্তর দাও।\n- সহজ ও natural ইংরেজি ব্যবহার করো।\n\nউত্তর লেখার পর একটি ফাঁকা লাইন দিয়ে তারপর লেখো:\n📖 **বাংলা অনুবাদ:** — প্রশ্ন এবং উত্তর দুটোরই সরল বাংলা অনুবাদ দাও, যেন বাংলা medium-এর ছাত্র সহজে বোঝে।\n\nMax 250 words।',
+                'প্রশ্ন: '+q+'\nReference উত্তর: '+a+'\n\nWBBSE story/poem অনুযায়ী উত্তর দাও:'
+            );
+        }
+
+        /* ═══ BANGLA ═══ */
+        if(isBangla){
+            if(isGrammar){
+                return await this.callAI(
+                    'তুমি WBBSE বোর্ডের একজন expert বাংলা ব্যাকরণ শিক্ষক। সন্ধি, সমাস, কারক, বিভক্তি, প্রত্যয়, উপসর্গ, বাগধারা, এক কথায় প্রকাশ, বাক্য পরিবর্তন — সব তোমার জানা।\n\nনিয়ম:\n- সঠিক উত্তর দাও।\n- শুধু ব্যাকরণের নিয়ম বুঝিয়ে বলো।\n- অপ্রয়োজনীয় ব্যাখ্যা দিও না।\n\nFormat:\n**উত্তর:** — সঠিক উত্তর দাও।\n📖 **নিয়ম:** — সহজ বাংলায় নিয়মটা বুঝিয়ে বলো।\n\nMax 100 words।',
+                    'প্রশ্ন: '+q+'\nReference উত্তর: '+a+'\n\nসঠিক উত্তর ও নিয়ম দাও:'
+                );
+            }
+            return await this.callAI(
+                'তুমি WBBSE বোর্ডের একজন expert বাংলা সাহিত্যের শিক্ষক। WBBSE syllabus-এর প্রতিটি class-এর গল্প ও কবিতা তোমার খুব ভালো জানা।\n\nClass: '+CLASS_NAME+'\nChapter: '+chapter+'\n\nউপরের Class ও Chapter দেখে সঠিক গল্প/কবিতা-টি চিনে নাও।\n\nনিয়ম:\n'+ansStyle+'\n- উত্তর বাংলায় লেখো।\n- এমন ভাষায় লেখো যেন একজন মেধাবী ছাত্র পরীক্ষায় নিজে লিখেছে — AI-generated যেন মনে না হয়।\n- গল্প/কবিতা থেকে সঠিক reference দাও (চরিত্র, ঘটনা, প্রাসঙ্গিক অংশ)।\n- পরীক্ষায় full marks পাওয়ার মতো সম্পূর্ণ উত্তর দাও।\n- বাংলা মানে করার দরকার নেই।\n\nMax 220 words।',
+                'প্রশ্ন: '+q+'\nReference উত্তর: '+a+'\n\nWBBSE গল্প/কবিতা অনুযায়ী উত্তর দাও:'
+            );
+        }
+
+        /* ═══ SCIENCE ═══ */
+        if(isScience){
+            return await this.callAI(
+                'তুমি '+CLASS_NAME+'-এর একজন অভিজ্ঞ ও স্নেহময় বিজ্ঞান শিক্ষক — যিনি কঠিন জিনিসও খুব সহজে বোঝান।\n\nনিচের format-এ ব্যাখ্যা করো:\n\n🔬 **মূল ধারণা:** — ২-৩ লাইনে একদম সহজ বাংলায় মূল কথা।\n📖 **সহজ ব্যাখ্যা:** — বিস্তারিত কিন্তু সহজ ভাষায় বোঝাও।\n🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ২টা উদাহরণ দাও।\n🧪 **পরীক্ষায় যা আসতে পারে:** — এই topic থেকে common exam question বা tip দাও।\n📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে লেখো।\n🧠 **মনে রাখার কৌশল:** — কোনো mnemonic, trick বা shortcut দাও।\n💡 **মনে রাখো:** — শেষে ১ লাইনের সহজ কথা।\n\nআন্তরিক শিক্ষকের ভাষায় লেখো, কঠিন শব্দ এড়াও। Max 300 words।',
+                'প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসুন্দর করে বুঝিয়ে দাও:'
+            );
+        }
+
+        /* ═══ HISTORY ═══ */
+        if(isHistory){
+            return await this.callAI(
+                'তুমি WBBSE বোর্ডের একজন expert ইতিহাস শিক্ষক।\n\nClass: '+CLASS_NAME+'\nChapter: '+chapter+'\n\nনিয়ম:\n'+ansStyle+'\n- উত্তর বাংলায় লেখো।\n- সঠিক বছর, নাম, স্থান ও ঘটনা দাও।\n- এমনভাবে লেখো যেন পরীক্ষায় full marks পাওয়া যায় এবং AI-generated মনে না হয়।\n- Point-wise করে গুছিয়ে লেখো।\n- প্রয়োজনে কারণ ও ফলাফল উল্লেখ করো।\n\nMax 250 words।',
+                'প্রশ্ন: '+q+'\nReference উত্তর: '+a+'\n\nসুন্দর করে উত্তর দাও:'
+            );
+        }
+
+        /* ═══ GEOGRAPHY ═══ */
+        if(isGeo){
+            return await this.callAI(
+                'তুমি WBBSE বোর্ডের একজন expert ভূগোল শিক্ষক।\n\nClass: '+CLASS_NAME+'\nChapter: '+chapter+'\n\nনিয়ম:\n'+ansStyle+'\n- উত্তর বাংলায় লেখো।\n- পরীক্ষায় full marks পাওয়ার মতো সম্পূর্ণ উত্তর দাও।\n- AI-generated যেন মনে না হয়।\n- সঠিক নাম, স্থান, সংখ্যা দাও।\n\nউত্তরের পর একটি ফাঁকা লাইন দিয়ে তারপর লেখো:\n🌏 **সহজ ব্যাখ্যা:** — বিষয়টা একটু অন্যভাবে সহজ করে বোঝাও (বিজ্ঞানের মতো নয়) — যেমন: জায়গাটা কোথায়, কেন গুরুত্বপূর্ণ, আর মনে রাখার একটা সহজ উপায় দাও।\n\nMax 250 words।',
+                'প্রশ্ন: '+q+'\nReference উত্তর: '+a+'\n\nসুন্দর করে উত্তর দাও:'
+            );
+        }
+
+        /* ═══ MATH ═══ */
+        if(isMath){
+            return await this.callAI(
+                'তুমি WBBSE বোর্ডের একজন expert গণিত শিক্ষক।\n\nনিয়ম:\n- শুধু line-by-line সমাধান দাও।\n- বাংলা text একদম কম ব্যবহার করো — যত কম সম্ভব।\n- অঙ্কটা step-by-step করো, প্রতিটি ধাপ আলাদা line-এ।\n- বীজগণিত (algebra) হলে text প্রায় ব্যবহারই কোরো না — শুধু অঙ্কের line দাও।\n- ত্রিকোণমিতি/পরিমিতি হলে diagram দেওয়া সম্ভব নয়, তাই diagram দিও না — শুধু সমাধান দাও।\n- সম্পাদ্য (theorem) হলে কোনো explanation দিও না, শুধু প্রমাণের ধাপ দাও।\n- কোনো অপ্রয়োজনীয় ব্যাখ্যা দিও না।\n- মাঝে মাঝে শুধু প্রয়োজনীয় ছোট বাংলা label দাও (যেমন: "এখন,", "সুতরাং,", "উত্তর:")।\n\nশেষে **উত্তর:** লিখে final answer দাও।',
+                'প্রশ্ন: '+q+'\nReference উত্তর: '+a+'\n\nLine-by-line সমাধান দাও:'
+            );
+        }
+
+        /* ═══ OTHER / DEFAULT ═══ */
+        return await this.callAI(
+            'তুমি '+CLASS_NAME+'-এর একজন শিক্ষক।\n\nনিয়ম:\n- To-the-point ব্যাখ্যা দাও।\n- Style 자유롭게 রাখো, কিন্তু ভাষা সহজ বাংলা রাখো।\n- অপ্রয়োজনীয় কথা দিও না।\n\nFormat:\n📖 **ব্যাখ্যা:** — সহজ বাংলায় মূল কথা।\n📌 **Key Points:** — মূল পয়েন্ট **bold** করে।\n💡 **মনে রাখো:** — ১ লাইনের সহজ কথা।\n\nMax 180 words।',
+            'প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nবুঝিয়ে দাও:'
+        );
     }
+
     async smartSearch(query,questions){const ql=questions.slice(0,60).map((r,i)=>i+'. ['+r.subject+'/'+r.chapter+'] '+r.question).join('\n');const res=await this.callAI('JSON array: [{"index":0,"reason":"...","relevance":95}] Max 5।','Query: "'+query+'"\n'+ql);try{return JSON.parse(res.replace(/```json?\n?/g,'').replace(/```/g,'').trim())}catch{return[]}}
     render(text){
         if(!text)return'';
@@ -1129,7 +1156,7 @@ function renderQuestions(rows){
             const vnm=getVideoTitle(r);
             html+='<button class="vid-chip" onclick="openVideo('+vi+',\''+escJs(vnm)+'\')"><span class="sim-chip-ico">📺</span><span class="vid-chip-name">'+escAttr(vnm)+'</span><span class="vid-chip-play">▶ দেখো</span></button>';
         }
-        html+='<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button>';
+        html+='<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'" data-type="'+encodeURIComponent(r.type||'')+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button>';
         html+='</div><div id="ai-panel-'+cid+'"></div></div>';
     });
     return html;
@@ -1139,18 +1166,26 @@ async function getAIExp(cardId,btn){
     const panel=document.getElementById('ai-panel-'+cardId);
     if(panel.innerHTML){panel.innerHTML='';btn.innerHTML='<i data-lucide="graduation-cap" width="14"></i> AI Explanation';lucide.createIcons();return}
     if(!QuotaManager.canAI()){showToast('🔒 আজকের AI limit শেষ!','err');return}
-    const q=decodeURIComponent(btn.dataset.q),a=decodeURIComponent(btn.dataset.a),subject=decodeURIComponent(btn.dataset.subject||''),chapter=decodeURIComponent(btn.dataset.chapter||'');
+    const q=decodeURIComponent(btn.dataset.q),a=decodeURIComponent(btn.dataset.a),subject=decodeURIComponent(btn.dataset.subject||''),chapter=decodeURIComponent(btn.dataset.chapter||''),qtype=decodeURIComponent(btn.dataset.type||'');
     const sub=subject.toLowerCase(),ch=chapter.toLowerCase();
-    const isEnglish=/english|ইংরেজি/i.test(sub),isBangla=/bangla|বাংলা|bengali/i.test(sub),isGrammar=/grammar|ব্যাকরণ|byakaran/i.test(ch);
+    const isEnglish=/english|ইংরেজি/i.test(sub),isBangla=/bangla|বাংলা|bengali/i.test(sub),isGrammar=/grammar|ব্যাকরণ|byakaran/i.test(ch)||/grammar/i.test(sub);
+    const isScience=/science|বিজ্ঞান|পরিবেশ|biology|chemistry|physics/i.test(sub);
+    const isHistory=/history|ইতিহাস/i.test(sub);
+    const isGeo=/geography|ভূগোল/i.test(sub);
+    const isMath=/math|গণিত|অঙ্ক|arithmetic|algebra|geometry|জ্যামিতি|বীজগণিত/i.test(sub);
     btn.classList.add('loading');btn.innerHTML='<span class="spinner"></span> Thinking...';
     try{
-        const exp=await engine.explain(q,a,subject,chapter);QuotaManager.useAI();
+        const exp=await engine.explain(q,a,subject,chapter,qtype);QuotaManager.useAI();
         let mb;
         if(isEnglish&&isGrammar)mb='<span class="mode-badge" style="background:rgba(168,85,247,0.12);color:#a855f7;border-color:rgba(168,85,247,0.25)">📐 English Grammar</span>';
-        else if(isEnglish)mb='<span class="mode-badge" style="background:rgba(59,130,246,0.12);color:#3b82f6;border-color:rgba(59,130,246,0.25)">📖 English</span>';
+        else if(isEnglish)mb='<span class="mode-badge" style="background:rgba(59,130,246,0.12);color:#3b82f6;border-color:rgba(59,130,246,0.25)">📖 WBBSE English</span>';
         else if(isBangla&&isGrammar)mb='<span class="mode-badge" style="background:rgba(20,184,166,0.12);color:#14b8a6;border-color:rgba(20,184,166,0.25)">📐 বাংলা ব্যাকরণ</span>';
-        else if(isBangla)mb='<span class="mode-badge" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.25)">📖 বাংলা</span>';
-        else mb=questionType(q)==='quick'?'<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">⚡ Quick</span>':'<span class="mode-badge">বিস্তারিত</span>';
+        else if(isBangla)mb='<span class="mode-badge" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.25)">📖 WBBSE বাংলা</span>';
+        else if(isScience)mb='<span class="mode-badge" style="background:rgba(6,182,212,0.12);color:#06b6d4;border-color:rgba(6,182,212,0.25)">🔬 বিজ্ঞান</span>';
+        else if(isHistory)mb='<span class="mode-badge" style="background:rgba(245,158,11,0.12);color:#f59e0b;border-color:rgba(245,158,11,0.25)">📜 ইতিহাস</span>';
+        else if(isGeo)mb='<span class="mode-badge" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.25)">🌍 ভূগোল</span>';
+        else if(isMath)mb='<span class="mode-badge" style="background:rgba(99,102,241,0.12);color:#6366f1;border-color:rgba(99,102,241,0.25)">➗ গণিত</span>';
+        else mb='<span class="mode-badge">📚 বিস্তারিত</span>';
         panel.innerHTML='<div class="ai-panel"><div class="ai-panel-header"><span class="ai-badge">AI</span>'+mb+'</div><div class="ai-panel-content">'+engine.render(exp)+'</div></div>';
         btn.classList.remove('loading');btn.innerHTML='<i data-lucide="check" width="14"></i> Explained';showToast('✅ Ready','okk');
     }catch(err){
