@@ -789,15 +789,13 @@ class SmartEngine{
     constructor(){this.cache=new Map();this.chartId=0}
     async callAI(sys,user){const key=sys+'|||'+user;if(this.cache.has(key))return this.cache.get(key);try{const r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,user:user})});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('AI '+r.status+': '+(e.error||'Error'))}const d=await r.json();const t=d.text||'';this.cache.set(key,t);return t}catch(e){console.error('AI Error:',e);throw e}}
 
-    async explain(q,a,subject,chapter,qtype){
+        async explain(q,a,subject,chapter,qtype){
         const sub=(subject||'').toLowerCase(),ch=(chapter||'').toLowerCase();
         const qt=(qtype||'').toLowerCase().trim();
         const isSAQ=(qt==='saq'||qt==='short');
         const ansStyle=isSAQ
             ?'এটি SAQ (সংক্ষিপ্ত উত্তরীয়) প্রশ্ন — উত্তর ছোট ও precise রাখো, ২-৪ লাইনের মধ্যে, সরাসরি মূল point-এ এসো। অপ্রয়োজনীয় ভূমিকা দিও না।'
             :'এটি Broad/দীর্ঘ উত্তরীয় প্রশ্ন — উত্তর বিস্তারিত ও সম্পূর্ণ দাও, point-wise করে লেখো, যেন পরীক্ষায় full marks পাওয়া যায়।';
-
-        const imgInstr='\n\n🖼️ ছবি: যদি এই topic বোঝার জন্য একটি আসল ছবি বা ডায়াগ্রাম সত্যিই সাহায্য করে, তাহলে উত্তরের একদম শেষে একটি আলাদা line-এ লেখো, শুধু এই format-এ: IMG: <2-6 শব্দের ইংরেজি search phrase>। এমন কিছু লেখো যার আসল ছবি পাওয়া যায় — বিমূর্ত বা কাল্পনিক কিছু নয়। উদাহরণ: IMG: volcano structure diagram, IMG: Taj Mahal, IMG: human heart diagram, IMG: Sundarban mangrove forest। শুধু তখনই দিও যখন ছবি সত্যিই দরকার।';
 
         const isEnglish=/english|ইংরেজি/i.test(sub);
         const isBangla=/bangla|বাংলা|bengali/i.test(sub);
@@ -845,7 +843,7 @@ class SmartEngine{
                 );
             }
             return await this.callAI(
-                'তুমি '+CLASS_NAME+'-এর একজন অভিজ্ঞ ও স্নেহময় বিজ্ঞান শিক্ষক — যিনি কঠিন জিনিসও খুব সহজে বোঝান।\n\nনিচের format-এ ব্যাখ্যা করো। প্রতিটি section অবশ্যই দিতে হবে, কোনোটা বাদ দেওয়া যাবে না:\n\n🔬 **মূল ধারণা:** — ২-৩ লাইনে একদম সহজ বাংলায় মূল কথা।\n\n📖 **সহজ ব্যাখ্যা:** — বিস্তারিত কিন্তু সহজ ভাষায় বোঝাও।\n\n🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ২টা উদাহরণ দাও।\n\n📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে লেখো।\n\n🧠 **মনে রাখার কৌশল:** — এই section টা অবশ্যই দিতে হবে, বাদ দেওয়া যাবে না। এই topic মনে রাখার একটা মজার ও সহজ trick দাও — কোনো acronym, ছন্দ, ছড়া, ছোট গল্প বা মজার তুলনা, যাতে ছাত্রের একবার পড়লেই চিরকাল মনে থাকে।\n\nআন্তরিক শিক্ষকের ভাষায় লেখো, কঠিন শব্দ এড়াও। Max 280 words।' + imgInstr,
+                'তুমি '+CLASS_NAME+'-এর একজন অভিজ্ঞ ও স্নেহময় বিজ্ঞান শিক্ষক — যিনি কঠিন জিনিসও খুব সহজে বোঝান।\n\nনিচের format-এ ব্যাখ্যা করো। প্রতিটি section অবশ্যই দিতে হবে, কোনোটা বাদ দেওয়া যাবে না:\n\n🔬 **মূল ধারণা:** — ২-৩ লাইনে একদম সহজ বাংলায় মূল কথা।\n\n📖 **সহজ ব্যাখ্যা:** — বিস্তারিত কিন্তু সহজ ভাষায় বোঝাও।\n\n🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ২টা উদাহরণ দাও।\n\n📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে লেখো।\n\n🧠 **মনে রাখার কৌশল:** — এই section টা অবশ্যই দিতে হবে, বাদ দেওয়া যাবে না। এই topic মনে রাখার একটা মজার ও সহজ trick দাও — কোনো acronym, ছন্দ, ছড়া, ছোট গল্প বা মজার তুলনা, যাতে ছাত্রের একবার পড়লেই চিরকাল মনে থাকে।\n\nআন্তরিক শিক্ষকের ভাষায় লেখো, কঠিন শব্দ এড়াও। Max 280 words।',
                 'প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসুন্দর করে বুঝিয়ে দাও:'
             );
         }
@@ -853,7 +851,7 @@ class SmartEngine{
         /* ═══ HISTORY ═══ */
         if(isHistory){
             return await this.callAI(
-                'তুমি WBBSE বোর্ডের একজন expert ইতিহাস শিক্ষক।\n\nClass: '+CLASS_NAME+'\nChapter: '+chapter+'\n\nনিয়ম:\n'+ansStyle+'\n- উত্তর বাংলায় লেখো।\n- সঠিক বছর, নাম, স্থান ও ঘটনা দাও।\n- এমনভাবে লেখো যেন পরীক্ষায় full marks পাওয়া যায় এবং AI-generated মনে না হয়।\n- Point-wise করে গুছিয়ে লেখো।\n- প্রয়োজনে কারণ ও ফলাফল উল্লেখ করো।\n\nMax 250 words।' + imgInstr,
+                'তুমি WBBSE বোর্ডের একজন expert ইতিহাস শিক্ষক।\n\nClass: '+CLASS_NAME+'\nChapter: '+chapter+'\n\nনিয়ম:\n'+ansStyle+'\n- উত্তর বাংলায় লেখো।\n- সঠিক বছর, নাম, স্থান ও ঘটনা দাও।\n- এমনভাবে লেখো যেন পরীক্ষায় full marks পাওয়া যায় এবং AI-generated মনে না হয়।\n- Point-wise করে গুছিয়ে লেখো।\n- প্রয়োজনে কারণ ও ফলাফল উল্লেখ করো।\n\nMax 250 words।',
                 'প্রশ্ন: '+q+'\nReference উত্তর: '+a+'\n\nসুন্দর করে উত্তর দাও:'
             );
         }
@@ -867,7 +865,7 @@ class SmartEngine{
                 );
             }
             return await this.callAI(
-                'তুমি WBBSE বোর্ডের একজন expert ভূগোল শিক্ষক।\n\nClass: '+CLASS_NAME+'\nChapter: '+chapter+'\n\nনিয়ম:\n'+ansStyle+'\n- উত্তর বাংলায় লেখো।\n- পরীক্ষায় full marks পাওয়ার মতো সম্পূর্ণ উত্তর দাও।\n- AI-generated যেন মনে না হয়।\n- সঠিক নাম, স্থান, সংখ্যা দাও।\n\nউত্তরের পর একটি ফাঁকা লাইন দিয়ে তারপর লেখো:\n🌏 **সহজ ব্যাখ্যা:** — বিষয়টা একটু অন্যভাবে সহজ করে বোঝাও (বিজ্ঞানের মতো নয়) — যেমন: জায়গাটা কোথায়, কেন গুরুত্বপূর্ণ, আর মনে রাখার একটা সহজ উপায় দাও।\n\nMax 250 words।' + imgInstr,
+                'তুমি WBBSE বোর্ডের একজন expert ভূগোল শিক্ষক।\n\nClass: '+CLASS_NAME+'\nChapter: '+chapter+'\n\nনিয়ম:\n'+ansStyle+'\n- উত্তর বাংলায় লেখো।\n- পরীক্ষায় full marks পাওয়ার মতো সম্পূর্ণ উত্তর দাও।\n- AI-generated যেন মনে না হয়।\n- সঠিক নাম, স্থান, সংখ্যা দাও।\n\nউত্তরের পর একটি ফাঁকা লাইন দিয়ে তারপর লেখো:\n🌏 **সহজ ব্যাখ্যা:** — বিষয়টা একটু অন্যভাবে সহজ করে বোঝাও (বিজ্ঞানের মতো নয়) — যেমন: জায়গাটা কোথায়, কেন গুরুত্বপূর্ণ, আর মনে রাখার একটা সহজ উপায় দাও।\n\nMax 250 words।',
                 'প্রশ্ন: '+q+'\nReference উত্তর: '+a+'\n\nসুন্দর করে উত্তর দাও:'
             );
         }
@@ -895,8 +893,6 @@ class SmartEngine{
         for(let i=0;i<lines.length;i++){
             const line=lines[i],tr=line.trim();
             if(tr.toUpperCase().startsWith('CHART:')){if(txtBuf.length){out+=this._txt(txtBuf.join('\n'));txtBuf=[]}if(htmlBuf.length){out+=this._html(htmlBuf.join('\n'));htmlBuf=[]}out+=this._chart(tr);continue}
-            const imgMarker=tr.replace(/\*/g,'').match(/^IMG:\s*(.+)$/i);
-            if(imgMarker){if(txtBuf.length){out+=this._txt(txtBuf.join('\n'));txtBuf=[]}if(htmlBuf.length){out+=this._html(htmlBuf.join('\n'));htmlBuf=[]}out+=this._imgBlock(imgMarker[1]);continue}
             if(this._isH(tr)){if(txtBuf.length){out+=this._txt(txtBuf.join('\n'));txtBuf=[]}htmlBuf.push(line);continue}
             if(this._isImg(tr)){if(txtBuf.length){out+=this._txt(txtBuf.join('\n'));txtBuf=[]}if(htmlBuf.length){out+=this._html(htmlBuf.join('\n'));htmlBuf=[]}out+='<div class="html-content-block"><img src="'+tr+'" loading="lazy"/></div>';continue}
             if(this._isVid(tr)){if(txtBuf.length){out+=this._txt(txtBuf.join('\n'));txtBuf=[]}if(htmlBuf.length){out+=this._html(htmlBuf.join('\n'));htmlBuf=[]}out+='<div class="html-content-block"><video controls preload="metadata" src="'+tr+'"></video></div>';continue}
@@ -908,47 +904,6 @@ class SmartEngine{
         if(htmlBuf.length)out+=this._html(htmlBuf.join('\n'));
         if(txtBuf.length)out+=this._txt(txtBuf.join('\n'));
         return out;
-    }
-        _imgBlock(query){
-        const q=(query||'').replace(/^IMG:\s*/i,'').trim();
-        if(!q)return'';
-        const id='wikiimg-'+(++this.chartId)+'-'+Math.floor(Math.random()*100000);
-        setTimeout(()=>this._loadWikiImage(id,q),60);
-        return '<div class="html-content-block" id="'+id+'" style="display:none;text-align:center"></div>';
-    }
-    async _loadWikiImage(id,query){
-        const el=document.getElementById(id);
-        if(!el)return;
-        try{
-            const apiUrl='https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrsearch='+encodeURIComponent(query)+'&gsrnamespace=6&gsrlimit=8&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=900';
-            const r=await fetch(apiUrl);
-            if(!r.ok)throw new Error('HTTP '+r.status);
-            const data=await r.json();
-            const pages=data.query&&data.query.pages?Object.values(data.query.pages):[];
-            pages.sort((a,b)=>(a.index||999)-(b.index||999));
-            let chosen=null;
-            for(const p of pages){
-                const ii=p.imageinfo&&p.imageinfo[0];
-                if(!ii||!ii.url)continue;
-                if(ii.width&&ii.height&&ii.width<250)continue;
-                chosen=ii;break;
-            }
-            if(chosen){
-                const src=chosen.thumburl||chosen.url;
-                let credit='উইকিমিডিয়া কমন্স';
-                if(chosen.extmetadata&&chosen.extmetadata.Artist){
-                    const a=chosen.extmetadata.Artist.value.replace(/<[^>]*>/g,'').trim();
-                    if(a&&a.length<60)credit=a;
-                }
-                el.innerHTML='<img src="'+src+'" alt="'+escAttr(query)+'" loading="lazy" referrerpolicy="no-referrer" style="max-width:100%;width:auto;max-height:420px;border-radius:12px;border:1px solid var(--border);background:#ffffff"/>'
-                    +'<p style="font-size:.6rem;color:var(--text-muted);margin-top:8px;font-family:\'Space Grotesk\',sans-serif;letter-spacing:.04em">📷 '+credit+' (উইকিমিডিয়া কমন্স)</p>';
-                el.style.display='block';
-            } else {
-                el.remove();
-            }
-        }catch(e){
-            el.remove();
-        }
     }
     _renderHTMLIframe(html){
         const dk=document.body.classList.contains('night');
