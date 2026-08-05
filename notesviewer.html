@@ -789,7 +789,7 @@ class SmartEngine{
     constructor(){this.cache=new Map();this.chartId=0}
     async callAI(sys,user){const key=sys+'|||'+user;if(this.cache.has(key))return this.cache.get(key);try{const r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,user:user})});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('AI '+r.status+': '+(e.error||'Error'))}const d=await r.json();const t=d.text||'';this.cache.set(key,t);return t}catch(e){console.error('AI Error:',e);throw e}}
 
-    async explain(q,a,subject,chapter,qtype){
+        async explain(q,a,subject,chapter,qtype){
         const sub=(subject||'').toLowerCase(),ch=(chapter||'').toLowerCase();
         const qt=(qtype||'').toLowerCase().trim();
         const isSAQ=(qt==='saq'||qt==='short');
@@ -804,6 +804,7 @@ class SmartEngine{
         const isGeo=/geography|ভূগোল/i.test(sub);
         const isMath=/math|গণিত|অঙ্ক|arithmetic|algebra|geometry|জ্যামিতি|বীজগণিত|ত্রিকোণমিতি/i.test(sub);
         const isGrammar=/grammar|ব্যাকরণ|byakaran/i.test(ch)||/grammar/i.test(sub);
+        const isDifference=/পার্থক্য|ভিন্নতা|তুলনা|মিল-অমিল|মিল ও অমিল|অমিল|difference|compare|distinguish|contrast/i.test(q);
 
         /* ═══ ENGLISH ═══ */
         if(isEnglish){
@@ -835,8 +836,14 @@ class SmartEngine{
 
         /* ═══ SCIENCE ═══ */
         if(isScience){
+            if(isDifference){
+                return await this.callAI(
+                    'তুমি '+CLASS_NAME+'-এর একজন অভিজ্ঞ বিজ্ঞান শিক্ষক। প্রশ্নটি একটি পার্থক্য-ভিত্তিক প্রশ্ন।\n\nনিয়ম:\n- পার্থক্যটি একটি সুন্দর comparison table আকারে দেখাও।\n- Table টি অবশ্যই এই format-এ লিখতে হবে — প্রতিটি line | দিয়ে শুরু ও | দিয়ে শেষ করতে হবে। কোনো code fence বা অতিরিক্ত চিহ্ন দিও না।\n- প্রথম line-এ header দাও: | বৈশিষ্ট্য | [প্রথম বিষয়ের নাম] | [দ্বিতীয় বিষয়ের নাম] |\n- দ্বিতীয় line-এ দাও: |---|---|---|\n- এরপর কমপক্ষে ৪-৫টি পয়েন্টের পার্থক্য দাও, প্রতিটি আলাদা line-এ।\n- প্রতিটি ঘরে তথ্য ছোট ও পরিষ্কার রাখো।\n\nTable-এর পরে একটি ফাঁকা লাইন দিয়ে লেখো:\n🧠 **মনে রাখার কৌশল:** — দুটো বিষয়ের পার্থক্য মনে রাখার একটা সহজ ও মজার trick দাও।\n\nTable-এর বাইরে অপ্রয়োজনীয় লম্বা ব্যাখ্যা দিও না।',
+                    'প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nপার্থক্যটি সুন্দর table-এ দেখাও:'
+                );
+            }
             return await this.callAI(
-                'তুমি '+CLASS_NAME+'-এর একজন অভিজ্ঞ ও স্নেহময় বিজ্ঞান শিক্ষক — যিনি কঠিন জিনিসও খুব সহজে বোঝান।\n\nনিচের format-এ ব্যাখ্যা করো:\n\n🔬 **মূল ধারণা:** — ২-৩ লাইনে একদম সহজ বাংলায় মূল কথা।\n📖 **সহজ ব্যাখ্যা:** — বিস্তারিত কিন্তু সহজ ভাষায় বোঝাও।\n🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ২টা উদাহরণ দাও।\n🧪 **পরীক্ষায় যা আসতে পারে:** — এই topic থেকে common exam question বা tip দাও।\n📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে লেখো।\n🧠 **মনে রাখার কৌশল:** — কোনো mnemonic, trick বা shortcut দাও।\n💡 **মনে রাখো:** — শেষে ১ লাইনের সহজ কথা।\n\nআন্তরিক শিক্ষকের ভাষায় লেখো, কঠিন শব্দ এড়াও। Max 300 words।',
+                'তুমি '+CLASS_NAME+'-এর একজন অভিজ্ঞ ও স্নেহময় বিজ্ঞান শিক্ষক — যিনি কঠিন জিনিসও খুব সহজে বোঝান।\n\nনিচের format-এ ব্যাখ্যা করো। প্রতিটি section অবশ্যই দিতে হবে, কোনোটা বাদ দেওয়া যাবে না:\n\n🔬 **মূল ধারণা:** — ২-৩ লাইনে একদম সহজ বাংলায় মূল কথা।\n\n📖 **সহজ ব্যাখ্যা:** — বিস্তারিত কিন্তু সহজ ভাষায় বোঝাও।\n\n🌍 **বাস্তব উদাহরণ:** — দৈনন্দিন জীবনের ২টা উদাহরণ দাও।\n\n📌 **Key Points:** — মূল পয়েন্টগুলো **bold** করে লেখো।\n\n🧠 **মনে রাখার কৌশল:** — এই section টা অবশ্যই দিতে হবে, বাদ দেওয়া যাবে না। এই topic মনে রাখার একটা মজার ও সহজ trick দাও — কোনো acronym, ছন্দ, ছড়া, ছোট গল্প বা মজার তুলনা, যাতে ছাত্রের একবার পড়লেই চিরকাল মনে থাকে।\n\nআন্তরিক শিক্ষকের ভাষায় লেখো, কঠিন শব্দ এড়াও। Max 280 words।',
                 'প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nসুন্দর করে বুঝিয়ে দাও:'
             );
         }
@@ -851,6 +858,12 @@ class SmartEngine{
 
         /* ═══ GEOGRAPHY ═══ */
         if(isGeo){
+            if(isDifference){
+                return await this.callAI(
+                    'তুমি '+CLASS_NAME+'-এর একজন অভিজ্ঞ ভূগোল শিক্ষক। প্রশ্নটি একটি পার্থক্য-ভিত্তিক প্রশ্ন।\n\nনিয়ম:\n- পার্থক্যটি একটি সুন্দর comparison table আকারে দেখাও।\n- Table টি অবশ্যই এই format-এ লিখতে হবে — প্রতিটি line | দিয়ে শুরু ও | দিয়ে শেষ করতে হবে। কোনো code fence বা অতিরিক্ত চিহ্ন দিও না।\n- প্রথম line-এ header দাও: | বৈশিষ্ট্য | [প্রথম বিষয়ের নাম] | [দ্বিতীয় বিষয়ের নাম] |\n- দ্বিতীয় line-এ দাও: |---|---|---|\n- এরপর কমপক্ষে ৪-৫টি পয়েন্টের পার্থক্য দাও, প্রতিটি আলাদা line-এ।\n- প্রতিটি ঘরে তথ্য ছোট ও পরিষ্কার রাখো।\n\nTable-এর পরে একটি ফাঁকা লাইন দিয়ে লেখো:\n🌏 **সহজ ব্যাখ্যা:** — দুটোর পার্থক্য একটু অন্যভাবে সহজ করে বোঝাও (বিজ্ঞানের মতো নয়), আর মনে রাখার একটা সহজ উপায় দাও।\n\nTable-এর বাইরে অপ্রয়োজনীয় লম্বা ব্যাখ্যা দিও না।',
+                    'প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nপার্থক্যটি সুন্দর table-এ দেখাও:'
+                );
+            }
             return await this.callAI(
                 'তুমি WBBSE বোর্ডের একজন expert ভূগোল শিক্ষক।\n\nClass: '+CLASS_NAME+'\nChapter: '+chapter+'\n\nনিয়ম:\n'+ansStyle+'\n- উত্তর বাংলায় লেখো।\n- পরীক্ষায় full marks পাওয়ার মতো সম্পূর্ণ উত্তর দাও।\n- AI-generated যেন মনে না হয়।\n- সঠিক নাম, স্থান, সংখ্যা দাও।\n\nউত্তরের পর একটি ফাঁকা লাইন দিয়ে তারপর লেখো:\n🌏 **সহজ ব্যাখ্যা:** — বিষয়টা একটু অন্যভাবে সহজ করে বোঝাও (বিজ্ঞানের মতো নয়) — যেমন: জায়গাটা কোথায়, কেন গুরুত্বপূর্ণ, আর মনে রাখার একটা সহজ উপায় দাও।\n\nMax 250 words।',
                 'প্রশ্ন: '+q+'\nReference উত্তর: '+a+'\n\nসুন্দর করে উত্তর দাও:'
