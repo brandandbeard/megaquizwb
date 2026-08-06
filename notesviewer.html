@@ -54,6 +54,24 @@ body.day .subject-item::before{background:linear-gradient(180deg,#B8860B,#8B6508
 body.day .subject-item.active{color:#8B6508}
 .subject-item.active::before{transform:scaleY(1)}
 .subject-emoji{font-size:1.2rem;width:28px;text-align:center}
+.subject-back-btn{display:flex;align-items:center;gap:9px;padding:11px 16px;margin:3px 8px 12px;border-radius:12px;font-size:.9rem;cursor:pointer;font-weight:700;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(240,192,64,0.22);transition:all .3s;font-family:'Noto Serif Bengali',serif}
+.subject-back-btn:hover{transform:translateX(-3px);border-color:rgba(240,192,64,0.5);box-shadow:0 4px 14px rgba(240,192,64,0.1)}
+.subject-back-btn svg{width:15px;height:15px}
+body.day .subject-back-btn{color:#8B6508;border-color:rgba(184,134,11,0.25)}
+.subjects-heading{font-family:'Noto Serif Bengali',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:var(--text-primary);margin-bottom:6px}
+.subjects-sub{font-size:.95rem;color:var(--text-secondary);margin-bottom:1.8rem;font-family:'Noto Serif Bengali',serif;line-height:1.7}
+.subject-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;margin-top:10px}
+.subject-card{display:flex;align-items:center;gap:18px;padding:26px;border-radius:18px;cursor:pointer;background:var(--bg-card);border:1px solid var(--border);transition:all .35s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.subject-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#f0c040,#f59e0b);transform:scaleY(0);transition:.35s;transform-origin:top}
+.subject-card:hover{transform:translateY(-4px);border-color:rgba(240,192,64,0.4);box-shadow:0 12px 36px rgba(240,192,64,0.12)}
+.subject-card:hover::before{transform:scaleY(1)}
+.subject-card-icon{width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;background:linear-gradient(135deg,rgba(240,192,64,0.15),rgba(240,192,64,0.04));border:1px solid rgba(240,192,64,0.2);flex-shrink:0;transition:transform .3s}
+.subject-card:hover .subject-card-icon{transform:scale(1.1) rotate(-6deg)}
+.subject-card-info{flex:1;min-width:0}
+.subject-card-info h4{font-family:'Noto Serif Bengali',serif;font-size:1.2rem;font-weight:800;color:var(--text-primary);line-height:1.4}
+.subject-card-info p{font-family:'Space Grotesk',sans-serif;font-size:.68rem;color:var(--text-muted);letter-spacing:.04em;margin-top:5px}
+.subject-card-arrow{color:var(--text-muted);transition:all .3s;flex-shrink:0;display:flex;align-items:center}
+.subject-card:hover .subject-card-arrow{color:var(--accent);transform:translateX(4px)}
 .chapter-node{margin:3px 6px}
 .chapter-row{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:12px;cursor:pointer;font-weight:700;font-size:.93rem;line-height:1.45;color:var(--text-secondary);transition:all .3s;border-left:3px solid transparent;font-family:'Noto Serif Bengali',serif}
 .chapter-row:hover{background:var(--accent-dim);color:var(--text-primary);transform:translateX(2px)}
@@ -208,7 +226,7 @@ body.day .smart-table th{color:#8B6508}
 .sim-card.video:hover{border-color:rgba(244,63,94,.5);box-shadow:0 10px 32px rgba(244,63,94,.14)}
 .sim-card.video .sim-card-icon{background:linear-gradient(135deg,rgba(244,63,94,.16),rgba(244,63,94,.05));border-color:rgba(244,63,94,.25)}
 .sim-card.video .sim-card-play{background:linear-gradient(135deg,#dc2626,#f43f5e);box-shadow:0 4px 16px rgba(244,63,94,.35)}
-@media(max-width:768px){.sim-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.sim-grid{grid-template-columns:1fr}.subject-card-grid{grid-template-columns:1fr}}
 
 /* ═══ SIM overlay ═══ */
 #simOverlay{position:fixed;inset:0;z-index:10000;background:#0d1117;display:none;flex-direction:column}
@@ -784,6 +802,20 @@ function showToast(msg,type){const t=document.createElement('div');t.className='
 function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function escJs(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
 function topicOf(r){return(r.topic&&r.topic.trim())||'সাধারণ প্রশ্ন'}
+function subjectEmoji(sub){
+    const s=(sub||'').toLowerCase();
+    if(/math|গণিত|অঙ্ক|arithmetic|algebra|geometry/.test(s))return '➗';
+    if(/english|ইংরেজি/.test(s))return '🔤';
+    if(/bangla|বাংলা|bengali/.test(s))return '📖';
+    if(/physics|chemistry|biology|life science|physical science/.test(s))return '⚗️';
+    if(/science|বিজ্ঞান|পরিবেশ/.test(s))return '🔬';
+    if(/history|ইতিহাস/.test(s))return '📜';
+    if(/geography|ভূগোল/.test(s))return '🌍';
+    if(/computer|কম্পিউটার|ict/.test(s))return '💻';
+    if(/sanscrit|sanskrit|সংস্কৃত/.test(s))return '📿';
+    if(/gk|general knowledge|সাধারণ জ্ঞান/.test(s))return '🧠';
+    return '📘';
+}
 
 class SmartEngine{
     constructor(){this.cache=new Map();this.chartId=0}
@@ -991,24 +1023,65 @@ async function loadSheet(){
             if(question||answer)rows.push({subject,chapter,topic,topicimage,question,answer,type,image,stimulation,simname,video,videoname});
         }
         if(!rows.length)throw new Error('কোনো প্রশ্ন নেই');
-        allData=rows;buildNav();renderSubject('');
+        allData=rows;buildNav();
     }catch(err){dynamicContent.innerHTML='<div class="empty-state"><p style="font-size:1.1rem;font-weight:600">⚠️ লোড ব্যর্থ!</p><p style="font-size:.9rem;color:var(--text-muted)">'+err.message+'</p></div>'}
 }
 
 function buildNav(){
+    searchInput.addEventListener('input',()=>{if(currentSubject){renderChapterList(currentSubject,searchInput.value.trim());activateChapterNode(currentChapter,currentTopic)}});
+    renderSubjectCards();
+}
+
+function renderSubjectCards(){
+    currentSubject=null;currentChapter=null;currentTopic=null;
     const subjects=[...new Set(allData.map(r=>r.subject))].sort();
     subjectListEl.innerHTML='';
-    subjects.forEach(sub=>{const d=document.createElement('div');d.className='subject-item';d.dataset.subject=sub;d.innerHTML='<span class="subject-emoji">📘</span><span>'+sub+'</span>';d.addEventListener('click',()=>renderSubject(sub,true));subjectListEl.appendChild(d)});
-    chapterSectionEl.style.display='block';
-    searchInput.addEventListener('input',()=>{if(currentSubject){renderChapterList(currentSubject,searchInput.value.trim());activateChapterNode(currentChapter,currentTopic)}});
+    subjects.forEach(sub=>{
+        const d=document.createElement('div');
+        d.className='subject-item';
+        d.dataset.subject=sub;
+        d.innerHTML='<span class="subject-emoji">'+subjectEmoji(sub)+'</span><span>'+sub+'</span>';
+        d.addEventListener('click',()=>renderSubject(sub));
+        subjectListEl.appendChild(d);
+    });
+    chapterSectionEl.style.display='none';
+    dynamicSubtitle.textContent='📚 তোমার পছন্দের subject-এ click করো — মোট '+allData.length+'টি প্রশ্ন আছে |';
+    let h='<h2 class="subjects-heading">📚 Subjects বেছে নাও</h2>';
+    h+='<p class="subjects-sub">নিচের যেকোনো subject-এ click করলেই সেই subject-এর সব chapter, topic আর প্রশ্ন খুলে যাবে।</p>';
+    h+='<div class="subject-card-grid">';
+    subjects.forEach(sub=>{
+        const rows=allData.filter(r=>r.subject===sub);
+        const chCount=getChapters(sub).length;
+        h+='<div class="subject-card" onclick="renderSubject(\''+escJs(sub)+'\')">'
+          +'<div class="subject-card-icon">'+subjectEmoji(sub)+'</div>'
+          +'<div class="subject-card-info"><h4>'+escAttr(sub)+'</h4><p>'+rows.length+' টি প্রশ্ন • '+chCount+' টি chapter</p></div>'
+          +'<span class="subject-card-arrow"><i data-lucide="chevron-right" width="20"></i></span>'
+          +'</div>';
+    });
+    h+='</div>';
+    dynamicContent.innerHTML=h;
+    lucide.createIcons();
 }
+
 function renderSubject(subject,loadFirst){
-    if(!subject||!allData.some(r=>r.subject===subject)){subject=[...new Set(allData.map(r=>r.subject))].sort()[0];if(!subject)return}
+    if(!subject||!allData.some(r=>r.subject===subject)){renderSubjectCards();return}
     currentSubject=subject;currentChapter=null;currentTopic=null;
-    document.querySelectorAll('.subject-item').forEach(el=>el.classList.toggle('active',el.dataset.subject===subject));
+    subjectListEl.innerHTML='';
+    const backBtn=document.createElement('div');
+    backBtn.className='subject-back-btn';
+    backBtn.innerHTML='<i data-lucide="arrow-left"></i><span>সব Subjects</span>';
+    backBtn.addEventListener('click',()=>renderSubjectCards());
+    subjectListEl.appendChild(backBtn);
+    const d=document.createElement('div');
+    d.className='subject-item active';
+    d.dataset.subject=subject;
+    d.innerHTML='<span class="subject-emoji">'+subjectEmoji(subject)+'</span><span>'+subject+'</span>';
+    subjectListEl.appendChild(d);
+    chapterSectionEl.style.display='block';
     dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন |';
     renderChapterList(subject);
     if(loadFirst!==false){const ch=getChapters(subject);if(ch.length)renderChapter(subject,ch[0])}
+    lucide.createIcons();
 }
 function getChapters(s){return[...new Set(allData.filter(r=>r.subject===s).map(r=>r.chapter))].sort()}
 function getTopics(subject,chapter){const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);const m=new Map();rows.forEach(r=>{const t=topicOf(r);if(!m.has(t))m.set(t,0);m.set(t,m.get(t)+1)});return[...m.entries()].map(([name,count])=>({name,count}))}
