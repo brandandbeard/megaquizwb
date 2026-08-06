@@ -1004,10 +1004,36 @@ function jumpTo(idx){const item=allData[idx];if(item){renderSubject(item.subject
 async function loadSheet(){
     dynamicContent.innerHTML='<div class="empty-state"><div class="loading-ring"></div><p style="font-size:1.1rem;font-weight:600">📥 ডাটা লোড হচ্ছে...</p></div>';
     dynamicSubtitle.textContent='⏳ লোডিং...';
+    let tsv=null,fromOffline=false;
     try{
         const resp=await fetch(GOOGLE_SHEET_TSV_URL,{cache:'no-store'});
         if(!resp.ok)throw new Error('HTTP '+resp.status);
-        const tsv=await resp.text();
+        tsv=await resp.text();
+        try{
+            localStorage.setItem('mq_notes_tsv_'+classKey,tsv);
+            localStorage.setItem('mq_notes_tsv_time_'+classKey,String(Date.now()));
+        }catch(e){}
+    }catch(err){
+        const saved=localStorage.getItem('mq_notes_tsv_'+classKey);
+        if(saved){tsv=saved;fromOffline=true;}
+    }
+    if(!tsv){
+        dynamicContent.innerHTML='<div class="empty-state"><p style="font-size:1.1rem;font-weight:600">⚠️ ডাটা পাওয়া যায়নি!</p><p style="font-size:.9rem;color:var(--text-muted)">Internet নেই এবং আগে এই class-এর কোনো notes load হয়নি। একবার internet চালু করে page টা খোলো — data save হয়ে যাবে, তারপর offline-ও চলবে।</p></div>';
+        return;
+    }
+    if(fromOffline){
+        let timeMsg='';
+        const savedTime=parseInt(localStorage.getItem('mq_notes_tsv_time_'+classKey)||'0');
+        if(savedTime){
+            const diffMin=Math.floor((Date.now()-savedTime)/60000);
+            if(diffMin<1)timeMsg='এইমাত্র save করা';
+            else if(diffMin<60)timeMsg=diffMin+' মিনিট আগের';
+            else if(diffMin<1440)timeMsg=Math.floor(diffMin/60)+' ঘণ্টা আগের';
+            else timeMsg=Math.floor(diffMin/1440)+' দিন আগের';
+        }
+        showToast('📴 Internet নেই — '+(timeMsg?timeMsg+' ':'')+'notes দেখাচ্ছি','');
+    }
+    try{
         const lines=tsv.split(/\r?\n/).filter(l=>l.trim());
         if(lines.length<2)throw new Error('ডাটা নেই');
         const header=lines[0].split('\t').map(h=>h.trim().toLowerCase());
@@ -1024,7 +1050,9 @@ async function loadSheet(){
         }
         if(!rows.length)throw new Error('কোনো প্রশ্ন নেই');
         allData=rows;buildNav();
-    }catch(err){dynamicContent.innerHTML='<div class="empty-state"><p style="font-size:1.1rem;font-weight:600">⚠️ লোড ব্যর্থ!</p><p style="font-size:.9rem;color:var(--text-muted)">'+err.message+'</p></div>'}
+    }catch(err){
+        dynamicContent.innerHTML='<div class="empty-state"><p style="font-size:1.1rem;font-weight:600">⚠️ লোড ব্যর্থ!</p><p style="font-size:.9rem;color:var(--text-muted)">'+err.message+'</p></div>';
+    }
 }
 
 function buildNav(){
