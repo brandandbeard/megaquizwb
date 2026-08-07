@@ -228,7 +228,6 @@ body.day .smart-table th{color:#8B6508}
 .sim-card.video .sim-card-play{background:linear-gradient(135deg,#dc2626,#f43f5e);box-shadow:0 4px 16px rgba(244,63,94,.35)}
 @media(max-width:768px){.sim-grid{grid-template-columns:1fr}.subject-card-grid{grid-template-columns:1fr}}
 
-/* ═══ SIM overlay ═══ */
 #simOverlay{position:fixed;inset:0;z-index:10000;background:#0d1117;display:none;flex-direction:column}
 #simOverlay.active{display:flex;animation:ovIn .35s ease}
 @keyframes ovIn{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:scale(1)}}
@@ -249,7 +248,6 @@ body.day .smart-table th{color:#8B6508}
 .sim-zoom-btn.fit-active{background:rgba(240,192,64,.92);color:#06060f;border-color:#f0c040}
 .sim-zoom-lbl{font-family:'Space Grotesk',sans-serif;font-size:.62rem;font-weight:700;color:#fff;background:rgba(0,0,0,.6);padding:3px 8px;border-radius:20px;backdrop-filter:blur(8px);min-width:48px;text-align:center}
 
-/* ═══ VID overlay ═══ */
 #vidOverlay{position:fixed;inset:0;z-index:10000;background:#0a0a12;display:none;flex-direction:column}
 #vidOverlay.active{display:flex;animation:ovIn .35s ease}
 #vidYtWrap{flex:1;width:100%;min-height:0;position:relative;background:#000}
@@ -387,7 +385,7 @@ body.day .sidebar{background:#FFFCF0}
         </div>
     </aside>
     <div class="content-scroll" id="contentScroll">
-        <nav class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current" id="crumbClass">Class 10</span></nav>
+        <nav class="breadcrumb" id="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="classnotes.html">Classes</a><span class="sep">›</span><span class="current" id="crumbClass">Class 10</span></nav>
         <h1 class="hero-title"><span id="heroClass">Class 10</span> <span style="color:#f0c040">Notes</span></h1>
         <p class="hero-subtitle" id="dynamicSubtitle"></p>
         <div class="quota-bar">
@@ -410,7 +408,6 @@ body.day .sidebar{background:#FFFCF0}
     <button class="fab-scroll fab-down" onclick="scrollToBottom()" title="নিচে যাও"><i data-lucide="arrow-down" width="20"></i></button>
 </div>
 
-<!-- ═══ SIM overlay ═══ -->
 <div id="simOverlay">
     <div class="sim-overlay-loader" id="simLoader"><div class="sim-loader-ring"></div><p>🔬 সিমুলেশন লোড হচ্ছে...</p></div>
     <div class="sim-overlay-bar" id="simBar">
@@ -429,7 +426,6 @@ body.day .sidebar{background:#FFFCF0}
     </div>
 </div>
 
-<!-- ═══ VID overlay ═══ -->
 <div id="vidOverlay">
     <div class="vid-loader" id="vidLoader"><div class="vid-ring"></div><p>🎬 Video লোড হচ্ছে...</p></div>
     <div class="vid-bar" id="vidBar">
@@ -838,7 +834,6 @@ class SmartEngine{
         const isGrammar=/grammar|ব্যাকরণ|byakaran/i.test(ch)||/grammar/i.test(sub);
         const isDifference=/পার্থক্য|ভিন্নতা|তুলনা|মিল-অমিল|মিল ও অমিল|অমিল|difference|compare|distinguish|contrast/i.test(q);
 
-        /* ═══ ENGLISH ═══ */
         if(isEnglish){
             if(isGrammar){
                 return await this.callAI(
@@ -852,7 +847,6 @@ class SmartEngine{
             );
         }
 
-        /* ═══ BANGLA ═══ */
         if(isBangla){
             if(isGrammar){
                 return await this.callAI(
@@ -866,7 +860,6 @@ class SmartEngine{
             );
         }
 
-        /* ═══ SCIENCE ═══ */
         if(isScience){
             if(isDifference){
                 return await this.callAI(
@@ -880,7 +873,6 @@ class SmartEngine{
             );
         }
 
-        /* ═══ HISTORY ═══ */
         if(isHistory){
             return await this.callAI(
                 'তুমি WBBSE বোর্ডের একজন expert ইতিহাস শিক্ষক।\n\nClass: '+CLASS_NAME+'\nChapter: '+chapter+'\n\nনিয়ম:\n'+ansStyle+'\n- উত্তর বাংলায় লেখো।\n- সঠিক বছর, নাম, স্থান ও ঘটনা দাও।\n- এমনভাবে লেখো যেন পরীক্ষায় full marks পাওয়া যায় এবং AI-generated মনে না হয়।\n- Point-wise করে গুছিয়ে লেখো।\n- প্রয়োজনে কারণ ও ফলাফল উল্লেখ করো।\n\nMax 250 words।',
@@ -888,7 +880,6 @@ class SmartEngine{
             );
         }
 
-        /* ═══ GEOGRAPHY ═══ */
         if(isGeo){
             if(isDifference){
                 return await this.callAI(
@@ -902,7 +893,6 @@ class SmartEngine{
             );
         }
 
-        /* ═══ MATH ═══ */
         if(isMath){
             return await this.callAI(
                 'তুমি WBBSE বোর্ডের একজন expert গণিত শিক্ষক।\n\nনিয়ম:\n- শুধু line-by-line সমাধান দাও।\n- বাংলা text একদম কম ব্যবহার করো — যত কম সম্ভব।\n- অঙ্কটা step-by-step করো, প্রতিটি ধাপ আলাদা line-এ।\n- বীজগণিত (algebra) হলে text প্রায় ব্যবহারই কোরো না — শুধু অঙ্কের line দাও।\n- ত্রিকোণমিতি/পরিমিতি হলে diagram দেওয়া সম্ভব নয়, তাই diagram দিও না — শুধু সমাধান দাও।\n- সম্পাদ্য (theorem) হলে কোনো explanation দিও না, শুধু প্রমাণের ধাপ দাও।\n- কোনো অপ্রয়োজনীয় ব্যাখ্যা দিও না।\n- মাঝে মাঝে শুধু প্রয়োজনীয় ছোট বাংলা label দাও (যেমন: "এখন,", "সুতরাং,", "উত্তর:")।\n\nশেষে **উত্তর:** লিখে final answer দাও।',
@@ -910,7 +900,6 @@ class SmartEngine{
             );
         }
 
-        /* ═══ OTHER / DEFAULT ═══ */
         return await this.callAI(
             'তুমি '+CLASS_NAME+'-এর একজন শিক্ষক।\n\nনিয়ম:\n- To-the-point ব্যাখ্যা দাও।\n- Style 자유롭게 রাখো, কিন্তু ভাষা সহজ বাংলা রাখো।\n- অপ্রয়োজনীয় কথা দিও না।\n\nFormat:\n📖 **ব্যাখ্যা:** — সহজ বাংলায় মূল কথা।\n📌 **Key Points:** — মূল পয়েন্ট **bold** করে।\n💡 **মনে রাখো:** — ১ লাইনের সহজ কথা।\n\nMax 180 words।',
             'প্রশ্ন: '+q+'\nউত্তর: '+a+'\n\nবুঝিয়ে দাও:'
@@ -971,6 +960,7 @@ const chapterSectionEl=document.getElementById('chapterSection');
 const searchInput=document.getElementById('searchInput');
 const aiSearchInput=document.getElementById('aiSearchInput');
 const aiSearchResults=document.getElementById('aiSearchResults');
+const breadcrumbEl=document.getElementById('breadcrumb');
 let allData=[],currentSubject=null,currentChapter=null,currentTopic=null;
 
 (function(){const c=document.getElementById('stars');for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';const z=Math.random()*2+1;s.style.width=z+'px';s.style.height=z+'px';s.style.setProperty('--duration',(Math.random()*3+2)+'s');s.style.setProperty('--delay',(Math.random()*5)+'s');c.appendChild(s)}})();
@@ -999,7 +989,7 @@ async function doSearch(query){
 function fuzzy(q,t){q=q.toLowerCase();t=t.toLowerCase();if(t.includes(q))return 1;const w=q.split(/\s+/);return w.filter(x=>t.includes(x)).length/w.length}
 function renderSR(results,query){if(!results.length){aiSearchResults.innerHTML='<div style="padding:12px;color:var(--text-muted)">😅 নেই</div>';return}aiSearchResults.innerHTML=results.map(r=>'<div class="ai-search-result-item" onclick="jumpTo('+r.idx+')"><div style="font-size:.7rem;color:#f97316;font-family:Space Grotesk,sans-serif;margin-bottom:4px">'+r.subject+' › '+r.chapter+' › '+topicOf(r)+'</div><div style="font-size:.95rem;font-weight:600;color:var(--text-primary)">'+hl(r.question,query)+'</div></div>').join('')}
 function hl(t,q){const w=q.split(/\s+/).filter(x=>x.length>1);let r=t;w.forEach(x=>{r=r.replace(new RegExp('('+x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="highlight-match">$1</span>')});return r}
-function jumpTo(idx){const item=allData[idx];if(item){renderSubject(item.subject,false);setTimeout(()=>{renderTopicView(item.subject,item.chapter,topicOf(item))},150);aiSearchResults.innerHTML='';aiSearchInput.value=''}}
+function jumpTo(idx){const item=allData[idx];if(item){renderTopicView(item.subject,item.chapter,topicOf(item));aiSearchResults.innerHTML='';aiSearchInput.value=''}}
 
 async function loadSheet(){
     dynamicContent.innerHTML='<div class="empty-state"><div class="loading-ring"></div><p style="font-size:1.1rem;font-weight:600">📥 ডাটা লোড হচ্ছে...</p></div>';
@@ -1055,6 +1045,25 @@ async function loadSheet(){
     }
 }
 
+function updateCrumb(){
+    if(!breadcrumbEl)return;
+    const parts=[];
+    parts.push('<a href="index.html">Home</a>');
+    parts.push('<a href="classnotes.html">Classes</a>');
+    if(currentSubject){
+        parts.push('<a href="notesviewer.html?class='+classKey+'">'+CLASS_NAME+'</a>');
+        if(currentChapter){
+            parts.push('<a href="#" onclick="openSubject(\''+escJs(currentSubject)+'\');return false;">'+escAttr(currentSubject)+'</a>');
+            parts.push('<span class="current">'+escAttr(currentChapter)+'</span>');
+        }else{
+            parts.push('<span class="current">'+escAttr(currentSubject)+'</span>');
+        }
+    }else{
+        parts.push('<span class="current">'+CLASS_NAME+'</span>');
+    }
+    breadcrumbEl.innerHTML=parts.join('<span class="sep">›</span>');
+}
+
 function buildNav(){
     searchInput.addEventListener('input',()=>{if(currentSubject){renderChapterList(currentSubject,searchInput.value.trim());activateChapterNode(currentChapter,currentTopic)}});
     renderSubjectCards();
@@ -1069,18 +1078,19 @@ function renderSubjectCards(){
         d.className='subject-item';
         d.dataset.subject=sub;
         d.innerHTML='<span class="subject-emoji">'+subjectEmoji(sub)+'</span><span>'+sub+'</span>';
-        d.addEventListener('click',()=>renderSubject(sub));
+        d.addEventListener('click',()=>openSubject(sub));
         subjectListEl.appendChild(d);
     });
     chapterSectionEl.style.display='none';
     dynamicSubtitle.textContent='📚 তোমার পছন্দের subject-এ click করো — মোট '+allData.length+'টি প্রশ্ন আছে |';
+    updateCrumb();
     let h='<h2 class="subjects-heading">📚 Subjects বেছে নাও</h2>';
-    h+='<p class="subjects-sub">নিচের যেকোনো subject-এ click করলেই সেই subject-এর সব chapter, topic আর প্রশ্ন খুলে যাবে।</p>';
+    h+='<p class="subjects-sub">নিচের যেকোনো subject-এ click করলেই সেই subject-এর সব chapter খুলে যাবে।</p>';
     h+='<div class="subject-card-grid">';
     subjects.forEach(sub=>{
         const rows=allData.filter(r=>r.subject===sub);
         const chCount=getChapters(sub).length;
-        h+='<div class="subject-card" onclick="renderSubject(\''+escJs(sub)+'\')">'
+        h+='<div class="subject-card" onclick="openSubject(\''+escJs(sub)+'\')">'
           +'<div class="subject-card-icon">'+subjectEmoji(sub)+'</div>'
           +'<div class="subject-card-info"><h4>'+escAttr(sub)+'</h4><p>'+rows.length+' টি প্রশ্ন • '+chCount+' টি chapter</p></div>'
           +'<span class="subject-card-arrow"><i data-lucide="chevron-right" width="20"></i></span>'
@@ -1091,9 +1101,7 @@ function renderSubjectCards(){
     lucide.createIcons();
 }
 
-function renderSubject(subject,loadFirst){
-    if(!subject||!allData.some(r=>r.subject===subject)){renderSubjectCards();return}
-    currentSubject=subject;currentChapter=null;currentTopic=null;
+function setupSidebarForSubject(subject){
     subjectListEl.innerHTML='';
     const backBtn=document.createElement('div');
     backBtn.className='subject-back-btn';
@@ -1105,15 +1113,50 @@ function renderSubject(subject,loadFirst){
     d.dataset.subject=subject;
     d.innerHTML='<span class="subject-emoji">'+subjectEmoji(subject)+'</span><span>'+subject+'</span>';
     subjectListEl.appendChild(d);
-    chapterSectionEl.style.display='block';
-    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন |';
-    renderChapterList(subject);
-    if(loadFirst!==false){const ch=getChapters(subject);if(ch.length)renderChapter(subject,ch[0])}
-    lucide.createIcons();
 }
+
+function openSubject(subject){
+    if(!subject||!allData.some(r=>r.subject===subject)){renderSubjectCards();return}
+    currentSubject=subject;currentChapter=null;currentTopic=null;
+    setupSidebarForSubject(subject);
+    chapterSectionEl.style.display='block';
+    renderChapterList(subject);
+    dynamicSubtitle.textContent='📖 '+subject+' — '+allData.filter(r=>r.subject===subject).length+'টি প্রশ্ন • '+getChapters(subject).length+' টি chapter';
+    updateCrumb();
+    dynamicContent.innerHTML=renderChapterCardsGrid(subject);
+    lucide.createIcons();
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderChapterCardsGrid(subject){
+    const chapters=getChapters(subject);
+    let h='<h2 class="subjects-heading">'+subjectEmoji(subject)+' '+escAttr(subject)+' — Chapters</h2>';
+    h+='<p class="subjects-sub">নিচের যেকোনো chapter-এ click করো — সেই chapter-এর সব topic আর প্রশ্ন খুলে যাবে।</p>';
+    h+='<div class="subject-card-grid">';
+    chapters.forEach((ch,ci)=>{
+        const topics=getTopics(subject,ch);
+        const total=topics.reduce((s,t)=>s+t.count,0);
+        h+='<div class="subject-card" onclick="renderChapter(\''+escJs(subject)+'\',\''+escJs(ch)+'\')">'
+          +'<div class="subject-card-icon">'+CH_EMOJIS[ci%CH_EMOJIS.length]+'</div>'
+          +'<div class="subject-card-info"><h4>'+escAttr(ch)+'</h4><p>'+total+' টি প্রশ্ন • '+topics.length+' টি topic</p></div>'
+          +'<span class="subject-card-arrow"><i data-lucide="chevron-right" width="20"></i></span>'
+          +'</div>';
+    });
+    h+='</div>';
+    return h;
+}
+
 function getChapters(s){return[...new Set(allData.filter(r=>r.subject===s).map(r=>r.chapter))].sort()}
 function getTopics(subject,chapter){const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);const m=new Map();rows.forEach(r=>{const t=topicOf(r);if(!m.has(t))m.set(t,0);m.set(t,m.get(t)+1)});return[...m.entries()].map(([name,count])=>({name,count}))}
 function getTopicImage(subject,chapter,topic){const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter&&topicOf(r)===topic);for(const r of rows){const ti=r.topicimage?r.topicimage.trim():'';if(ti&&/^https?:\/\//i.test(ti))return ti}return null}
+function getChapterBannerImage(subject,chapter){
+    const topics=getTopics(subject,chapter);
+    if(topics.length>0){
+        const img=getTopicImage(subject,chapter,topics[0].name);
+        if(img)return img;
+    }
+    return null;
+}
 function getSimulations(rows){return rows.filter(r=>r.stimulation&&r.stimulation.trim())}
 function getVideos(rows){return rows.filter(r=>r.video&&r.video.trim())}
 
@@ -1136,6 +1179,7 @@ function renderChapterList(subject,filter){
     chapterListEl.querySelectorAll('.topic-row').forEach(row=>{row.addEventListener('click',e=>{e.stopPropagation();const node=row.closest('.chapter-node');const ch=node.dataset.chapter;const tp=row.dataset.topic;if(tp==='__all__')renderChapter(currentSubject,ch);else renderTopicView(currentSubject,ch,tp)})});
 }
 function activateChapterNode(ch,topicName){
+    if(!ch)return;
     chapterListEl.querySelectorAll('.chapter-node').forEach(n=>{
         const isThis=n.dataset.chapter===ch;if(isThis)n.classList.add('open');
         const row=n.querySelector('.chapter-row');if(row)row.classList.toggle('active',isThis);
@@ -1213,19 +1257,34 @@ function renderVidList(vidRows){
     return h;
 }
 
+function ensureSidebarFor(subject){
+    if(!currentSubject||currentSubject!==subject){
+        currentSubject=subject;
+        setupSidebarForSubject(subject);
+        chapterSectionEl.style.display='block';
+        renderChapterList(subject);
+    }
+}
+
 function renderChapter(subject,chapter){
+    ensureSidebarFor(subject);
     currentChapter=chapter;currentTopic=null;
     const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
-    if(!rows.length){dynamicContent.innerHTML='<div class="empty-state"><p>এই চ্যাপ্টারে প্রশ্ন নেই।</p></div>';return}
+    if(!rows.length){dynamicContent.innerHTML='<div class="empty-state"><p>এই chapter-এ প্রশ্ন নেই।</p></div>';return}
     const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
     const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
     const simRows=getSimulations(rows);
     const vidRows=getVideos(rows);
-    dynamicContent.innerHTML=bannerHTML(subject,chapter,rows,null)+toggleGroupHTML(rows,saq,broad,simRows.length,vidRows.length)+'<div id="questionContainer">'+buildGrouped(rows)+'</div>';
+    const bannerImg=getChapterBannerImage(subject,chapter);
+    dynamicContent.innerHTML=bannerHTML(subject,chapter,rows,bannerImg)+toggleGroupHTML(rows,saq,broad,simRows.length,vidRows.length)+'<div id="questionContainer">'+buildGrouped(rows)+'</div>';
     lucide.createIcons();wireTypeBtns(rows,saq,broad,simRows,vidRows,'grouped');activateChapterNode(chapter,null);
+    dynamicSubtitle.textContent=subject+' | '+chapter;
+    updateCrumb();
+    window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function renderTopicView(subject,chapter,topic){
+    ensureSidebarFor(subject);
     currentChapter=chapter;currentTopic=topic;
     const all=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
     const rows=all.filter(r=>topicOf(r)===topic);
@@ -1241,6 +1300,9 @@ function renderTopicView(subject,chapter,topic){
         +toggleGroupHTML(rows,saq,broad,simRows.length,vidRows.length)
         +'<div id="questionContainer">'+renderQuestions(rows)+'</div>';
     lucide.createIcons();wireTypeBtns(rows,saq,broad,simRows,vidRows,'flat');activateChapterNode(chapter,topic);
+    dynamicSubtitle.textContent=subject+' | '+chapter;
+    updateCrumb();
+    window.scrollTo({top:0,behavior:'smooth'});
 }
 
 const IMG_URL_RE=/https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(?:\?[^\s"'<>]*)?/gi;
@@ -1314,6 +1376,12 @@ document.getElementById('heroClass').textContent=CLASS_NAME;
 document.getElementById('headerSub').textContent='Smart '+CLASS_NAME+' Notes';
 document.getElementById('crumbClass').textContent=CLASS_NAME;
 QuotaManager.init();
+
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+let mqWasOffline=!navigator.onLine;
+window.addEventListener('offline',()=>{mqWasOffline=true;showToast('📴 Internet চলে গেছে — saved notes চলবে','');});
+window.addEventListener('online',()=>{if(mqWasOffline){mqWasOffline=false;showToast('🌐 Internet ফিরে এসেছে! Live version লোড হচ্ছে...','okk');setTimeout(()=>location.reload(),1500);}});
+
 loadSheet();
 </script>
 </body>
