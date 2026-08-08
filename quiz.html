@@ -342,6 +342,10 @@ body { padding: 6px; }
 .percentage-bar { height: 10px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin: 15px 0; }
 .percentage-fill { height: 100%; border-radius: 999px; background: var(--primary); transition: width 0.5s ease; }
 .close-results-btn { margin-top: 15px; padding: 10px 30px; font-weight: 600; font-size: 15px; }
+.results-media { margin: 10px auto; max-width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 14px; }
+.results-media img, .results-media video { max-width: 100%; max-height: 220px; width: auto; height: auto; border-radius: 14px; object-fit: contain; display: block; }
+.results-media video { width: 100%; }
+.results-media audio { width: 100%; max-width: 320px; }
 .warning-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; background-color: rgba(0,0,0,0.93); animation: wholePageRedPulse 1.8s ease-in-out infinite; transition: opacity 0.6s ease, visibility 0.6s ease; opacity: 1; visibility: visible; font-family: 'Hind Siliguri', sans-serif; }
 .warning-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 @keyframes wholePageRedPulse { 0%,100% { background-color: rgba(0,0,0,0.93); box-shadow: inset 0 0 150px rgba(255,0,0,0.05); } 30% { background-color: rgba(25,0,0,0.9); box-shadow: inset 0 0 300px rgba(255,0,0,0.35); } 60% { background-color: rgba(0,0,0,0.93); box-shadow: inset 0 0 150px rgba(255,0,0,0.05); } 80% { background-color: rgba(30,0,0,0.88); box-shadow: inset 0 0 350px rgba(255,0,0,0.45); } }
@@ -386,6 +390,7 @@ body { padding: 6px; }
 <div class="results-message" id="resultsMessage">Mock Test Complete!</div>
 <div id="resultsScore" class="results-score-big"></div>
 <div id="resultsBanner" class="results-banner"></div>
+<div id="resultsMedia" class="results-media"></div>
 <div class="results-stats">
 <div class="stat correct-stat"><span class="stat-number" id="resCorrect">0</span><span class="stat-label">ঠিক</span></div>
 <div class="stat wrong-stat"><span class="stat-number" id="resWrong">0</span><span class="stat-label">ভুল</span></div>
@@ -590,6 +595,8 @@ function detectClass() {
 const CURRENT_CLASS = detectClass();
 const CONFIG = CLASS_CONFIGS[CURRENT_CLASS];
 const SHEET_TSV_URL = CONFIG.tsv;
+const RESULT_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuQhk6uP2EDvT0bXKGrYb6cuE0_6NoOSJq1pjEp0R4s-WmELk9O5q9WKF3T2KO4U2M0_m95lSgtQf/pub?output=tsv";
+let resultMediaRows = [];
 const CORRECT_PASSWORD = CONFIG.password;
 const EDIT_PASSWORD = "Arif@956438?";
 const API_KEY = "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";
@@ -745,9 +752,10 @@ const w=userAnswers.filter((a,i)=>a!==null&&a!==-1&&!answerStatus[i]).length;
 const s=totalQuestions-userAnswers.filter(a=>a!==null).length;
 const score=Math.max(0,c-w*0.5);
 const pct=totalQuestions>0?Math.round((score/totalQuestions)*100):0;
-let emoji,message; if(pct===100){emoji='🫡';message='তুমি তো মাস্টার! একেবারে আগুন!';}else if(pct>=90){emoji='😱';message='অসাধারণ! নিখুঁতের ধারেকাছে!';}else if(pct>=80){emoji='🎉';message='দারুণ! অসাধারণ!';}else if(pct>=60){emoji='👏';message='সাবাশ, ভালোই এগোচ্ছো।';}else if(pct>=45){emoji='😒';message='আরেকটু প্র্যাকটিস চাই।';}else if(pct>=35){emoji='😐';message='লেগে থাকো, পরের বার ভালো হবে!';}else{emoji='😢';message='লেগে থাকো, ঠিকই পারবে!';} playFeedbackSound(pct);
+let emoji,message; if(pct===100){emoji='🫡';message='তুমি তো মাস্টার! একেবারে আগুন!';}else if(pct>=90){emoji='😱';message='অসাধারণ! নিখুঁতের ধারেকাছে!';}else if(pct>=80){emoji='🎉';message='দারুণ! অসাধারণ!';}else if(pct>=60){emoji='👏';message='সাবাশ, ভালোই এগোচ্ছো।';}else if(pct>=45){emoji='😒';message='আরেকটু প্র্যাকটিস চাই।';}else if(pct>=35){emoji='😐';message='লেগে থাকো, পরের বার ভালো হবে!';}else{emoji='😢';message='লেগে থাকো, ঠিকই পারবে!';} const customCfg = getResultConfig(pct); if (customCfg && customCfg.message) message = customCfg.message; if (customCfg && (customCfg.mediaType==='music'||customCfg.mediaType==='audio'||customCfg.mediaType==='video')) { /* custom sound আছে, তাই default গান বাজবে না */ } else { playFeedbackSound(pct); }
 document.getElementById('resultsEmoji').textContent=emoji;
 document.getElementById('resultsMessage').textContent=message;
+renderResultMedia(customCfg);
 document.getElementById('resultsScore').textContent=score+'/'+totalQuestions;
 const banner=document.getElementById('resultsBanner'); if(banner){const ti=quizTimeLimit?' • '+quizTimeLimit+' min':''; if(quizGeneratedBy==='random')banner.textContent='🎲 Random Test'+ti; else if(quizGeneratedBy==='seq')banner.textContent='✅ Sequential Test'+ti; else banner.textContent='';}
 document.getElementById('resCorrect').textContent=c;
@@ -759,7 +767,7 @@ const chDiv=document.getElementById('resultsChapters'); if(chDiv&&currentQuestio
 const cm=new Map(); for(const q of currentQuestions){const gn=q._groupName||'Unknown';const cn=q._chapterName||'Unknown'; if(!cm.has(gn))cm.set(gn,new Map()); const cc=cm.get(gn); cc.set(cn,(cc.get(cn)||0)+1);} let html='<strong>📚 Subjects & Chapters:</strong><br>'; for(const[group,chapters] of cm){html+='• <strong>'+escapeHtml(group)+':</strong> '; html+=[...chapters].map(([ch,count])=>escapeHtml(ch)+' ('+count+' Qs)').join(', '); html+='<br>';} chDiv.innerHTML=html;} else if(chDiv){chDiv.innerHTML='';}
 document.getElementById('resultsOverlay').classList.remove('hidden');
 }
-function hideResultsOverlay(){ document.getElementById('resultsOverlay').classList.add('hidden'); }
+function hideResultsOverlay(){ stopResultMedia(); document.getElementById('resultsOverlay').classList.add('hidden'); }
 function toggleInlineEdit(){ if(!isEditUnlocked)return; isInlineEditUnlocked=!isInlineEditUnlocked; renderQuiz(); renderNav(); updateScore(); showInlineEditStatus(isInlineEditUnlocked?"Edit mode on.":""); }
 function showInlineEditStatus(msg){ const el=document.getElementById('inlineEditStatusMsg'); if(el)el.textContent=msg; }
 function updateCurrentQuestionFromPanel(){
@@ -974,6 +982,41 @@ async function fetchAIExplanation(questionObj) {
     return null;
   }
 }
+async function loadResultMedia(){
+  try {
+    const res = await fetch(RESULT_SHEET_URL, {mode:'cors'});
+    if (!res.ok) return;
+    const tsv = await res.text();
+    const rows = tsv.split(/\r?\n/).filter(l=>l.trim()!=='');
+    if (rows.length < 2) return;
+    const parsed = [];
+    for (const line of rows.slice(1)) {
+      const cols = line.split('\t').map(c=>c.trim());
+      if (cols.length < 3) continue;
+      const cls = (cols[0]||'').toLowerCase();
+      const min = parseInt(cols[1]); const max = parseInt(cols[2]);
+      if (isNaN(min)||isNaN(max)) continue;
+      parsed.push({ cls, min, max, message: cols[3]||'', mediaUrl: cols[4]||'', mediaType: (cols[5]||'').toLowerCase() });
+    }
+    if (parsed.length) resultMediaRows = parsed;
+  } catch(e){ console.warn('Result sheet load failed', e); }
+}
+function getResultConfig(pct){
+  let found = resultMediaRows.find(r => r.cls === CURRENT_CLASS && pct >= r.min && pct <= r.max);
+  if (!found) found = resultMediaRows.find(r => r.cls === 'all' && pct >= r.min && pct <= r.max);
+  return found || null;
+}
+function stopResultMedia(){ const box = document.getElementById('resultsMedia'); if (box) { box.querySelectorAll('video,audio').forEach(m=>{ try{m.pause();}catch(e){} }); box.innerHTML=''; } }
+function renderResultMedia(cfg){
+  const box = document.getElementById('resultsMedia'); if(!box) return;
+  stopResultMedia();
+  if (!cfg || !cfg.mediaUrl) return;
+  const url = escapeAttr(cfg.mediaUrl);
+  const t = cfg.mediaType;
+  if (t === 'video') box.innerHTML = `<video src="${url}" controls autoplay playsinline></video>`;
+  else if (t === 'music' || t === 'audio') box.innerHTML = `<audio src="${url}" controls autoplay></audio>`;
+  else box.innerHTML = `<img src="${url}" alt="">`;
+}
 function wireEvents(){
 $("chapterToggleBtn").onclick=()=>$("chapterPanel").classList.toggle("open");
 $("selectAllBtn").onclick=()=>{selectedKeys=new Set(getSubjects().map(s=>s.key));populateSubjectsUI();saveSelection();};
@@ -1009,7 +1052,7 @@ document.addEventListener("keydown",e=>{const t=document.activeElement?.tagName?
 }
 function initCredits(){const n=[65,114,105,102,32,72,117,115,115,97,105,110].map(c=>String.fromCharCode(c)).join("");$("creditName").textContent="✨ By "+n;}
 function decodeEmbeddedBank(){if(typeof EMBEDDED_BANK==='string'&&EMBEDDED_BANK.length>0){try{const json=decodeURIComponent(escape(atob(EMBEDDED_BANK)));return JSON.parse(json);}catch(e){console.warn("Failed to decode embedded bank.");}}return null;}
-function init(){const savedTheme=localStorage.getItem(THEME_KEY)||'light';applyTheme(savedTheme);loadAccordionState();initCredits();updateAllCounters();populateSubjectsUI();updateModeButtons();wireEvents();if(!loadQuizState()){renderQuiz();renderNav();updateScore();}updateTimerDisplay();}
+function init(){const savedTheme=localStorage.getItem(THEME_KEY)||'light';applyTheme(savedTheme);loadAccordionState();initCredits();loadResultMedia();updateAllCounters();populateSubjectsUI();updateModeButtons();wireEvents();if(!loadQuizState()){renderQuiz();renderNav();updateScore();}updateTimerDisplay();}
 let questionBank=normalizeBank(decodeEmbeddedBank()||loadJson(BANK_KEY,null)||buildDefaultBank());
 let selectedKeys=new Set(loadJson(SELECTED_KEY,[]));
 let currentQuestions=[],userAnswers=[],answerStatus=[],currentIndex=0,totalQuestions=0;
