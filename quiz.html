@@ -204,7 +204,7 @@ word-wrap: break-word; overflow-wrap: break-word;
 .footer-contact {
 text-align: center; margin-top: 22px; padding: 14px 20px; background: rgba(15,23,42,0.92);
 border-radius: 999px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
-gap: 6px 12px; font-size: clamp(10px,1.8vw,12.5px); color: #e2e8f0; backdrop-filter: blur(8px);
+gap: 6px 12px; font-size: clamp(11px,2vw,14px); color: #f8fafc; backdrop-filter: blur(8px);
 border: 1px solid rgba(255,255,255,0.08);
 }
 [data-theme="dark"] .footer-contact { background: rgba(15,23,42,0.85); border-color: rgba(255,255,255,0.06); }
@@ -215,8 +215,8 @@ padding: 6px 12px; border-radius: 999px; transition: transform 0.25s ease; white
 }
 .footer-link svg { width: 20px; height: 20px; flex-shrink: 0; transition: filter 0.25s ease, transform 0.25s ease; }
 .footer-link:hover { transform: translateY(-2px); }
-.footer-link.email-link { color: #EA4335; }
-.footer-link.tg-link { color: #0088cc; }
+.footer-link.email-link { color: #fca5a5; }
+.footer-link.tg-link { color: #7dd3fc; }
 .footer-link.ig-link {
 background: linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
 -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
@@ -227,9 +227,9 @@ text-shadow: 0 0 16px rgba(214,41,118,0.9),0 0 32px rgba(150,47,191,0.6);
 box-shadow: 0 0 22px rgba(214,41,118,0.35);
 }
 .footer-link.ig-link:hover svg { filter: drop-shadow(0 0 8px rgba(214,41,118,0.9)) drop-shadow(0 0 14px rgba(150,47,191,0.6)); transform: scale(1.12); }
-.footer-link.upi-link { color: #94a3b8 !important; }
-.footer-link.upi-link span { color: #94a3b8 !important; }
-.footer-link.upi-link:hover { color: #cbd5e1 !important; text-shadow: none; box-shadow: none; }
+.footer-link.upi-link { color: #fca5a5 !important; }
+.footer-link.upi-link span { color: #fca5a5 !important; }
+.footer-link.upi-link:hover { color: #fecaca !important; text-shadow: none; box-shadow: none; }
 .footer-link.upi-link:hover svg { filter: drop-shadow(0 0 8px rgba(255,0,0,0.9)) drop-shadow(0 0 16px rgba(255,0,0,0.6)); }
 .footer-divider { color: #64748b; font-size: 15px; user-select: none; pointer-events: none; opacity: 0.7; margin: 0 2px; }
 @keyframes heartGlowPulse {
@@ -262,13 +262,13 @@ box-shadow: 0 0 22px rgba(214,41,118,0.35);
 body { padding: 6px; }
 .container { border-radius: 14px; padding: 10px; }
 .main-header { margin: -10px -10px 14px; border-radius: 14px 14px 0 0; padding: 10px 14px; }
-.footer-contact { border-radius: 20px; gap: 6px 4px; font-size: 10px; padding: 10px 6px; display: flex !important; flex-wrap: wrap !important; justify-content: center !important; align-items: center !important; }
+.footer-contact { border-radius: 20px; gap: 6px 4px; font-size: 11px; padding: 10px 6px; display: flex !important; flex-wrap: wrap !important; justify-content: center !important; align-items: center !important; }
 .footer-social-row { display: flex !important; width: 100%; justify-content: space-between; align-items: center; gap: 2px; padding: 0 2px; }
-.footer-link { padding: 4px 5px; justify-content: center; font-size: 10px; flex: 1 1 auto; min-width: 0; white-space: nowrap; }
+.footer-link { padding: 4px 5px; justify-content: center; font-size: 11px; flex: 1 1 auto; min-width: 0; white-space: nowrap; }
 .footer-link svg { width: 14px; height: 14px; flex-shrink: 0; }
 .footer-divider { display: none !important; }
 .footer-divider-upi { display: none !important; }
-.footer-contact>.footer-link.upi-link { width: 100%; justify-content: center; margin-top: 6px; font-size: 10px; flex: 1 1 100%; text-align: center; }
+.footer-contact>.footer-link.upi-link { width: 100%; justify-content: center; margin-top: 6px; font-size: 11px; flex: 1 1 100%; text-align: center; }
 .controls { padding: 8px 8px; }
 .controls-outer { flex-direction: column; gap: 8px; }
 .controls-left { width: 100%; justify-content: center; flex-wrap: nowrap; gap: 6px; }
@@ -283,11 +283,11 @@ body { padding: 6px; }
 .option { font-size: 14px; padding: 9px 12px; }
 }
 @media (max-width:380px) {
-.footer-contact { font-size: 9px; padding: 8px 4px; gap: 4px 2px; }
+.footer-contact { font-size: 10px; padding: 8px 4px; gap: 4px 2px; }
 .footer-social-row { gap: 1px; padding: 0 1px; }
-.footer-link { font-size: 8.5px; padding: 3px 3px; }
+.footer-link { font-size: 9.5px; padding: 3px 3px; }
 .footer-link svg { width: 12px; height: 12px; }
-.footer-contact>.footer-link.upi-link { font-size: 9px; margin-top: 5px; }
+.footer-contact>.footer-link.upi-link { font-size: 10px; margin-top: 5px; }
 .controls-right button { font-size: 9px; padding: 4px 7px; }
 .controls-right input { font-size: 9px; padding: 4px 5px; width: 36px !important; }
 .controls-right label { font-size: 8px; }
@@ -603,33 +603,30 @@ document.getElementById('mainTitle').innerHTML = '🏆 ' + CONFIG.title + ' <sma
 let openAccordions = new Set();
 function loadAccordionState() { openAccordions = new Set(); }
 function saveAccordionState() { try { localStorage.setItem(ACCORDION_STATE_KEY, JSON.stringify([...openAccordions])); } catch(e){} }
-const defaultSubjectGroups = [
-{ key:"gk", name:"📚 পরিবেশ ও বিজ্ঞান", className:"gk" },
-{ key:"aptitude", name:"🧮 ইতিহাস", className:"aptitude" },
-{ key:"reasoning", name:"🧠 ভূগোল", className:"reasoning" },
-{ key:"english", name:"🔤 English Language", className:"english" },
-{ key:"science_comp", name:"🔬 বাংলা", className:"science_comp" },
-{ key:"current", name:"📰 গণিত", className:"current" }
-];
+
+// ⭐ NO DEFAULT SUBJECTS - completely empty
+const defaultSubjectGroups = [];
 const defaultSubjects = [];
 const seedQuestions = {};
+
 const $ = id => document.getElementById(id);
 function safeGet(k){ try{return localStorage.getItem(k);}catch{return null;} }
 function safeSet(k,v){ try{localStorage.setItem(k,v);}catch{} }
 function safeRemove(k){ try{localStorage.removeItem(k);}catch{} }
 function normalizePassword(v){ return String(v||"").trim(); }
 function cloneValue(v){ return v===null||v===undefined?v:typeof structuredClone==="function"?structuredClone(v):JSON.parse(JSON.stringify(v)); }
-function getSubjectGroups(){ return questionBank.__subjectGroups__||defaultSubjectGroups; }
+function getSubjectGroups(){ return questionBank.__subjectGroups__||[]; }
+
+// ⭐ EMPTY BANK - no default subjects
 function buildDefaultBank(){
-const b={__subjectGroups__:cloneValue(defaultSubjectGroups),__subjects__:defaultSubjects.map((s,i)=>({...s,num:i+1}))};
-for(const s of b.__subjects__) b[s.key]=seedQuestions[s.key]?cloneValue(seedQuestions[s.key]):[];
-return b;
+return {__subjectGroups__:[],__subjects__:[]};
 }
+
 function normalizeBank(bank){
 if(!bank||typeof bank!=="object") bank=buildDefaultBank();
-if(!Array.isArray(bank.__subjectGroups__)||bank.__subjectGroups__.length===0) bank.__subjectGroups__=cloneValue(defaultSubjectGroups);
-if(!Array.isArray(bank.__subjects__)) bank.__subjects__=defaultSubjects.map((s,i)=>({...s,num:i+1}));
-bank.__subjects__=bank.__subjects__.map((s,i)=>({key:String(s.key||("custom_"+i)),group:s.group||"gk",name:String(s.name||("Topic "+(i+1))),num:Number(s.num||i+1)}));
+if(!Array.isArray(bank.__subjectGroups__)) bank.__subjectGroups__=[];
+if(!Array.isArray(bank.__subjects__)) bank.__subjects__=[];
+bank.__subjects__=bank.__subjects__.map((s,i)=>({key:String(s.key||("custom_"+i)),group:s.group||"",name:String(s.name||("Topic "+(i+1))),num:Number(s.num||i+1)}));
 for(const s of bank.__subjects__){ if(!Array.isArray(bank[s.key])) bank[s.key]=[]; bank[s.key]=bank[s.key].map(normalizeQuestion).filter(Boolean); }
 return bank;
 }
