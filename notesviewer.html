@@ -1028,7 +1028,7 @@ async function loadSheet(){
         if(lines.length<2)throw new Error('ডাটা নেই');
         const header=lines[0].split('\t').map(h=>h.trim().toLowerCase());
         
-        // Flexible column detection with multiple possible names
+        // Flexible column detection
         function findColumnIndex(header, possibleNames) {
             for (const name of possibleNames) {
                 const idx = header.indexOf(name.toLowerCase());
@@ -1041,8 +1041,8 @@ async function loadSheet(){
             subject: findColumnIndex(header, ['subject', 'বিষয়', 'subjects']),
             chapter: findColumnIndex(header, ['chapter', 'অধ্যায়', 'chapters', 'chap']),
             topic: findColumnIndex(header, ['topic', 'বিষয়বস্তু', 'topics', 'top']),
-            chapterNumber: findColumnIndex(header, ['chapter number', 'chapter no', 'chap no', 'chapter no.', 'chap no.', 'chap no', 'chapter#', 'chap#', 'অধ্যায় নম্বর', 'chapter num']),
-            topicNumber: findColumnIndex(header, ['topic number', 'topic no', 'topic no.', 'topic#', 'top#', 'বিষয় নম্বর', 'topic num']),
+            chapterNumber: findColumnIndex(header, ['chapter number', 'chapter no', 'chap no', 'chapter no.', 'chap no.', 'chap no', 'chapter#', 'chap#', 'অধ্যায় নম্বর', 'chapter num', 'ch number', 'ch no']),
+            topicNumber: findColumnIndex(header, ['topic number', 'topic no', 'topic no.', 'topic#', 'top#', 'বিষয় নম্বর', 'topic num', 'top number', 'top no']),
             topicimage: findColumnIndex(header, ['topicimage', 'topic image', 'topic img']),
             question: findColumnIndex(header, ['question', 'প্রশ্ন', 'questions', 'q', 'ques']),
             answer: findColumnIndex(header, ['answer', 'উত্তর', 'answers', 'a', 'ans']),
@@ -1092,18 +1092,22 @@ async function loadSheet(){
                 topicNumber = parseFloat(topicNumberStr);
             }
             
+            // Store row index (sheet order) for sorting fallback
+            const rowIndex = i;
+            
             if(question||answer)rows.push({
                 subject, chapter, topic, topicimage, question, answer, type, image, 
                 stimulation, simname, video, videoname,
-                chapterNumber, topicNumber
+                chapterNumber, topicNumber, rowIndex
             });
         }
         if(!rows.length)throw new Error('কোনো প্রশ্ন নেই');
         
-        // Sort allData by: subject → chapter number → chapter name → topic number → topic name → question
+        // Sort allData - preserves sheet order as fallback
+        // Priority: subject → chapter number → sheet row order → chapter name → topic number → sheet row order → topic name
         rows.sort((a, b) => {
             // 1. Sort by subject alphabetically
-            const subjectCmp = a.subject.localeCompare(b.subject, 'bn');
+            const subjectCmp = (a.subject || '').localeCompare(b.subject || '', 'bn');
             if (subjectCmp !== 0) return subjectCmp;
             
             // 2. Sort by chapter number (null/missing goes last)
@@ -1111,20 +1115,23 @@ async function loadSheet(){
             const chapNumB = b.chapterNumber !== null ? b.chapterNumber : 999999;
             if (chapNumA !== chapNumB) return chapNumA - chapNumB;
             
-            // 3. If chapter numbers are same, sort by chapter name alphabetically
-            const chapNameCmp = a.chapter.localeCompare(b.chapter, 'bn');
+            // 3. Preserve sheet row order (this is the key fix!)
+            if (a.rowIndex !== b.rowIndex) return a.rowIndex - b.rowIndex;
+            
+            // 4. If same row (shouldn't happen), sort by chapter name alphabetically
+            const chapNameCmp = (a.chapter || '').localeCompare(b.chapter || '', 'bn');
             if (chapNameCmp !== 0) return chapNameCmp;
             
-            // 4. Sort by topic number (null/missing goes last)
+            // 5. Sort by topic number (null/missing goes last)
             const topNumA = a.topicNumber !== null ? a.topicNumber : 999999;
             const topNumB = b.topicNumber !== null ? b.topicNumber : 999999;
             if (topNumA !== topNumB) return topNumA - topNumB;
             
-            // 5. If topic numbers are same, sort by topic name alphabetically
+            // 6. Sort by topic name alphabetically
             const topNameCmp = topicOf(a).localeCompare(topicOf(b), 'bn');
             if (topNameCmp !== 0) return topNameCmp;
             
-            // 6. Finally sort by question text
+            // 7. Finally sort by question text
             return (a.question || '').localeCompare(b.question || '', 'bn');
         });
         
@@ -1238,13 +1245,17 @@ function renderChapterCardsGrid(subject){
 
 function getChapters(s){
     const chapters=[...new Set(allData.filter(r=>r.subject===s).map(r=>r.chapter))];
-    // Sort chapters by chapter number, then alphabetically for ties
+    // Sort chapters: chapter number first, then sheet row order (preserve sheet order!)
     chapters.sort((a, b) => {
         const rowsA = allData.filter(r => r.subject === s && r.chapter === a);
         const rowsB = allData.filter(r => r.subject === s && r.chapter === b);
         const numA = rowsA.length > 0 && rowsA[0].chapterNumber !== null ? rowsA[0].chapterNumber : 999999;
         const numB = rowsB.length > 0 && rowsB[0].chapterNumber !== null ? rowsB[0].chapterNumber : 999999;
         if (numA !== numB) return numA - numB;
+        // Key fix: use sheet row order as fallback instead of alphabetical
+        const firstRowA = rowsA.length > 0 ? rowsA[0].rowIndex : 999999;
+        const firstRowB = rowsB.length > 0 ? rowsB[0].rowIndex : 999999;
+        if (firstRowA !== firstRowB) return firstRowA - firstRowB;
         return a.localeCompare(b, 'bn');
     });
     return chapters;
@@ -1255,20 +1266,25 @@ function getTopics(subject,chapter){
     const m=new Map();
     rows.forEach(r=>{
         const t=topicOf(r);
-        if(!m.has(t))m.set(t,{count:0,topicNumber:r.topicNumber});
+        if(!m.has(t))m.set(t,{count:0,topicNumber:r.topicNumber,firstRowIndex:r.rowIndex});
         const data = m.get(t);
         data.count++;
+        // Keep the first row index (sheet order)
+        if(r.rowIndex < data.firstRowIndex) data.firstRowIndex = r.rowIndex;
     });
     const topics=[...m.entries()].map(([name,data])=>({
         name,
         count:data.count,
-        topicNumber:data.topicNumber
+        topicNumber:data.topicNumber,
+        firstRowIndex:data.firstRowIndex
     }));
-    // Sort topics by topic number, then alphabetically for ties
+    // Sort topics: topic number first, then sheet row order
     topics.sort((a, b) => {
         const numA = a.topicNumber !== null ? a.topicNumber : 999999;
         const numB = b.topicNumber !== null ? b.topicNumber : 999999;
         if (numA !== numB) return numA - numB;
+        // Key fix: use sheet row order as fallback
+        if (a.firstRowIndex !== b.firstRowIndex) return a.firstRowIndex - b.firstRowIndex;
         return a.name.localeCompare(b.name, 'bn');
     });
     return topics;
