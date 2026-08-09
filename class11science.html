@@ -548,7 +548,7 @@ async function fetchAIExplanation(questionObj) {
         question: questionObj.q,
         options: questionObj.o ? questionObj.o.join(' | ') : '',
         correctAnswer: questionObj.o && questionObj.a !== undefined ? questionObj.o[questionObj.a] : '',
-        subject: 'Class 11 Arts',
+        subject: 'Class 11 Science',
         chapter: questionObj._subject || ''
       })
     });
@@ -982,19 +982,21 @@ async function syncFromSheet() {
     const bank = { __subjectGroups__: [], __subjects__: {} };
     const groupMap = new Map();
     const chapterMap = new Map();
+    const chapterOrderMap = new Map(); // Track chapter order for sorting
     
     for (const line of rows.slice(1)) {
       const cols = line.split('\t').map(c => c.trim());
       if (cols.length < 9) continue;
       
-      const gRaw = cols[0] || 'General';
-      const sem = parseInt(cols[1]) || 1;
-      const cRaw = cols[2] || 'Uncategorized';
-      const qText = cols[3];
-      const opts = [cols[4], cols[5], cols[6], cols[7]];
-      const correctRaw = (cols[8] || '').trim().toUpperCase();
-      const explanation = cols[9] || '';
-      const difficulty = (cols[10] || 'medium').toLowerCase();
+      const chapterNum = parseInt(cols[0]) || 9999; // First column is chapter number
+      const gRaw = cols[1] || 'General'; // Subject Group
+      const sem = parseInt(cols[2]) || 1; // Semester
+      const cRaw = cols[3] || 'Uncategorized'; // Chapter name
+      const qText = cols[4]; // Question
+      const opts = [cols[5], cols[6], cols[7], cols[8]]; // Options A, B, C, D
+      const correctRaw = (cols[9] || '').trim().toUpperCase(); // Correct answer
+      const explanation = cols[10] || ''; // Explanation
+      const difficulty = (cols[11] || 'medium').toLowerCase(); // Difficulty
       
       let correctIdx = 0;
       if (correctRaw === 'A' || correctRaw === '0') correctIdx = 0;
@@ -1015,13 +1017,42 @@ async function syncFromSheet() {
       // Find or create chapter
       const chapKey = gRaw + '_sem' + sem + '_' + cRaw;
       if (!bank.__subjects__[chapKey]) {
-        bank.__subjects__[chapKey] = { key: chapKey, group: group.key, semester: sem, name: cRaw };
+        bank.__subjects__[chapKey] = { 
+          key: chapKey, 
+          group: group.key, 
+          semester: sem, 
+          name: cRaw,
+          _order: chapterNum // Store order for sorting
+        };
         bank[chapKey] = [];
       }
       
       const q = normalizeQuestion({ q: qText, o: opts.slice(0, 4), a: correctIdx, note: explanation, difficulty });
       if (q) bank[chapKey].push(q);
     }
+    
+    // Sort subjects within each group by their chapter number
+    const allSubjects = Object.values(bank.__subjects__);
+    allSubjects.sort((a, b) => {
+      // First sort by group order
+      const groupA = bank.__subjectGroups__.findIndex(g => g.key === a.group);
+      const groupB = bank.__subjectGroups__.findIndex(g => g.key === b.group);
+      if (groupA !== groupB) return groupA - groupB;
+      
+      // Then sort by semester
+      if (a.semester !== b.semester) return a.semester - b.semester;
+      
+      // Then sort by chapter number (_order)
+      return (a._order || 9999) - (b._order || 9999);
+    });
+    
+    // Rebuild __subjects__ in sorted order
+    const sortedSubjects = {};
+    allSubjects.forEach(s => {
+      sortedSubjects[s.key] = s;
+      delete s._order; // Clean up temp field
+    });
+    bank.__subjects__ = sortedSubjects;
     
     questionBank = normalizeBank(bank);
     saveBank();
