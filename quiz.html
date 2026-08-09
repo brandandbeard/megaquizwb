@@ -424,14 +424,14 @@ body { padding: 6px; }
 </div>
 </div>
 <div class="chapter-panel" id="chapterPanel">
-<div id="subjectAccordions"></div>
-<div class="subject-action-row">
-<div class="flex-row">
-<button id="selectAllBtn">Select All</button>
-<button id="deselectAllBtn" style="background: var(--slate);">Deselect All</button>
-</div>
-<button id="clearSelectedSubjectsBtn" style="background: var(--red); display: none;">🗑️ Clear Questions</button>
-</div>
+  <div class="subject-action-row" style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line);">
+    <div class="flex-row">
+      <button id="selectAllBtn">✅ Select All</button>
+      <button id="deselectAllBtn" style="background: var(--slate);">❌ Deselect All</button>
+    </div>
+    <button id="clearSelectedSubjectsBtn" style="background: var(--red);">🗑️ Clear Questions</button>
+  </div>
+  <div id="subjectAccordions"></div>
 </div>
 <div id="syncStatus" class="status-msg"></div>
 </section>
