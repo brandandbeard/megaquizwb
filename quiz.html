@@ -29,7 +29,7 @@ linear-gradient(135deg,rgba(26,86,219,0.04) 25%,transparent 25%) 0 0/32px 32px,v
 --body-gradient: linear-gradient(145deg,#0f172a,#1e293b);
 }
 * { box-sizing: border-box; letter-spacing: 0; margin: 0; padding: 0; }
-, body { min-height: 100%; }
+html, body { min-height: 100%; }
 body {
 margin: 0; padding: 16px; color: var(--ink);
 font-family: "Segoe UI","Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif;
@@ -221,13 +221,6 @@ box-shadow: 0 0 22px rgba(214,41,118,0.35);
 }
 .footer-link.upi-link svg { fill: #ff0000 !important; stroke: #ff0000 !important; color: #ff0000 !important; animation: heartGlowPulse 1.6s ease-in-out infinite; }
 .footer-link.upi-link:hover svg { animation: heartGlowPulse 0.6s ease-in-out infinite; filter: drop-shadow(0 0 12px rgba(255,0,0,1)) drop-shadow(0 0 24px rgba(255,0,0,0.7)); transform: scale(1.15); }
-.results-score-big { font-size: 48px; font-weight: 700; color: var(--primary); margin: 10px 0; line-height: 1.2; }
-.results-banner { font-size: 18px; margin: 8px 0; font-weight: 600; color: var(--ink); }
-.results-chapters { margin-top: 10px; font-size: 9px; color: var(--muted); max-height: 80px; overflow-y: auto; text-align: left; line-height: 1.6; border-top: 1px solid var(--line); padding-top: 8px; }
-.results-media { margin: 10px auto; max-width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 14px; }
-.results-media img, .results-media video { max-width: 100%; max-height: 220px; width: auto; height: auto; border-radius: 14px; object-fit: contain; display: block; }
-.results-media video { width: 100%; }
-.results-media audio { width: 100%; max-width: 320px; }
 @media (max-width:960px) {
 .quiz-panel { grid-template-columns: 1fr; }
 .sidebar { position: static; }
@@ -292,6 +285,11 @@ body { padding: 6px; }
 .percentage-bar { height: 10px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin: 15px 0; }
 .percentage-fill { height: 100%; border-radius: 999px; background: var(--primary); transition: width 0.5s ease; }
 .close-results-btn { margin-top: 15px; padding: 10px 30px; font-weight: 600; font-size: 15px; }
+.results-media { margin: 10px auto; max-width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 14px; }
+.results-media img, .results-media video { max-width: 100%; max-height: 220px; width: auto; height: auto; border-radius: 14px; object-fit: contain; display: block; }
+.results-media video { width: 100%; }
+.results-media audio { width: 100%; max-width: 320px; }
+.results-chapters { margin-top: 10px; font-size: 9px; color: var(--muted); max-height: 80px; overflow-y: auto; text-align: left; line-height: 1.6; border-top: 1px solid var(--line); padding-top: 8px; }
 .warning-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; background-color: rgba(0,0,0,0.93); animation: wholePageRedPulse 1.8s ease-in-out infinite; transition: opacity 0.6s ease, visibility 0.6s ease; opacity: 1; visibility: visible; font-family: 'Hind Siliguri', sans-serif; }
 .warning-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 @keyframes wholePageRedPulse { 0%,100% { background-color: rgba(0,0,0,0.93); box-shadow: inset 0 0 150px rgba(255,0,0,0.05); } 30% { background-color: rgba(25,0,0,0.9); box-shadow: inset 0 0 300px rgba(255,0,0,0.35); } 60% { background-color: rgba(0,0,0,0.93); box-shadow: inset 0 0 150px rgba(255,0,0,0.05); } 80% { background-color: rgba(30,0,0,0.88); box-shadow: inset 0 0 350px rgba(255,0,0,0.45); } }
@@ -446,7 +444,7 @@ const RESULT_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuQh
 let resultMediaRows = [];
 const CORRECT_PASSWORD = CONFIG.password;
 const EMBEDDED_BANK = "";
-const APP_VERSION = "quiz_" + CURRENT_CLASS + "_v1";
+const APP_VERSION = "quiz_" + CURRENT_CLASS + "_v2";
 const BANK_KEY = "QUIZ_BANK_" + APP_VERSION;
 const SESSION_KEY = "QUIZ_SESSION_" + APP_VERSION;
 const SELECTED_KEY = "QUIZ_SELECTED_" + APP_VERSION;
@@ -591,8 +589,16 @@ rawChapters.add(cRaw);
 
 if(parsedRows.length === 0) return;
 
+// ⭐ FRESH START: Completely clear bank before sync
+questionBank = {
+__subjectGroups__: [],
+__subjects__: []
+};
+
 const chapterKeyMap = new Map();
 const chapterOrderMap = new Map();
+const sheetGroupKeys = new Set();
+const sheetChapterKeys = new Set();
 
 for(let i=0; i<parsedRows.length; i++){
 const row = parsedRows[i];
@@ -607,17 +613,16 @@ const newColor = getRandomColorExcluding(existingColors);
 group = {key, name: mappedG, className: newColor};
 questionBank.__subjectGroups__.push(group);
 }
+sheetGroupKeys.add(group.key);
 
 let chapter = questionBank.__subjects__.find(s => s.name === mappedC && s.group === group.key);
-if(!chapter){
-chapter = questionBank.__subjects__.find(s => s.name === mappedC);
 if(!chapter){
 const key = mappedC.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g, '_') + '_c_' + Date.now() + i;
 chapter = {key, name: mappedC, group: group.key, num: questionBank.__subjects__.length + 1};
 questionBank.__subjects__.push(chapter);
 questionBank[key] = [];
 }
-}
+sheetChapterKeys.add(chapter.key);
 chapterKeyMap.set(i, chapter.key);
 
 if(!chapterOrderMap.has(chapter.key) || row.chapterNum < chapterOrderMap.get(chapter.key)) {
@@ -636,9 +641,6 @@ return orderA - orderB;
 });
 questionBank.__subjects__ = subjectsList;
 
-const matchedKeys = new Set(chapterKeyMap.values());
-matchedKeys.forEach(k => { questionBank[k] = []; });
-
 for(let i=0; i<parsedRows.length; i++){
 const row = parsedRows[i];
 const chapKey = chapterKeyMap.get(i);
@@ -651,7 +653,8 @@ selectedKeys = new Set();
 saveSelection();
 populateSubjectsUI();
 safeSet(LAST_SYNC_KEY, Date.now().toString());
-showSyncStatus(`${Object.keys(questionBank.__subjects__).length} chapters sync হয়েছে!`, true);
+safeRemove(SESSION_KEY);
+showSyncStatus(`${questionBank.__subjects__.length} chapters sync হয়েছে!`, true);
 } catch(err) {
 console.warn("Sync failed:", err);
 showSyncStatus("Sync failed: " + err.message, false);
@@ -759,7 +762,7 @@ if (customCfg && customCfg.message) {
 if (customCfg.message === '-' || customCfg.message.toLowerCase() === 'none') message = '';
 else message = customCfg.message;
 }
-if (customCfg && (customCfg.mediaType==='music'||customCfg.mediaType==='audio'||customCfg.mediaType==='video')) { /* custom media আছে, তাই default গান বাজবে না */ } else { playFeedbackSound(pct); }
+if (customCfg && (customCfg.mediaType==='music'||customCfg.mediaType==='audio'||customCfg.mediaType==='video')) { } else { playFeedbackSound(pct); }
 
 document.getElementById('resultsEmoji').textContent=emoji;
 document.getElementById('resultsMessage').textContent=message;
