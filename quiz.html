@@ -160,6 +160,8 @@ word-wrap: break-word; overflow-wrap: break-word;
 .info { display: none; margin-top: 12px; padding: 12px 14px; border: 1px solid #fed7aa; border-radius: 14px; background: #fff7ed; color: #7c2d12; line-height: 1.7; font-size: 14px; word-wrap: break-word; overflow-wrap: break-word; }
 [data-theme="dark"] .info { background: rgba(251,146,60,0.1); border-color: #d97706; color: #fbbf24; }
 .info.show { display: block; animation: fadeSlideIn 0.3s ease; }
+.info.ai-generated { border-color: #c7d2fe; background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); color: #4338ca; }
+[data-theme="dark"] .info.ai-generated { background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(129,140,248,0.10) 100%); border-color: #818cf8; color: #c7d2fe; }
 .nav-buttons-large { display: flex; justify-content: center; gap: 16px; margin-top: 18px; }
 .sidebar { background: #f8fafc; border: 1px solid var(--line); border-radius: 18px; padding: 14px; position: sticky; top: 14px; }
 [data-theme="dark"] .sidebar { background: var(--card); }
@@ -174,16 +176,6 @@ word-wrap: break-word; overflow-wrap: break-word;
 .q-num.answered-wrong { background: #dc2626; color: #fff; border-color: #b91c1c; }
 .q-num.current { background: #f59e0b; color: #fff; border-color: #d97706; animation: pulseCurrent 1.2s ease-in-out infinite; }
 @keyframes pulseCurrent { 50% { box-shadow: 0 0 0 6px rgba(245,158,11,0.3); } }
-.info.ai-generated {
-  border-color: #c7d2fe;
-  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
-  color: #4338ca;
-}
-[data-theme="dark"] .info.ai-generated {
-  background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(129,140,248,0.10) 100%);
-  border-color: #818cf8;
-  color: #c7d2fe;
-}
 .q-num.skipped { border-color: #f59e0b; border-style: dashed; }
 .q-num.attempted-mock { background: #3b82f6; color: #fff; border-color: #2563eb; }
 [data-theme="dark"] .q-num.attempted-mock { background: #2563eb; border-color: #1d4ed8; }
@@ -254,6 +246,10 @@ box-shadow: 0 0 22px rgba(214,41,118,0.35);
 .results-score-big { font-size: 48px; font-weight: 700; color: var(--primary); margin: 10px 0; line-height: 1.2; }
 .results-banner { font-size: 18px; margin: 8px 0; font-weight: 600; color: var(--ink); }
 .results-chapters { margin-top: 10px; font-size: 9px; color: var(--muted); max-height: 80px; overflow-y: auto; text-align: left; line-height: 1.6; border-top: 1px solid var(--line); padding-top: 8px; }
+.results-media { margin: 10px auto; max-width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 14px; }
+.results-media img, .results-media video { max-width: 100%; max-height: 220px; width: auto; height: auto; border-radius: 14px; object-fit: contain; display: block; }
+.results-media video { width: 100%; }
+.results-media audio { width: 100%; max-width: 320px; }
 @media (max-width:960px) {
 .quiz-panel { grid-template-columns: 1fr; }
 .sidebar { position: static; }
@@ -342,10 +338,6 @@ body { padding: 6px; }
 .percentage-bar { height: 10px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin: 15px 0; }
 .percentage-fill { height: 100%; border-radius: 999px; background: var(--primary); transition: width 0.5s ease; }
 .close-results-btn { margin-top: 15px; padding: 10px 30px; font-weight: 600; font-size: 15px; }
-.results-media { margin: 10px auto; max-width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 14px; }
-.results-media img, .results-media video { max-width: 100%; max-height: 220px; width: auto; height: auto; border-radius: 14px; object-fit: contain; display: block; }
-.results-media video { width: 100%; }
-.results-media audio { width: 100%; max-width: 320px; }
 .warning-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; background-color: rgba(0,0,0,0.93); animation: wholePageRedPulse 1.8s ease-in-out infinite; transition: opacity 0.6s ease, visibility 0.6s ease; opacity: 1; visibility: visible; font-family: 'Hind Siliguri', sans-serif; }
 .warning-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 @keyframes wholePageRedPulse { 0%,100% { background-color: rgba(0,0,0,0.93); box-shadow: inset 0 0 150px rgba(255,0,0,0.05); } 30% { background-color: rgba(25,0,0,0.9); box-shadow: inset 0 0 300px rgba(255,0,0,0.35); } 60% { background-color: rgba(0,0,0,0.93); box-shadow: inset 0 0 150px rgba(255,0,0,0.05); } 80% { background-color: rgba(30,0,0,0.88); box-shadow: inset 0 0 350px rgba(255,0,0,0.45); } }
@@ -441,6 +433,7 @@ body { padding: 6px; }
 <button id="clearSelectedSubjectsBtn" style="background: var(--red); display: none;">🗑️ Clear Questions</button>
 </div>
 </div>
+<div id="syncStatus" class="status-msg"></div>
 </section>
 <section class="quiz-panel">
 <div class="questions-area" id="questionsArea"><div class="question-card" style="text-align:center;padding:50px;">⬆️ Select subjects and click Generate</div></div>
@@ -569,10 +562,6 @@ arifhussain.x
 </div>
 </main>
 <script>
-/* ══════════════════════════════════════════════════════════
-   🎯 SINGLE FILE MULTI-CLASS QUIZ SYSTEM
-   URL: quiz.html?c=class5  (or class6, class7, gk, ssc, etc.)
-   ══════════════════════════════════════════════════════════ */
 const CLASS_CONFIGS = {
   class5:  { title:"Class 5",  password:"1122",         tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQzTUKabZfkthrxnN93uJ3FH0JRpxTEm8U5izefkVIMobicgcpKN_g0I1pZTDYcAc4UyT4MsfnCMfKT/pub?output=tsv", subjects:"পরিবেশ ও বিজ্ঞান • ইতিহাস • ভূগোল" },
   class6:  { title:"Class 6",  password:"1122",         tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTx7-n5ATXwTftgyzPgql2F5E5nPVh8Mrzp2HZQKJ75lPTv8sk4cQb31F8WYkJOlv90I1zKokM42F1Y/pub?output=tsv", subjects:"পরিবেশ ও বিজ্ঞান • ইতিহাস • ভূগোল" },
@@ -586,7 +575,6 @@ const CLASS_CONFIGS = {
   defence: { title:"Defence",  password:"india",        tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vReSms5LcUXVKsNiBpmwN-MBvoAPxBtScjgFJUAxqZqzxMqxrycOPbROAh1f6EDKNVU9DD_RpLY-B9z/pub?output=tsv", subjects:"Defence" }
 };
 
-// URL থেকে class detect করো
 function detectClass() {
   const params = new URLSearchParams(window.location.search);
   const c = (params.get('c') || 'class6').toLowerCase().trim();
@@ -609,7 +597,6 @@ const THEME_KEY = "QUIZ_THEME_" + CURRENT_CLASS;
 const LAST_SYNC_KEY = "QUIZ_LAST_SYNC_" + APP_VERSION;
 const ACCORDION_STATE_KEY = "QUIZ_ACCORDION_" + APP_VERSION;
 
-// Set title
 document.title = CONFIG.title + " || Mega Quiz";
 document.getElementById('mainTitle').innerHTML = '🏆 ' + CONFIG.title + ' <small>| ' + CONFIG.subjects + ' |</small>';
 
@@ -672,10 +659,11 @@ function groupLabel(gk){ const groups=getSubjectGroups(),found=groups.find(g=>g.
 function getQuestionRef(sk,idx){ const s=getSubjects().find(x=>x.key===sk),q=questionBank[sk]?.[idx]; if(!s||!q) return null; return {...q,_subject:sk,_index:idx,_chapterName:s.name,_groupName:groupLabel(s.group)}; }
 function getRandomColorClass(){ const colors=['gk','aptitude','reasoning','english','science_comp','current']; return colors[Math.floor(Math.random()*colors.length)]; }
 function getRandomColorExcluding(ex){ const all=['gk','aptitude','reasoning','english','science_comp','current']; const av=all.filter(c=>!ex.includes(c)); if(av.length===0) return all[Math.floor(Math.random()*all.length)]; return av[Math.floor(Math.random()*av.length)]; }
+
 function populateSubjectsUI(){
 const groups=getSubjectGroups();
-$("subjectAccordions").innerHTML=groups.map((g)=>{
-const isOpen=openAccordions.has(g.key);
+$("subjectAccordions").innerHTML=groups.map((g, gi)=>{
+const isOpen = gi === 0 || openAccordions.has(g.key);
 const chs=getSubjects().filter(s=>s.group===g.key);
 return `<div class="subject-accordion ${isOpen?"open":""}"><div class="subject-header ${g.className||''}" data-group="${g.key}"><span>${g.name}</span><span class="subject-arrow">▼</span></div><div class="subject-chapters ${isOpen?"open":""}"><div class="subject-chapters-inner">${chs.map(s=>`<label class="chapter-item"><input type="checkbox" class="chapter-cb" value="${escapeAttr(s.key)}" ${selectedKeys.has(s.key)?"checked":""}><span>${escapeHtml(s.name)}</span><span class="q-count">[${getCount(s.key)}]</span></label>`).join("")||"<span style='font-size:13px;color:#64748b;'>এই গ্রুপে কোনো chapter নেই।</span>"}</div></div></div>`;
 }).join("");
@@ -690,6 +678,7 @@ saveAccordionState();
 });
 document.querySelectorAll(".chapter-cb").forEach(cb=>{ cb.onchange=()=>{ cb.checked?selectedKeys.add(cb.value):selectedKeys.delete(cb.value); saveSelection(); }; });
 }
+
 function updateAllCounters(){
 const cs=$("targetChapterSimple"); if(cs){ const cv=cs.value;
 cs.innerHTML=getSubjects().map(s=>`<option value="${escapeAttr(s.key)}">${escapeHtml(groupLabel(s.group))} - ${escapeHtml(s.name)} [${getCount(s.key)}]</option>`).join(""); if(cv&&getSubjects().some(s=>s.key===cv)) cs.value=cv; }
@@ -724,13 +713,13 @@ afterSubjectGroupChanged(); showSuccess("নতুন subject group যোগ �
 }
 function afterSubjectGroupChanged(){ saveBank(); populateSubjectsUI(); updateAllCounters(); }
 function afterChapterStructureChanged(){ questionBank=normalizeBank(questionBank); saveBank(); saveSelection(); }
-function addNewSubject(){ const n=$("newSubjectName").value.trim(),g=$("newSubjectGroup").value; if(!n)return showError("Chapter name লিখুন।"); const k="custom_"+Date.now(); questionBank.__subjects__.push({key:k,name:n,group:g,num:questionBank.__subjects__.length+1}); questionBank[k]=[]; selectedKeys.add(k); $("newSubjectName").value=""; afterChapterStructureChanged(); showSuccess("নতুন chapter যোগ হয়েছে।"); }
+function addNewSubject(){ const n=$("newSubjectName").value.trim(),g=$("newSubjectGroup").value; if(!n)return showError("Chapter name লিখুন।"); const k="custom_"+Date.now(); questionBank.__subjects__.push({key:k,name:n,group:g,num:questionBank.__subjects__.length+1}); questionBank[k]=[]; $("newSubjectName").value=""; afterChapterStructureChanged(); showSuccess("নতুন chapter যোগ হয়েছে।"); }
 function getSelectedKeys(){ const ks=[]; document.querySelectorAll(".chapter-cb:checked").forEach(cb=>ks.push(cb.value)); return ks; }
 function shuffle(arr){ const c=[...arr]; for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];} return c; }
 function shuffleOptions(q){ const o=shuffle([0,1,2,3]); return {...q,o:o.map(i=>q.o[i]),a:o.indexOf(q.a)}; }
 function collectQuestions(ks){ const all=[]; for(const k of ks)(questionBank[k]||[]).forEach((_,i)=>{const r=getQuestionRef(k,i); if(r)all.push(r);}); return all; }
 function generateQuiz(ks,sz,rnd=false){
-if(!ks.length) ks=getSubjects().map(s=>s.key);
+if(!ks.length){ alert("⚠️ কোনো subject selected নেই! 'Select Subjects' থেকে chapter select করুন।"); return; }
 let sel=collectQuestions(ks);
 if(!sel.length){alert("No questions! Edit panel থেকে প্রশ্ন যোগ করুন।");return;}
 if(rnd) sel=shuffle(sel);
@@ -744,6 +733,247 @@ stopTimer(); timeRemaining=null; timerActive=false;
 if(quizMode==="mock"){const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining);}
 renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState();
 }
+function showSyncStatus(m, ok = true) { $("syncStatus").innerHTML = `<span style="color:${ok ? '#0d9488' : '#dc2626'};font-weight:600;">${ok ? '✅' : '❌'} ${escapeHtml(m)}</span>`; setTimeout(() => $("syncStatus").innerHTML = "", 3500); }
+
+async function syncFromSheet(url){
+if(!url) return;
+try {
+showSyncStatus("Sheet থেকে sync হচ্ছে...", true);
+const res = await fetch(url, {mode:'cors'});
+if(!res.ok) throw new Error(`HTTP ${res.status}`);
+const tsv = await res.text();
+const rows = tsv.split(/\r?\n/).filter(line => line.trim() !== '');
+if(rows.length < 2) return;
+
+const dataRows = rows.slice(1);
+const parsedRows = [];
+const rawGroups = new Set();
+const rawChapters = new Set();
+
+for(const row of dataRows){
+const cols = row.split('\t').map(c => c.trim());
+if(cols.length < 8) continue;
+
+// NEW FORMAT: Chapter Number, Subject Group, Chapter, Question, Opt A-D, Correct, Explanation, Difficulty
+const chapterNum = parseInt(cols[0]) || 9999;
+const gRaw = cols[1] || 'সাধারণ';
+const cRaw = cols[2] || 'অশ্রেণীবদ্ধ';
+const qText = cols[3];
+const opts = [cols[4], cols[5], cols[6], cols[7]];
+let correctIdx = parseInt(cols[8]);
+if(isNaN(correctIdx)){
+const map = {'A':0,'B':1,'C':2,'D':3,'a':0,'b':1,'c':2,'d':3};
+const letter = (cols[8]||'').trim().toUpperCase();
+if(letter in map) correctIdx = map[letter];
+else continue;
+}
+if(correctIdx < 0 || correctIdx > 3) continue;
+const explanation = cols.length > 9 ? cols[9] : '';
+const difficulty = cols.length > 10 ? cols[10].toLowerCase() : 'medium';
+
+parsedRows.push({chapterNum, gRaw, cRaw, qText, opts, correctIdx, explanation, difficulty});
+rawGroups.add(gRaw);
+rawChapters.add(cRaw);
+}
+
+if(parsedRows.length === 0) return;
+
+const existingGroups = getSubjectGroups().map(g => g.name);
+const existingChapters = getSubjects().map(s => s.name);
+let groupMap = {};
+let chapterMap = {};
+
+try {
+const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+method: "POST",
+headers: {"Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json", "HTTP-Referer": window.location.href, "X-Title": "Quiz Sync"},
+body: JSON.stringify({
+model: "mistralai/mistral-7b-instruct:free",
+messages: [
+{role: "system", content: "You are a data mapping assistant. Map the raw sheet names to the exact existing names. Return ONLY valid JSON with 'group_map' and 'chapter_map'. If a raw name doesn't match any existing name, use the raw name itself as the value."},
+{role: "user", content: JSON.stringify({existing_groups: existingGroups, existing_chapters: existingChapters, sheet_groups: Array.from(rawGroups), sheet_chapters: Array.from(rawChapters)})}
+],
+temperature: 0.1
+})
+});
+const data = await response.json();
+if(data.error) throw new Error(data.error.message);
+const parsed = JSON.parse(data.choices[0].message.content.replace(/```json\n?|\n?```/g, '').trim());
+groupMap = parsed.group_map || {};
+chapterMap = parsed.chapter_map || {};
+} catch(e) {
+console.warn("AI mapping failed, using local fallback", e);
+const localGMap = {};
+rawGroups.forEach(r => {
+const norm = strictLocalNormalize(r);
+const match = existingGroups.find(eg => strictLocalNormalize(eg) === norm);
+localGMap[r] = match || r;
+});
+groupMap = localGMap;
+const localCMap = {};
+rawChapters.forEach(r => {
+const norm = strictLocalNormalize(r);
+const match = existingChapters.find(ec => strictLocalNormalize(ec) === norm);
+localCMap[r] = match || r;
+});
+chapterMap = localCMap;
+}
+
+const chapterKeyMap = new Map();
+const chapterOrderMap = new Map(); // Track first chapter number for each chapter
+
+for(let i=0; i<parsedRows.length; i++){
+const row = parsedRows[i];
+const mappedG = groupMap[row.gRaw] || row.gRaw;
+const mappedC = chapterMap[row.cRaw] || row.cRaw;
+
+let group = questionBank.__subjectGroups__.find(g => g.name === mappedG);
+if(!group){
+const key = mappedG.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g, '_') + '_g_' + Date.now() + i;
+const existingColors = questionBank.__subjectGroups__.map(g => g.className).filter(Boolean);
+const newColor = getRandomColorExcluding(existingColors);
+group = {key, name: mappedG, className: newColor};
+questionBank.__subjectGroups__.push(group);
+}
+
+let chapter = questionBank.__subjects__.find(s => s.name === mappedC && s.group === group.key);
+if(!chapter){
+chapter = questionBank.__subjects__.find(s => s.name === mappedC);
+if(!chapter){
+const key = mappedC.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g, '_') + '_c_' + Date.now() + i;
+chapter = {key, name: mappedC, group: group.key, num: questionBank.__subjects__.length + 1};
+questionBank.__subjects__.push(chapter);
+questionBank[key] = [];
+}
+}
+chapterKeyMap.set(i, chapter.key);
+
+// Track smallest chapter number for each chapter
+if(!chapterOrderMap.has(chapter.key) || row.chapterNum < chapterOrderMap.get(chapter.key)) {
+chapterOrderMap.set(chapter.key, row.chapterNum);
+}
+}
+
+// Sort subjects by chapter number within each group
+const subjectsList = [...questionBank.__subjects__];
+subjectsList.sort((a, b) => {
+const groupA = questionBank.__subjectGroups__.findIndex(g => g.key === a.group);
+const groupB = questionBank.__subjectGroups__.findIndex(g => g.key === b.group);
+if(groupA !== groupB) return groupA - groupB;
+const orderA = chapterOrderMap.get(a.key) || 9999;
+const orderB = chapterOrderMap.get(b.key) || 9999;
+return orderA - orderB;
+});
+questionBank.__subjects__ = subjectsList;
+
+const matchedKeys = new Set(chapterKeyMap.values());
+matchedKeys.forEach(k => { questionBank[k] = []; });
+
+for(let i=0; i<parsedRows.length; i++){
+const row = parsedRows[i];
+const chapKey = chapterKeyMap.get(i);
+const q = normalizeQuestion({q: row.qText, o: row.opts, a: row.correctIdx, note: row.explanation, difficulty: row.difficulty});
+if(q) questionBank[chapKey].push(q);
+}
+
+saveBank();
+selectedKeys = new Set();
+saveSelection();
+populateSubjectsUI();
+safeSet(LAST_SYNC_KEY, Date.now().toString());
+showSyncStatus(`${Object.keys(questionBank.__subjects__).length} chapters sync হয়েছে!`, true);
+} catch(err) {
+console.warn("Silent sync failed:", err);
+showSyncStatus("Sync failed: " + err.message, false);
+}
+}
+
+function autoLoadSheetIfNeeded(){
+const lastSync = parseInt(safeGet(LAST_SYNC_KEY) || "0");
+if(SHEET_TSV_URL && (Date.now() - lastSync > 30 * 60 * 1000 || !safeGet(BANK_KEY))){
+syncFromSheet(SHEET_TSV_URL);
+} else {
+populateSubjectsUI();
+}
+}
+window.autoLoadSheetIfNeeded = autoLoadSheetIfNeeded;
+
+async function fetchAIExplanation(questionObj) {
+if (!questionObj || !questionObj.q) return null;
+if (questionObj.note && questionObj.note.trim().length > 10) return null;
+if (questionObj._aiFetched) return null;
+questionObj._aiFetched = true;
+
+try {
+const response = await fetch('/api/quiz-ai', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+question: questionObj.q,
+options: questionObj.o ? questionObj.o.join(' | ') : '',
+correctAnswer: questionObj.o && questionObj.a !== undefined ? questionObj.o[questionObj.a] : '',
+subject: questionObj._groupName || '',
+chapter: questionObj._chapterName || ''
+})
+});
+
+if (!response.ok) return null;
+const data = await response.json();
+if (data.error) return null;
+
+let explanation = data.explanation || '';
+explanation = explanation
+.replace(/```[\s\S]*?```/g, '')
+.replace(/`/g, '')
+.replace(/\*\*/g, '')
+.replace(/\*/g, '')
+.replace(/#{1,6}\s/g, '')
+.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+.trim();
+
+return explanation;
+} catch (e) {
+console.warn('AI fetch failed:', e);
+return null;
+}
+}
+
+async function loadResultMedia(){
+try {
+const res = await fetch(RESULT_SHEET_URL, {mode:'cors'});
+if (!res.ok) return;
+const tsv = await res.text();
+const rows = tsv.split(/\r?\n/).filter(l=>l.trim()!=='');
+if (rows.length < 2) return;
+const parsed = [];
+for (const line of rows.slice(1)) {
+const cols = line.split('\t').map(c=>c.trim());
+if (cols.length < 3) continue;
+const cls = (cols[0]||'').toLowerCase();
+const min = parseInt(cols[1]); const max = parseInt(cols[2]);
+if (isNaN(min)||isNaN(max)) continue;
+parsed.push({ cls, min, max, message: cols[3]||'', mediaUrl: cols[4]||'', mediaType: (cols[5]||'').toLowerCase() });
+}
+if (parsed.length) resultMediaRows = parsed;
+} catch(e){ console.warn('Result sheet load failed', e); }
+}
+function getResultConfig(pct){
+let found = resultMediaRows.find(r => r.cls === CURRENT_CLASS && pct >= r.min && pct <= r.max);
+if (!found) found = resultMediaRows.find(r => r.cls === 'all' && pct >= r.min && pct <= r.max);
+return found || null;
+}
+function stopResultMedia(){ const box = document.getElementById('resultsMedia'); if (box) { box.querySelectorAll('video,audio').forEach(m=>{ try{m.pause();}catch(e){} }); box.innerHTML=''; } }
+function renderResultMedia(cfg){
+const box = document.getElementById('resultsMedia'); if(!box) return;
+stopResultMedia();
+if (!cfg || !cfg.mediaUrl) return;
+const url = escapeAttr(cfg.mediaUrl);
+const t = cfg.mediaType;
+if (t === 'video') box.innerHTML = `<video src="${url}" controls autoplay playsinline></video>`;
+else if (t === 'music' || t === 'audio') box.innerHTML = `<audio src="${url}" controls autoplay></audio>`;
+else box.innerHTML = `<img src="${url}" alt="">`;
+}
+
 function playFeedbackSound(pct){ var sound=(pct===100)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3':(pct>=90)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3':(pct>=80)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3':(pct>=60)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3':(pct>=45)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3':(pct>=35)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3':(pct>=25)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3':'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3'; if(!sound)return; try{var audio=new Audio(sound);audio.volume=1.0;var p=audio.play();if(p&&p.catch)p.catch(function(e){console.warn("Audio blocked:",e);});}catch(e){console.warn("Audio error:",e);} }
 function fireConfetti(){ const count=500; const defaults={spread:360,ticks:80,gravity:0.6,decay:0.9,startVelocity:30}; for(let i=0;i<5;i++) confetti({...defaults,particleCount:count/5,origin:{x:Math.random(),y:Math.random()*0.5}}); }
 function showResultsOverlay(){
@@ -752,7 +982,15 @@ const w=userAnswers.filter((a,i)=>a!==null&&a!==-1&&!answerStatus[i]).length;
 const s=totalQuestions-userAnswers.filter(a=>a!==null).length;
 const score=Math.max(0,c-w*0.5);
 const pct=totalQuestions>0?Math.round((score/totalQuestions)*100):0;
-let emoji,message; if(pct===100){emoji='🫡';message='তুমি তো মাস্টার! একেবারে আগুন!';}else if(pct>=90){emoji='😱';message='অসাধারণ! নিখুঁতের ধারেকাছে!';}else if(pct>=80){emoji='🎉';message='দারুণ! অসাধারণ!';}else if(pct>=60){emoji='👏';message='সাবাশ, ভালোই এগোচ্ছো।';}else if(pct>=45){emoji='😒';message='আরেকটু প্র্যাকটিস চাই।';}else if(pct>=35){emoji='😐';message='লেগে থাকো, পরের বার ভালো হবে!';}else{emoji='😢';message='লেগে থাকো, ঠিকই পারবে!';} const customCfg = getResultConfig(pct); if (customCfg && customCfg.message) message = customCfg.message; if (customCfg && (customCfg.mediaType==='music'||customCfg.mediaType==='audio'||customCfg.mediaType==='video')) { /* custom sound আছে, তাই default গান বাজবে না */ } else { playFeedbackSound(pct); }
+let emoji,message; if(pct===100){emoji='🫡';message='তুমি তো মাস্টার! একেবারে আগুন!';}else if(pct>=90){emoji='😱';message='অসাধারণ! নিখুঁতের ধারেকাছে!';}else if(pct>=80){emoji='🎉';message='দারুণ! অসাধারণ!';}else if(pct>=60){emoji='👏';message='সাবাশ, ভালোই এগোচ্ছো।';}else if(pct>=45){emoji='😒';message='আরেকটু প্র্যাকটিস চাই।';}else if(pct>=35){emoji='😐';message='লেগে থাকো, পরের বার ভালো হবে!';}else{emoji='😢';message='লেগে থাকো, ঠিকই পারবে!';}
+
+const customCfg = getResultConfig(pct);
+if (customCfg && customCfg.message) {
+if (customCfg.message === '-' || customCfg.message.toLowerCase() === 'none') message = '';
+else message = customCfg.message;
+}
+if (customCfg && (customCfg.mediaType==='music'||customCfg.mediaType==='audio'||customCfg.mediaType==='video')) { /* custom media আছে, তাই default গান বাজবে না */ } else { playFeedbackSound(pct); }
+
 document.getElementById('resultsEmoji').textContent=emoji;
 document.getElementById('resultsMessage').textContent=message;
 renderResultMedia(customCfg);
@@ -796,23 +1034,22 @@ renderQuiz(); renderNav(); updateScore(); saveQuizState(); showInlineEditStatus(
 function renderQuiz(){ if(!currentQuestions.length){$("questionsArea").innerHTML="<div class='question-card' style='text-align:center;padding:50px;'>⬆️ Select subjects and click Generate</div>";return;}
 currentIndex=Math.max(0,Math.min(currentIndex,currentQuestions.length-1));
 const q=currentQuestions[currentIndex];
-// AI explanation auto-fetch
 if (!q.note && !q._aiFetched && quizMode !== 'mock') {
-  setTimeout(async () => {
-    const explanation = await fetchAIExplanation(q);
-    if (explanation) {
-      q.note = explanation;
-      q._aiGenerated = true;
-      if (q._subject && q._index !== undefined && questionBank[q._subject]) {
-        questionBank[q._subject][q._index].note = explanation;
-        questionBank[q._subject][q._index]._aiGenerated = true;
-        saveBank();
-      }
-      if (currentQuestions[currentIndex] === q) {
-        renderQuiz();
-      }
-    }
-  }, 200);
+setTimeout(async () => {
+const explanation = await fetchAIExplanation(q);
+if (explanation) {
+q.note = explanation;
+q._aiGenerated = true;
+if (q._subject && q._index !== undefined && questionBank[q._subject]) {
+questionBank[q._subject][q._index].note = explanation;
+questionBank[q._subject][q._index]._aiGenerated = true;
+saveBank();
+}
+if (currentQuestions[currentIndex] === q) {
+renderQuiz();
+}
+}
+}, 200);
 }
 const answered=userAnswers[currentIndex]!==null;
 const showResult=quizSubmitted||(quizMode==="practice"&&answered);
@@ -904,7 +1141,7 @@ const posVal=parseInt($("simpleQNumber").value);if(!isNaN(posVal)&&posVal>0){con
 ["simpleQText","optA","optB","optC","optD","simpleNote","simpleQNumber"].forEach(id=>$(id).value="");
 saveBank();showSuccess("প্রশ্ন সফলভাবে যোগ হয়েছে।");
 }
-function handleRestoreFile(file){const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(!d||typeof d!=="object"||Array.isArray(d))throw new Error("Full JSON expected.");questionBank=normalizeBank(d);selectedKeys=new Set(getSubjects().map(s=>s.key));safeRemove(SESSION_KEY);stopTimer();currentQuestions=[];totalQuestions=0;quizSubmitted=false;optionsVisible=true;quizGeneratedBy=null;quizTimeLimit=null;saveBank();renderQuiz();renderNav();updateScore();showSuccess("পুরো bank replace হয়েছে।");}catch(err){showError(err.message||"Invalid JSON file.");}};r.readAsText(file);}
+function handleRestoreFile(file){const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(!d||typeof d!=="object"||Array.isArray(d))throw new Error("Full JSON expected.");questionBank=normalizeBank(d);selectedKeys=new Set();safeRemove(SESSION_KEY);stopTimer();currentQuestions=[];totalQuestions=0;quizSubmitted=false;optionsVisible=true;quizGeneratedBy=null;quizTimeLimit=null;saveBank();renderQuiz();renderNav();updateScore();showSuccess("পুরো bank replace হয়েছে।");}catch(err){showError(err.message||"Invalid JSON file.");}};r.readAsText(file);}
 function handleAppendFile(file,sk){const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);let raw=null;if(Array.isArray(d))raw=d;else if(d&&typeof d==="object"){const km=Object.keys(d).find(k=>k!=="__subjects__"&&k!=="__subjectGroups__"&&Array.isArray(d[k]));if(km)raw=d[km];}if(!raw||!Array.isArray(raw))throw new Error("No valid question array found.");const qs=raw.map(normalizeQuestion).filter(Boolean);if(!qs.length)throw new Error("No valid questions.");if(!questionBank[sk])questionBank[sk]=[];questionBank[sk].push(...qs);saveBank();showSuccess(`${qs.length}টি JSON প্রশ্ন যোগ হয়েছে।`);}catch(err){showError(err.message);}};r.readAsText(file);}
 function backupSelected(){const ks=getSelectedKeys();if(!ks.length)return showError("No chapter selected!");const bk={__subjectGroups__:cloneValue(getSubjectGroups()),__subjects__:getSubjects().filter(s=>ks.includes(s.key))};ks.forEach(k=>bk[k]=questionBank[k]||[]);download(`quiz_${CURRENT_CLASS}_backup_${stamp()}.json`,JSON.stringify(bk,null,2),"application/json");showSuccess("Backup saved.");}
 function backupFull(){download(`quiz_${CURRENT_CLASS}_full_${stamp()}.json`,JSON.stringify(questionBank,null,2),"application/json");showSuccess("Full backup saved.");}
@@ -940,83 +1177,7 @@ function setQuizMode(mode){quizMode=mode;updateModeButtons();stopTimer();timeRem
 function applyTheme(theme){document.documentElement.setAttribute('data-theme',theme);const btn=$('themeToggleBtn');if(btn)btn.textContent=theme==='dark'?'☀️':'🌙';}
 function toggleTheme(){const current=document.documentElement.getAttribute('data-theme')||'light';const next=current==='dark'?'light':'dark';applyTheme(next);localStorage.setItem(THEME_KEY,next);}
 function strictLocalNormalize(name){if(!name)return"";return name.replace(/[\u{1F000}-\u{1FFFF}]/gu,'').replace(/[^\w\u0980-\u09FF]/g,'').toLowerCase().trim();}
-async function syncFromSheet(url){if(!url)return;try{const res=await fetch(url,{mode:'cors'});if(!res.ok)throw new Error(`HTTP ${res.status}`);const tsv=await res.text();const rows=tsv.split(/\r?\n/).filter(line=>line.trim()!=='');if(rows.length<2)return;const dataRows=rows.slice(1);const parsedRows=[];const rawGroups=new Set();const rawChapters=new Set();for(const row of dataRows){const cols=row.split('\t').map(c=>c.trim());if(cols.length<8)continue;const gRaw=cols[0]||'সাধারণ';const cRaw=cols[1]||'অশ্রেণীবদ্ধ';const qText=cols[2];const opts=[cols[3],cols[4],cols[5],cols[6]];let correctIdx=parseInt(cols[7]);if(isNaN(correctIdx)){const map={'A':0,'B':1,'C':2,'D':3,'a':0,'b':1,'c':2,'d':3};const letter=cols[7].trim().toUpperCase();if(letter in map)correctIdx=map[letter];else continue;}if(correctIdx<0||correctIdx>3)continue;const explanation=cols.length>8?cols[8]:'';const difficulty=cols.length>9?cols[9].toLowerCase():'medium';parsedRows.push({gRaw,cRaw,qText,opts,correctIdx,explanation,difficulty});rawGroups.add(gRaw);rawChapters.add(cRaw);}if(parsedRows.length===0)return;const existingGroups=getSubjectGroups().map(g=>g.name);const existingChapters=getSubjects().map(s=>s.name);let groupMap={};let chapterMap={};try{const response=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",headers:{"Authorization":`Bearer ${API_KEY}`,"Content-Type":"application/json","HTTP-Referer":window.location.href,"X-Title":"Quiz Sync"},body:JSON.stringify({model:"mistralai/mistral-7b-instruct:free",messages:[{role:"system",content:"You are a data mapping assistant. Map the raw sheet names to the exact existing names. Return ONLY valid JSON with 'group_map' and 'chapter_map'. If a raw name doesn't match any existing name, use the raw name itself as the value."},{role:"user",content:JSON.stringify({existing_groups:existingGroups,existing_chapters:existingChapters,sheet_groups:Array.from(rawGroups),sheet_chapters:Array.from(rawChapters)})}],temperature:0.1})});const data=await response.json();if(data.error)throw new Error(data.error.message);const parsed=JSON.parse(data.choices[0].message.content.replace(/```json\n?|\n?```/g,'').trim());groupMap=parsed.group_map||{};chapterMap=parsed.chapter_map||{};}catch(e){console.warn("AI mapping failed, using local fallback",e);const localGMap={};rawGroups.forEach(r=>{const norm=strictLocalNormalize(r);const match=existingGroups.find(eg=>strictLocalNormalize(eg)===norm);localGMap[r]=match||r;});groupMap=localGMap;const localCMap={};rawChapters.forEach(r=>{const norm=strictLocalNormalize(r);const match=existingChapters.find(ec=>strictLocalNormalize(ec)===norm);localCMap[r]=match||r;});chapterMap=localCMap;}const chapterKeyMap=new Map();for(let i=0;i<parsedRows.length;i++){const row=parsedRows[i];const mappedG=groupMap[row.gRaw]||row.gRaw;const mappedC=chapterMap[row.cRaw]||row.cRaw;let group=questionBank.__subjectGroups__.find(g=>g.name===mappedG);if(!group){const key=mappedG.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g,'_')+'_g_'+Date.now()+i;const existingColors=questionBank.__subjectGroups__.map(g=>g.className).filter(Boolean);const newColor=getRandomColorExcluding(existingColors);group={key,name:mappedG,className:newColor};questionBank.__subjectGroups__.push(group);}let chapter=questionBank.__subjects__.find(s=>s.name===mappedC&&s.group===group.key);if(!chapter){chapter=questionBank.__subjects__.find(s=>s.name===mappedC);if(!chapter){const key=mappedC.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g,'_')+'_c_'+Date.now()+i;chapter={key,name:mappedC,group:group.key,num:questionBank.__subjects__.length+1};questionBank.__subjects__.push(chapter);questionBank[key]=[];}}chapterKeyMap.set(i,chapter.key);}const matchedKeys=new Set(chapterKeyMap.values());matchedKeys.forEach(k=>{questionBank[k]=[];});for(let i=0;i<parsedRows.length;i++){const row=parsedRows[i];const chapKey=chapterKeyMap.get(i);const q=normalizeQuestion({q:row.qText,o:row.opts,a:row.correctIdx,note:row.explanation,difficulty:row.difficulty});if(q)questionBank[chapKey].push(q);}saveBank();safeSet(LAST_SYNC_KEY,Date.now().toString());}catch(err){console.warn("Silent sync failed:",err);}}
-function autoLoadSheetIfNeeded(){const lastSync=parseInt(safeGet(LAST_SYNC_KEY)||"0");if(SHEET_TSV_URL&&(Date.now()-lastSync>30*60*1000||!safeGet(BANK_KEY))){syncFromSheet(SHEET_TSV_URL);}else{populateSubjectsUI();}}
-window.autoLoadSheetIfNeeded=autoLoadSheetIfNeeded;
-async function fetchAIExplanation(questionObj) {
-  if (!questionObj || !questionObj.q) return null;
-  if (questionObj.note && questionObj.note.trim().length > 10) return null;
-  if (questionObj._aiFetched) return null;
-  questionObj._aiFetched = true;
-  
-  try {
-    const response = await fetch('/api/quiz-ai', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        question: questionObj.q,
-        options: questionObj.o ? questionObj.o.join(' | ') : '',
-        correctAnswer: questionObj.o && questionObj.a !== undefined ? questionObj.o[questionObj.a] : '',
-        subject: questionObj._groupName || '',
-        chapter: questionObj._chapterName || ''
-      })
-    });
-    
-    if (!response.ok) return null;
-    const data = await response.json();
-    if (data.error) return null;
-    
-    let explanation = data.explanation || '';
-    explanation = explanation
-      .replace(/```[\s\S]*?```/g, '')
-      .replace(/`/g, '')
-      .replace(/\*\*/g, '')
-      .replace(/\*/g, '')
-      .replace(/#{1,6}\s/g, '')
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-      .trim();
-    
-    return explanation;
-  } catch (e) {
-    console.warn('AI fetch failed:', e);
-    return null;
-  }
-}
-async function loadResultMedia(){
-  try {
-    const res = await fetch(RESULT_SHEET_URL, {mode:'cors'});
-    if (!res.ok) return;
-    const tsv = await res.text();
-    const rows = tsv.split(/\r?\n/).filter(l=>l.trim()!=='');
-    if (rows.length < 2) return;
-    const parsed = [];
-    for (const line of rows.slice(1)) {
-      const cols = line.split('\t').map(c=>c.trim());
-      if (cols.length < 3) continue;
-      const cls = (cols[0]||'').toLowerCase();
-      const min = parseInt(cols[1]); const max = parseInt(cols[2]);
-      if (isNaN(min)||isNaN(max)) continue;
-      parsed.push({ cls, min, max, message: cols[3]||'', mediaUrl: cols[4]||'', mediaType: (cols[5]||'').toLowerCase() });
-    }
-    if (parsed.length) resultMediaRows = parsed;
-  } catch(e){ console.warn('Result sheet load failed', e); }
-}
-function getResultConfig(pct){
-  let found = resultMediaRows.find(r => r.cls === CURRENT_CLASS && pct >= r.min && pct <= r.max);
-  if (!found) found = resultMediaRows.find(r => r.cls === 'all' && pct >= r.min && pct <= r.max);
-  return found || null;
-}
-function stopResultMedia(){ const box = document.getElementById('resultsMedia'); if (box) { box.querySelectorAll('video,audio').forEach(m=>{ try{m.pause();}catch(e){} }); box.innerHTML=''; } }
-function renderResultMedia(cfg){
-  const box = document.getElementById('resultsMedia'); if(!box) return;
-  stopResultMedia();
-  if (!cfg || !cfg.mediaUrl) return;
-  const url = escapeAttr(cfg.mediaUrl);
-  const t = cfg.mediaType;
-  if (t === 'video') box.innerHTML = `<video src="${url}" controls autoplay playsinline></video>`;
-  else if (t === 'music' || t === 'audio') box.innerHTML = `<audio src="${url}" controls autoplay></audio>`;
-  else box.innerHTML = `<img src="${url}" alt="">`;
-}
+
 function wireEvents(){
 $("chapterToggleBtn").onclick=()=>$("chapterPanel").classList.toggle("open");
 $("selectAllBtn").onclick=()=>{selectedKeys=new Set(getSubjects().map(s=>s.key));populateSubjectsUI();saveSelection();};
@@ -1052,9 +1213,22 @@ document.addEventListener("keydown",e=>{const t=document.activeElement?.tagName?
 }
 function initCredits(){const n=[65,114,105,102,32,72,117,115,115,97,105,110].map(c=>String.fromCharCode(c)).join("");$("creditName").textContent="✨ By "+n;}
 function decodeEmbeddedBank(){if(typeof EMBEDDED_BANK==='string'&&EMBEDDED_BANK.length>0){try{const json=decodeURIComponent(escape(atob(EMBEDDED_BANK)));return JSON.parse(json);}catch(e){console.warn("Failed to decode embedded bank.");}}return null;}
-function init(){const savedTheme=localStorage.getItem(THEME_KEY)||'light';applyTheme(savedTheme);loadAccordionState();initCredits();loadResultMedia();updateAllCounters();populateSubjectsUI();updateModeButtons();wireEvents();if(!loadQuizState()){renderQuiz();renderNav();updateScore();}updateTimerDisplay();}
+function init(){
+const savedTheme=localStorage.getItem(THEME_KEY)||'light';
+applyTheme(savedTheme);
+loadAccordionState();
+initCredits();
+loadResultMedia();
+updateAllCounters();
+populateSubjectsUI();
+updateModeButtons();
+wireEvents();
+if(!loadQuizState()){renderQuiz();renderNav();updateScore();}
+updateTimerDisplay();
+}
 let questionBank=normalizeBank(decodeEmbeddedBank()||loadJson(BANK_KEY,null)||buildDefaultBank());
-let selectedKeys=new Set(loadJson(SELECTED_KEY,[]));
+// ⭐ BY DEFAULT NO SUBJECT SELECTED
+let selectedKeys = new Set();
 let currentQuestions=[],userAnswers=[],answerStatus=[],currentIndex=0,totalQuestions=0;
 let isEditUnlocked=false;
 let isInlineEditUnlocked=false;
@@ -1064,7 +1238,6 @@ let optionsVisible=true;
 let quizGeneratedBy=null;
 let quizTimeLimit=null;
 
-// Warning overlay password check
 (function(){
 const overlay=document.getElementById('warningOverlay');
 const pwdInput=document.getElementById('passwordInput');
