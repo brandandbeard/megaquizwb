@@ -730,12 +730,12 @@ stopTimer(); timeRemaining=null; timerActive=false;
 if(quizMode==="mock"){const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining);}
 renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState();
 }
-function showSyncStatus(m, ok = true) { $("syncStatus").innerHTML = `<span style="color:${ok ? '#0d9488' : '#dc2626'};font-weight:600;">${ok ? '✅' : '❌'} ${escapeHtml(m)}</span>`; setTimeout(() => $("syncStatus").innerHTML = "", 3500); }
+function showSyncStatus(m, ok = true) { $("syncStatus").innerHTML = `<span style="color:${ok ? '#0d9488' : '#dc2626'};font-weight:600;">${ok ? '🔃n' : '❌'} ${escapeHtml(m)}</span>`; setTimeout(() => $("syncStatus").innerHTML = "", 3500); }
 
 async function syncFromSheet(url){
 if(!url) return;
 try {
-showSyncStatus("Sheet থেকে sync হচ্ছে...", true);
+showSyncStatus("Load হচ্ছে...", true);
 const res = await fetch(url, {mode:'cors'});
 if(!res.ok) throw new Error(`HTTP ${res.status}`);
 const tsv = await res.text();
