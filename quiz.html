@@ -282,6 +282,41 @@ body { padding: 6px; }
     margin: 12px 0 20px;
     letter-spacing: -1px;
 }
+.results-score-big {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.fraction-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.1;
+}
+
+.fraction-top, .fraction-bottom {
+    font-size: 52px;  /* আপনার পছন্দমতো বড়/ছোট করুন */
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.fraction-line {
+    width: 80%;
+    height: 4px;
+    background: var(--primary);
+    margin: 5px 0;
+    border-radius: 2px;
+}
+
+[data-theme="dark"] .fraction-top,
+[data-theme="dark"] .fraction-bottom {
+    color: var(--accent);
+}
+
+[data-theme="dark"] .fraction-line {
+    background: var(--accent);
+}
 .results-stats { display: flex; justify-content: center; gap: 25px; margin-bottom: 20px; }
 .stat { text-align: center; }
 .stat-number { font-size: 20px; font-weight: 700; }
