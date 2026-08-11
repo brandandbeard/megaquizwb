@@ -527,6 +527,23 @@
             opacity: 0.6;
         }
 
+        .pdf-footer-qr {
+            position: absolute;
+            bottom: 15px; left: 25px;
+            width: 40px; height: 40px;
+            z-index: 1;
+        }
+
+        .pdf-footer-website {
+            position: absolute;
+            bottom: 22px; left: 25px;
+            font-size: 10px;
+            color: #667eea;
+            font-weight: 600;
+            z-index: 1;
+            letter-spacing: 0.3px;
+        }
+
         .pdf-page-num {
             position: absolute;
             bottom: 22px; left: 0; right: 0;
@@ -691,6 +708,20 @@
                     Include Images
                 </label>
             </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="qr-option" checked>
+                    Add Website/QR at Bottom (Alternating)
+                </label>
+            </div>
+            <div class="checkbox-group" id="qr-website-box" style="padding-left: 2rem;">
+                <label>Website URL:
+                    <input type="text" id="website-url" value="megaquizwb.vercel.app" placeholder="Enter website" style="flex:1; padding:0.4rem; border:1px solid #cbd5e1; border-radius:6px; margin-left: 0.5rem;">
+                </label>
+                <p style="font-size:0.8rem; color:#64748b; margin-top:0.3rem; padding-left:0.6rem;">
+                    Odd pages = Website URL, Even pages = QR Code (Fixed)
+                </p>
+            </div>
             <button class="pdf-btn" id="generate-btn" style="width: 100%; margin-top: 1rem;" onclick="generatePDF()">💾 Save as PDF</button>
             <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
         </div>
@@ -726,6 +757,9 @@
         const CONTENT_HEIGHT_PX = PAGE_HEIGHT_PX - MARGIN_TOP - MARGIN_BOTTOM;
         const SAFETY_BUFFER = 30;
 
+        // Fixed QR URL
+        const QR_WEBSITE = 'https://megaquizwb.vercel.app';
+
         // Mobile detection
         function isMobile() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
@@ -737,6 +771,9 @@
             window.addEventListener('popstate', handlePopState);
             document.getElementById('watermark-custom').addEventListener('change', (e) => {
                 document.getElementById('custom-watermark-box').style.display = e.target.checked ? 'block' : 'none';
+            });
+            document.getElementById('qr-option').addEventListener('change', (e) => {
+                document.getElementById('qr-website-box').style.display = e.target.checked ? 'block' : 'none';
             });
         });
 
@@ -957,7 +994,11 @@
         function showPDFModal() { document.getElementById('pdf-modal').classList.add('active'); }
         function closePDFModal() { document.getElementById('pdf-modal').classList.remove('active'); }
 
-        // ============ MOBILE-OPTIMIZED PDF GENERATOR ============
+        // ============ QR CODE GENERATOR ============
+        function generateQRCodeDataURL(url, size = 100) {
+            return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}&qzone=1&margin=5`;
+        }
+
         async function generatePDF() {
             const mobile = isMobile();
             const addWatermark = document.getElementById('watermark-option').checked;
@@ -967,6 +1008,8 @@
                 : 'BY Arif Hussain';
             const addLogo = document.getElementById('logo-option').checked;
             const includeImages = document.getElementById('images-option').checked;
+            const addQRWebsite = document.getElementById('qr-option').checked;
+            const websiteURL = document.getElementById('website-url').value || 'megaquizwb.vercel.app';
 
             const selectedData = allQuestions.filter(q => selectedQuestions.has(q.id.toString()));
             if (selectedData.length === 0) {
@@ -982,7 +1025,7 @@
             progressBar.classList.add('active');
             progressFill.style.width = '5%';
 
-            // Explicitly load fonts (critical for mobile)
+            // Load fonts
             try {
                 await document.fonts.load('16px "Hind Siliguri"');
                 await document.fonts.load('bold 16px "Hind Siliguri"');
@@ -1001,6 +1044,7 @@
                 topicMap.get(topic).push(q);
             });
 
+            // Preload images
             if (includeImages) {
                 const imgPromises = [];
                 selectedData.forEach(q => {
@@ -1011,9 +1055,16 @@
                 await Promise.allSettled(imgPromises);
             }
 
+            // Preload QR code if needed
+            let qrCodeDataURL = null;
+            if (addQRWebsite) {
+                qrCodeDataURL = generateQRCodeDataURL(QR_WEBSITE, 100);
+                await preloadImage(qrCodeDataURL);
+            }
+
             progressFill.style.width = '20%';
 
-            // STEP 1: Measure with fixed width
+            // STEP 1: Measure
             const measureContainer = document.getElementById('pdf-measure-container');
             measureContainer.innerHTML = '';
             measureContainer.style.width = '654px';
@@ -1064,7 +1115,7 @@
 
             progressFill.style.width = '35%';
 
-            // STEP 2: Smart page layout
+            // STEP 2: Page layout
             const pages = [];
             let currentPageItems = [];
             let usedHeight = 0;
@@ -1131,10 +1182,29 @@
                     pageDiv.appendChild(logo);
                 }
 
-                const pageNum = document.createElement('div');
-                pageNum.className = 'pdf-page-num';
-                pageNum.textContent = `Page ${p + 1} of ${pages.length}`;
-                pageDiv.appendChild(pageNum);
+                // Add QR or Website (Alternating)
+                if (addQRWebsite) {
+                    const pageNum = p + 1;
+                    if (pageNum % 2 === 1) {
+                        // Odd page: Website URL
+                        const websiteEl = document.createElement('div');
+                        websiteEl.className = 'pdf-footer-website';
+                        websiteEl.textContent = websiteURL;
+                        pageDiv.appendChild(websiteEl);
+                    } else {
+                        // Even page: QR Code
+                        const qrEl = document.createElement('img');
+                        qrEl.className = 'pdf-footer-qr';
+                        qrEl.src = qrCodeDataURL;
+                        qrEl.crossOrigin = 'anonymous';
+                        pageDiv.appendChild(qrEl);
+                    }
+                }
+
+                const pageNumEl = document.createElement('div');
+                pageNumEl.className = 'pdf-page-num';
+                pageNumEl.textContent = `Page ${p + 1} of ${pages.length}`;
+                pageDiv.appendChild(pageNumEl);
 
                 renderContainer.appendChild(pageDiv);
             }
@@ -1144,7 +1214,7 @@
 
             progressFill.style.width = '55%';
 
-            // STEP 4: Capture with mobile-optimized settings
+            // STEP 4: Capture pages
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
@@ -1160,7 +1230,6 @@
             const pageDivs = renderContainer.querySelectorAll('.pdf-page');
             const totalPages = pageDivs.length;
 
-            // Mobile: lower scale to avoid canvas size limits
             const scale = mobile ? 1.5 : 2;
             const jpegQuality = mobile ? 0.92 : 0.95;
 
@@ -1168,7 +1237,6 @@
                 if (p > 0) pdf.addPage();
 
                 try {
-                    // Mobile: longer wait, fixed window size
                     await waitForRender(mobile ? 300 : 100);
 
                     const canvas = await html2canvas(pageDivs[p], {
@@ -1192,14 +1260,12 @@
                     const pageHeightMM = pdf.internal.pageSize.getHeight();
                     pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, pageHeightMM);
 
-                    // Free memory on mobile
                     if (mobile && canvas) {
                         canvas.width = 0;
                         canvas.height = 0;
                     }
                 } catch (err) {
                     console.error('Page render failed:', p, err);
-                    // Retry with lower scale on mobile
                     if (mobile) {
                         try {
                             const canvas = await html2canvas(pageDivs[p], {
@@ -1223,13 +1289,11 @@
                 const progress = 55 + (p + 1) / totalPages * 45;
                 progressFill.style.width = Math.min(progress, 99) + '%';
                 
-                // Small delay on mobile to prevent memory issues
                 if (mobile) await waitForRender(200);
             }
 
             progressFill.style.width = '100%';
             
-            // Mobile: small delay before save
             if (mobile) await waitForRender(500);
 
             pdf.save(`${currentChapter}.pdf`);
@@ -1257,7 +1321,6 @@
                 img.onload = () => resolve(true);
                 img.onerror = () => resolve(false);
                 img.src = url;
-                // Timeout for mobile
                 setTimeout(() => resolve(false), 10000);
             });
         }
