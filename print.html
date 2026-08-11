@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Universal Quiz System</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="https://i.ibb.co/7qJGpT1/icon-192.png">
@@ -168,7 +168,6 @@
 
         .subject-card h3, .chapter-card h3 { color: var(--primary); margin-bottom: 0.5rem; }
 
-        /* ===== Hero Heading (SWAPPED: Class•Subject on top, Chapter below) ===== */
         .hero-heading {
             background: var(--gradient);
             color: white;
@@ -537,12 +536,12 @@
             z-index: 1;
         }
 
-        /* Measuring container */
+        /* Measuring container - fixed width for consistency */
         #pdf-measure-container {
             position: absolute;
             left: -9999px;
             top: 0;
-            width: 654px;
+            width: 654px !important;
             background: white;
             font-family: 'Hind Siliguri', sans-serif;
             color: #1e293b;
@@ -642,7 +641,6 @@
             <button class="back-btn" onclick="goBack()">← Back</button>
             <div class="nav-title" id="questions-title">Questions</div>
         </div>
-        <!-- SWAPPED: Class•Subject on top (hero), Chapter name below -->
         <div class="hero-heading" id="chapter-hero">
             <span id="hero-main-title">Class • Subject</span>
             <small id="hero-chapter-name">Chapter Name</small>
@@ -728,6 +726,12 @@
         const CONTENT_HEIGHT_PX = PAGE_HEIGHT_PX - MARGIN_TOP - MARGIN_BOTTOM;
         const SAFETY_BUFFER = 30;
 
+        // Mobile detection
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                || window.innerWidth < 768;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             renderClassCards();
             window.addEventListener('popstate', handlePopState);
@@ -812,7 +816,6 @@
             history.pushState({ page: 'questions-page' }, '');
             navigateTo('questions-page');
             document.getElementById('questions-title').textContent = chapter;
-            // SWAPPED: Class•Subject on top, Chapter name below
             document.getElementById('hero-main-title').textContent = `${CLASS_DATA[currentClass].name} • ${currentSubject}`;
             document.getElementById('hero-chapter-name').textContent = chapter;
             const list = document.getElementById('questions-list');
@@ -954,8 +957,9 @@
         function showPDFModal() { document.getElementById('pdf-modal').classList.add('active'); }
         function closePDFModal() { document.getElementById('pdf-modal').classList.remove('active'); }
 
-        // ============ SMART PDF GENERATOR WITH COPY LOCK ============
+        // ============ MOBILE-OPTIMIZED PDF GENERATOR ============
         async function generatePDF() {
+            const mobile = isMobile();
             const addWatermark = document.getElementById('watermark-option').checked;
             const useCustomWatermark = document.getElementById('watermark-custom').checked;
             const watermarkText = useCustomWatermark 
@@ -976,6 +980,17 @@
             genBtn.disabled = true;
             genBtn.textContent = '⏳ Generating...';
             progressBar.classList.add('active');
+            progressFill.style.width = '5%';
+
+            // Explicitly load fonts (critical for mobile)
+            try {
+                await document.fonts.load('16px "Hind Siliguri"');
+                await document.fonts.load('bold 16px "Hind Siliguri"');
+                await document.fonts.ready;
+            } catch (e) {
+                console.log('Font loading warning:', e);
+            }
+
             progressFill.style.width = '10%';
 
             const topics = [];
@@ -998,14 +1013,14 @@
 
             progressFill.style.width = '20%';
 
-            // STEP 1: Measure each element's height with margins
+            // STEP 1: Measure with fixed width
             const measureContainer = document.getElementById('pdf-measure-container');
             measureContainer.innerHTML = '';
+            measureContainer.style.width = '654px';
 
             const measurements = [];
             let qCounter = 1;
 
-            // Header block (SWAPPED: Class•Subject on top, Chapter below)
             const headerWrap = document.createElement('div');
             headerWrap.innerHTML = `
                 <div class="pdf-hero-title">${escapeHtml(CLASS_DATA[currentClass].name)} • ${escapeHtml(currentSubject)}</div>
@@ -1013,7 +1028,7 @@
                 <div class="pdf-hero-divider"></div>
             `;
             measureContainer.appendChild(headerWrap);
-            await waitForRender();
+            await waitForRender(mobile ? 200 : 100);
             measurements.push({ type: 'header', height: getFullHeight(headerWrap), html: headerWrap.innerHTML });
 
             topics.forEach(topic => {
@@ -1047,9 +1062,9 @@
                 });
             });
 
-            progressFill.style.width = '40%';
+            progressFill.style.width = '35%';
 
-            // STEP 2: Smart page layout with strict bottom margin
+            // STEP 2: Smart page layout
             const pages = [];
             let currentPageItems = [];
             let usedHeight = 0;
@@ -1064,7 +1079,6 @@
                     continue;
                 }
 
-                // Strict check: if item doesn't fit with safety buffer, move to next page
                 if (usedHeight + item.height > CONTENT_HEIGHT_PX - SAFETY_BUFFER) {
                     if (currentPageItems.length > 0) pages.push(currentPageItems);
                     currentPageItems = [item];
@@ -1076,15 +1090,17 @@
             }
             if (currentPageItems.length > 0) pages.push(currentPageItems);
 
-            progressFill.style.width = '50%';
+            progressFill.style.width = '45%';
 
-            // STEP 3: Render each page
+            // STEP 3: Render pages
             const renderContainer = document.getElementById('pdf-render-container');
             renderContainer.innerHTML = '';
 
             for (let p = 0; p < pages.length; p++) {
                 const pageDiv = document.createElement('div');
                 pageDiv.className = 'pdf-page';
+                pageDiv.style.width = PAGE_WIDTH_PX + 'px';
+                pageDiv.style.height = PAGE_HEIGHT_PX + 'px';
 
                 if (addWatermark && watermarkText) {
                     const wm = document.createElement('div');
@@ -1123,17 +1139,15 @@
                 renderContainer.appendChild(pageDiv);
             }
 
-            await waitForRender();
+            await waitForRender(mobile ? 500 : 300);
             await document.fonts.ready;
-            await new Promise(r => setTimeout(r, 400));
 
-            progressFill.style.width = '60%';
+            progressFill.style.width = '55%';
 
-            // STEP 4: Capture each page as IMAGE (no text layer = no copy)
+            // STEP 4: Capture with mobile-optimized settings
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
-            // PDF Security Metadata
             pdf.setProperties({
                 title: currentChapter,
                 subject: currentSubject,
@@ -1146,35 +1160,80 @@
             const pageDivs = renderContainer.querySelectorAll('.pdf-page');
             const totalPages = pageDivs.length;
 
+            // Mobile: lower scale to avoid canvas size limits
+            const scale = mobile ? 1.5 : 2;
+            const jpegQuality = mobile ? 0.92 : 0.95;
+
             for (let p = 0; p < totalPages; p++) {
                 if (p > 0) pdf.addPage();
 
                 try {
+                    // Mobile: longer wait, fixed window size
+                    await waitForRender(mobile ? 300 : 100);
+
                     const canvas = await html2canvas(pageDivs[p], {
-                        scale: 2,
+                        scale: scale,
                         useCORS: true,
                         allowTaint: true,
                         backgroundColor: '#ffffff',
                         logging: false,
                         width: PAGE_WIDTH_PX,
-                        height: PAGE_HEIGHT_PX
+                        height: PAGE_HEIGHT_PX,
+                        windowWidth: PAGE_WIDTH_PX + 200,
+                        windowHeight: PAGE_HEIGHT_PX + 200,
+                        scrollX: 0,
+                        scrollY: 0,
+                        foreignObjectRendering: false,
+                        imageTimeout: 15000
                     });
 
-                    // Convert to JPEG (image-based, no text layer)
-                    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                    const imgData = canvas.toDataURL('image/jpeg', jpegQuality);
                     const pageWidthMM = pdf.internal.pageSize.getWidth();
                     const pageHeightMM = pdf.internal.pageSize.getHeight();
                     pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, pageHeightMM);
+
+                    // Free memory on mobile
+                    if (mobile && canvas) {
+                        canvas.width = 0;
+                        canvas.height = 0;
+                    }
                 } catch (err) {
                     console.error('Page render failed:', p, err);
+                    // Retry with lower scale on mobile
+                    if (mobile) {
+                        try {
+                            const canvas = await html2canvas(pageDivs[p], {
+                                scale: 1,
+                                useCORS: true,
+                                backgroundColor: '#ffffff',
+                                logging: false,
+                                width: PAGE_WIDTH_PX,
+                                height: PAGE_HEIGHT_PX
+                            });
+                            const imgData = canvas.toDataURL('image/jpeg', 0.85);
+                            const pageWidthMM = pdf.internal.pageSize.getWidth();
+                            const pageHeightMM = pdf.internal.pageSize.getHeight();
+                            pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, pageHeightMM);
+                        } catch (retryErr) {
+                            console.error('Retry also failed:', retryErr);
+                        }
+                    }
                 }
 
-                const progress = 60 + (p + 1) / totalPages * 40;
-                progressFill.style.width = progress + '%';
+                const progress = 55 + (p + 1) / totalPages * 45;
+                progressFill.style.width = Math.min(progress, 99) + '%';
+                
+                // Small delay on mobile to prevent memory issues
+                if (mobile) await waitForRender(200);
             }
 
-            pdf.save(`${currentChapter}.pdf`);
             progressFill.style.width = '100%';
+            
+            // Mobile: small delay before save
+            if (mobile) await waitForRender(500);
+
+            pdf.save(`${currentChapter}.pdf`);
+            
             setTimeout(() => {
                 progressBar.classList.remove('active');
                 progressFill.style.width = '0%';
@@ -1198,11 +1257,13 @@
                 img.onload = () => resolve(true);
                 img.onerror = () => resolve(false);
                 img.src = url;
+                // Timeout for mobile
+                setTimeout(() => resolve(false), 10000);
             });
         }
 
-        function waitForRender() {
-            return new Promise(resolve => setTimeout(resolve, 50));
+        function waitForRender(ms = 50) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         function navigateTo(pageId) {
