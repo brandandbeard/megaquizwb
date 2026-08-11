@@ -1,1 +1,864 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Quiz System</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="https://i.ibb.co/7qJGpT1/icon-192.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home Page Styles */
+        .hero {
+            height: 100vh;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+            animation: scaleIn 1s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .class-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .class-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .class-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .class-card p {
+            color: #64748b;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* Navigation */
+        .nav-header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .subject-card, .chapter-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .subject-card:hover, .chapter-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .subject-card h3, .chapter-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Questions Section */
+        .questions-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .controls {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .pdf-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .pdf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.6);
+        }
+
+        .topic-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .topic-header h3 {
+            flex: 1;
+            color: var(--primary);
+        }
+
+        .question-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .question-item:hover {
+            background: #f1f5f9;
+        }
+
+        .question-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-top: 2px;
+        }
+
+        .question-text {
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        /* PDF Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        .checkbox-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .checkbox-group label:hover {
+            background: #f1f5f9;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.2rem;
+            }
+            .classes-grid, .content-grid {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Home Page -->
+    <div id="home-page" class="page active">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>📚 Universal Quiz System</h1>
+                <p>Select Your Class to Start Learning</p>
+            </div>
+            <div class="scroll-indicator" onclick="scrollToClasses()">⬇️</div>
+        </div>
+        <div class="classes-grid" id="classes-grid"></div>
+    </div>
+
+    <!-- Subjects Page -->
+    <div id="subjects-page" class="page">
+        <div class="nav-header">
+            <button class="back-btn" onclick="goBack()">← Back</button>
+            <div class="nav-title" id="subjects-title">Subjects</div>
+        </div>
+        <div class="content-grid" id="subjects-grid"></div>
+    </div>
+
+    <!-- Chapters Page -->
+    <div id="chapters-page" class="page">
+        <div class="nav-header">
+            <button class="back-btn" onclick="goBack()">← Back</button>
+            <div class="nav-title" id="chapters-title">Chapters</div>
+        </div>
+        <div class="content-grid" id="chapters-grid"></div>
+    </div>
+
+    <!-- Questions Page -->
+    <div id="questions-page" class="page">
+        <div class="nav-header">
+            <button class="back-btn" onclick="goBack()">← Back</button>
+            <div class="nav-title" id="questions-title">Questions</div>
+        </div>
+        <div class="questions-container">
+            <div class="controls">
+                <button class="pdf-btn" onclick="showPDFModal()">📄 Turn into PDF</button>
+            </div>
+            <div id="questions-list"></div>
+        </div>
+    </div>
+
+    <!-- PDF Modal -->
+    <div id="pdf-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Generate PDF</h2>
+                <button class="close-modal" onclick="closePDFModal()">&times;</button>
+            </div>
+            <div id="pdf-controls"></div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="watermark-option" checked>
+                    Add Watermark (BY Arif Hussain)
+                </label>
+            </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="logo-option" checked>
+                    Show Quiz Logo at Bottom
+                </label>
+            </div>
+            <button class="pdf-btn" style="width: 100%; margin-top: 1rem;" onclick="generatePDF()">💾 Save as PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const CLASS_DATA = {
+            'class-5': {
+                name: 'Class 5',
+                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxpBxo2TsVkwERn8vLB_QioPRcmb8jUq4j-Ty1lO2apcfh5INuD_EUtCCo0KTHozdv7OIziPCFezSt/pub?output=tsv'
+            },
+            'class-6': {
+                name: 'Class 6',
+                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vREQlxiDlpTm6VhhE5hSE5eDHX-pBTkPWXUKmOg91Co0ajB26PU2j651imGRKJ11Z-Dzmi-ftdiIwjj/pub?output=tsv'
+            },
+            'class-7': {
+                name: 'Class 7',
+                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbivu3W0_RbadB9g7x-KbDTQ6kmfNg3074FEc6HONECtVfJctWS1EtdCzkHccQ8KQCUUhp6YEqahtu/pub?output=tsv'
+            },
+            'class-8': {
+                name: 'Class 8',
+                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVHdP2gFappkd8SYZQdXQx4W5n4OeKAjdPFtfRGwUv3k6iaTy8WeuAbZ-5kLKEZzUK9Bj6LrLUdm69/pub?output=tsv'
+            },
+            'class-9': {
+                name: 'Class 9',
+                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKbe6KpQd1_XJHeSel7-UFYZLHx85_oCcB-qDSgRxEPXZWlBLVTE14qDC8o10HWUqpi6_WLBZiUNPq/pub?output=tsv'
+            },
+            'class-10': {
+                name: 'Class 10',
+                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv'
+            }
+        };
+
+        let currentPage = 'home-page';
+        let pageHistory = [];
+        let currentClass = null;
+        let currentSubject = null;
+        let currentChapter = null;
+        let allQuestions = [];
+        let selectedQuestions = new Set();
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderClassCards();
+            window.addEventListener('popstate', handlePopState);
+        });
+
+        // Render Class Cards
+        function renderClassCards() {
+            const grid = document.getElementById('classes-grid');
+            const classes = [
+                ...Object.entries(CLASS_DATA).map(([id, data]) => ({ id, ...data, available: true })),
+                { id: 'class-11-arts', name: 'Class 11 Arts', available: false },
+                { id: 'class-11-science', name: 'Class 11 Science', available: false },
+                { id: 'class-12-arts', name: 'Class 12 Arts', available: false },
+                { id: 'class-12-science', name: 'Class 12 Science', available: false }
+            ];
+
+            grid.innerHTML = classes.map(cls => `
+                <div class="class-card" onclick="${cls.available ? `selectClass('${cls.id}')` : ''}">
+                    <h3>${cls.name}</h3>
+                    <p>${cls.available ? 'Click to explore subjects' : 'Coming Soon'}</p>
+                </div>
+            `).join('');
+        }
+
+        // Select Class
+        function selectClass(classId) {
+            currentClass = classId;
+            pageHistory.push(currentPage);
+            navigateTo('subjects-page');
+            loadSubjects();
+        }
+
+        // Load Subjects
+        async function loadSubjects() {
+            document.getElementById('subjects-title').textContent = CLASS_DATA[currentClass].name + ' - Subjects';
+            const grid = document.getElementById('subjects-grid');
+            grid.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading subjects...</p></div>';
+
+            try {
+                const data = await fetchSheetData(CLASS_DATA[currentClass].url);
+                const subjects = [...new Set(data.map(row => row.subject))].filter(s => s);
+                
+                grid.innerHTML = subjects.map(subject => `
+                    <div class="subject-card" onclick="selectSubject('${subject}')">
+                        <h3>📘 ${subject}</h3>
+                        <p>Click to view chapters</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                grid.innerHTML = '<div class="loading"><p>Error loading subjects. Please try again.</p></div>';
+            }
+        }
+
+        // Select Subject
+        async function selectSubject(subject) {
+            currentSubject = subject;
+            pageHistory.push(currentPage);
+            navigateTo('chapters-page');
+            document.getElementById('chapters-title').textContent = subject + ' - Chapters';
+            
+            const grid = document.getElementById('chapters-grid');
+            grid.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading chapters...</p></div>';
+
+            try {
+                const data = await fetchSheetData(CLASS_DATA[currentClass].url);
+                const chapters = [...new Set(data.filter(row => row.subject === subject).map(row => row.chapter))].filter(c => c);
+                
+                grid.innerHTML = chapters.map(chapter => `
+                    <div class="chapter-card" onclick="selectChapter('${chapter}')">
+                        <h3>📖 ${chapter}</h3>
+                        <p>Click to view questions</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                grid.innerHTML = '<div class="loading"><p>Error loading chapters. Please try again.</p></div>';
+            }
+        }
+
+        // Select Chapter
+        async function selectChapter(chapter) {
+            currentChapter = chapter;
+            pageHistory.push(currentPage);
+            navigateTo('questions-page');
+            document.getElementById('questions-title').textContent = chapter;
+            
+            const list = document.getElementById('questions-list');
+            list.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading questions...</p></div>';
+
+            try {
+                const data = await fetchSheetData(CLASS_DATA[currentClass].url);
+                allQuestions = data.filter(row => 
+                    row.subject === currentSubject && row.chapter === chapter
+                );
+
+                // Group by topic
+                const topics = {};
+                allQuestions.forEach(q => {
+                    if (!topics[q.topic]) topics[q.topic] = [];
+                    topics[q.topic].push(q);
+                });
+
+                selectedQuestions = new Set(allQuestions.map(q => q.id || JSON.stringify(q)));
+
+                list.innerHTML = Object.entries(topics).map(([topic, questions]) => `
+                    <div class="topic-section">
+                        <div class="topic-header">
+                            <input type="checkbox" id="topic-${topic}" onchange="toggleTopic('${topic}', this.checked)">
+                            <label for="topic-${topic}" style="cursor: pointer; flex: 1;">
+                                <h3>📝 ${topic}</h3>
+                            </label>
+                        </div>
+                        ${questions.map(q => `
+                            <div class="question-item">
+                                <input type="checkbox" 
+                                    class="question-checkbox" 
+                                    data-topic="${topic}"
+                                    data-question="${q.id || JSON.stringify(q)}"
+                                    checked
+                                    onchange="toggleQuestion(this)">
+                                <div class="question-text">
+                                    <strong>Q:</strong> ${q.question}<br>
+                                    <strong>A:</strong> ${q.answer}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `).join('');
+
+                updateTopicCheckboxes();
+            } catch (error) {
+                list.innerHTML = '<div class="loading"><p>Error loading questions. Please try again.</p></div>';
+            }
+        }
+
+        // Fetch Sheet Data
+        async function fetchSheetData(url) {
+            const response = await fetch(url);
+            const text = await response.text();
+            const lines = text.split('\n').filter(line => line.trim());
+            const headers = lines[0].split('\t');
+            
+            return lines.slice(1).map((line, index) => {
+                const values = line.split('\t');
+                const row = { id: index };
+                headers.forEach((header, i) => {
+                    row[header.toLowerCase().trim()] = values[i] || '';
+                });
+                return row;
+            });
+        }
+
+        // Toggle Topic
+        function toggleTopic(topic, checked) {
+            const checkboxes = document.querySelectorAll(`[data-topic="${topic}"]`);
+            checkboxes.forEach(cb => {
+                cb.checked = checked;
+                toggleQuestion(cb);
+            });
+        }
+
+        // Toggle Question
+        function toggleQuestion(checkbox) {
+            const questionId = checkbox.dataset.question;
+            if (checkbox.checked) {
+                selectedQuestions.add(questionId);
+            } else {
+                selectedQuestions.delete(questionId);
+            }
+            updateTopicCheckboxes();
+        }
+
+        // Update Topic Checkboxes
+        function updateTopicCheckboxes() {
+            const topics = document.querySelectorAll('.topic-section');
+            topics.forEach(section => {
+                const checkboxes = section.querySelectorAll('.question-checkbox');
+                const checkedCount = section.querySelectorAll('.question-checkbox:checked').length;
+                const topicCheckbox = section.querySelector('input[type="checkbox"]:not(.question-checkbox)');
+                
+                if (checkedCount === checkboxes.length) {
+                    topicCheckbox.checked = true;
+                    topicCheckbox.indeterminate = false;
+                } else if (checkedCount > 0) {
+                    topicCheckbox.checked = false;
+                    topicCheckbox.indeterminate = true;
+                } else {
+                    topicCheckbox.checked = false;
+                    topicCheckbox.indeterminate = false;
+                }
+            });
+        }
+
+        // Show PDF Modal
+        function showPDFModal() {
+            document.getElementById('pdf-modal').classList.add('active');
+        }
+
+        // Close PDF Modal
+        function closePDFModal() {
+            document.getElementById('pdf-modal').classList.remove('active');
+        }
+
+        // Generate PDF
+        async function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const addWatermark = document.getElementById('watermark-option').checked;
+            const addLogo = document.getElementById('logo-option').checked;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            let yPos = 20;
+
+            // Title
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text(currentChapter, pageWidth / 2, yPos, { align: 'center' });
+            yPos += 10;
+
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            doc.text(`${CLASS_DATA[currentClass].name} - ${currentSubject}`, pageWidth / 2, yPos, { align: 'center' });
+            yPos += 15;
+
+            // Group selected questions by topic
+            const selectedData = allQuestions.filter(q => 
+                selectedQuestions.has(q.id || JSON.stringify(q))
+            );
+
+            const topics = {};
+            selectedData.forEach(q => {
+                if (!topics[q.topic]) topics[q.topic] = [];
+                topics[q.topic].push(q);
+            });
+
+            doc.setFontSize(11);
+
+            for (const [topic, questions] of Object.entries(topics)) {
+                // Check if we need a new page
+                if (yPos > pageHeight - 40) {
+                    if (addWatermark) addWatermarkToPage(doc, pageWidth, pageHeight);
+                    doc.addPage();
+                    yPos = 20;
+                }
+
+                // Topic Header
+                doc.setFont(undefined, 'bold');
+                doc.setFontSize(14);
+                doc.setTextColor(99, 102, 241);
+                doc.text(`📝 ${topic}`, 15, yPos);
+                yPos += 8;
+                doc.setTextColor(0, 0, 0);
+
+                questions.forEach((q, index) => {
+                    // Check if we need a new page
+                    if (yPos > pageHeight - 30) {
+                        if (addWatermark) addWatermarkToPage(doc, pageWidth, pageHeight);
+                        doc.addPage();
+                        yPos = 20;
+                    }
+
+                    // Question
+                    doc.setFont(undefined, 'bold');
+                    const questionLines = doc.splitTextToSize(`Q${index + 1}: ${q.question}`, pageWidth - 30);
+                    doc.text(questionLines, 15, yPos);
+                    yPos += questionLines.length * 5 + 2;
+
+                    // Answer
+                    doc.setFont(undefined, 'normal');
+                    const answerLines = doc.splitTextToSize(`A: ${q.answer}`, pageWidth - 30);
+                    doc.text(answerLines, 15, yPos);
+                    yPos += answerLines.length * 5 + 5;
+                });
+
+                yPos += 5;
+            }
+
+            // Add watermark to all pages
+            if (addWatermark) {
+                const totalPages = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= totalPages; i++) {
+                    doc.setPage(i);
+                    addWatermarkToPage(doc, pageWidth, pageHeight);
+                }
+            }
+
+            // Add logo to last page
+            if (addLogo) {
+                const totalPages = doc.internal.getNumberOfPages();
+                doc.setPage(totalPages);
+                doc.addImage('https://i.ibb.co/7qJGpT1/icon-192.png', 'PNG', pageWidth - 20, pageHeight - 15, 15, 15);
+            }
+
+            doc.save(`${currentChapter}.pdf`);
+            closePDFModal();
+        }
+
+        // Add Watermark
+        function addWatermarkToPage(doc, pageWidth, pageHeight) {
+            doc.saveGraphicsState();
+            doc.setGState(new doc.GState({ opacity: 0.1 }));
+            doc.setFontSize(40);
+            doc.setTextColor(150, 150, 150);
+            doc.text('BY Arif Hussain', pageWidth / 2, pageHeight / 2, {
+                align: 'center',
+                angle: 45
+            });
+            doc.restoreGraphicsState();
+        }
+
+        // Navigation
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            currentPage = pageId;
+            window.scrollTo(0, 0);
+        }
+
+        function goBack() {
+            if (pageHistory.length > 0) {
+                const previousPage = pageHistory.pop();
+                navigateTo(previousPage);
+                history.back();
+            } else {
+                navigateTo('home-page');
+            }
+        }
+
+        function handlePopState(event) {
+            if (pageHistory.length > 0) {
+                const previousPage = pageHistory.pop();
+                navigateTo(previousPage);
+            } else {
+                navigateTo('home-page');
+            }
+        }
+
+        function scrollToClasses() {
+            document.getElementById('classes-grid').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+</html>
