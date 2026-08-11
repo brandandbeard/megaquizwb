@@ -234,9 +234,12 @@
             border-radius: 15px;
             margin-bottom: 2rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
-        .pdf-btn {
+        .pdf-btn, .ai-btn {
             background: var(--gradient);
             color: white;
             border: none;
@@ -248,9 +251,18 @@
             box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
         }
 
-        .pdf-btn:hover {
+        .ai-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .pdf-btn:hover, .ai-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(99, 102, 241, 0.6);
+        }
+
+        .ai-btn:hover {
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.6);
         }
 
         .topic-section {
@@ -283,6 +295,7 @@
             border-radius: 10px;
             margin-bottom: 0.5rem;
             transition: background 0.2s;
+            position: relative;
         }
 
         .question-item:hover {
@@ -299,6 +312,68 @@
         .question-text {
             flex: 1;
             line-height: 1.6;
+        }
+
+        .question-image {
+            max-width: 200px;
+            max-height: 150px;
+            margin-top: 0.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            object-fit: contain;
+        }
+
+        .answer-section {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .answer-image {
+            max-width: 150px;
+            max-height: 100px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            object-fit: contain;
+        }
+
+        .explain-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .explain-btn:hover {
+            background: #2563eb;
+            transform: scale(1.05);
+        }
+
+        .explanation-box {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .explanation-box.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* PDF Modal */
@@ -400,6 +475,12 @@
                 grid-template-columns: 1fr;
                 padding: 2rem 1rem;
             }
+            .controls {
+                flex-direction: column;
+            }
+            .question-image, .answer-image {
+                max-width: 150px;
+            }
         }
     </style>
 </head>
@@ -443,6 +524,7 @@
         <div class="questions-container">
             <div class="controls">
                 <button class="pdf-btn" onclick="showPDFModal()">📄 Turn into PDF</button>
+                <button class="ai-btn" onclick="explainAllWithAI()">🤖 Explain All with AI</button>
             </div>
             <div id="questions-list"></div>
         </div>
@@ -455,7 +537,6 @@
                 <h2>Generate PDF</h2>
                 <button class="close-modal" onclick="closePDFModal()">&times;</button>
             </div>
-            <div id="pdf-controls"></div>
             <div class="checkbox-group">
                 <label>
                     <input type="checkbox" id="watermark-option" checked>
@@ -466,6 +547,18 @@
                 <label>
                     <input type="checkbox" id="logo-option" checked>
                     Show Quiz Logo at Bottom
+                </label>
+            </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="images-option" checked>
+                    Include Images
+                </label>
+            </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="explanations-option">
+                    Include AI Explanations
                 </label>
             </div>
             <button class="pdf-btn" style="width: 100%; margin-top: 1rem;" onclick="generatePDF()">💾 Save as PDF</button>
@@ -508,6 +601,7 @@
         let currentChapter = null;
         let allQuestions = [];
         let selectedQuestions = new Set();
+        let aiExplanations = {};
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
@@ -604,6 +698,17 @@
                     row.subject === currentSubject && row.chapter === chapter
                 );
 
+                // Sort by chapter number and topic number
+                allQuestions.sort((a, b) => {
+                    const chapNumA = parseInt(a.chapter_number) || 0;
+                    const chapNumB = parseInt(b.chapter_number) || 0;
+                    if (chapNumA !== chapNumB) return chapNumA - chapNumB;
+                    
+                    const topicNumA = parseInt(a.topic_number) || 0;
+                    const topicNumB = parseInt(b.topic_number) || 0;
+                    return topicNumA - topicNumB;
+                });
+
                 // Group by topic
                 const topics = {};
                 allQuestions.forEach(q => {
@@ -630,8 +735,17 @@
                                     checked
                                     onchange="toggleQuestion(this)">
                                 <div class="question-text">
-                                    <strong>Q:</strong> ${q.question}<br>
-                                    <strong>A:</strong> ${q.answer}
+                                    <strong>Q:</strong> ${q.question}
+                                    ${q.image ? `<img src="${q.image}" class="question-image" alt="Question Image">` : ''}
+                                    <div class="answer-section">
+                                        <div>
+                                            <strong>A:</strong> ${q.answer}
+                                            <br>
+                                            <button class="explain-btn" onclick="explainWithAI('${q.id || JSON.stringify(q)}')">🤖 Explain with AI</button>
+                                            <div id="explanation-${q.id || JSON.stringify(q)}" class="explanation-box"></div>
+                                        </div>
+                                        ${q.answer_image ? `<img src="${q.answer_image}" class="answer-image" alt="Answer Image">` : ''}
+                                    </div>
                                 </div>
                             </div>
                         `).join('')}
@@ -655,7 +769,8 @@
                 const values = line.split('\t');
                 const row = { id: index };
                 headers.forEach((header, i) => {
-                    row[header.toLowerCase().trim()] = values[i] || '';
+                    const key = header.toLowerCase().trim();
+                    row[key] = values[i] || '';
                 });
                 return row;
             });
@@ -702,6 +817,58 @@
             });
         }
 
+        // Explain with AI
+        async function explainWithAI(questionId) {
+            const question = allQuestions.find(q => (q.id || JSON.stringify(q)) === questionId);
+            if (!question) return;
+
+            const explanationBox = document.getElementById(`explanation-${questionId}`);
+            
+            if (aiExplanations[questionId]) {
+                explanationBox.textContent = aiExplanations[questionId];
+                explanationBox.classList.toggle('show');
+                return;
+            }
+
+            explanationBox.textContent = 'Loading explanation...';
+            explanationBox.classList.add('show');
+
+            try {
+                const response = await fetch('/api/quiz-ai', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        question: question.question,
+                        options: '',
+                        correctAnswer: question.answer,
+                        subject: currentSubject,
+                        chapter: currentChapter
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch explanation');
+                }
+
+                const data = await response.json();
+                aiExplanations[questionId] = data.explanation;
+                explanationBox.textContent = data.explanation;
+            } catch (error) {
+                explanationBox.textContent = 'Error loading explanation. Please try again.';
+            }
+        }
+
+        // Explain All with AI
+        async function explainAllWithAI() {
+            const buttons = document.querySelectorAll('.explain-btn');
+            for (let button of buttons) {
+                button.click();
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+        }
+
         // Show PDF Modal
         function showPDFModal() {
             document.getElementById('pdf-modal').classList.add('active');
@@ -723,6 +890,8 @@
 
             const addWatermark = document.getElementById('watermark-option').checked;
             const addLogo = document.getElementById('logo-option').checked;
+            const includeImages = document.getElementById('images-option').checked;
+            const includeExplanations = document.getElementById('explanations-option').checked;
             const pageWidth = doc.internal.pageSize.getWidth();
             const pageHeight = doc.internal.pageSize.getHeight();
             let yPos = 20;
@@ -752,14 +921,12 @@
             doc.setFontSize(11);
 
             for (const [topic, questions] of Object.entries(topics)) {
-                // Check if we need a new page
                 if (yPos > pageHeight - 40) {
                     if (addWatermark) addWatermarkToPage(doc, pageWidth, pageHeight);
                     doc.addPage();
                     yPos = 20;
                 }
 
-                // Topic Header
                 doc.setFont(undefined, 'bold');
                 doc.setFontSize(14);
                 doc.setTextColor(99, 102, 241);
@@ -768,30 +935,56 @@
                 doc.setTextColor(0, 0, 0);
 
                 questions.forEach((q, index) => {
-                    // Check if we need a new page
                     if (yPos > pageHeight - 30) {
                         if (addWatermark) addWatermarkToPage(doc, pageWidth, pageHeight);
                         doc.addPage();
                         yPos = 20;
                     }
 
-                    // Question
                     doc.setFont(undefined, 'bold');
                     const questionLines = doc.splitTextToSize(`Q${index + 1}: ${q.question}`, pageWidth - 30);
                     doc.text(questionLines, 15, yPos);
                     yPos += questionLines.length * 5 + 2;
 
-                    // Answer
+                    if (includeImages && q.image) {
+                        try {
+                            doc.addImage(q.image, 'PNG', 15, yPos, 40, 30);
+                            yPos += 32;
+                        } catch (e) {
+                            console.log('Image load error');
+                        }
+                    }
+
                     doc.setFont(undefined, 'normal');
                     const answerLines = doc.splitTextToSize(`A: ${q.answer}`, pageWidth - 30);
                     doc.text(answerLines, 15, yPos);
-                    yPos += answerLines.length * 5 + 5;
+                    yPos += answerLines.length * 5 + 2;
+
+                    if (includeImages && q.answer_image) {
+                        try {
+                            doc.addImage(q.answer_image, 'PNG', 15, yPos, 35, 25);
+                            yPos += 27;
+                        } catch (e) {
+                            console.log('Answer image load error');
+                        }
+                    }
+
+                    if (includeExplanations && aiExplanations[q.id || JSON.stringify(q)]) {
+                        doc.setFontSize(9);
+                        doc.setTextColor(59, 130, 246);
+                        const explanationLines = doc.splitTextToSize(`AI Explanation: ${aiExplanations[q.id || JSON.stringify(q)]}`, pageWidth - 30);
+                        doc.text(explanationLines, 15, yPos);
+                        yPos += explanationLines.length * 4 + 3;
+                        doc.setTextColor(0, 0, 0);
+                        doc.setFontSize(11);
+                    }
+
+                    yPos += 3;
                 });
 
                 yPos += 5;
             }
 
-            // Add watermark to all pages
             if (addWatermark) {
                 const totalPages = doc.internal.getNumberOfPages();
                 for (let i = 1; i <= totalPages; i++) {
@@ -800,7 +993,6 @@
                 }
             }
 
-            // Add logo to last page
             if (addLogo) {
                 const totalPages = doc.internal.getNumberOfPages();
                 doc.setPage(totalPages);
@@ -855,7 +1047,6 @@
             document.getElementById('classes-grid').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Service Worker Registration
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js');
         }
