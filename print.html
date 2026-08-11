@@ -6,6 +6,8 @@
     <title>Universal Quiz System</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="https://i.ibb.co/7qJGpT1/icon-192.png">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
@@ -20,14 +22,16 @@
             --accent: #ec4899;
             --dark: #1e293b;
             --light: #f8fafc;
+            --question-red: #c53030;
             --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Hind Siliguri', 'Segoe UI', Tahoma, sans-serif;
             background: var(--light);
             color: var(--dark);
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
         .page {
@@ -45,7 +49,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Home Page Styles */
+        /* Home Page */
         .hero {
             height: 100vh;
             background: var(--gradient);
@@ -139,6 +143,11 @@
             color: #64748b;
         }
 
+        .class-card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .scroll-indicator {
             position: fixed;
             bottom: 2rem;
@@ -148,6 +157,7 @@
             font-size: 2rem;
             animation: bounce 2s infinite;
             cursor: pointer;
+            z-index: 10;
         }
 
         @keyframes bounce {
@@ -177,6 +187,7 @@
             border-radius: 10px;
             cursor: pointer;
             font-size: 1rem;
+            font-family: inherit;
             transition: transform 0.2s;
         }
 
@@ -221,159 +232,163 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Questions Section */
+        /* Questions Page */
+        .hero-heading {
+            background: var(--gradient);
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .hero-heading small {
+            display: block;
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+            font-weight: 400;
+        }
+
         .questions-container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 2rem auto;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
         }
 
         .controls {
             background: white;
-            padding: 1.5rem;
+            padding: 1rem 1.5rem;
             border-radius: 15px;
             margin-bottom: 2rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
-        .pdf-btn, .ai-btn {
+        .pdf-btn {
             background: var(--gradient);
             color: white;
             border: none;
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.8rem;
             border-radius: 10px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+            font-family: inherit;
+            font-weight: 600;
         }
 
-        .ai-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
-        }
-
-        .pdf-btn:hover, .ai-btn:hover {
+        .pdf-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(99, 102, 241, 0.6);
-        }
-
-        .ai-btn:hover {
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.6);
         }
 
         .topic-section {
             background: white;
             padding: 1.5rem;
             border-radius: 15px;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 1.2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
         }
 
         .topic-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
             margin-bottom: 1rem;
-            padding-bottom: 1rem;
+            padding-bottom: 0.8rem;
             border-bottom: 2px solid #e2e8f0;
         }
 
-        .topic-header h3 {
+        .topic-header input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .topic-header label {
             flex: 1;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
             color: var(--primary);
+            margin: 0;
         }
 
         .question-item {
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 0.5rem;
+            gap: 0.8rem;
+            padding: 0.8rem 0.5rem;
+            border-radius: 8px;
             transition: background 0.2s;
-            position: relative;
         }
 
         .question-item:hover {
-            background: #f1f5f9;
+            background: #f8fafc;
         }
 
-        .question-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+        .question-item > input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
             cursor: pointer;
-            margin-top: 2px;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .question-content {
+            flex: 1;
         }
 
         .question-text {
-            flex: 1;
+            color: var(--question-red);
+            font-weight: 600;
+            font-size: 1.02rem;
             line-height: 1.6;
+            margin-bottom: 0.5rem;
         }
 
         .question-image {
-            max-width: 200px;
-            max-height: 150px;
-            margin-top: 0.5rem;
+            max-width: 220px;
+            max-height: 160px;
+            margin: 0.5rem 0;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             object-fit: contain;
+            display: block;
         }
 
         .answer-section {
+            margin-top: 0.4rem;
             display: flex;
+            gap: 0.8rem;
             align-items: flex-start;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .answer-text {
+            flex: 1;
+            min-width: 200px;
+            color: #1e293b;
+            font-size: 0.98rem;
+            line-height: 1.55;
+            background: #f1f5f9;
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            border-left: 3px solid #10b981;
         }
 
         .answer-image {
-            max-width: 150px;
-            max-height: 100px;
+            max-width: 180px;
+            max-height: 130px;
             border-radius: 6px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.08);
             object-fit: contain;
-        }
-
-        .explain-btn {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 0.3rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            transition: all 0.2s;
-        }
-
-        .explain-btn:hover {
-            background: #2563eb;
-            transform: scale(1.05);
-        }
-
-        .explanation-box {
-            background: #dbeafe;
-            border-left: 4px solid #3b82f6;
-            padding: 1rem;
-            margin-top: 0.5rem;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            display: none;
-        }
-
-        .explanation-box.show {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         /* PDF Modal */
@@ -398,7 +413,7 @@
             background: white;
             padding: 2rem;
             border-radius: 20px;
-            max-width: 600px;
+            max-width: 500px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
@@ -417,17 +432,18 @@
             font-size: 2rem;
             cursor: pointer;
             color: var(--dark);
+            line-height: 1;
         }
 
         .checkbox-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .checkbox-group label {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
+            gap: 0.6rem;
+            padding: 0.6rem;
             cursor: pointer;
             border-radius: 8px;
             transition: background 0.2s;
@@ -442,7 +458,6 @@
             height: 20px;
         }
 
-        /* Loading */
         .loading {
             text-align: center;
             padding: 3rem;
@@ -463,24 +478,122 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Responsive */
+        /* PDF Render Container (Hidden) */
+        #pdf-render-container {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 794px; /* A4 width at 96 DPI */
+            background: white;
+            font-family: 'Hind Siliguri', sans-serif;
+            padding: 30px;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+
+        #pdf-render-container .pdf-page {
+            page-break-after: always;
+            background: white;
+            padding: 0;
+            position: relative;
+            min-height: 1123px;
+        }
+
+        #pdf-render-container .pdf-chapter-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        #pdf-render-container .pdf-subtitle {
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        #pdf-render-container .pdf-topic {
+            font-size: 15px;
+            font-weight: 700;
+            color: #667eea;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            padding-left: 4px;
+            border-left: 3px solid #667eea;
+        }
+
+        #pdf-render-container .pdf-question {
+            color: #c53030;
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 12.5px;
+        }
+
+        #pdf-render-container .pdf-answer {
+            color: #1e293b;
+            font-size: 12px;
+            background: #f8fafc;
+            padding: 6px 10px;
+            border-left: 2px solid #10b981;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        #pdf-render-container .pdf-image {
+            max-width: 200px;
+            max-height: 140px;
+            margin: 4px 0;
+            object-fit: contain;
+        }
+
+        #pdf-render-container .pdf-answer-img {
+            max-width: 160px;
+            max-height: 110px;
+            margin: 4px 0;
+            object-fit: contain;
+        }
+
+        #pdf-render-container .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 60px;
+            color: rgba(150, 150, 150, 0.15);
+            font-weight: bold;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 0;
+        }
+
+        #pdf-render-container .pdf-footer-logo {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            opacity: 0.7;
+        }
+
+        #pdf-render-container .pdf-content {
+            position: relative;
+            z-index: 1;
+        }
+
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .hero p {
-                font-size: 1.2rem;
-            }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.2rem; }
             .classes-grid, .content-grid {
                 grid-template-columns: 1fr;
                 padding: 2rem 1rem;
             }
-            .controls {
-                flex-direction: column;
-            }
-            .question-image, .answer-image {
-                max-width: 150px;
-            }
+            .hero-heading { font-size: 1.4rem; padding: 1.5rem 1rem; }
+            .question-image { max-width: 100%; }
+            .answer-image { max-width: 140px; }
         }
     </style>
 </head>
@@ -521,10 +634,13 @@
             <button class="back-btn" onclick="goBack()">← Back</button>
             <div class="nav-title" id="questions-title">Questions</div>
         </div>
+        <div class="hero-heading" id="chapter-hero">
+            <span id="hero-chapter-name">Chapter</span>
+            <small id="hero-subtitle">Class - Subject</small>
+        </div>
         <div class="questions-container">
             <div class="controls">
                 <button class="pdf-btn" onclick="showPDFModal()">📄 Turn into PDF</button>
-                <button class="ai-btn" onclick="explainAllWithAI()">🤖 Explain All with AI</button>
             </div>
             <div id="questions-list"></div>
         </div>
@@ -545,6 +661,15 @@
             </div>
             <div class="checkbox-group">
                 <label>
+                    <input type="checkbox" id="watermark-custom">
+                    Custom Watermark Text
+                </label>
+            </div>
+            <div class="checkbox-group" id="custom-watermark-box" style="display:none;">
+                <input type="text" id="watermark-text" placeholder="Enter custom watermark" style="width:100%; padding:0.5rem; border:1px solid #cbd5e1; border-radius:8px;">
+            </div>
+            <div class="checkbox-group">
+                <label>
                     <input type="checkbox" id="logo-option" checked>
                     Show Quiz Logo at Bottom
                 </label>
@@ -552,46 +677,24 @@
             <div class="checkbox-group">
                 <label>
                     <input type="checkbox" id="images-option" checked>
-                    Include Images
-                </label>
-            </div>
-            <div class="checkbox-group">
-                <label>
-                    <input type="checkbox" id="explanations-option">
-                    Include AI Explanations
+                    Include Images in PDF
                 </label>
             </div>
             <button class="pdf-btn" style="width: 100%; margin-top: 1rem;" onclick="generatePDF()">💾 Save as PDF</button>
         </div>
     </div>
 
+    <!-- Hidden PDF Render Container -->
+    <div id="pdf-render-container"></div>
+
     <script>
-        // Configuration
         const CLASS_DATA = {
-            'class-5': {
-                name: 'Class 5',
-                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxpBxo2TsVkwERn8vLB_QioPRcmb8jUq4j-Ty1lO2apcfh5INuD_EUtCCo0KTHozdv7OIziPCFezSt/pub?output=tsv'
-            },
-            'class-6': {
-                name: 'Class 6',
-                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vREQlxiDlpTm6VhhE5hSE5eDHX-pBTkPWXUKmOg91Co0ajB26PU2j651imGRKJ11Z-Dzmi-ftdiIwjj/pub?output=tsv'
-            },
-            'class-7': {
-                name: 'Class 7',
-                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbivu3W0_RbadB9g7x-KbDTQ6kmfNg3074FEc6HONECtVfJctWS1EtdCzkHccQ8KQCUUhp6YEqahtu/pub?output=tsv'
-            },
-            'class-8': {
-                name: 'Class 8',
-                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVHdP2gFappkd8SYZQdXQx4W5n4OeKAjdPFtfRGwUv3k6iaTy8WeuAbZ-5kLKEZzUK9Bj6LrLUdm69/pub?output=tsv'
-            },
-            'class-9': {
-                name: 'Class 9',
-                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKbe6KpQd1_XJHeSel7-UFYZLHx85_oCcB-qDSgRxEPXZWlBLVTE14qDC8o10HWUqpi6_WLBZiUNPq/pub?output=tsv'
-            },
-            'class-10': {
-                name: 'Class 10',
-                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv'
-            }
+            'class-5': { name: 'Class 5', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxpBxo2TsVkwERn8vLB_QioPRcmb8jUq4j-Ty1lO2apcfh5INuD_EUtCCo0KTHozdv7OIziPCFezSt/pub?output=tsv' },
+            'class-6': { name: 'Class 6', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vREQlxiDlpTm6VhhE5hSE5eDHX-pBTkPWXUKmOg91Co0ajB26PU2j651imGRKJ11Z-Dzmi-ftdiIwjj/pub?output=tsv' },
+            'class-7': { name: 'Class 7', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbivu3W0_RbadB9g7x-KbDTQ6kmfNg3074FEc6HONECtVfJctWS1EtdCzkHccQ8KQCUUhp6YEqahtu/pub?output=tsv' },
+            'class-8': { name: 'Class 8', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVHdP2gFappkd8SYZQdXQx4W5n4OeKAjdPFtfRGwUv3k6iaTy8WeuAbZ-5kLKEZzUK9Bj6LrLUdm69/pub?output=tsv' },
+            'class-9': { name: 'Class 9', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKbe6KpQd1_XJHeSel7-UFYZLHx85_oCcB-qDSgRxEPXZWlBLVTE14qDC8o10HWUqpi6_WLBZiUNPq/pub?output=tsv' },
+            'class-10': { name: 'Class 10', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv' }
         };
 
         let currentPage = 'home-page';
@@ -601,15 +704,15 @@
         let currentChapter = null;
         let allQuestions = [];
         let selectedQuestions = new Set();
-        let aiExplanations = {};
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             renderClassCards();
             window.addEventListener('popstate', handlePopState);
+            document.getElementById('watermark-custom').addEventListener('change', (e) => {
+                document.getElementById('custom-watermark-box').style.display = e.target.checked ? 'block' : 'none';
+            });
         });
 
-        // Render Class Cards
         function renderClassCards() {
             const grid = document.getElementById('classes-grid');
             const classes = [
@@ -621,22 +724,21 @@
             ];
 
             grid.innerHTML = classes.map(cls => `
-                <div class="class-card" onclick="${cls.available ? `selectClass('${cls.id}')` : ''}">
+                <div class="class-card ${cls.available ? '' : 'disabled'}" onclick="${cls.available ? `selectClass('${cls.id}')` : ''}">
                     <h3>${cls.name}</h3>
                     <p>${cls.available ? 'Click to explore subjects' : 'Coming Soon'}</p>
                 </div>
             `).join('');
         }
 
-        // Select Class
         function selectClass(classId) {
             currentClass = classId;
             pageHistory.push(currentPage);
+            history.pushState({ page: 'subjects-page' }, '');
             navigateTo('subjects-page');
             loadSubjects();
         }
 
-        // Load Subjects
         async function loadSubjects() {
             document.getElementById('subjects-title').textContent = CLASS_DATA[currentClass].name + ' - Subjects';
             const grid = document.getElementById('subjects-grid');
@@ -644,23 +746,22 @@
 
             try {
                 const data = await fetchSheetData(CLASS_DATA[currentClass].url);
-                const subjects = [...new Set(data.map(row => row.subject))].filter(s => s);
-                
-                grid.innerHTML = subjects.map(subject => `
-                    <div class="subject-card" onclick="selectSubject('${subject}')">
-                        <h3>📘 ${subject}</h3>
+                const subjects = [...new Set(data.map(r => r.subject))].filter(s => s);
+                grid.innerHTML = subjects.map(s => `
+                    <div class="subject-card" onclick="selectSubject('${escapeAttr(s)}')">
+                        <h3>📘 ${escapeHtml(s)}</h3>
                         <p>Click to view chapters</p>
                     </div>
                 `).join('');
-            } catch (error) {
-                grid.innerHTML = '<div class="loading"><p>Error loading subjects. Please try again.</p></div>';
+            } catch (e) {
+                grid.innerHTML = '<div class="loading"><p>Error loading subjects.</p></div>';
             }
         }
 
-        // Select Subject
         async function selectSubject(subject) {
             currentSubject = subject;
             pageHistory.push(currentPage);
+            history.pushState({ page: 'chapters-page' }, '');
             navigateTo('chapters-page');
             document.getElementById('chapters-title').textContent = subject + ' - Chapters';
             
@@ -669,356 +770,398 @@
 
             try {
                 const data = await fetchSheetData(CLASS_DATA[currentClass].url);
-                const chapters = [...new Set(data.filter(row => row.subject === subject).map(row => row.chapter))].filter(c => c);
+                const subjectData = data.filter(r => r.subject === subject);
                 
-                grid.innerHTML = chapters.map(chapter => `
-                    <div class="chapter-card" onclick="selectChapter('${chapter}')">
-                        <h3>📖 ${chapter}</h3>
+                // Sort by chapter_number and take unique chapters with their numbers
+                const chapterMap = new Map();
+                subjectData.forEach(r => {
+                    if (r.chapter && !chapterMap.has(r.chapter)) {
+                        chapterMap.set(r.chapter, parseInt(r.chapter_number) || 0);
+                    }
+                });
+                
+                const chapters = [...chapterMap.entries()]
+                    .sort((a, b) => a[1] - b[1])
+                    .map(([name]) => name);
+                
+                grid.innerHTML = chapters.map((ch, idx) => `
+                    <div class="chapter-card" onclick="selectChapter('${escapeAttr(ch)}')">
+                        <h3>📖 ${escapeHtml(ch)}</h3>
                         <p>Click to view questions</p>
                     </div>
                 `).join('');
-            } catch (error) {
-                grid.innerHTML = '<div class="loading"><p>Error loading chapters. Please try again.</p></div>';
+            } catch (e) {
+                grid.innerHTML = '<div class="loading"><p>Error loading chapters.</p></div>';
             }
         }
 
-        // Select Chapter
         async function selectChapter(chapter) {
             currentChapter = chapter;
             pageHistory.push(currentPage);
+            history.pushState({ page: 'questions-page' }, '');
             navigateTo('questions-page');
             document.getElementById('questions-title').textContent = chapter;
+            document.getElementById('hero-chapter-name').textContent = chapter;
+            document.getElementById('hero-subtitle').textContent = 
+                `${CLASS_DATA[currentClass].name} • ${currentSubject}`;
             
             const list = document.getElementById('questions-list');
             list.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading questions...</p></div>';
 
             try {
                 const data = await fetchSheetData(CLASS_DATA[currentClass].url);
-                allQuestions = data.filter(row => 
-                    row.subject === currentSubject && row.chapter === chapter
+                allQuestions = data.filter(r => 
+                    r.subject === currentSubject && r.chapter === chapter
                 );
 
-                // Sort by chapter number and topic number
+                // Sort by chapter_number, topic_number
                 allQuestions.sort((a, b) => {
-                    const chapNumA = parseInt(a.chapter_number) || 0;
-                    const chapNumB = parseInt(b.chapter_number) || 0;
-                    if (chapNumA !== chapNumB) return chapNumA - chapNumB;
-                    
-                    const topicNumA = parseInt(a.topic_number) || 0;
-                    const topicNumB = parseInt(b.topic_number) || 0;
-                    return topicNumA - topicNumB;
+                    const ca = parseInt(a.chapter_number) || 0;
+                    const cb = parseInt(b.chapter_number) || 0;
+                    if (ca !== cb) return ca - cb;
+                    const ta = parseInt(a.topic_number) || 0;
+                    const tb = parseInt(b.topic_number) || 0;
+                    return ta - tb;
                 });
 
-                // Group by topic
-                const topics = {};
+                // Group by topic (preserving order)
+                const topics = [];
+                const topicMap = new Map();
                 allQuestions.forEach(q => {
-                    if (!topics[q.topic]) topics[q.topic] = [];
-                    topics[q.topic].push(q);
+                    const topic = q.topic || 'General';
+                    if (!topicMap.has(topic)) {
+                        topicMap.set(topic, []);
+                        topics.push(topic);
+                    }
+                    topicMap.get(topic).push(q);
                 });
 
-                selectedQuestions = new Set(allQuestions.map(q => q.id || JSON.stringify(q)));
+                selectedQuestions = new Set(allQuestions.map(q => q.id.toString()));
 
-                list.innerHTML = Object.entries(topics).map(([topic, questions]) => `
-                    <div class="topic-section">
-                        <div class="topic-header">
-                            <input type="checkbox" id="topic-${topic}" onchange="toggleTopic('${topic}', this.checked)">
-                            <label for="topic-${topic}" style="cursor: pointer; flex: 1;">
-                                <h3>📝 ${topic}</h3>
-                            </label>
-                        </div>
-                        ${questions.map(q => `
-                            <div class="question-item">
-                                <input type="checkbox" 
-                                    class="question-checkbox" 
-                                    data-topic="${topic}"
-                                    data-question="${q.id || JSON.stringify(q)}"
-                                    checked
-                                    onchange="toggleQuestion(this)">
-                                <div class="question-text">
-                                    <strong>Q:</strong> ${q.question}
-                                    ${q.image ? `<img src="${q.image}" class="question-image" alt="Question Image">` : ''}
-                                    <div class="answer-section">
-                                        <div>
-                                            <strong>A:</strong> ${q.answer}
-                                            <br>
-                                            <button class="explain-btn" onclick="explainWithAI('${q.id || JSON.stringify(q)}')">🤖 Explain with AI</button>
-                                            <div id="explanation-${q.id || JSON.stringify(q)}" class="explanation-box"></div>
-                                        </div>
-                                        ${q.answer_image ? `<img src="${q.answer_image}" class="answer-image" alt="Answer Image">` : ''}
-                                    </div>
-                                </div>
+                list.innerHTML = topics.map(topic => {
+                    const questions = topicMap.get(topic);
+                    const topicId = 'topic-' + encodeURIComponent(topic).replace(/%/g, '');
+                    return `
+                        <div class="topic-section">
+                            <div class="topic-header">
+                                <input type="checkbox" id="${topicId}" onchange="toggleTopic('${escapeAttr(topic)}', this.checked)">
+                                <label for="${topicId}">📝 ${escapeHtml(topic)}</label>
                             </div>
-                        `).join('')}
-                    </div>
-                `).join('');
+                            ${questions.map(q => renderQuestionItem(q)).join('')}
+                        </div>
+                    `;
+                }).join('');
 
                 updateTopicCheckboxes();
-            } catch (error) {
-                list.innerHTML = '<div class="loading"><p>Error loading questions. Please try again.</p></div>';
+            } catch (e) {
+                list.innerHTML = '<div class="loading"><p>Error loading questions.</p></div>';
             }
         }
 
-        // Fetch Sheet Data
+        function renderQuestionItem(q) {
+            const qId = q.id.toString();
+            let html = `
+                <div class="question-item">
+                    <input type="checkbox" class="question-checkbox" 
+                        data-topic="${escapeAttr(q.topic || 'General')}"
+                        data-qid="${qId}" checked
+                        onchange="toggleQuestion(this)">
+                    <div class="question-content">
+                        <div class="question-text">Q: ${escapeHtml(q.question)}</div>
+            `;
+            if (q.image && q.image.trim()) {
+                html += `<img src="${escapeAttr(q.image)}" class="question-image" alt="Question" onerror="this.style.display='none'">`;
+            }
+            html += `<div class="answer-section">
+                        <div class="answer-text"><strong>A:</strong> ${escapeHtml(q.answer || '')}</div>`;
+            // Answer image - check multiple possible column names
+            const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
+            if (ansImg && ansImg.toString().trim()) {
+                html += `<img src="${escapeAttr(ansImg)}" class="answer-image" alt="Answer" onerror="this.style.display='none'">`;
+            }
+            html += `</div></div></div>`;
+            return html;
+        }
+
         async function fetchSheetData(url) {
             const response = await fetch(url);
             const text = await response.text();
             const lines = text.split('\n').filter(line => line.trim());
-            const headers = lines[0].split('\t');
+            if (lines.length === 0) return [];
+            const headers = parseTSVLine(lines[0]);
             
             return lines.slice(1).map((line, index) => {
-                const values = line.split('\t');
+                const values = parseTSVLine(line);
                 const row = { id: index };
                 headers.forEach((header, i) => {
-                    const key = header.toLowerCase().trim();
+                    const key = header.toLowerCase().replace(/[\s""]/g, '_').replace(/_+/g, '_');
                     row[key] = values[i] || '';
                 });
                 return row;
             });
         }
 
-        // Toggle Topic
+        function parseTSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const ch = line[i];
+                if (ch === '"') {
+                    if (inQuotes && line[i+1] === '"') {
+                        current += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (ch === '\t' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += ch;
+                }
+            }
+            result.push(current.trim());
+            return result;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function escapeAttr(str) {
+            return escapeHtml(str).replace(/'/g, '&#39;');
+        }
+
         function toggleTopic(topic, checked) {
-            const checkboxes = document.querySelectorAll(`[data-topic="${topic}"]`);
-            checkboxes.forEach(cb => {
+            document.querySelectorAll(`.question-checkbox[data-topic="${CSS.escape(topic)}"]`).forEach(cb => {
                 cb.checked = checked;
                 toggleQuestion(cb);
             });
         }
 
-        // Toggle Question
-        function toggleQuestion(checkbox) {
-            const questionId = checkbox.dataset.question;
-            if (checkbox.checked) {
-                selectedQuestions.add(questionId);
-            } else {
-                selectedQuestions.delete(questionId);
-            }
+        function toggleQuestion(cb) {
+            const qid = cb.dataset.qid;
+            if (cb.checked) selectedQuestions.add(qid);
+            else selectedQuestions.delete(qid);
             updateTopicCheckboxes();
         }
 
-        // Update Topic Checkboxes
         function updateTopicCheckboxes() {
-            const topics = document.querySelectorAll('.topic-section');
-            topics.forEach(section => {
-                const checkboxes = section.querySelectorAll('.question-checkbox');
-                const checkedCount = section.querySelectorAll('.question-checkbox:checked').length;
-                const topicCheckbox = section.querySelector('input[type="checkbox"]:not(.question-checkbox)');
-                
-                if (checkedCount === checkboxes.length) {
-                    topicCheckbox.checked = true;
-                    topicCheckbox.indeterminate = false;
-                } else if (checkedCount > 0) {
-                    topicCheckbox.checked = false;
-                    topicCheckbox.indeterminate = true;
+            document.querySelectorAll('.topic-section').forEach(section => {
+                const cbs = section.querySelectorAll('.question-checkbox');
+                const checked = section.querySelectorAll('.question-checkbox:checked').length;
+                const topicCb = section.querySelector('.topic-header input[type="checkbox"]');
+                if (checked === cbs.length) {
+                    topicCb.checked = true;
+                    topicCb.indeterminate = false;
+                } else if (checked > 0) {
+                    topicCb.checked = false;
+                    topicCb.indeterminate = true;
                 } else {
-                    topicCheckbox.checked = false;
-                    topicCheckbox.indeterminate = false;
+                    topicCb.checked = false;
+                    topicCb.indeterminate = false;
                 }
             });
         }
 
-        // Explain with AI
-        async function explainWithAI(questionId) {
-            const question = allQuestions.find(q => (q.id || JSON.stringify(q)) === questionId);
-            if (!question) return;
-
-            const explanationBox = document.getElementById(`explanation-${questionId}`);
-            
-            if (aiExplanations[questionId]) {
-                explanationBox.textContent = aiExplanations[questionId];
-                explanationBox.classList.toggle('show');
-                return;
-            }
-
-            explanationBox.textContent = 'Loading explanation...';
-            explanationBox.classList.add('show');
-
-            try {
-                const response = await fetch('/api/quiz-ai', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        question: question.question,
-                        options: '',
-                        correctAnswer: question.answer,
-                        subject: currentSubject,
-                        chapter: currentChapter
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch explanation');
-                }
-
-                const data = await response.json();
-                aiExplanations[questionId] = data.explanation;
-                explanationBox.textContent = data.explanation;
-            } catch (error) {
-                explanationBox.textContent = 'Error loading explanation. Please try again.';
-            }
-        }
-
-        // Explain All with AI
-        async function explainAllWithAI() {
-            const buttons = document.querySelectorAll('.explain-btn');
-            for (let button of buttons) {
-                button.click();
-                await new Promise(resolve => setTimeout(resolve, 500));
-            }
-        }
-
-        // Show PDF Modal
         function showPDFModal() {
             document.getElementById('pdf-modal').classList.add('active');
         }
 
-        // Close PDF Modal
         function closePDFModal() {
             document.getElementById('pdf-modal').classList.remove('active');
         }
 
-        // Generate PDF
         async function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a4'
-            });
-
             const addWatermark = document.getElementById('watermark-option').checked;
+            const useCustomWatermark = document.getElementById('watermark-custom').checked;
+            const watermarkText = useCustomWatermark 
+                ? (document.getElementById('watermark-text').value || 'BY Arif Hussain')
+                : 'BY Arif Hussain';
             const addLogo = document.getElementById('logo-option').checked;
             const includeImages = document.getElementById('images-option').checked;
-            const includeExplanations = document.getElementById('explanations-option').checked;
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const pageHeight = doc.internal.pageSize.getHeight();
-            let yPos = 20;
 
-            // Title
-            doc.setFontSize(18);
-            doc.setFont(undefined, 'bold');
-            doc.text(currentChapter, pageWidth / 2, yPos, { align: 'center' });
-            yPos += 10;
+            const selectedData = allQuestions.filter(q => selectedQuestions.has(q.id.toString()));
 
-            doc.setFontSize(12);
-            doc.setFont(undefined, 'normal');
-            doc.text(`${CLASS_DATA[currentClass].name} - ${currentSubject}`, pageWidth / 2, yPos, { align: 'center' });
-            yPos += 15;
-
-            // Group selected questions by topic
-            const selectedData = allQuestions.filter(q => 
-                selectedQuestions.has(q.id || JSON.stringify(q))
-            );
-
-            const topics = {};
+            // Group by topic (preserving order)
+            const topics = [];
+            const topicMap = new Map();
             selectedData.forEach(q => {
-                if (!topics[q.topic]) topics[q.topic] = [];
-                topics[q.topic].push(q);
+                const topic = q.topic || 'General';
+                if (!topicMap.has(topic)) {
+                    topicMap.set(topic, []);
+                    topics.push(topic);
+                }
+                topicMap.get(topic).push(q);
             });
 
-            doc.setFontSize(11);
+            if (selectedData.length === 0) {
+                alert('Please select at least one question!');
+                return;
+            }
 
-            for (const [topic, questions] of Object.entries(topics)) {
-                if (yPos > pageHeight - 40) {
-                    if (addWatermark) addWatermarkToPage(doc, pageWidth, pageHeight);
-                    doc.addPage();
-                    yPos = 20;
-                }
+            // Build PDF HTML structure
+            const container = document.getElementById('pdf-render-container');
+            container.innerHTML = '';
 
-                doc.setFont(undefined, 'bold');
-                doc.setFontSize(14);
-                doc.setTextColor(99, 102, 241);
-                doc.text(`📝 ${topic}`, 15, yPos);
-                yPos += 8;
-                doc.setTextColor(0, 0, 0);
+            // Preload images if needed
+            if (includeImages) {
+                const imgPromises = [];
+                selectedData.forEach(q => {
+                    if (q.image && q.image.trim()) {
+                        imgPromises.push(preloadImage(q.image));
+                    }
+                    const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
+                    if (ansImg && ansImg.toString().trim()) {
+                        imgPromises.push(preloadImage(ansImg));
+                    }
+                });
+                await Promise.allSettled(imgPromises);
+            }
 
-                questions.forEach((q, index) => {
-                    if (yPos > pageHeight - 30) {
-                        if (addWatermark) addWatermarkToPage(doc, pageWidth, pageHeight);
-                        doc.addPage();
-                        yPos = 20;
+            // Create page
+            const pageDiv = document.createElement('div');
+            pageDiv.className = 'pdf-page';
+            
+            // Watermark
+            if (addWatermark && watermarkText) {
+                const wm = document.createElement('div');
+                wm.className = 'watermark';
+                wm.textContent = watermarkText;
+                pageDiv.appendChild(wm);
+            }
+
+            // Content wrapper
+            const content = document.createElement('div');
+            content.className = 'pdf-content';
+
+            // Chapter title (hero)
+            const title = document.createElement('div');
+            title.className = 'pdf-chapter-title';
+            title.textContent = currentChapter;
+            content.appendChild(title);
+
+            const subtitle = document.createElement('div');
+            subtitle.className = 'pdf-subtitle';
+            subtitle.textContent = `${CLASS_DATA[currentClass].name} • ${currentSubject}`;
+            content.appendChild(subtitle);
+
+            let qCounter = 1;
+            topics.forEach(topic => {
+                const topicHeader = document.createElement('div');
+                topicHeader.className = 'pdf-topic';
+                topicHeader.textContent = '📝 ' + topic;
+                content.appendChild(topicHeader);
+
+                topicMap.get(topic).forEach(q => {
+                    const qDiv = document.createElement('div');
+                    qDiv.className = 'pdf-question';
+                    qDiv.textContent = `Q${qCounter}: ${q.question}`;
+                    content.appendChild(qDiv);
+
+                    if (includeImages && q.image && q.image.trim()) {
+                        const img = document.createElement('img');
+                        img.className = 'pdf-image';
+                        img.src = q.image;
+                        content.appendChild(img);
                     }
 
-                    doc.setFont(undefined, 'bold');
-                    const questionLines = doc.splitTextToSize(`Q${index + 1}: ${q.question}`, pageWidth - 30);
-                    doc.text(questionLines, 15, yPos);
-                    yPos += questionLines.length * 5 + 2;
+                    const aDiv = document.createElement('div');
+                    aDiv.className = 'pdf-answer';
+                    aDiv.textContent = 'A: ' + (q.answer || '');
+                    content.appendChild(aDiv);
 
-                    if (includeImages && q.image) {
-                        try {
-                            doc.addImage(q.image, 'PNG', 15, yPos, 40, 30);
-                            yPos += 32;
-                        } catch (e) {
-                            console.log('Image load error');
-                        }
+                    const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
+                    if (includeImages && ansImg && ansImg.toString().trim()) {
+                        const img = document.createElement('img');
+                        img.className = 'pdf-answer-img';
+                        img.src = ansImg;
+                        content.appendChild(img);
                     }
 
-                    doc.setFont(undefined, 'normal');
-                    const answerLines = doc.splitTextToSize(`A: ${q.answer}`, pageWidth - 30);
-                    doc.text(answerLines, 15, yPos);
-                    yPos += answerLines.length * 5 + 2;
+                    qCounter++;
+                });
+            });
 
-                    if (includeImages && q.answer_image) {
-                        try {
-                            doc.addImage(q.answer_image, 'PNG', 15, yPos, 35, 25);
-                            yPos += 27;
-                        } catch (e) {
-                            console.log('Answer image load error');
-                        }
-                    }
+            pageDiv.appendChild(content);
 
-                    if (includeExplanations && aiExplanations[q.id || JSON.stringify(q)]) {
-                        doc.setFontSize(9);
-                        doc.setTextColor(59, 130, 246);
-                        const explanationLines = doc.splitTextToSize(`AI Explanation: ${aiExplanations[q.id || JSON.stringify(q)]}`, pageWidth - 30);
-                        doc.text(explanationLines, 15, yPos);
-                        yPos += explanationLines.length * 4 + 3;
-                        doc.setTextColor(0, 0, 0);
-                        doc.setFontSize(11);
-                    }
+            // Logo
+            if (addLogo) {
+                const logo = document.createElement('img');
+                logo.className = 'pdf-footer-logo';
+                logo.src = 'https://i.ibb.co/7qJGpT1/icon-192.png';
+                pageDiv.appendChild(logo);
+            }
 
-                    yPos += 3;
+            container.appendChild(pageDiv);
+
+            // Wait for fonts
+            await document.fonts.ready;
+            await new Promise(r => setTimeout(r, 300));
+
+            try {
+                const canvas = await html2canvas(pageDiv, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    logging: false
                 });
 
-                yPos += 5;
-            }
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
 
-            if (addWatermark) {
-                const totalPages = doc.internal.getNumberOfPages();
-                for (let i = 1; i <= totalPages; i++) {
-                    doc.setPage(i);
-                    addWatermarkToPage(doc, pageWidth, pageHeight);
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = pageWidth;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                // Split into multiple A4 pages
+                let heightLeft = imgHeight;
+                let position = 0;
+                let pageIndex = 0;
+
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+                while (heightLeft > 0) {
+                    if (pageIndex > 0) pdf.addPage();
+                    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                    position -= pageHeight;
+                    pageIndex++;
                 }
+
+                pdf.save(`${currentChapter}.pdf`);
+            } catch (err) {
+                console.error(err);
+                alert('PDF generation failed: ' + err.message);
             }
 
-            if (addLogo) {
-                const totalPages = doc.internal.getNumberOfPages();
-                doc.setPage(totalPages);
-                doc.addImage('https://i.ibb.co/7qJGpT1/icon-192.png', 'PNG', pageWidth - 20, pageHeight - 15, 15, 15);
-            }
-
-            doc.save(`${currentChapter}.pdf`);
             closePDFModal();
         }
 
-        // Add Watermark
-        function addWatermarkToPage(doc, pageWidth, pageHeight) {
-            doc.saveGraphicsState();
-            doc.setGState(new doc.GState({ opacity: 0.1 }));
-            doc.setFontSize(40);
-            doc.setTextColor(150, 150, 150);
-            doc.text('BY Arif Hussain', pageWidth / 2, pageHeight / 2, {
-                align: 'center',
-                angle: 45
+        function preloadImage(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
             });
-            doc.restoreGraphicsState();
         }
 
-        // Navigation
         function navigateTo(pageId) {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             currentPage = pageId;
             window.scrollTo(0, 0);
@@ -1026,18 +1169,18 @@
 
         function goBack() {
             if (pageHistory.length > 0) {
-                const previousPage = pageHistory.pop();
-                navigateTo(previousPage);
+                const prev = pageHistory.pop();
+                navigateTo(prev);
                 history.back();
             } else {
                 navigateTo('home-page');
             }
         }
 
-        function handlePopState(event) {
+        function handlePopState() {
             if (pageHistory.length > 0) {
-                const previousPage = pageHistory.pop();
-                navigateTo(previousPage);
+                const prev = pageHistory.pop();
+                navigateTo(prev);
             } else {
                 navigateTo('home-page');
             }
@@ -1048,7 +1191,7 @@
         }
 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js');
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
         }
     </script>
 </body>
