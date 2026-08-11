@@ -49,8 +49,7 @@
         .hero::before {
             content: '';
             position: absolute;
-            width: 200%;
-            height: 200%;
+            width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
             background-size: 50px 50px;
             animation: moveBackground 20s linear infinite;
@@ -100,8 +99,7 @@
 
         .scroll-indicator {
             position: fixed;
-            bottom: 2rem;
-            left: 50%;
+            bottom: 2rem; left: 50%;
             transform: translateX(-50%);
             color: white;
             font-size: 2rem;
@@ -170,6 +168,7 @@
 
         .subject-card h3, .chapter-card h3 { color: var(--primary); margin-bottom: 0.5rem; }
 
+        /* ===== Hero Heading (SWAPPED: Class•Subject on top, Chapter below) ===== */
         .hero-heading {
             background: var(--gradient);
             color: white;
@@ -182,10 +181,10 @@
 
         .hero-heading small {
             display: block;
-            font-size: 1rem;
-            opacity: 0.9;
+            font-size: 1.1rem;
+            opacity: 0.95;
             margin-top: 0.5rem;
-            font-weight: 400;
+            font-weight: 500;
         }
 
         .questions-container { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
@@ -238,33 +237,18 @@
 
         .topic-header input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
         .topic-header label {
-            flex: 1;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin: 0;
+            flex: 1; cursor: pointer;
+            font-size: 1.1rem; font-weight: 600;
+            color: var(--primary); margin: 0;
         }
 
-        .question-item {
-            padding: 0.8rem 0.5rem;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
+        .question-item { padding: 0.8rem 0.5rem; border-radius: 8px; transition: background 0.2s; }
         .question-item:hover { background: #f8fafc; }
 
-        .question-top {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.6rem;
-        }
-
+        .question-top { display: flex; align-items: flex-start; gap: 0.6rem; }
         .question-top input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            margin-top: 4px;
+            width: 18px; height: 18px;
+            cursor: pointer; margin-top: 4px;
             flex-shrink: 0;
         }
 
@@ -279,8 +263,7 @@
         }
 
         .question-image {
-            max-width: 220px;
-            max-height: 160px;
+            max-width: 220px; max-height: 160px;
             margin: 0.5rem 0;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -304,13 +287,10 @@
             font-size: 0.9rem;
         }
 
-        .answer-line table td, .answer-line table th {
-            padding: 4px 8px;
-        }
+        .answer-line table td, .answer-line table th { padding: 4px 8px; }
 
         .answer-image {
-            max-width: 180px;
-            max-height: 130px;
+            max-width: 180px; max-height: 130px;
             margin-top: 0.3rem;
             border-radius: 6px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.08);
@@ -359,12 +339,9 @@
 
         .checkbox-group { margin-bottom: 1rem; }
         .checkbox-group label {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.6rem;
-            cursor: pointer;
-            border-radius: 8px;
+            display: flex; align-items: center;
+            gap: 0.6rem; padding: 0.6rem;
+            cursor: pointer; border-radius: 8px;
             transition: background 0.2s;
         }
         .checkbox-group label:hover { background: #f1f5f9; }
@@ -375,8 +352,7 @@
             border: 4px solid #f3f4f6;
             border-top: 4px solid var(--primary);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             animation: spin 1s linear infinite;
             margin: 0 auto 1rem;
         }
@@ -387,8 +363,7 @@
 
         .progress-bar {
             display: none;
-            width: 100%;
-            height: 8px;
+            width: 100%; height: 8px;
             background: #e2e8f0;
             border-radius: 4px;
             overflow: hidden;
@@ -402,7 +377,7 @@
             transition: width 0.3s;
         }
 
-        /* ============ PDF RENDER STYLES (Hidden Container) ============ */
+        /* ============ PDF RENDER STYLES ============ */
         #pdf-render-container {
             position: absolute;
             left: -9999px;
@@ -411,10 +386,10 @@
         }
 
         .pdf-page {
-            width: 794px;           /* A4 width at 96 DPI */
-            height: 1123px;         /* A4 height at 96 DPI */
+            width: 794px;
+            height: 1123px;
             background: white;
-            padding: 75px 70px;     /* ~26mm/25mm margins */
+            padding: 70px 70px 80px 70px;
             font-family: 'Hind Siliguri', sans-serif;
             color: #1e293b;
             position: relative;
@@ -425,36 +400,52 @@
 
         .pdf-watermark {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%) rotate(-45deg);
             font-size: 70px;
-            color: rgba(150, 150, 150, 0.12);
+            color: rgba(150, 150, 150, 0.10);
             font-weight: bold;
             pointer-events: none;
             white-space: nowrap;
             z-index: 0;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+        }
+
+        .pdf-watermark-footer {
+            position: absolute;
+            bottom: 25px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: rgba(150, 150, 150, 0.35);
+            font-weight: 600;
+            z-index: 0;
+            letter-spacing: 1px;
         }
 
         .pdf-content { position: relative; z-index: 1; }
 
-        .pdf-chapter-title {
+        .pdf-hero-title {
             text-align: center;
             font-size: 24px;
             font-weight: 700;
             color: #1e293b;
-            margin-bottom: 6px;
-            padding-bottom: 10px;
-            border-bottom: 2.5px solid #667eea;
+            margin-bottom: 4px;
         }
 
-        .pdf-subtitle {
+        .pdf-hero-subtitle {
             text-align: center;
-            font-size: 12.5px;
-            color: #64748b;
-            margin-bottom: 20px;
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .pdf-hero-divider {
+            width: 100%;
+            height: 2.5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            margin-bottom: 18px;
+            border-radius: 2px;
         }
 
         .pdf-topic {
@@ -469,7 +460,7 @@
 
         .pdf-topic:first-child { margin-top: 0; }
 
-        .pdf-qa-block { margin-bottom: 12px; }
+        .pdf-qa-block { margin-bottom: 14px; }
 
         .pdf-question {
             color: #c53030;
@@ -480,8 +471,7 @@
         }
 
         .pdf-question img {
-            max-width: 220px;
-            max-height: 150px;
+            max-width: 220px; max-height: 150px;
             margin: 5px 0;
             object-fit: contain;
             display: block;
@@ -500,13 +490,11 @@
         }
 
         .pdf-answer img {
-            max-width: 180px;
-            max-height: 120px;
+            max-width: 180px; max-height: 120px;
             margin: 4px 0;
             object-fit: contain;
         }
 
-        /* HTML Table Support in PDF */
         .pdf-answer table {
             border-collapse: collapse;
             width: 100%;
@@ -535,29 +523,26 @@
 
         .pdf-footer-logo {
             position: absolute;
-            bottom: 20px;
-            right: 25px;
-            width: 28px;
-            height: 28px;
+            bottom: 20px; right: 25px;
+            width: 28px; height: 28px;
             opacity: 0.6;
         }
 
         .pdf-page-num {
             position: absolute;
-            bottom: 22px;
-            left: 0;
-            right: 0;
+            bottom: 22px; left: 0; right: 0;
             text-align: center;
             font-size: 10px;
             color: #94a3b8;
+            z-index: 1;
         }
 
-        /* Measuring container (off-screen, auto height) */
+        /* Measuring container */
         #pdf-measure-container {
             position: absolute;
             left: -9999px;
             top: 0;
-            width: 654px; /* A4 width minus side margins (794 - 70*2) */
+            width: 654px;
             background: white;
             font-family: 'Hind Siliguri', sans-serif;
             color: #1e293b;
@@ -566,33 +551,30 @@
             z-index: -1;
         }
 
-        #pdf-measure-container .pdf-chapter-title,
-        #pdf-measure-container .pdf-subtitle,
-        #pdf-measure-container .pdf-topic,
-        #pdf-measure-container .pdf-qa-block,
-        #pdf-measure-container .pdf-question,
-        #pdf-measure-container .pdf-answer,
-        #pdf-measure-container table {
-            all: revert;
+        #pdf-measure-container .pdf-hero-title {
+            text-align: center; font-size: 24px; font-weight: 700; margin-bottom: 4px;
         }
-
-        #pdf-measure-container .pdf-chapter-title {
-            text-align: center; font-size: 24px; font-weight: 700;
-            margin-bottom: 6px; padding-bottom: 10px; border-bottom: 2.5px solid #667eea;
+        #pdf-measure-container .pdf-hero-subtitle {
+            text-align: center; font-size: 14px; font-weight: 600; color: #667eea; margin-bottom: 8px;
         }
-        #pdf-measure-container .pdf-subtitle {
-            text-align: center; font-size: 12.5px; color: #64748b; margin-bottom: 20px; font-weight: 500;
+        #pdf-measure-container .pdf-hero-divider {
+            width: 100%; height: 2.5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            margin-bottom: 18px; border-radius: 2px;
         }
         #pdf-measure-container .pdf-topic {
             font-size: 15px; font-weight: 700; color: #667eea;
-            margin-top: 18px; margin-bottom: 10px; padding-left: 10px; border-left: 3.5px solid #667eea;
+            margin-top: 18px; margin-bottom: 10px;
+            padding-left: 10px; border-left: 3.5px solid #667eea;
         }
-        #pdf-measure-container .pdf-qa-block { margin-bottom: 12px; }
+        #pdf-measure-container .pdf-qa-block { margin-bottom: 14px; }
         #pdf-measure-container .pdf-question {
-            color: #c53030; font-weight: 600; font-size: 13px; line-height: 1.55; margin-bottom: 4px;
+            color: #c53030; font-weight: 600; font-size: 13px;
+            line-height: 1.55; margin-bottom: 4px;
         }
         #pdf-measure-container .pdf-question img {
-            max-width: 220px; max-height: 150px; margin: 5px 0; object-fit: contain; display: block;
+            max-width: 220px; max-height: 150px;
+            margin: 5px 0; object-fit: contain; display: block;
         }
         #pdf-measure-container .pdf-answer {
             font-size: 12.5px; line-height: 1.5; color: #1e293b; padding-left: 18px;
@@ -660,9 +642,10 @@
             <button class="back-btn" onclick="goBack()">← Back</button>
             <div class="nav-title" id="questions-title">Questions</div>
         </div>
+        <!-- SWAPPED: Class•Subject on top (hero), Chapter name below -->
         <div class="hero-heading" id="chapter-hero">
-            <span id="hero-chapter-name">Chapter</span>
-            <small id="hero-subtitle">Class - Subject</small>
+            <span id="hero-main-title">Class • Subject</span>
+            <small id="hero-chapter-name">Chapter Name</small>
         </div>
         <div class="questions-container">
             <div class="controls">
@@ -739,10 +722,11 @@
         // A4 page constants (px at 96 DPI)
         const PAGE_WIDTH_PX = 794;
         const PAGE_HEIGHT_PX = 1123;
-        const MARGIN_TOP = 75;
-        const MARGIN_BOTTOM = 75;
+        const MARGIN_TOP = 70;
+        const MARGIN_BOTTOM = 80;
         const MARGIN_SIDE = 70;
         const CONTENT_HEIGHT_PX = PAGE_HEIGHT_PX - MARGIN_TOP - MARGIN_BOTTOM;
+        const SAFETY_BUFFER = 30;
 
         document.addEventListener('DOMContentLoaded', () => {
             renderClassCards();
@@ -828,8 +812,9 @@
             history.pushState({ page: 'questions-page' }, '');
             navigateTo('questions-page');
             document.getElementById('questions-title').textContent = chapter;
+            // SWAPPED: Class•Subject on top, Chapter name below
+            document.getElementById('hero-main-title').textContent = `${CLASS_DATA[currentClass].name} • ${currentSubject}`;
             document.getElementById('hero-chapter-name').textContent = chapter;
-            document.getElementById('hero-subtitle').textContent = `${CLASS_DATA[currentClass].name} • ${currentSubject}`;
             const list = document.getElementById('questions-list');
             list.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading questions...</p></div>';
             try {
@@ -847,10 +832,7 @@
                 const topicMap = new Map();
                 allQuestions.forEach(q => {
                     const topic = q.topic || 'General';
-                    if (!topicMap.has(topic)) {
-                        topicMap.set(topic, []);
-                        topics.push(topic);
-                    }
+                    if (!topicMap.has(topic)) { topicMap.set(topic, []); topics.push(topic); }
                     topicMap.get(topic).push(q);
                 });
                 selectedQuestions = new Set(allQuestions.map(q => q.id.toString()));
@@ -972,7 +954,7 @@
         function showPDFModal() { document.getElementById('pdf-modal').classList.add('active'); }
         function closePDFModal() { document.getElementById('pdf-modal').classList.remove('active'); }
 
-        // ============ SMART PDF GENERATOR ============
+        // ============ SMART PDF GENERATOR WITH COPY LOCK ============
         async function generatePDF() {
             const addWatermark = document.getElementById('watermark-option').checked;
             const useCustomWatermark = document.getElementById('watermark-custom').checked;
@@ -996,7 +978,6 @@
             progressBar.classList.add('active');
             progressFill.style.width = '10%';
 
-            // Group by topic (preserve order)
             const topics = [];
             const topicMap = new Map();
             selectedData.forEach(q => {
@@ -1005,7 +986,6 @@
                 topicMap.get(topic).push(q);
             });
 
-            // Preload all images
             if (includeImages) {
                 const imgPromises = [];
                 selectedData.forEach(q => {
@@ -1018,29 +998,30 @@
 
             progressFill.style.width = '20%';
 
-            // STEP 1: Measure each element's height using off-screen container
+            // STEP 1: Measure each element's height with margins
             const measureContainer = document.getElementById('pdf-measure-container');
             measureContainer.innerHTML = '';
 
             const measurements = [];
             let qCounter = 1;
 
-            // Chapter title + subtitle block
+            // Header block (SWAPPED: Class•Subject on top, Chapter below)
             const headerWrap = document.createElement('div');
             headerWrap.innerHTML = `
-                <div class="pdf-chapter-title">${escapeHtml(currentChapter)}</div>
-                <div class="pdf-subtitle">${escapeHtml(CLASS_DATA[currentClass].name)} • ${escapeHtml(currentSubject)}</div>
+                <div class="pdf-hero-title">${escapeHtml(CLASS_DATA[currentClass].name)} • ${escapeHtml(currentSubject)}</div>
+                <div class="pdf-hero-subtitle">${escapeHtml(currentChapter)}</div>
+                <div class="pdf-hero-divider"></div>
             `;
             measureContainer.appendChild(headerWrap);
             await waitForRender();
-            measurements.push({ type: 'header', height: headerWrap.offsetHeight, html: headerWrap.innerHTML });
+            measurements.push({ type: 'header', height: getFullHeight(headerWrap), html: headerWrap.innerHTML });
 
             topics.forEach(topic => {
                 const topicDiv = document.createElement('div');
                 topicDiv.className = 'pdf-topic';
                 topicDiv.textContent = '📝 ' + topic;
                 measureContainer.appendChild(topicDiv);
-                measurements.push({ type: 'topic', height: topicDiv.offsetHeight, html: `<div class="pdf-topic">📝 ${escapeHtml(topic)}</div>` });
+                measurements.push({ type: 'topic', height: getFullHeight(topicDiv), html: `<div class="pdf-topic">📝 ${escapeHtml(topic)}</div>` });
 
                 topicMap.get(topic).forEach(q => {
                     const block = document.createElement('div');
@@ -1061,32 +1042,30 @@
 
                     block.innerHTML = qHTML + aHTML;
                     measureContainer.appendChild(block);
-                    measurements.push({ type: 'qa', height: block.offsetHeight, html: block.outerHTML });
+                    measurements.push({ type: 'qa', height: getFullHeight(block), html: block.outerHTML });
                     qCounter++;
                 });
             });
 
             progressFill.style.width = '40%';
 
-            // STEP 2: Smart page layout - keep Q+A together
+            // STEP 2: Smart page layout with strict bottom margin
             const pages = [];
             let currentPageItems = [];
             let usedHeight = 0;
-            const HEADER_RESERVE = 0; // header already on first page
 
             for (let i = 0; i < measurements.length; i++) {
                 const item = measurements[i];
                 const isFirstHeader = i === 0 && item.type === 'header';
 
-                // For topic/qa blocks, ensure they don't split
                 if (isFirstHeader) {
                     currentPageItems.push(item);
                     usedHeight += item.height;
                     continue;
                 }
 
-                if (usedHeight + item.height > CONTENT_HEIGHT_PX) {
-                    // Finish current page
+                // Strict check: if item doesn't fit with safety buffer, move to next page
+                if (usedHeight + item.height > CONTENT_HEIGHT_PX - SAFETY_BUFFER) {
                     if (currentPageItems.length > 0) pages.push(currentPageItems);
                     currentPageItems = [item];
                     usedHeight = item.height;
@@ -1099,7 +1078,7 @@
 
             progressFill.style.width = '50%';
 
-            // STEP 3: Render each page as separate div
+            // STEP 3: Render each page
             const renderContainer = document.getElementById('pdf-render-container');
             renderContainer.innerHTML = '';
 
@@ -1112,6 +1091,11 @@
                     wm.className = 'pdf-watermark';
                     wm.textContent = watermarkText;
                     pageDiv.appendChild(wm);
+
+                    const wmFooter = document.createElement('div');
+                    wmFooter.className = 'pdf-watermark-footer';
+                    wmFooter.textContent = watermarkText;
+                    pageDiv.appendChild(wmFooter);
                 }
 
                 const content = document.createElement('div');
@@ -1145,9 +1129,19 @@
 
             progressFill.style.width = '60%';
 
-            // STEP 4: Capture each page separately
+            // STEP 4: Capture each page as IMAGE (no text layer = no copy)
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+            // PDF Security Metadata
+            pdf.setProperties({
+                title: currentChapter,
+                subject: currentSubject,
+                author: watermarkText || 'BY Arif Hussain',
+                creator: 'Universal Quiz System',
+                keywords: 'quiz, education, protected',
+                protected: true
+            });
 
             const pageDivs = renderContainer.querySelectorAll('.pdf-page');
             const totalPages = pageDivs.length;
@@ -1166,6 +1160,7 @@
                         height: PAGE_HEIGHT_PX
                     });
 
+                    // Convert to JPEG (image-based, no text layer)
                     const imgData = canvas.toDataURL('image/jpeg', 0.95);
                     const pageWidthMM = pdf.internal.pageSize.getWidth();
                     const pageHeightMM = pdf.internal.pageSize.getHeight();
@@ -1187,6 +1182,13 @@
                 genBtn.textContent = '💾 Save as PDF';
                 closePDFModal();
             }, 500);
+        }
+
+        function getFullHeight(element) {
+            const style = window.getComputedStyle(element);
+            const marginTop = parseFloat(style.marginTop) || 0;
+            const marginBottom = parseFloat(style.marginBottom) || 0;
+            return element.offsetHeight + marginTop + marginBottom;
         }
 
         function preloadImage(url) {
