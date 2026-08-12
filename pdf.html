@@ -7,6 +7,10 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="https://i.ibb.co/7qJGpT1/icon-192.png">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- KaTeX for Math/LaTeX rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -732,7 +736,7 @@
 
     <script>
         const CLASS_DATA = {
-            'class-5': { name: 'Class 5', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxpBxo2TsVkwERn8vLB_QioPRcmb8jUq4j-Ty1lO2apcfh5INuD_EUtCCo0KTHozdv7OIziPCFezSt/pub?output=tsv' },
+            'class-5': { name: 'Class 5', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxpBxo2 TsVkwERn8vLB_QioPRcmb8jUq4j-Ty1lO2apcfh5INuD_EUtCCo0KTHozdv7OIziPCFezSt/pub?output=tsv' },
             'class-6': { name: 'Class 6', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vREQlxiDlpTm6VhhE5hSE5eDHX-pBTkPWXUKmOg91Co0ajB26PU2j651imGRKJ11Z-Dzmi-ftdiIwjj/pub?output=tsv' },
             'class-7': { name: 'Class 7', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbivu3W0_RbadB9g7x-KbDTQ6kmfNg3074FEc6HONECtVfJctWS1EtdCzkHccQ8KQCUUhp6YEqahtu/pub?output=tsv' },
             'class-8': { name: 'Class 8', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVHdP2gFappkd8SYZQdXQx4W5n4OeKAjdPFtfRGwUv3k6iaTy8WeuAbZ-5kLKEZzUK9Bj6LrLUdm69/pub?output=tsv' },
@@ -759,6 +763,30 @@
 
         // Fixed QR URL
         const QR_WEBSITE = 'https://megaquizwb.vercel.app';
+
+        // KaTeX delimiters configuration
+        const KATEX_DELIMITERS = [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            {left: "\\(", right: "\\)", display: false},
+            {left: "\\[", right: "\\]", display: true},
+            {left: "((", right: "))", display: false}
+        ];
+
+        // Helper function to render LaTeX in an element
+        function renderLatex(element) {
+            if (window.renderMathInElement && element) {
+                try {
+                    window.renderMathInElement(element, {
+                        delimiters: KATEX_DELIMITERS,
+                        throwOnError: false,
+                        errorColor: '#cc0000'
+                    });
+                } catch (e) {
+                    console.warn('KaTeX render error:', e);
+                }
+            }
+        }
 
         // Mobile detection
         function isMobile() {
@@ -889,6 +917,8 @@
                         </div>
                     `;
                 }).join('');
+                // Render LaTeX after questions are inserted
+                renderLatex(list);
                 updateTopicCheckboxes();
             } catch (e) {
                 list.innerHTML = '<div class="loading"><p>Error loading questions.</p></div>';
@@ -1107,6 +1137,8 @@
                     aHTML += `</div>`;
 
                     block.innerHTML = qHTML + aHTML;
+                    // Render LaTeX in measure block BEFORE measuring height
+                    renderLatex(block);
                     measureContainer.appendChild(block);
                     measurements.push({ type: 'qa', height: getFullHeight(block), html: block.outerHTML });
                     qCounter++;
@@ -1173,6 +1205,8 @@
                     while (div.firstChild) content.appendChild(div.firstChild);
                 });
                 pageDiv.appendChild(content);
+                // Render LaTeX in final render container for each page
+                renderLatex(content);
 
                 if (addLogo) {
                     const logo = document.createElement('img');
