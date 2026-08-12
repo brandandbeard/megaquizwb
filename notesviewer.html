@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=yes">
 <title>Class 10 Notes | Mega QUIZ</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
@@ -326,6 +328,12 @@ body.day .search-bar{background:#FFFDF5;border:1px solid #E6D5B8}
 .ai-typing::after{content:'▊';animation:blink .8s infinite;color:#f97316}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .highlight-match{background:rgba(249,115,22,0.25);border-radius:3px;padding:0 2px}
+.katex{font-size:1.1em!important;line-height:1.6}
+.katex-display{margin:18px 0;text-align:center;overflow-x:auto;overflow-y:hidden;padding:8px 0}
+.katex-display>.katex{font-size:1.3em!important}
+body.day .katex{color:#000}
+body.night .katex{color:#e8e8f0}
+.katex .mord,.katex .mbin,.katex .mrel,.katex .mopen,.katex .mclose,.katex .mpunct,.katex .minner{color:inherit}
 @media(max-width:768px){
 .sidebar{position:fixed;top:72px;left:0;bottom:0;transform:translateX(-100%);width:300px;background:rgba(10,10,26,0.97);box-shadow:8px 0 40px rgba(0,0,0,0.5);transition:transform .4s;padding-top:3.5rem;z-index:240}
 body.day .sidebar{background:#FFFCF0}
@@ -910,6 +918,10 @@ class SmartEngine{
     render(text){
         if(!text)return'';
         if(/<!doctype\s+html|<html[\s>]/i.test(text))return this._renderHTMLIframe(text);
+        
+        // Render LaTeX formulas first before any other processing
+        text = this._renderLatex(text);
+        
         let out='';const lines=text.split('\n');let htmlBuf=[],txtBuf=[];
         for(let i=0;i<lines.length;i++){
             const line=lines[i],tr=line.trim();
@@ -925,6 +937,56 @@ class SmartEngine{
         if(htmlBuf.length)out+=this._html(htmlBuf.join('\n'));
         if(txtBuf.length)out+=this._txt(txtBuf.join('\n'));
         return out;
+    }
+    _renderLatex(text) {
+        if (typeof katex === 'undefined') return text;
+        
+        // Handle ((...)) pattern for display math (chemical formulas, equations)
+        text = text.replace(/\(\(([\s\S]+?)\)\)/g, (match, latex) => {
+            try {
+                return '<div class="katex-display" style="text-align:center;margin:12px 0">' + katex.renderToString(latex, { displayMode: true, throwOnError: false }) + '</div>';
+            } catch (e) {
+                return match;
+            }
+        });
+        
+        // Handle $$...$$ pattern for display math
+        text = text.replace(/\$\$([\s\S]+?)\$\$/g, (match, latex) => {
+            try {
+                return '<div class="katex-display" style="text-align:center;margin:12px 0">' + katex.renderToString(latex, { displayMode: true, throwOnError: false }) + '</div>';
+            } catch (e) {
+                return match;
+            }
+        });
+        
+        // Handle \(...\) pattern for inline math
+        text = text.replace(/\\\(([\s\S]+?)\\\)/g, (match, latex) => {
+            try {
+                return katex.renderToString(latex, { displayMode: false, throwOnError: false });
+            } catch (e) {
+                return match;
+            }
+        });
+        
+        // Handle \[...\] pattern for display math
+        text = text.replace(/\\\[([\s\S]+?)\\\]/g, (match, latex) => {
+            try {
+                return '<div class="katex-display" style="text-align:center;margin:12px 0">' + katex.renderToString(latex, { displayMode: true, throwOnError: false }) + '</div>';
+            } catch (e) {
+                return match;
+            }
+        });
+        
+        // Handle $...$ pattern for inline math (must be after $$)
+        text = text.replace(/\$([^\$\n]+?)\$/g, (match, latex) => {
+            try {
+                return katex.renderToString(latex, { displayMode: false, throwOnError: false });
+            } catch (e) {
+                return match;
+            }
+        });
+        
+        return text;
     }
     _renderHTMLIframe(html){
         const dk=document.body.classList.contains('night');
@@ -1412,8 +1474,9 @@ function renderChapter(subject,chapter){
     currentChapter=chapter;currentTopic=null;
     const rows=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
     if(!rows.length){dynamicContent.innerHTML='<div class="empty-state"><p>এই chapter-এ প্রশ্ন নেই।</p></div>';return}
-    const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
-    const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
+    // Empty type defaults to SAQ
+    const saq=rows.filter(r=>!r.type||r.type.toLowerCase()==='saq');
+    const broad=rows.filter(r=>r.type&&r.type.toLowerCase()!=='saq');
     const simRows=getSimulations(rows);
     const vidRows=getVideos(rows);
     const bannerImg=getChapterBannerImage(subject,chapter);
@@ -1430,8 +1493,9 @@ function renderTopicView(subject,chapter,topic){
     const all=allData.filter(r=>r.subject===subject&&r.chapter===chapter);
     const rows=all.filter(r=>topicOf(r)===topic);
     if(!rows.length){renderChapter(subject,chapter);return}
-    const saq=rows.filter(r=>r.type.toLowerCase()==='saq');
-    const broad=rows.filter(r=>r.type.toLowerCase()!=='saq');
+    // Empty type defaults to SAQ
+    const saq=rows.filter(r=>!r.type||r.type.toLowerCase()==='saq');
+    const broad=rows.filter(r=>r.type&&r.type.toLowerCase()!=='saq');
     const simRows=getSimulations(rows);
     const vidRows=getVideos(rows);
     const topicImg=getTopicImage(subject,chapter,topic);
