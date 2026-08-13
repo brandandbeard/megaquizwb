@@ -301,6 +301,44 @@
             display: inline-block;
         }
 
+        /* Layout selector styles */
+        .layout-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0.4rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .layout-option {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .layout-option input[type="radio"] {
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+        }
+
+        .layout-option:hover {
+            background: #e2e8f0;
+        }
+
+        .layout-option label {
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -350,6 +388,28 @@
         .checkbox-group label:hover { background: #f1f5f9; }
         .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; }
 
+        .select-group {
+            margin-bottom: 1rem;
+        }
+
+        .select-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .select-group select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+
         .loading { text-align: center; padding: 3rem; }
         .spinner {
             border: 4px solid #f3f4f6;
@@ -380,6 +440,90 @@
             transition: width 0.3s;
         }
 
+        /* Preview Modal */
+        .preview-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            flex-direction: column;
+        }
+
+        .preview-modal.active { display: flex; }
+
+        .preview-header {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .preview-header h2 {
+            font-size: 1.3rem;
+            color: var(--dark);
+        }
+
+        .preview-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .preview-nav-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .preview-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-indicator {
+            font-size: 0.95rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .preview-body {
+            flex: 1;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .preview-page {
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            transform-origin: center;
+            transition: transform 0.3s;
+        }
+
+        .preview-footer {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .preview-footer .pdf-btn {
+            min-width: 150px;
+        }
+
         /* ============ PDF RENDER STYLES ============ */
         #pdf-render-container {
             position: absolute;
@@ -389,8 +533,6 @@
         }
 
         .pdf-page {
-            width: 794px;
-            height: 1123px;
             background: white;
             padding: 70px 70px 80px 70px;
             font-family: 'Hind Siliguri', sans-serif;
@@ -399,6 +541,16 @@
             box-sizing: border-box;
             line-height: 1.5;
             overflow: hidden;
+        }
+
+        .pdf-page.portrait {
+            width: 794px;
+            height: 1123px;
+        }
+
+        .pdf-page.landscape {
+            width: 1123px;
+            height: 794px;
         }
 
         .pdf-watermark {
@@ -426,6 +578,17 @@
         }
 
         .pdf-content { position: relative; z-index: 1; }
+
+        .pdf-dual-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .pdf-column {
+            display: flex;
+            flex-direction: column;
+        }
 
         .pdf-hero-title {
             text-align: center;
@@ -626,6 +789,22 @@
             .hero-heading { font-size: 1.4rem; padding: 1.5rem 1rem; }
             .question-image { max-width: 100%; }
             .answer-image { max-width: 140px; }
+            .layout-selector {
+                flex-wrap: wrap;
+            }
+            .preview-header {
+                padding: 0.8rem 1rem;
+                flex-wrap: wrap;
+            }
+            .preview-header h2 {
+                font-size: 1rem;
+            }
+            .preview-controls {
+                flex-wrap: wrap;
+            }
+            .preview-footer {
+                padding: 0.8rem 1rem;
+            }
         }
     </style>
 </head>
@@ -680,6 +859,15 @@
                 <h2>Generate PDF</h2>
                 <button class="close-modal" onclick="closePDFModal()">&times;</button>
             </div>
+            
+            <div class="select-group">
+                <label for="orientation-select">📐 Page Orientation:</label>
+                <select id="orientation-select">
+                    <option value="portrait" selected>Portrait (Vertical)</option>
+                    <option value="landscape">Landscape (Horizontal)</option>
+                </select>
+            </div>
+
             <div class="checkbox-group">
                 <label>
                     <input type="checkbox" id="watermark-option" checked>
@@ -726,8 +914,29 @@
                     Odd pages = Website URL, Even pages = QR Code (Fixed)
                 </p>
             </div>
-            <button class="pdf-btn" id="generate-btn" style="width: 100%; margin-top: 1rem;" onclick="generatePDF()">💾 Save as PDF</button>
+            
+            <div style="display: flex; gap: 0.8rem; margin-top: 1rem;">
+                <button class="pdf-btn" style="flex: 1;" onclick="previewPDF()">👁️ Preview</button>
+                <button class="pdf-btn" id="generate-btn" style="flex: 1;" onclick="generatePDF()">💾 Save as PDF</button>
+            </div>
+            
             <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        </div>
+    </div>
+
+    <div id="preview-modal" class="preview-modal">
+        <div class="preview-header">
+            <h2>📖 PDF Preview</h2>
+            <div class="preview-controls">
+                <button class="preview-nav-btn" id="prev-page-btn" onclick="prevPage()">← Previous</button>
+                <span class="page-indicator" id="page-indicator">Page 1 of 1</span>
+                <button class="preview-nav-btn" id="next-page-btn" onclick="nextPage()">Next →</button>
+            </div>
+        </div>
+        <div class="preview-body" id="preview-body"></div>
+        <div class="preview-footer">
+            <button class="pdf-btn" onclick="closePreview()">❌ Close Preview</button>
+            <button class="pdf-btn" onclick="downloadFromPreview()">💾 Download PDF</button>
         </div>
     </div>
 
@@ -736,7 +945,7 @@
 
     <script>
         const CLASS_DATA = {
-            'class-5': { name: 'Class 5', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxpBxo2 TsVkwERn8vLB_QioPRcmb8jUq4j-Ty1lO2apcfh5INuD_EUtCCo0KTHozdv7OIziPCFezSt/pub?output=tsv' },
+            'class-5': { name: 'Class 5', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxpBxo2TsVkwERn8vLB_QioPRcmb8jUq4j-Ty1lO2apcfh5INuD_EUtCCo0KTHozdv7OIziPCFezSt/pub?output=tsv' },
             'class-6': { name: 'Class 6', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vREQlxiDlpTm6VhhE5hSE5eDHX-pBTkPWXUKmOg91Co0ajB26PU2j651imGRKJ11Z-Dzmi-ftdiIwjj/pub?output=tsv' },
             'class-7': { name: 'Class 7', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbivu3W0_RbadB9g7x-KbDTQ6kmfNg3074FEc6HONECtVfJctWS1EtdCzkHccQ8KQCUUhp6YEqahtu/pub?output=tsv' },
             'class-8': { name: 'Class 8', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVHdP2gFappkd8SYZQdXQx4W5n4OeKAjdPFtfRGwUv3k6iaTy8WeuAbZ-5kLKEZzUK9Bj6LrLUdm69/pub?output=tsv' },
@@ -751,6 +960,7 @@
         let currentChapter = null;
         let allQuestions = [];
         let selectedQuestions = new Set();
+        let questionLayouts = new Map(); // Store layout preference for each question
 
         // A4 page constants (px at 96 DPI)
         const PAGE_WIDTH_PX = 794;
@@ -763,6 +973,10 @@
 
         // Fixed QR URL
         const QR_WEBSITE = 'https://megaquizwb.vercel.app';
+
+        // Preview state
+        let previewPages = [];
+        let currentPreviewPage = 0;
 
         // KaTeX delimiters configuration
         const KATEX_DELIMITERS = [
@@ -929,6 +1143,10 @@
             const qId = q.id.toString();
             const answerHTML = q.answer ? q.answer : '';
             const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
+            
+            // Get saved layout preference or default to 'single'
+            const savedLayout = questionLayouts.get(qId) || 'single';
+            
             let html = `
                 <div class="question-item">
                     <div class="question-top">
@@ -946,8 +1164,28 @@
             if (ansImg && ansImg.toString().trim()) {
                 html += `<br><img src="${escapeAttr(ansImg)}" class="answer-image" alt="Answer" onerror="this.style.display='none'">`;
             }
-            html += `</div></div></div></div>`;
+            html += `</div>`;
+            
+            // Layout selector
+            html += `
+                <div class="layout-selector">
+                    <div class="layout-option">
+                        <input type="radio" name="layout-${qId}" id="layout-single-${qId}" value="single" ${savedLayout === 'single' ? 'checked' : ''} onchange="updateLayout('${qId}', 'single')">
+                        <label for="layout-single-${qId}">📄 Single</label>
+                    </div>
+                    <div class="layout-option">
+                        <input type="radio" name="layout-${qId}" id="layout-dual-${qId}" value="dual" ${savedLayout === 'dual' ? 'checked' : ''} onchange="updateLayout('${qId}', 'dual')">
+                        <label for="layout-dual-${qId}">📑 Dual Column</label>
+                    </div>
+                </div>
+            `;
+            
+            html += `</div></div></div>`;
             return html;
+        }
+
+        function updateLayout(qId, layout) {
+            questionLayouts.set(qId, layout);
         }
 
         async function fetchSheetData(url) {
@@ -1029,7 +1267,11 @@
             return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}&qzone=1&margin=5`;
         }
 
-        async function generatePDF() {
+        async function previewPDF() {
+            await generatePDF(true); // true = preview mode
+        }
+
+        async function generatePDF(isPreview = false) {
             const mobile = isMobile();
             const addWatermark = document.getElementById('watermark-option').checked;
             const useCustomWatermark = document.getElementById('watermark-custom').checked;
@@ -1040,6 +1282,7 @@
             const includeImages = document.getElementById('images-option').checked;
             const addQRWebsite = document.getElementById('qr-option').checked;
             const websiteURL = document.getElementById('website-url').value || 'megaquizwb.vercel.app';
+            const orientation = document.getElementById('orientation-select').value;
 
             const selectedData = allQuestions.filter(q => selectedQuestions.has(q.id.toString()));
             if (selectedData.length === 0) {
@@ -1094,10 +1337,15 @@
 
             progressFill.style.width = '20%';
 
+            // Calculate page dimensions based on orientation
+            const pageWidth = orientation === 'portrait' ? PAGE_WIDTH_PX : PAGE_HEIGHT_PX;
+            const pageHeight = orientation === 'portrait' ? PAGE_HEIGHT_PX : PAGE_WIDTH_PX;
+            const contentHeight = pageHeight - MARGIN_TOP - MARGIN_BOTTOM;
+
             // STEP 1: Measure
             const measureContainer = document.getElementById('pdf-measure-container');
             measureContainer.innerHTML = '';
-            measureContainer.style.width = '654px';
+            measureContainer.style.width = (pageWidth - MARGIN_SIDE * 2) + 'px';
 
             const measurements = [];
             let qCounter = 1;
@@ -1119,7 +1367,23 @@
                 measureContainer.appendChild(topicDiv);
                 measurements.push({ type: 'topic', height: getFullHeight(topicDiv), html: `<div class="pdf-topic">📝 ${escapeHtml(topic)}</div>` });
 
+                // Separate questions by layout
+                const singleColumnQuestions = [];
+                const dualColumnQuestions = [];
+
                 topicMap.get(topic).forEach(q => {
+                    const qId = q.id.toString();
+                    const layout = questionLayouts.get(qId) || 'single';
+                    
+                    if (layout === 'dual') {
+                        dualColumnQuestions.push(q);
+                    } else {
+                        singleColumnQuestions.push(q);
+                    }
+                });
+
+                // Process single column questions
+                singleColumnQuestions.forEach(q => {
                     const block = document.createElement('div');
                     block.className = 'pdf-qa-block';
 
@@ -1137,12 +1401,55 @@
                     aHTML += `</div>`;
 
                     block.innerHTML = qHTML + aHTML;
-                    // Render LaTeX in measure block BEFORE measuring height
                     renderLatex(block);
                     measureContainer.appendChild(block);
-                    measurements.push({ type: 'qa', height: getFullHeight(block), html: block.outerHTML });
+                    measurements.push({ type: 'qa', height: getFullHeight(block), html: block.outerHTML, layout: 'single', qId: q.id.toString() });
                     qCounter++;
                 });
+
+                // Process dual column questions
+                if (dualColumnQuestions.length > 0) {
+                    const dualBlock = document.createElement('div');
+                    dualBlock.className = 'pdf-dual-column';
+                    
+                    const col1 = document.createElement('div');
+                    col1.className = 'pdf-column';
+                    const col2 = document.createElement('div');
+                    col2.className = 'pdf-column';
+
+                    dualColumnQuestions.forEach((q, index) => {
+                        const block = document.createElement('div');
+                        block.className = 'pdf-qa-block';
+
+                        let qHTML = `<div class="pdf-question">Q${qCounter}: ${q.question}`;
+                        if (includeImages && q.image && q.image.trim()) {
+                            qHTML += `<img src="${escapeAttr(q.image)}" crossorigin="anonymous">`;
+                        }
+                        qHTML += `</div>`;
+
+                        let aHTML = `<div class="pdf-answer"><span class="ans-label">Ans: </span>${q.answer || ''}`;
+                        const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
+                        if (includeImages && ansImg && ansImg.toString().trim()) {
+                            aHTML += `<img src="${escapeAttr(ansImg)}" crossorigin="anonymous">`;
+                        }
+                        aHTML += `</div>`;
+
+                        block.innerHTML = qHTML + aHTML;
+                        renderLatex(block);
+                        
+                        if (index % 2 === 0) {
+                            col1.appendChild(block);
+                        } else {
+                            col2.appendChild(block);
+                        }
+                        qCounter++;
+                    });
+
+                    dualBlock.appendChild(col1);
+                    dualBlock.appendChild(col2);
+                    measureContainer.appendChild(dualBlock);
+                    measurements.push({ type: 'dual', height: getFullHeight(dualBlock), html: dualBlock.outerHTML, layout: 'dual' });
+                }
             });
 
             progressFill.style.width = '35%';
@@ -1162,7 +1469,7 @@
                     continue;
                 }
 
-                if (usedHeight + item.height > CONTENT_HEIGHT_PX - SAFETY_BUFFER) {
+                if (usedHeight + item.height > contentHeight - SAFETY_BUFFER) {
                     if (currentPageItems.length > 0) pages.push(currentPageItems);
                     currentPageItems = [item];
                     usedHeight = item.height;
@@ -1181,9 +1488,9 @@
 
             for (let p = 0; p < pages.length; p++) {
                 const pageDiv = document.createElement('div');
-                pageDiv.className = 'pdf-page';
-                pageDiv.style.width = PAGE_WIDTH_PX + 'px';
-                pageDiv.style.height = PAGE_HEIGHT_PX + 'px';
+                pageDiv.className = `pdf-page ${orientation}`;
+                pageDiv.style.width = pageWidth + 'px';
+                pageDiv.style.height = pageHeight + 'px';
 
                 if (addWatermark && watermarkText) {
                     const wm = document.createElement('div');
@@ -1205,7 +1512,6 @@
                     while (div.firstChild) content.appendChild(div.firstChild);
                 });
                 pageDiv.appendChild(content);
-                // Render LaTeX in final render container for each page
                 renderLatex(content);
 
                 if (addLogo) {
@@ -1248,9 +1554,29 @@
 
             progressFill.style.width = '55%';
 
+            if (isPreview) {
+                // Show preview mode
+                previewPages = Array.from(renderContainer.querySelectorAll('.pdf-page'));
+                currentPreviewPage = 0;
+                showPreview();
+                
+                setTimeout(() => {
+                    progressBar.classList.remove('active');
+                    progressFill.style.width = '0%';
+                    genBtn.disabled = false;
+                    genBtn.textContent = '💾 Save as PDF';
+                }, 500);
+                
+                return;
+            }
+
             // STEP 4: Capture pages
             const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+            const pdf = new jsPDF({ 
+                orientation: orientation, 
+                unit: 'mm', 
+                format: 'a4' 
+            });
 
             pdf.setProperties({
                 title: currentChapter,
@@ -1279,10 +1605,10 @@
                         allowTaint: true,
                         backgroundColor: '#ffffff',
                         logging: false,
-                        width: PAGE_WIDTH_PX,
-                        height: PAGE_HEIGHT_PX,
-                        windowWidth: PAGE_WIDTH_PX + 200,
-                        windowHeight: PAGE_HEIGHT_PX + 200,
+                        width: pageWidth,
+                        height: pageHeight,
+                        windowWidth: pageWidth + 200,
+                        windowHeight: pageHeight + 200,
                         scrollX: 0,
                         scrollY: 0,
                         foreignObjectRendering: false,
@@ -1307,8 +1633,8 @@
                                 useCORS: true,
                                 backgroundColor: '#ffffff',
                                 logging: false,
-                                width: PAGE_WIDTH_PX,
-                                height: PAGE_HEIGHT_PX
+                                width: pageWidth,
+                                height: pageHeight
                             });
                             const imgData = canvas.toDataURL('image/jpeg', 0.85);
                             const pageWidthMM = pdf.internal.pageSize.getWidth();
@@ -1339,6 +1665,66 @@
                 genBtn.textContent = '💾 Save as PDF';
                 closePDFModal();
             }, 500);
+        }
+
+        function showPreview() {
+            document.getElementById('preview-modal').classList.add('active');
+            renderPreviewPage();
+        }
+
+        function closePreview() {
+            document.getElementById('preview-modal').classList.remove('active');
+            previewPages = [];
+            currentPreviewPage = 0;
+        }
+
+        function renderPreviewPage() {
+            const previewBody = document.getElementById('preview-body');
+            previewBody.innerHTML = '';
+            
+            if (previewPages.length === 0) return;
+
+            const page = previewPages[currentPreviewPage].cloneNode(true);
+            
+            // Calculate scale to fit screen
+            const maxWidth = window.innerWidth - 80;
+            const maxHeight = window.innerHeight - 200;
+            const pageWidth = parseInt(page.style.width);
+            const pageHeight = parseInt(page.style.height);
+            
+            const scaleX = maxWidth / pageWidth;
+            const scaleY = maxHeight / pageHeight;
+            const scale = Math.min(scaleX, scaleY, 1);
+            
+            page.style.transform = `scale(${scale})`;
+            previewBody.appendChild(page);
+
+            // Update navigation buttons
+            document.getElementById('prev-page-btn').disabled = currentPreviewPage === 0;
+            document.getElementById('next-page-btn').disabled = currentPreviewPage === previewPages.length - 1;
+            
+            // Update page indicator
+            document.getElementById('page-indicator').textContent = 
+                `Page ${currentPreviewPage + 1} of ${previewPages.length}`;
+        }
+
+        function prevPage() {
+            if (currentPreviewPage > 0) {
+                currentPreviewPage--;
+                renderPreviewPage();
+            }
+        }
+
+        function nextPage() {
+            if (currentPreviewPage < previewPages.length - 1) {
+                currentPreviewPage++;
+                renderPreviewPage();
+            }
+        }
+
+        async function downloadFromPreview() {
+            closePreview();
+            await generatePDF(false);
         }
 
         function getFullHeight(element) {
