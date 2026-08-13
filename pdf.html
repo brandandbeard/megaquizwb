@@ -221,6 +221,70 @@
         .pdf-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.6); }
         .pdf-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
+        /* Column mode toggle styles */
+        .column-mode-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: #f1f5f9;
+            padding: 0.3rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .column-mode-btn {
+            flex: 1;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            background: transparent;
+            color: #64748b;
+        }
+
+        .column-mode-btn.active {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Word limit box */
+        .word-limit-box {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .word-limit-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .word-limit-input {
+            width: 100px;
+            padding: 0.5rem;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .word-limit-hint {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+
         .topic-section {
             background: white;
             padding: 1.5rem;
@@ -960,7 +1024,9 @@
         let currentChapter = null;
         let allQuestions = [];
         let selectedQuestions = new Set();
-        let questionLayouts = new Map(); // Store layout preference for each question
+        let questionLayouts = new Map();
+        let columnMode = 'single'; // 'single' or 'double'
+        let wordLimit = 50;
 
         // A4 page constants (px at 96 DPI)
         const PAGE_WIDTH_PX = 794;
@@ -1006,6 +1072,34 @@
         function isMobile() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
                 || window.innerWidth < 768;
+        }
+
+        // Count words in question + answer
+        function countWords(text) {
+            if (!text) return 0;
+            return text.trim().split(/\s+/).filter(w => w.length > 0).length;
+        }
+
+        // Get total word count for a question (question + answer)
+        function getQuestionWordCount(q) {
+            const questionWords = countWords(q.question);
+            const answerWords = countWords(q.answer);
+            return questionWords + answerWords;
+        }
+
+        // Auto-assign layout based on word limit
+        function autoAssignLayouts() {
+            allQuestions.forEach(q => {
+                const qId = q.id.toString();
+                const wordCount = getQuestionWordCount(q);
+                
+                if (columnMode === 'double' && wordCount <= wordLimit) {
+                    questionLayouts.set(qId, 'dual');
+                } else {
+                    questionLayouts.set(qId, 'single');
+                }
+            });
+            renderQuestionList();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1110,33 +1204,86 @@
                     const tb = parseInt(b.topic_number) || 0;
                     return ta - tb;
                 });
-                const topics = [];
-                const topicMap = new Map();
+                
+                // Initialize layouts as single column
+                questionLayouts.clear();
                 allQuestions.forEach(q => {
-                    const topic = q.topic || 'General';
-                    if (!topicMap.has(topic)) { topicMap.set(topic, []); topics.push(topic); }
-                    topicMap.get(topic).push(q);
+                    questionLayouts.set(q.id.toString(), 'single');
                 });
-                selectedQuestions = new Set(allQuestions.map(q => q.id.toString()));
-                list.innerHTML = topics.map(topic => {
-                    const questions = topicMap.get(topic);
-                    const topicId = 'topic-' + encodeURIComponent(topic).replace(/%/g, '').replace(/[^a-zA-Z0-9]/g, '');
-                    return `
-                        <div class="topic-section">
-                            <div class="topic-header">
-                                <input type="checkbox" id="${topicId}" onchange="toggleTopic('${escapeAttr(topic)}', this.checked)">
-                                <label for="${topicId}">📝 ${escapeHtml(topic)}</label>
-                            </div>
-                            ${questions.map(q => renderQuestionItem(q)).join('')}
-                        </div>
-                    `;
-                }).join('');
-                // Render LaTeX after questions are inserted
-                renderLatex(list);
-                updateTopicCheckboxes();
+                
+                renderQuestionList();
             } catch (e) {
                 list.innerHTML = '<div class="loading"><p>Error loading questions.</p></div>';
             }
+        }
+
+        function renderQuestionList() {
+            const list = document.getElementById('questions-list');
+            
+            const topics = [];
+            const topicMap = new Map();
+            allQuestions.forEach(q => {
+                const topic = q.topic || 'General';
+                if (!topicMap.has(topic)) { topicMap.set(topic, []); topics.push(topic); }
+                topicMap.get(topic).push(q);
+            });
+            selectedQuestions = new Set(allQuestions.map(q => q.id.toString()));
+            
+            // Column mode toggle at top
+            let html = `
+                <div class="column-mode-toggle">
+                    <button class="column-mode-btn ${columnMode === 'single' ? 'active' : ''}" onclick="setColumnMode('single')">
+                        📄 Single Column
+                    </button>
+                    <button class="column-mode-btn ${columnMode === 'double' ? 'active' : ''}" onclick="setColumnMode('double')">
+                        📑 Double Column
+                    </button>
+                </div>
+            `;
+            
+            // Word limit box (only shown in double column mode)
+            if (columnMode === 'double') {
+                html += `
+                    <div class="word-limit-box">
+                        <div class="word-limit-label">
+                            📝 Word Limit for Double Column:
+                            <input type="number" class="word-limit-input" id="word-limit-input" value="${wordLimit}" min="10" max="500" onchange="updateWordLimit(this.value)">
+                        </div>
+                        <div class="word-limit-hint">
+                            💡 Questions with ${wordLimit} words or less will automatically go to double column. 
+                            You can manually override any question below.
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += topics.map(topic => {
+                const questions = topicMap.get(topic);
+                const topicId = 'topic-' + encodeURIComponent(topic).replace(/%/g, '').replace(/[^a-zA-Z0-9]/g, '');
+                return `
+                    <div class="topic-section">
+                        <div class="topic-header">
+                            <input type="checkbox" id="${topicId}" onchange="toggleTopic('${escapeAttr(topic)}', this.checked)">
+                            <label for="${topicId}">📝 ${escapeHtml(topic)}</label>
+                        </div>
+                        ${questions.map(q => renderQuestionItem(q)).join('')}
+                    </div>
+                `;
+            }).join('');
+            
+            list.innerHTML = html;
+            renderLatex(list);
+            updateTopicCheckboxes();
+        }
+
+        function setColumnMode(mode) {
+            columnMode = mode;
+            autoAssignLayouts();
+        }
+
+        function updateWordLimit(value) {
+            wordLimit = parseInt(value) || 50;
+            autoAssignLayouts();
         }
 
         function renderQuestionItem(q) {
@@ -1144,8 +1291,8 @@
             const answerHTML = q.answer ? q.answer : '';
             const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
             
-            // Get saved layout preference or default to 'single'
             const savedLayout = questionLayouts.get(qId) || 'single';
+            const wordCount = getQuestionWordCount(q);
             
             let html = `
                 <div class="question-item">
@@ -1166,16 +1313,17 @@
             }
             html += `</div>`;
             
-            // Layout selector
+            // Layout selector with word count info
             html += `
                 <div class="layout-selector">
+                    <span style="font-size: 0.75rem; color: #94a3b8; margin-right: 0.3rem;">(${wordCount} words)</span>
                     <div class="layout-option">
                         <input type="radio" name="layout-${qId}" id="layout-single-${qId}" value="single" ${savedLayout === 'single' ? 'checked' : ''} onchange="updateLayout('${qId}', 'single')">
                         <label for="layout-single-${qId}">📄 Single</label>
                     </div>
                     <div class="layout-option">
                         <input type="radio" name="layout-${qId}" id="layout-dual-${qId}" value="dual" ${savedLayout === 'dual' ? 'checked' : ''} onchange="updateLayout('${qId}', 'dual')">
-                        <label for="layout-dual-${qId}">📑 Dual Column</label>
+                        <label for="layout-dual-${qId}">📑 Double</label>
                     </div>
                 </div>
             `;
@@ -1268,7 +1416,7 @@
         }
 
         async function previewPDF() {
-            await generatePDF(true); // true = preview mode
+            await generatePDF(true);
         }
 
         async function generatePDF(isPreview = false) {
