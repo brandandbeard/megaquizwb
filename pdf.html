@@ -6,7 +6,7 @@
     <title>Universal Quiz System</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="https://i.ibb.co/7qJGpT1/icon-192.png">
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- KaTeX for Math/LaTeX rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -390,14 +390,35 @@
             cursor: pointer;
         }
 
-        .layout-option:hover {
-            background: #e2e8f0;
-        }
+        .layout-option:hover { background: #e2e8f0; }
+        .layout-option label { cursor: pointer; font-size: 0.85rem; margin: 0; }
 
-        .layout-option label {
+        /* Color Picker Styles */
+        .color-picker-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .color-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .color-opt {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.85rem;
-            margin: 0;
+            border: 2px solid transparent;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .color-opt:hover { transform: scale(1.1); }
+        .color-opt.active {
+            transform: scale(1.15);
+            box-shadow: 0 0 0 2px white, 0 0 0 4px #6366f1;
         }
 
         .modal {
@@ -449,10 +470,7 @@
         .checkbox-group label:hover { background: #f1f5f9; }
         .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; }
 
-        .select-group {
-            margin-bottom: 1rem;
-        }
-
+        .select-group { margin-bottom: 1rem; }
         .select-group label {
             display: block;
             font-weight: 600;
@@ -460,7 +478,7 @@
             color: var(--dark);
         }
 
-        .select-group select, .select-group input[type="number"] {
+        .select-group select, .select-group input[type="number"], .select-group input[type="text"] {
             width: 100%;
             padding: 0.6rem;
             border: 1px solid #cbd5e1;
@@ -522,16 +540,9 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .preview-header h2 {
-            font-size: 1.3rem;
-            color: var(--dark);
-        }
+        .preview-header h2 { font-size: 1.3rem; color: var(--dark); }
 
-        .preview-controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
+        .preview-controls { display: flex; gap: 1rem; align-items: center; }
 
         .preview-nav-btn {
             background: var(--gradient);
@@ -544,16 +555,8 @@
             font-weight: 600;
         }
 
-        .preview-nav-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .page-indicator {
-            font-size: 0.95rem;
-            color: var(--dark);
-            font-weight: 600;
-        }
+        .preview-nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .page-indicator { font-size: 0.95rem; color: var(--dark); font-weight: 600; }
 
         .preview-body {
             flex: 1;
@@ -580,9 +583,7 @@
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
 
-        .preview-footer .pdf-btn {
-            min-width: 150px;
-        }
+        .preview-footer .pdf-btn { min-width: 150px; }
 
         /* ============ PDF RENDER STYLES ============ */
         #pdf-render-container {
@@ -601,7 +602,6 @@
             line-height: var(--pdf-line-height, 1.6);
             overflow: hidden;
             
-            /* Default fallback sizes */
             --pdf-heading-size: 26px;
             --pdf-question-size: 15px;
             --pdf-answer-size: 14px;
@@ -615,8 +615,8 @@
             top: 50%; left: 50%;
             transform: translate(-50%, -50%) rotate(-45deg);
             font-size: 70px;
-            color: rgba(150, 150, 150, 0.10);
-            font-weight: bold;
+            color: rgba(0, 0, 0, 0.12); /* Deeper: visible enough to prevent theft, light enough for print */
+            font-weight: 800;
             pointer-events: none;
             white-space: nowrap;
             z-index: 0;
@@ -627,25 +627,16 @@
             position: absolute;
             bottom: 25px; left: 50%;
             transform: translateX(-50%);
-            font-size: 10px;
-            color: rgba(150, 150, 150, 0.35);
-            font-weight: 600;
+            font-size: 11px;
+            color: rgba(0, 0, 0, 0.25);
+            font-weight: 700;
             z-index: 0;
             letter-spacing: 1px;
         }
 
         .pdf-content { position: relative; z-index: 1; }
-
-        .pdf-dual-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .pdf-column {
-            display: flex;
-            flex-direction: column;
-        }
+        .pdf-dual-column { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .pdf-column { display: flex; flex-direction: column; }
 
         .pdf-hero-title {
             text-align: center;
@@ -680,9 +671,7 @@
             padding-left: 10px;
             border-left: 3.5px solid var(--pdf-subheading-color, #667eea);
         }
-
         .pdf-topic:first-child { margin-top: 0; }
-
         .pdf-qa-block { margin-bottom: 14px; }
 
         .pdf-question {
@@ -700,16 +689,17 @@
             display: block;
         }
 
+        /* ANSWER IS ALWAYS DARKEST BLACK */
         .pdf-answer {
             font-size: var(--pdf-answer-size);
             line-height: var(--pdf-line-height, 1.6);
-            color: var(--pdf-answer-color, #1e293b);
+            color: #000000 !important;
             padding-left: 18px;
         }
 
         .pdf-answer .ans-label {
-            font-weight: 700;
-            color: #2563eb;
+            font-weight: 800 !important;
+            color: #000000 !important;
         }
 
         .pdf-answer img {
@@ -783,7 +773,6 @@
             --pdf-heading-color: #1e293b;
             --pdf-subheading-color: #667eea;
             --pdf-question-color: #c53030;
-            --pdf-answer-color: #334155;
         }
 
         /* Template 2: Corporate Professional */
@@ -791,7 +780,6 @@
             --pdf-heading-color: #0f172a;
             --pdf-subheading-color: #1e40af;
             --pdf-question-color: #1e293b;
-            --pdf-answer-color: #334155;
             font-family: 'Segoe UI', 'Hind Siliguri', sans-serif;
         }
         .pdf-page.template-corporate .pdf-hero-title {
@@ -801,10 +789,7 @@
             padding-bottom: 8px;
             margin-bottom: 8px;
         }
-        .pdf-page.template-corporate .pdf-hero-divider {
-            background: #0f172a;
-            height: 1px;
-        }
+        .pdf-page.template-corporate .pdf-hero-divider { background: #0f172a; height: 1px; }
         .pdf-page.template-corporate .pdf-topic {
             background: #0f172a;
             color: white;
@@ -823,30 +808,17 @@
             padding-bottom: 8px;
             border-radius: 0 6px 6px 0;
         }
-        .pdf-page.template-corporate .pdf-answer .ans-label {
-            color: #1e40af;
-        }
-        .pdf-page.template-corporate .pdf-answer table thead {
-            background-color: #0f172a;
-        }
+        .pdf-page.template-corporate .pdf-answer table thead { background-color: #0f172a; }
 
         /* Template 3: Academic Premium */
         .pdf-page.template-academic {
             --pdf-heading-color: #292524;
             --pdf-subheading-color: #78716c;
             --pdf-question-color: #44403c;
-            --pdf-answer-color: #57534e;
             font-family: 'Georgia', 'Hind Siliguri', serif;
         }
-        .pdf-page.template-academic .pdf-hero-title {
-            font-family: 'Georgia', serif;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .pdf-page.template-academic .pdf-hero-divider {
-            background: #a8a29e;
-            height: 1px;
-        }
+        .pdf-page.template-academic .pdf-hero-title { font-family: 'Georgia', serif; font-weight: 700; letter-spacing: -0.5px; }
+        .pdf-page.template-academic .pdf-hero-divider { background: #a8a29e; height: 1px; }
         .pdf-page.template-academic .pdf-topic {
             font-family: 'Georgia', serif;
             font-style: italic;
@@ -854,40 +826,20 @@
             border-left: 3px solid #a8a29e;
             font-size: calc(var(--pdf-heading-size) * 0.65);
         }
-        .pdf-page.template-academic .pdf-question {
-            font-weight: 600;
-            color: #292524;
-        }
-        .pdf-page.template-academic .pdf-answer {
-            line-height: 1.75;
-        }
-        .pdf-page.template-academic .pdf-answer .ans-label {
-            color: #78716c;
-            font-style: italic;
-        }
-        .pdf-page.template-academic .pdf-answer table thead {
-            background-color: #44403c;
-        }
+        .pdf-page.template-academic .pdf-question { font-weight: 600; color: #292524; }
+        .pdf-page.template-academic .pdf-answer { line-height: 1.75; }
+        .pdf-page.template-academic .pdf-answer .ans-label { color: #78716c; font-style: italic; }
+        .pdf-page.template-academic .pdf-answer table thead { background-color: #44403c; }
 
         /* Template 4: Minimalist Clean */
         .pdf-page.template-minimal {
             --pdf-heading-color: #000000;
             --pdf-subheading-color: #525252;
             --pdf-question-color: #171717;
-            --pdf-answer-color: #404040;
         }
-        .pdf-page.template-minimal .pdf-hero-title {
-            text-align: left;
-            font-weight: 800;
-        }
-        .pdf-page.template-minimal .pdf-hero-subtitle {
-            text-align: left;
-            color: #737373;
-        }
-        .pdf-page.template-minimal .pdf-hero-divider {
-            background: #000000;
-            height: 2px;
-        }
+        .pdf-page.template-minimal .pdf-hero-title { text-align: left; font-weight: 800; }
+        .pdf-page.template-minimal .pdf-hero-subtitle { text-align: left; color: #737373; }
+        .pdf-page.template-minimal .pdf-hero-divider { background: #000000; height: 2px; }
         .pdf-page.template-minimal .pdf-topic {
             color: #000000;
             border-left: 4px solid #000000;
@@ -896,18 +848,47 @@
             letter-spacing: 1px;
             font-size: calc(var(--pdf-heading-size) * 0.6);
         }
-        .pdf-page.template-minimal .pdf-question {
-            color: #000000;
+        .pdf-page.template-minimal .pdf-question { color: #000000; font-weight: 700; }
+        .pdf-page.template-minimal .pdf-answer .ans-label { color: #000000; }
+        .pdf-page.template-minimal .pdf-answer table thead { background-color: #171717; }
+
+        /* Template 5: Aesthetic Pastel (Beautiful & Elegant) */
+        .pdf-page.template-aesthetic {
+            --pdf-heading-color: #be185d;
+            --pdf-subheading-color: #f43f5e;
+            --pdf-question-color: #881337;
+            font-family: 'Hind Siliguri', 'Segoe UI', sans-serif;
+        }
+        .pdf-page.template-aesthetic .pdf-hero-title {
+            color: #be185d;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .pdf-page.template-aesthetic .pdf-hero-divider {
+            background: linear-gradient(90deg, #fda4af, #be185d);
+            height: 3px;
+            border-radius: 2px;
+        }
+        .pdf-page.template-aesthetic .pdf-topic {
+            color: #be185d;
+            background: #fff1f2;
+            border-left: 4px solid #f43f5e;
+            padding: 8px 12px;
+            border-radius: 0 8px 8px 0;
             font-weight: 700;
         }
-        .pdf-page.template-minimal .pdf-answer .ans-label {
-            color: #000000;
+        .pdf-page.template-aesthetic .pdf-question {
+            color: #881337;
+            font-weight: 700;
         }
-        .pdf-page.template-minimal .pdf-answer table thead {
-            background-color: #171717;
+        .pdf-page.template-aesthetic .pdf-answer {
+            line-height: 1.7;
+        }
+        .pdf-page.template-aesthetic .pdf-answer table thead {
+            background-color: #be185d;
         }
 
-        /* Measuring container - fixed width for consistency */
+        /* Measuring container */
         #pdf-measure-container {
             position: absolute;
             left: -9999px;
@@ -918,58 +899,25 @@
             line-height: var(--pdf-line-height, 1.6);
             padding: 0;
             z-index: -1;
-            
-            /* Default fallback sizes */
             --pdf-heading-size: 26px;
             --pdf-question-size: 15px;
             --pdf-answer-size: 14px;
         }
 
-        #pdf-measure-container .pdf-hero-title {
-            text-align: center; font-size: var(--pdf-heading-size); font-weight: 700; margin-bottom: 4px;
-        }
-        #pdf-measure-container .pdf-hero-subtitle {
-            text-align: center; font-size: calc(var(--pdf-heading-size) * 0.6); font-weight: 600; margin-bottom: 8px;
-        }
-        #pdf-measure-container .pdf-hero-divider {
-            width: 100%; height: 2.5px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            margin-bottom: 18px; border-radius: 2px;
-        }
-        #pdf-measure-container .pdf-topic {
-            font-size: calc(var(--pdf-heading-size) * 0.65); font-weight: 700;
-            margin-top: 18px; margin-bottom: 10px;
-            padding-left: 10px; border-left: 3.5px solid currentColor;
-        }
+        #pdf-measure-container .pdf-hero-title { text-align: center; font-size: var(--pdf-heading-size); font-weight: 700; margin-bottom: 4px; }
+        #pdf-measure-container .pdf-hero-subtitle { text-align: center; font-size: calc(var(--pdf-heading-size) * 0.6); font-weight: 600; margin-bottom: 8px; }
+        #pdf-measure-container .pdf-hero-divider { width: 100%; height: 2.5px; background: linear-gradient(90deg, #667eea, #764ba2); margin-bottom: 18px; border-radius: 2px; }
+        #pdf-measure-container .pdf-topic { font-size: calc(var(--pdf-heading-size) * 0.65); font-weight: 700; margin-top: 18px; margin-bottom: 10px; padding-left: 10px; border-left: 3.5px solid currentColor; }
         #pdf-measure-container .pdf-qa-block { margin-bottom: 14px; }
-        #pdf-measure-container .pdf-question {
-            font-weight: 600; font-size: var(--pdf-question-size);
-            line-height: var(--pdf-line-height, 1.6); margin-bottom: 6px;
-        }
-        #pdf-measure-container .pdf-question img {
-            max-width: 220px; max-height: 150px;
-            margin: 5px 0; object-fit: contain; display: block;
-        }
-        #pdf-measure-container .pdf-answer {
-            font-size: var(--pdf-answer-size); line-height: var(--pdf-line-height, 1.6); padding-left: 18px;
-        }
-        #pdf-measure-container .pdf-answer .ans-label { font-weight: 700; }
-        #pdf-measure-container .pdf-answer img {
-            max-width: 180px; max-height: 120px; margin: 4px 0; object-fit: contain;
-        }
-        #pdf-measure-container .pdf-answer table {
-            border-collapse: collapse; width: 100%; margin-top: 6px; font-size: calc(var(--pdf-answer-size) * 0.9);
-        }
-        #pdf-measure-container .pdf-answer table th,
-        #pdf-measure-container .pdf-answer table td {
-            border: 1px solid #d1d5db; padding: 8px 10px; text-align: left;
-        }
-        #pdf-measure-container .pdf-answer table thead {
-            background-color: #2F5597; color: white;
-        }
-        #pdf-measure-container .pdf-answer table thead th {
-            font-weight: 600; border-color: #2F5597;
-        }
+        #pdf-measure-container .pdf-question { font-weight: 600; font-size: var(--pdf-question-size); line-height: var(--pdf-line-height, 1.6); margin-bottom: 6px; }
+        #pdf-measure-container .pdf-question img { max-width: 220px; max-height: 150px; margin: 5px 0; object-fit: contain; display: block; }
+        #pdf-measure-container .pdf-answer { font-size: var(--pdf-answer-size); line-height: var(--pdf-line-height, 1.6); padding-left: 18px; color: #000000 !important; }
+        #pdf-measure-container .pdf-answer .ans-label { font-weight: 800 !important; color: #000000 !important; }
+        #pdf-measure-container .pdf-answer img { max-width: 180px; max-height: 120px; margin: 4px 0; object-fit: contain; }
+        #pdf-measure-container .pdf-answer table { border-collapse: collapse; width: 100%; margin-top: 6px; font-size: calc(var(--pdf-answer-size) * 0.9); }
+        #pdf-measure-container .pdf-answer table th, #pdf-measure-container .pdf-answer table td { border: 1px solid #d1d5db; padding: 8px 10px; text-align: left; }
+        #pdf-measure-container .pdf-answer table thead { background-color: #2F5597; color: white; }
+        #pdf-measure-container .pdf-answer table thead th { font-weight: 600; border-color: #2F5597; }
         #pdf-measure-container .pdf-answer table tbody tr:nth-child(odd) { background-color: #f9fafb; }
         #pdf-measure-container .pdf-answer table tbody tr:nth-child(even) { background-color: #ffffff; }
 
@@ -1055,7 +1003,13 @@
                     <option value="template-corporate">Corporate Professional</option>
                     <option value="template-academic">Academic Premium</option>
                     <option value="template-minimal">Minimalist Clean</option>
+                    <option value="template-aesthetic">Aesthetic Pastel (Beautiful)</option>
                 </select>
+            </div>
+
+            <div class="select-group">
+                <label for="header-right-text">📝 Header Right Text (Next to Chapter):</label>
+                <input type="text" id="header-right-text" value="By Arif Hussain" placeholder="e.g., By Arif Hussain">
             </div>
 
             <div class="select-group" style="background: #f8fafc; padding: 1rem; border-radius: 10px; border: 1px solid #e2e8f0;">
@@ -1170,6 +1124,7 @@
         let allQuestions = [];
         let selectedQuestions = new Set();
         let questionLayouts = new Map();
+        let questionColors = new Map(); // NEW: Store custom question colors
         let columnMode = 'single';
         let wordLimit = 50;
 
@@ -1233,6 +1188,16 @@
                     questionLayouts.set(qId, 'single');
                 }
             });
+            renderQuestionList();
+        }
+
+        // NEW: Function to set question color
+        function setQuestionColor(qId, color) {
+            if (color === 'default') {
+                questionColors.delete(qId);
+            } else {
+                questionColors.set(qId, color);
+            }
             renderQuestionList();
         }
 
@@ -1339,6 +1304,7 @@
                     return ta - tb;
                 });
                 questionLayouts.clear();
+                questionColors.clear(); // Reset colors on new chapter load
                 allQuestions.forEach(q => {
                     questionLayouts.set(q.id.toString(), 'single');
                 });
@@ -1420,6 +1386,7 @@
             const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
             const savedLayout = questionLayouts.get(qId) || 'single';
             const wordCount = getQuestionWordCount(q);
+            const currentQColor = questionColors.get(qId) || 'default';
             
             let html = `
                 <div class="question-item">
@@ -1439,6 +1406,28 @@
                 html += `<br><img src="${escapeAttr(ansImg)}" class="answer-image" alt="Answer" onerror="this.style.display='none'">`;
             }
             html += `</div>`;
+            
+            // NEW: Color picker row
+            html += `
+                <div class="color-picker-row">
+                    <span class="color-label">Q Color:</span>
+                    <div class="color-opt ${currentQColor === 'default' ? 'active' : ''}" 
+                         style="background: linear-gradient(135deg, #667eea, #764ba2);" 
+                         onclick="setQuestionColor('${qId}', 'default')" title="Template Default"></div>
+                    <div class="color-opt ${currentQColor === 'red' ? 'active' : ''}" 
+                         style="background: #dc2626;" 
+                         onclick="setQuestionColor('${qId}', 'red')" title="Red"></div>
+                    <div class="color-opt ${currentQColor === 'yellow' ? 'active' : ''}" 
+                         style="background: #ca8a04;" 
+                         onclick="setQuestionColor('${qId}', 'yellow')" title="Yellow"></div>
+                    <div class="color-opt ${currentQColor === 'green' ? 'active' : ''}" 
+                         style="background: #16a34a;" 
+                         onclick="setQuestionColor('${qId}', 'green')" title="Green"></div>
+                    <div class="color-opt ${currentQColor === 'black' ? 'active' : ''}" 
+                         style="background: #000000;" 
+                         onclick="setQuestionColor('${qId}', 'black')" title="Black"></div>
+                </div>
+            `;
             
             html += `
                 <div class="layout-selector">
@@ -1556,11 +1545,11 @@
             const websiteURL = document.getElementById('website-url').value || 'megaquizwb.vercel.app';
             const orientation = document.getElementById('orientation-select').value;
             
-            // NEW: Get custom font sizes and template
             const headingSize = document.getElementById('font-heading').value || 26;
             const questionSize = document.getElementById('font-question').value || 15;
             const answerSize = document.getElementById('font-answer').value || 14;
             const template = document.getElementById('template-select').value;
+            const headerRightText = document.getElementById('header-right-text').value || 'By Arif Hussain';
 
             const selectedData = allQuestions.filter(q => selectedQuestions.has(q.id.toString()));
             if (selectedData.length === 0) {
@@ -1620,7 +1609,6 @@
             const measureContainer = document.getElementById('pdf-measure-container');
             measureContainer.innerHTML = '';
             
-            // Apply dynamic font sizes to measure container for accurate height calculation
             measureContainer.style.setProperty('--pdf-heading-size', headingSize + 'px');
             measureContainer.style.setProperty('--pdf-question-size', questionSize + 'px');
             measureContainer.style.setProperty('--pdf-answer-size', answerSize + 'px');
@@ -1630,9 +1618,13 @@
             let qCounter = 1;
 
             const headerWrap = document.createElement('div');
+            // NEW: Header with right-aligned custom text
             headerWrap.innerHTML = `
-                <div class="pdf-hero-title">${escapeHtml(CLASS_DATA[currentClass].name)} • ${escapeHtml(currentSubject)}</div>
-                <div class="pdf-hero-subtitle">${escapeHtml(currentChapter)}</div>
+                <div class="pdf-hero-title" style="text-align: left; margin-bottom: 6px;">${escapeHtml(CLASS_DATA[currentClass].name)} • ${escapeHtml(currentSubject)}</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <div class="pdf-hero-subtitle" style="text-align: left; margin: 0; flex: 1;">${escapeHtml(currentChapter)}</div>
+                    <div style="font-size: 13px; font-weight: 700; color: #475569; text-align: right; white-space: nowrap; margin-left: 10px;">${escapeHtml(headerRightText)}</div>
+                </div>
                 <div class="pdf-hero-divider"></div>
             `;
             measureContainer.appendChild(headerWrap);
@@ -1663,13 +1655,22 @@
                     const block = document.createElement('div');
                     block.className = 'pdf-qa-block';
 
-                    let qHTML = `<div class="pdf-question">Q${qCounter}: ${q.question}`;
+                    // NEW: Apply custom question color
+                    const qColor = questionColors.get(q.id.toString()) || 'default';
+                    let colorStyle = '';
+                    if (qColor === 'red') colorStyle = 'color: #dc2626 !important;';
+                    else if (qColor === 'yellow') colorStyle = 'color: #a16207 !important;'; // Darker yellow for print readability
+                    else if (qColor === 'green') colorStyle = 'color: #16a34a !important;';
+                    else if (qColor === 'black') colorStyle = 'color: #000000 !important;';
+
+                    let qHTML = `<div class="pdf-question" style="${colorStyle}">Q${qCounter}: ${q.question}`;
                     if (includeImages && q.image && q.image.trim()) {
                         qHTML += `<img src="${escapeAttr(q.image)}" crossorigin="anonymous">`;
                     }
                     qHTML += `</div>`;
 
-                    let aHTML = `<div class="pdf-answer"><span class="ans-label">Ans: </span>${q.answer || ''}`;
+                    // NEW: Answer is ALWAYS darkest black
+                    let aHTML = `<div class="pdf-answer" style="color: #000000 !important;"><span class="ans-label" style="color: #000000 !important; font-weight: 800;">Ans: </span>${q.answer || ''}`;
                     const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
                     if (includeImages && ansImg && ansImg.toString().trim()) {
                         aHTML += `<img src="${escapeAttr(ansImg)}" crossorigin="anonymous">`;
@@ -1695,13 +1696,20 @@
                         const block = document.createElement('div');
                         block.className = 'pdf-qa-block';
 
-                        let qHTML = `<div class="pdf-question">Q${qCounter}: ${q.question}`;
+                        const qColor = questionColors.get(q.id.toString()) || 'default';
+                        let colorStyle = '';
+                        if (qColor === 'red') colorStyle = 'color: #dc2626 !important;';
+                        else if (qColor === 'yellow') colorStyle = 'color: #a16207 !important;';
+                        else if (qColor === 'green') colorStyle = 'color: #16a34a !important;';
+                        else if (qColor === 'black') colorStyle = 'color: #000000 !important;';
+
+                        let qHTML = `<div class="pdf-question" style="${colorStyle}">Q${qCounter}: ${q.question}`;
                         if (includeImages && q.image && q.image.trim()) {
                             qHTML += `<img src="${escapeAttr(q.image)}" crossorigin="anonymous">`;
                         }
                         qHTML += `</div>`;
 
-                        let aHTML = `<div class="pdf-answer"><span class="ans-label">Ans: </span>${q.answer || ''}`;
+                        let aHTML = `<div class="pdf-answer" style="color: #000000 !important;"><span class="ans-label" style="color: #000000 !important; font-weight: 800;">Ans: </span>${q.answer || ''}`;
                         const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
                         if (includeImages && ansImg && ansImg.toString().trim()) {
                             aHTML += `<img src="${escapeAttr(ansImg)}" crossorigin="anonymous">`;
@@ -1766,7 +1774,6 @@
                 pageDiv.style.width = pageWidth + 'px';
                 pageDiv.style.height = pageHeight + 'px';
                 
-                // Apply dynamic font sizes to each page
                 pageDiv.style.setProperty('--pdf-heading-size', headingSize + 'px');
                 pageDiv.style.setProperty('--pdf-question-size', questionSize + 'px');
                 pageDiv.style.setProperty('--pdf-answer-size', answerSize + 'px');
