@@ -221,7 +221,6 @@
         .pdf-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.6); }
         .pdf-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* Column mode toggle styles */
         .column-mode-toggle {
             display: flex;
             gap: 0.5rem;
@@ -251,7 +250,6 @@
             box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
         }
 
-        /* Word limit box */
         .word-limit-box {
             background: #f8fafc;
             padding: 1rem;
@@ -365,7 +363,6 @@
             display: inline-block;
         }
 
-        /* Layout selector styles */
         .layout-selector {
             display: flex;
             gap: 0.5rem;
@@ -420,9 +417,9 @@
             background: white;
             padding: 2rem;
             border-radius: 20px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
+            max-width: 550px;
+            width: 95%;
+            max-height: 90vh;
             overflow-y: auto;
         }
 
@@ -463,7 +460,7 @@
             color: var(--dark);
         }
 
-        .select-group select {
+        .select-group select, .select-group input[type="number"] {
             width: 100%;
             padding: 0.6rem;
             border: 1px solid #cbd5e1;
@@ -504,7 +501,6 @@
             transition: width 0.3s;
         }
 
-        /* Preview Modal */
         .preview-modal {
             display: none;
             position: fixed;
@@ -600,22 +596,19 @@
             background: white;
             padding: 70px 70px 80px 70px;
             font-family: 'Hind Siliguri', sans-serif;
-            color: #1e293b;
             position: relative;
             box-sizing: border-box;
-            line-height: 1.5;
+            line-height: var(--pdf-line-height, 1.6);
             overflow: hidden;
+            
+            /* Default fallback sizes */
+            --pdf-heading-size: 26px;
+            --pdf-question-size: 15px;
+            --pdf-answer-size: 14px;
         }
 
-        .pdf-page.portrait {
-            width: 794px;
-            height: 1123px;
-        }
-
-        .pdf-page.landscape {
-            width: 1123px;
-            height: 794px;
-        }
+        .pdf-page.portrait { width: 794px; height: 1123px; }
+        .pdf-page.landscape { width: 1123px; height: 794px; }
 
         .pdf-watermark {
             position: absolute;
@@ -656,17 +649,17 @@
 
         .pdf-hero-title {
             text-align: center;
-            font-size: 24px;
+            font-size: var(--pdf-heading-size);
             font-weight: 700;
-            color: #1e293b;
+            color: var(--pdf-heading-color, #1e293b);
             margin-bottom: 4px;
         }
 
         .pdf-hero-subtitle {
             text-align: center;
-            font-size: 14px;
+            font-size: calc(var(--pdf-heading-size) * 0.6);
             font-weight: 600;
-            color: #667eea;
+            color: var(--pdf-subheading-color, #667eea);
             margin-bottom: 8px;
         }
 
@@ -679,13 +672,13 @@
         }
 
         .pdf-topic {
-            font-size: 15px;
+            font-size: calc(var(--pdf-heading-size) * 0.65);
             font-weight: 700;
-            color: #667eea;
+            color: var(--pdf-subheading-color, #667eea);
             margin-top: 18px;
             margin-bottom: 10px;
             padding-left: 10px;
-            border-left: 3.5px solid #667eea;
+            border-left: 3.5px solid var(--pdf-subheading-color, #667eea);
         }
 
         .pdf-topic:first-child { margin-top: 0; }
@@ -693,11 +686,11 @@
         .pdf-qa-block { margin-bottom: 14px; }
 
         .pdf-question {
-            color: #c53030;
+            color: var(--pdf-question-color, #c53030);
             font-weight: 600;
-            font-size: 13px;
-            line-height: 1.55;
-            margin-bottom: 4px;
+            font-size: var(--pdf-question-size);
+            line-height: var(--pdf-line-height, 1.6);
+            margin-bottom: 6px;
         }
 
         .pdf-question img {
@@ -708,9 +701,9 @@
         }
 
         .pdf-answer {
-            font-size: 12.5px;
-            line-height: 1.5;
-            color: #1e293b;
+            font-size: var(--pdf-answer-size);
+            line-height: var(--pdf-line-height, 1.6);
+            color: var(--pdf-answer-color, #1e293b);
             padding-left: 18px;
         }
 
@@ -729,7 +722,7 @@
             border-collapse: collapse;
             width: 100%;
             margin-top: 6px;
-            font-size: 11.5px;
+            font-size: calc(var(--pdf-answer-size) * 0.9);
         }
 
         .pdf-answer table th, .pdf-answer table td {
@@ -784,25 +777,159 @@
             z-index: 1;
         }
 
+        /* ============ PDF TEMPLATES ============ */
+        /* Template 1: Modern Tech (Default) */
+        .pdf-page.template-modern {
+            --pdf-heading-color: #1e293b;
+            --pdf-subheading-color: #667eea;
+            --pdf-question-color: #c53030;
+            --pdf-answer-color: #334155;
+        }
+
+        /* Template 2: Corporate Professional */
+        .pdf-page.template-corporate {
+            --pdf-heading-color: #0f172a;
+            --pdf-subheading-color: #1e40af;
+            --pdf-question-color: #1e293b;
+            --pdf-answer-color: #334155;
+            font-family: 'Segoe UI', 'Hind Siliguri', sans-serif;
+        }
+        .pdf-page.template-corporate .pdf-hero-title {
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+        }
+        .pdf-page.template-corporate .pdf-hero-divider {
+            background: #0f172a;
+            height: 1px;
+        }
+        .pdf-page.template-corporate .pdf-topic {
+            background: #0f172a;
+            color: white;
+            padding: 6px 12px;
+            border-left: none;
+            border-radius: 4px;
+            font-size: calc(var(--pdf-heading-size) * 0.6);
+            letter-spacing: 0.5px;
+        }
+        .pdf-page.template-corporate .pdf-question {
+            font-weight: 700;
+            border-left: 4px solid #1e40af;
+            padding-left: 12px;
+            background: #f8fafc;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            border-radius: 0 6px 6px 0;
+        }
+        .pdf-page.template-corporate .pdf-answer .ans-label {
+            color: #1e40af;
+        }
+        .pdf-page.template-corporate .pdf-answer table thead {
+            background-color: #0f172a;
+        }
+
+        /* Template 3: Academic Premium */
+        .pdf-page.template-academic {
+            --pdf-heading-color: #292524;
+            --pdf-subheading-color: #78716c;
+            --pdf-question-color: #44403c;
+            --pdf-answer-color: #57534e;
+            font-family: 'Georgia', 'Hind Siliguri', serif;
+        }
+        .pdf-page.template-academic .pdf-hero-title {
+            font-family: 'Georgia', serif;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .pdf-page.template-academic .pdf-hero-divider {
+            background: #a8a29e;
+            height: 1px;
+        }
+        .pdf-page.template-academic .pdf-topic {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            color: #78716c;
+            border-left: 3px solid #a8a29e;
+            font-size: calc(var(--pdf-heading-size) * 0.65);
+        }
+        .pdf-page.template-academic .pdf-question {
+            font-weight: 600;
+            color: #292524;
+        }
+        .pdf-page.template-academic .pdf-answer {
+            line-height: 1.75;
+        }
+        .pdf-page.template-academic .pdf-answer .ans-label {
+            color: #78716c;
+            font-style: italic;
+        }
+        .pdf-page.template-academic .pdf-answer table thead {
+            background-color: #44403c;
+        }
+
+        /* Template 4: Minimalist Clean */
+        .pdf-page.template-minimal {
+            --pdf-heading-color: #000000;
+            --pdf-subheading-color: #525252;
+            --pdf-question-color: #171717;
+            --pdf-answer-color: #404040;
+        }
+        .pdf-page.template-minimal .pdf-hero-title {
+            text-align: left;
+            font-weight: 800;
+        }
+        .pdf-page.template-minimal .pdf-hero-subtitle {
+            text-align: left;
+            color: #737373;
+        }
+        .pdf-page.template-minimal .pdf-hero-divider {
+            background: #000000;
+            height: 2px;
+        }
+        .pdf-page.template-minimal .pdf-topic {
+            color: #000000;
+            border-left: 4px solid #000000;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: calc(var(--pdf-heading-size) * 0.6);
+        }
+        .pdf-page.template-minimal .pdf-question {
+            color: #000000;
+            font-weight: 700;
+        }
+        .pdf-page.template-minimal .pdf-answer .ans-label {
+            color: #000000;
+        }
+        .pdf-page.template-minimal .pdf-answer table thead {
+            background-color: #171717;
+        }
+
         /* Measuring container - fixed width for consistency */
         #pdf-measure-container {
             position: absolute;
             left: -9999px;
             top: 0;
-            width: 654px !important;
             background: white;
             font-family: 'Hind Siliguri', sans-serif;
             color: #1e293b;
-            line-height: 1.5;
+            line-height: var(--pdf-line-height, 1.6);
             padding: 0;
             z-index: -1;
+            
+            /* Default fallback sizes */
+            --pdf-heading-size: 26px;
+            --pdf-question-size: 15px;
+            --pdf-answer-size: 14px;
         }
 
         #pdf-measure-container .pdf-hero-title {
-            text-align: center; font-size: 24px; font-weight: 700; margin-bottom: 4px;
+            text-align: center; font-size: var(--pdf-heading-size); font-weight: 700; margin-bottom: 4px;
         }
         #pdf-measure-container .pdf-hero-subtitle {
-            text-align: center; font-size: 14px; font-weight: 600; color: #667eea; margin-bottom: 8px;
+            text-align: center; font-size: calc(var(--pdf-heading-size) * 0.6); font-weight: 600; margin-bottom: 8px;
         }
         #pdf-measure-container .pdf-hero-divider {
             width: 100%; height: 2.5px;
@@ -810,28 +937,28 @@
             margin-bottom: 18px; border-radius: 2px;
         }
         #pdf-measure-container .pdf-topic {
-            font-size: 15px; font-weight: 700; color: #667eea;
+            font-size: calc(var(--pdf-heading-size) * 0.65); font-weight: 700;
             margin-top: 18px; margin-bottom: 10px;
-            padding-left: 10px; border-left: 3.5px solid #667eea;
+            padding-left: 10px; border-left: 3.5px solid currentColor;
         }
         #pdf-measure-container .pdf-qa-block { margin-bottom: 14px; }
         #pdf-measure-container .pdf-question {
-            color: #c53030; font-weight: 600; font-size: 13px;
-            line-height: 1.55; margin-bottom: 4px;
+            font-weight: 600; font-size: var(--pdf-question-size);
+            line-height: var(--pdf-line-height, 1.6); margin-bottom: 6px;
         }
         #pdf-measure-container .pdf-question img {
             max-width: 220px; max-height: 150px;
             margin: 5px 0; object-fit: contain; display: block;
         }
         #pdf-measure-container .pdf-answer {
-            font-size: 12.5px; line-height: 1.5; color: #1e293b; padding-left: 18px;
+            font-size: var(--pdf-answer-size); line-height: var(--pdf-line-height, 1.6); padding-left: 18px;
         }
-        #pdf-measure-container .pdf-answer .ans-label { font-weight: 700; color: #2563eb; }
+        #pdf-measure-container .pdf-answer .ans-label { font-weight: 700; }
         #pdf-measure-container .pdf-answer img {
             max-width: 180px; max-height: 120px; margin: 4px 0; object-fit: contain;
         }
         #pdf-measure-container .pdf-answer table {
-            border-collapse: collapse; width: 100%; margin-top: 6px; font-size: 11.5px;
+            border-collapse: collapse; width: 100%; margin-top: 6px; font-size: calc(var(--pdf-answer-size) * 0.9);
         }
         #pdf-measure-container .pdf-answer table th,
         #pdf-measure-container .pdf-answer table td {
@@ -853,22 +980,11 @@
             .hero-heading { font-size: 1.4rem; padding: 1.5rem 1rem; }
             .question-image { max-width: 100%; }
             .answer-image { max-width: 140px; }
-            .layout-selector {
-                flex-wrap: wrap;
-            }
-            .preview-header {
-                padding: 0.8rem 1rem;
-                flex-wrap: wrap;
-            }
-            .preview-header h2 {
-                font-size: 1rem;
-            }
-            .preview-controls {
-                flex-wrap: wrap;
-            }
-            .preview-footer {
-                padding: 0.8rem 1rem;
-            }
+            .layout-selector { flex-wrap: wrap; }
+            .preview-header { padding: 0.8rem 1rem; flex-wrap: wrap; }
+            .preview-header h2 { font-size: 1rem; }
+            .preview-controls { flex-wrap: wrap; }
+            .preview-footer { padding: 0.8rem 1rem; }
         }
     </style>
 </head>
@@ -920,7 +1036,7 @@
     <div id="pdf-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Generate PDF</h2>
+                <h2>Generate Professional PDF</h2>
                 <button class="close-modal" onclick="closePDFModal()">&times;</button>
             </div>
             
@@ -930,6 +1046,35 @@
                     <option value="portrait" selected>Portrait (Vertical)</option>
                     <option value="landscape">Landscape (Horizontal)</option>
                 </select>
+            </div>
+
+            <div class="select-group">
+                <label for="template-select">🎨 PDF Template Style:</label>
+                <select id="template-select">
+                    <option value="template-modern" selected>Modern Tech (Default)</option>
+                    <option value="template-corporate">Corporate Professional</option>
+                    <option value="template-academic">Academic Premium</option>
+                    <option value="template-minimal">Minimalist Clean</option>
+                </select>
+            </div>
+
+            <div class="select-group" style="background: #f8fafc; padding: 1rem; border-radius: 10px; border: 1px solid #e2e8f0;">
+                <label style="margin-bottom: 0.8rem; display: block; font-weight: 700; color: #0f172a;">🔤 Custom Font Sizes (for better A4 readability):</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem;">
+                    <div>
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569;">Heading (px)</label>
+                        <input type="number" id="font-heading" value="26" min="18" max="40" style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 0.3rem; font-weight: 600;">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569;">Question (px)</label>
+                        <input type="number" id="font-question" value="15" min="12" max="24" style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 0.3rem; font-weight: 600;">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569;">Answer (px)</label>
+                        <input type="number" id="font-answer" value="14" min="11" max="20" style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 0.3rem; font-weight: 600;">
+                    </div>
+                </div>
+                <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.6rem;">💡 Higher values = larger, more readable text on A4 print.</p>
             </div>
 
             <div class="checkbox-group">
@@ -1025,10 +1170,9 @@
         let allQuestions = [];
         let selectedQuestions = new Set();
         let questionLayouts = new Map();
-        let columnMode = 'single'; // 'single' or 'double'
+        let columnMode = 'single';
         let wordLimit = 50;
 
-        // A4 page constants (px at 96 DPI)
         const PAGE_WIDTH_PX = 794;
         const PAGE_HEIGHT_PX = 1123;
         const MARGIN_TOP = 70;
@@ -1036,15 +1180,11 @@
         const MARGIN_SIDE = 70;
         const CONTENT_HEIGHT_PX = PAGE_HEIGHT_PX - MARGIN_TOP - MARGIN_BOTTOM;
         const SAFETY_BUFFER = 30;
-
-        // Fixed QR URL
         const QR_WEBSITE = 'https://megaquizwb.vercel.app';
 
-        // Preview state
         let previewPages = [];
         let currentPreviewPage = 0;
 
-        // KaTeX delimiters configuration
         const KATEX_DELIMITERS = [
             {left: "$$", right: "$$", display: true},
             {left: "$", right: "$", display: false},
@@ -1053,7 +1193,6 @@
             {left: "((", right: "))", display: false}
         ];
 
-        // Helper function to render LaTeX in an element
         function renderLatex(element) {
             if (window.renderMathInElement && element) {
                 try {
@@ -1068,31 +1207,26 @@
             }
         }
 
-        // Mobile detection
         function isMobile() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
                 || window.innerWidth < 768;
         }
 
-        // Count words in question + answer
         function countWords(text) {
             if (!text) return 0;
             return text.trim().split(/\s+/).filter(w => w.length > 0).length;
         }
 
-        // Get total word count for a question (question + answer)
         function getQuestionWordCount(q) {
             const questionWords = countWords(q.question);
             const answerWords = countWords(q.answer);
             return questionWords + answerWords;
         }
 
-        // Auto-assign layout based on word limit
         function autoAssignLayouts() {
             allQuestions.forEach(q => {
                 const qId = q.id.toString();
                 const wordCount = getQuestionWordCount(q);
-                
                 if (columnMode === 'double' && wordCount <= wordLimit) {
                     questionLayouts.set(qId, 'dual');
                 } else {
@@ -1204,13 +1338,10 @@
                     const tb = parseInt(b.topic_number) || 0;
                     return ta - tb;
                 });
-                
-                // Initialize layouts as single column
                 questionLayouts.clear();
                 allQuestions.forEach(q => {
                     questionLayouts.set(q.id.toString(), 'single');
                 });
-                
                 renderQuestionList();
             } catch (e) {
                 list.innerHTML = '<div class="loading"><p>Error loading questions.</p></div>';
@@ -1219,7 +1350,6 @@
 
         function renderQuestionList() {
             const list = document.getElementById('questions-list');
-            
             const topics = [];
             const topicMap = new Map();
             allQuestions.forEach(q => {
@@ -1229,7 +1359,6 @@
             });
             selectedQuestions = new Set(allQuestions.map(q => q.id.toString()));
             
-            // Column mode toggle at top
             let html = `
                 <div class="column-mode-toggle">
                     <button class="column-mode-btn ${columnMode === 'single' ? 'active' : ''}" onclick="setColumnMode('single')">
@@ -1241,7 +1370,6 @@
                 </div>
             `;
             
-            // Word limit box (only shown in double column mode)
             if (columnMode === 'double') {
                 html += `
                     <div class="word-limit-box">
@@ -1290,7 +1418,6 @@
             const qId = q.id.toString();
             const answerHTML = q.answer ? q.answer : '';
             const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
-            
             const savedLayout = questionLayouts.get(qId) || 'single';
             const wordCount = getQuestionWordCount(q);
             
@@ -1313,7 +1440,6 @@
             }
             html += `</div>`;
             
-            // Layout selector with word count info
             html += `
                 <div class="layout-selector">
                     <span style="font-size: 0.75rem; color: #94a3b8; margin-right: 0.3rem;">(${wordCount} words)</span>
@@ -1327,7 +1453,6 @@
                     </div>
                 </div>
             `;
-            
             html += `</div></div></div>`;
             return html;
         }
@@ -1410,7 +1535,6 @@
         function showPDFModal() { document.getElementById('pdf-modal').classList.add('active'); }
         function closePDFModal() { document.getElementById('pdf-modal').classList.remove('active'); }
 
-        // ============ QR CODE GENERATOR ============
         function generateQRCodeDataURL(url, size = 100) {
             return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}&qzone=1&margin=5`;
         }
@@ -1431,6 +1555,12 @@
             const addQRWebsite = document.getElementById('qr-option').checked;
             const websiteURL = document.getElementById('website-url').value || 'megaquizwb.vercel.app';
             const orientation = document.getElementById('orientation-select').value;
+            
+            // NEW: Get custom font sizes and template
+            const headingSize = document.getElementById('font-heading').value || 26;
+            const questionSize = document.getElementById('font-question').value || 15;
+            const answerSize = document.getElementById('font-answer').value || 14;
+            const template = document.getElementById('template-select').value;
 
             const selectedData = allQuestions.filter(q => selectedQuestions.has(q.id.toString()));
             if (selectedData.length === 0) {
@@ -1446,7 +1576,6 @@
             progressBar.classList.add('active');
             progressFill.style.width = '5%';
 
-            // Load fonts
             try {
                 await document.fonts.load('16px "Hind Siliguri"');
                 await document.fonts.load('bold 16px "Hind Siliguri"');
@@ -1465,7 +1594,6 @@
                 topicMap.get(topic).push(q);
             });
 
-            // Preload images
             if (includeImages) {
                 const imgPromises = [];
                 selectedData.forEach(q => {
@@ -1476,7 +1604,6 @@
                 await Promise.allSettled(imgPromises);
             }
 
-            // Preload QR code if needed
             let qrCodeDataURL = null;
             if (addQRWebsite) {
                 qrCodeDataURL = generateQRCodeDataURL(QR_WEBSITE, 100);
@@ -1485,7 +1612,6 @@
 
             progressFill.style.width = '20%';
 
-            // Calculate page dimensions based on orientation
             const pageWidth = orientation === 'portrait' ? PAGE_WIDTH_PX : PAGE_HEIGHT_PX;
             const pageHeight = orientation === 'portrait' ? PAGE_HEIGHT_PX : PAGE_WIDTH_PX;
             const contentHeight = pageHeight - MARGIN_TOP - MARGIN_BOTTOM;
@@ -1493,6 +1619,11 @@
             // STEP 1: Measure
             const measureContainer = document.getElementById('pdf-measure-container');
             measureContainer.innerHTML = '';
+            
+            // Apply dynamic font sizes to measure container for accurate height calculation
+            measureContainer.style.setProperty('--pdf-heading-size', headingSize + 'px');
+            measureContainer.style.setProperty('--pdf-question-size', questionSize + 'px');
+            measureContainer.style.setProperty('--pdf-answer-size', answerSize + 'px');
             measureContainer.style.width = (pageWidth - MARGIN_SIDE * 2) + 'px';
 
             const measurements = [];
@@ -1515,14 +1646,12 @@
                 measureContainer.appendChild(topicDiv);
                 measurements.push({ type: 'topic', height: getFullHeight(topicDiv), html: `<div class="pdf-topic">📝 ${escapeHtml(topic)}</div>` });
 
-                // Separate questions by layout
                 const singleColumnQuestions = [];
                 const dualColumnQuestions = [];
 
                 topicMap.get(topic).forEach(q => {
                     const qId = q.id.toString();
                     const layout = questionLayouts.get(qId) || 'single';
-                    
                     if (layout === 'dual') {
                         dualColumnQuestions.push(q);
                     } else {
@@ -1530,7 +1659,6 @@
                     }
                 });
 
-                // Process single column questions
                 singleColumnQuestions.forEach(q => {
                     const block = document.createElement('div');
                     block.className = 'pdf-qa-block';
@@ -1555,11 +1683,9 @@
                     qCounter++;
                 });
 
-                // Process dual column questions
                 if (dualColumnQuestions.length > 0) {
                     const dualBlock = document.createElement('div');
                     dualBlock.className = 'pdf-dual-column';
-                    
                     const col1 = document.createElement('div');
                     col1.className = 'pdf-column';
                     const col2 = document.createElement('div');
@@ -1636,9 +1762,14 @@
 
             for (let p = 0; p < pages.length; p++) {
                 const pageDiv = document.createElement('div');
-                pageDiv.className = `pdf-page ${orientation}`;
+                pageDiv.className = `pdf-page ${orientation} ${template}`;
                 pageDiv.style.width = pageWidth + 'px';
                 pageDiv.style.height = pageHeight + 'px';
+                
+                // Apply dynamic font sizes to each page
+                pageDiv.style.setProperty('--pdf-heading-size', headingSize + 'px');
+                pageDiv.style.setProperty('--pdf-question-size', questionSize + 'px');
+                pageDiv.style.setProperty('--pdf-answer-size', answerSize + 'px');
 
                 if (addWatermark && watermarkText) {
                     const wm = document.createElement('div');
@@ -1670,17 +1801,14 @@
                     pageDiv.appendChild(logo);
                 }
 
-                // Add QR or Website (Alternating)
                 if (addQRWebsite) {
                     const pageNum = p + 1;
                     if (pageNum % 2 === 1) {
-                        // Odd page: Website URL
                         const websiteEl = document.createElement('div');
                         websiteEl.className = 'pdf-footer-website';
                         websiteEl.textContent = websiteURL;
                         pageDiv.appendChild(websiteEl);
                     } else {
-                        // Even page: QR Code
                         const qrEl = document.createElement('img');
                         qrEl.className = 'pdf-footer-qr';
                         qrEl.src = qrCodeDataURL;
@@ -1703,7 +1831,6 @@
             progressFill.style.width = '55%';
 
             if (isPreview) {
-                // Show preview mode
                 previewPages = Array.from(renderContainer.querySelectorAll('.pdf-page'));
                 currentPreviewPage = 0;
                 showPreview();
@@ -1714,7 +1841,6 @@
                     genBtn.disabled = false;
                     genBtn.textContent = '💾 Save as PDF';
                 }, 500);
-                
                 return;
             }
 
@@ -1801,7 +1927,6 @@
             }
 
             progressFill.style.width = '100%';
-            
             if (mobile) await waitForRender(500);
 
             pdf.save(`${currentChapter}.pdf`);
@@ -1829,12 +1954,9 @@
         function renderPreviewPage() {
             const previewBody = document.getElementById('preview-body');
             previewBody.innerHTML = '';
-            
             if (previewPages.length === 0) return;
 
             const page = previewPages[currentPreviewPage].cloneNode(true);
-            
-            // Calculate scale to fit screen
             const maxWidth = window.innerWidth - 80;
             const maxHeight = window.innerHeight - 200;
             const pageWidth = parseInt(page.style.width);
@@ -1847,13 +1969,9 @@
             page.style.transform = `scale(${scale})`;
             previewBody.appendChild(page);
 
-            // Update navigation buttons
             document.getElementById('prev-page-btn').disabled = currentPreviewPage === 0;
             document.getElementById('next-page-btn').disabled = currentPreviewPage === previewPages.length - 1;
-            
-            // Update page indicator
-            document.getElementById('page-indicator').textContent = 
-                `Page ${currentPreviewPage + 1} of ${previewPages.length}`;
+            document.getElementById('page-indicator').textContent = `Page ${currentPreviewPage + 1} of ${previewPages.length}`;
         }
 
         function prevPage() {
