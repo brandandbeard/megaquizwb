@@ -285,41 +285,8 @@ body.day .smart-table th{color:#8B6508}
 .vid-hint .vh-brand{font-weight:700;color:rgba(255,255,255,.6)}
 .vid-hint .vh-sep{opacity:.4}
 
-/* ===== PPT Viewer Overlay (Simplified - No Whiteboard) ===== */
 #pptOverlay{position:fixed;inset:0;z-index:10000;background:#0a0a12;display:none;flex-direction:column}
 #pptOverlay.active{display:flex;animation:ovIn .35s ease}
-#pptFrameWrap{flex:1;width:100%;min-height:0;position:relative;background:#000;display:flex;align-items:center;justify-content:center}
-#pptFrame{width:100%;height:100%;border:none;display:block;background:#fff}
-
-/* PPT Navigation Bar */
-#pptNavBar{position:absolute;bottom:0;left:0;right:0;z-index:100;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.85) 40%,rgba(0,0,0,0.95) 100%);padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;transition:opacity .4s,transform .4s}
-#pptNavBar.hidden{opacity:0;transform:translateY(100%);pointer-events:none}
-.ppt-nav-btn{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;backdrop-filter:blur(10px);transition:all .25s;flex-shrink:0}
-.ppt-nav-btn:hover{background:rgba(234,67,53,0.5);border-color:rgba(234,67,53,0.7);transform:scale(1.08)}
-.ppt-nav-btn:active{transform:scale(0.95)}
-.ppt-nav-btn:disabled{opacity:0.3;cursor:not-allowed}
-.ppt-nav-btn:disabled:hover{background:rgba(255,255,255,0.1);transform:scale(1)}
-
-.ppt-slide-info{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.08);padding:8px 16px;border-radius:30px;border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(10px)}
-.ppt-slide-info label{color:rgba(255,255,255,0.7);font-family:'Space Grotesk',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.05em}
-.ppt-slide-input{width:50px;text-align:center;background:transparent;border:none;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;outline:none;-moz-appearance:textfield}
-.ppt-slide-input::-webkit-outer-spin-button,.ppt-slide-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.ppt-slide-total{color:rgba(255,255,255,0.6);font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600}
-.ppt-slide-total-input{width:50px;text-align:center;background:transparent;border:none;color:rgba(255,255,255,0.9);font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;outline:none;border-bottom:1px dashed rgba(255,255,255,0.3);-moz-appearance:textfield}
-.ppt-slide-total-input::-webkit-outer-spin-button,.ppt-slide-total-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.ppt-slide-total-input:focus{border-bottom-color:#ea4335}
-
-.ppt-go-btn{padding:8px 18px;border-radius:20px;background:linear-gradient(135deg,#dc2626,#ea4335);color:#fff;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.05em;transition:all .25s;box-shadow:0 4px 14px rgba(234,67,53,0.3)}
-.ppt-go-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(234,67,53,0.5)}
-
-.ppt-setup-hint{color:rgba(255,255,255,0.5);font-family:'Space Grotesk',sans-serif;font-size:.65rem;text-align:center;margin-top:4px;width:100%}
-
-@media(max-width:768px){
-    #pptNavBar{padding:10px;gap:10px}
-    .ppt-nav-btn{width:40px;height:40px}
-    .ppt-slide-info{padding:6px 12px;gap:8px}
-    .ppt-slide-input,.ppt-slide-total-input{width:40px;font-size:.9rem}
-}
 
 .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden;animation:panelIn .5s ease}
 @keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -499,37 +466,14 @@ body.day .sidebar{background:#FFFCF0}
     <div class="vid-hint"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""/><span class="vh-brand">MEGA QUIZ · By Arif Hussain</span><span class="vh-sep">•</span><span>📚 শুধু পড়ার জন্য — কোনো distraction নেই</span></div>
 </div>
 
-<!-- ===== PPT Viewer Overlay (Simplified) ===== -->
 <div id="pptOverlay">
-    <div class="vid-bar" id="pptBar" style="pointer-events:auto; z-index:100;">
+    <div class="vid-bar" id="pptBar" style="pointer-events:auto">
         <div class="ov-brand"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz"/><span class="ovb-txt"><span class="ovb-name">MEGA QUIZ</span><span class="ovb-by">By Arif Hussain</span></span></div>
         <span class="vid-title" id="pptTitle" style="color:#ea4335">📑 PPT Viewer</span>
         <button class="vid-fs-btn" onclick="closePPT()" title="বন্ধ করো" style="border-color:rgba(234,67,53,0.4)"><i data-lucide="x" width="18"></i></button>
     </div>
-
-    <div id="pptFrameWrap">
-        <iframe id="pptFrame" allowfullscreen allow="fullscreen"></iframe>
-    </div>
-
-    <!-- Navigation Bar -->
-    <div id="pptNavBar">
-        <button class="ppt-nav-btn" id="pptPrevBtn" onclick="pptPrevSlide()" title="আগের স্লাইড">
-            <i data-lucide="chevron-left" width="22"></i>
-        </button>
-        
-        <div class="ppt-slide-info">
-            <label>Slide</label>
-            <input type="number" id="pptCurrentSlide" class="ppt-slide-input" value="1" min="1" onchange="pptGoToSlide()">
-            <span class="ppt-slide-total">/</span>
-            <input type="number" id="pptTotalSlides" class="ppt-slide-total-input" value="" min="1" placeholder="?" onchange="pptSaveTotal()">
-            <button class="ppt-go-btn" onclick="pptGoToSlide()">Go</button>
-        </div>
-        
-        <button class="ppt-nav-btn" id="pptNextBtn" onclick="pptNextSlide()" title="পরের স্লাইড">
-            <i data-lucide="chevron-right" width="22"></i>
-        </button>
-        
-        <div class="ppt-setup-hint" id="pptSetupHint">💡 প্রথমবার মোট স্লাইড সংখ্যা লিখে দাও — পরে অটো সেভ থাকবে</div>
+    <div style="flex:1;width:100%;min-height:0;position:relative;background:#000;display:flex;align-items:center;justify-content:center">
+        <iframe id="pptFrame" style="width:100%;height:100%;border:none;display:block" allowfullscreen></iframe>
     </div>
 </div>
 
@@ -864,95 +808,40 @@ function vidTrueFS(){
 document.getElementById('vidOverlay').addEventListener('mousemove',vidBarShow);
 document.getElementById('vidOverlay').addEventListener('touchstart',vidBarShow,{passive:true});
 
-// ===== PPT Viewer Functions (Simplified - No Whiteboard) =====
-let currentPptUrl = '';
-let currentPptId = '';
-let pptCurrentSlide = 1;
-let pptTotalSlides = 0;
-let pptNavTimer = null;
-
-function pptGetStorageKey() {
-    return 'megaquiz_ppt_total_' + encodeURIComponent(currentPptId || currentPptUrl);
-}
-
-function pptSaveTotal() {
-    const val = parseInt(document.getElementById('pptTotalSlides').value) || 0;
-    if (val > 0) {
-        pptTotalSlides = val;
-        localStorage.setItem(pptGetStorageKey(), val);
-        document.getElementById('pptSetupHint').style.display = 'none';
-        pptUpdateNavButtons();
-    }
-}
-
-function pptLoadTotal() {
-    const saved = localStorage.getItem(pptGetStorageKey());
-    if (saved) {
-        pptTotalSlides = parseInt(saved) || 0;
-        document.getElementById('pptTotalSlides').value = pptTotalSlides || '';
-        document.getElementById('pptSetupHint').style.display = 'none';
-    } else {
-        pptTotalSlides = 0;
-        document.getElementById('pptTotalSlides').value = '';
-        document.getElementById('pptSetupHint').style.display = 'block';
-    }
-    pptUpdateNavButtons();
-}
-
-function pptUpdateNavButtons() {
-    const prevBtn = document.getElementById('pptPrevBtn');
-    const nextBtn = document.getElementById('pptNextBtn');
-    prevBtn.disabled = pptCurrentSlide <= 1;
-    nextBtn.disabled = pptTotalSlides > 0 && pptCurrentSlide >= pptTotalSlides;
-}
-
-function pptBuildEmbedUrl(startSlide) {
-    const url = currentPptUrl;
-    let embedUrl = url;
-    if (url.includes('drive.google.com')) {
-        const match = url.match(/\/d\/([^/]+)/);
-        if (match) embedUrl = 'https://drive.google.com/file/d/' + match[1] + '/preview';
-        else {
-            const idMatch = url.match(/[?&]id=([^&]+)/);
-            if (idMatch) embedUrl = 'https://drive.google.com/file/d/' + idMatch[1] + '/preview';
-        }
-    } else if (url.includes('docs.google.com/presentation')) {
-        const match = url.match(/\/d\/([^/]+)/);
-        if (match) {
-            // Google Slides embed supports start slide parameter
-            embedUrl = 'https://docs.google.com/presentation/d/' + match[1] + '/embed?start=true&loop=false&delayms=3000';
-            // For specific slide, we use slide id format - but simpler is to use the normal embed
-            // and let user navigate manually. For jumping to specific slide, we can use:
-            // /embed?slide=id.gXXX but that requires knowing slide IDs
-            // Best approach: use normal embed and let Google's own controls handle navigation
-        }
-    } else {
-        embedUrl = 'https://docs.google.com/gview?url=' + encodeURIComponent(url) + '&embedded=true';
-    }
-    return embedUrl;
-}
-
+// ===== PPT Functions (Updated to support Google Slides) =====
 function openPPT(url, name) {
     const ov = document.getElementById('pptOverlay');
     const fr = document.getElementById('pptFrame');
     document.getElementById('pptTitle').textContent = name || '📑 PPT Viewer';
-    currentPptUrl = url;
     
-    // Extract PPT ID for storage key
-    const match = url.match(/\/d\/([^/]+)/);
-    currentPptId = match ? match[1] : url;
+    let embedUrl = url;
     
-    pptCurrentSlide = 1;
-    document.getElementById('pptCurrentSlide').value = 1;
+    // 1. Google Drive File Link
+    if (url.includes('drive.google.com')) {
+        const match = url.match(/\/d\/([^/]+)/);
+        if (match) {
+            embedUrl = 'https://drive.google.com/file/d/' + match[1] + '/preview';
+        } else {
+            const idMatch = url.match(/[?&]id=([^&]+)/);
+            if (idMatch) embedUrl = 'https://drive.google.com/file/d/' + idMatch[1] + '/preview';
+        }
+    } 
+    // 2. Google Slides (Presentation) Link - FIXED!
+    else if (url.includes('docs.google.com/presentation')) {
+        const match = url.match(/\/d\/([^/]+)/);
+        if (match) {
+            embedUrl = 'https://docs.google.com/presentation/d/' + match[1] + '/embed?rm=minimal';
+        }
+    }
+    // 3. Other Links (Fallback)
+    else {
+        embedUrl = 'https://docs.google.com/gview?url=' + encodeURIComponent(url) + '&embedded=true';
+    }
     
-    fr.src = pptBuildEmbedUrl(1);
+    fr.src = embedUrl;
     ov.style.display = 'flex';
     document.body.style.overflow = 'hidden';
-    
-    pptLoadTotal();
-    pptShowNavBar();
-    
-    setTimeout(() => lucide.createIcons(), 100);
+    lucide.createIcons();
 }
 
 function closePPT() {
@@ -961,74 +850,46 @@ function closePPT() {
     ov.style.display = 'none';
     fr.src = '';
     document.body.style.overflow = '';
-    clearTimeout(pptNavTimer);
 }
 
-function pptGoToSlide() {
-    const input = document.getElementById('pptCurrentSlide');
-    let val = parseInt(input.value) || 1;
-    if (val < 1) val = 1;
-    if (pptTotalSlides > 0 && val > pptTotalSlides) val = pptTotalSlides;
-    
-    pptCurrentSlide = val;
-    input.value = val;
-    
-    // Reload iframe with new start slide
-    const fr = document.getElementById('pptFrame');
-    fr.src = pptBuildEmbedUrl(val);
-    
-    pptUpdateNavButtons();
-    pptShowNavBar();
-}
-
-function pptPrevSlide() {
-    if (pptCurrentSlide > 1) {
-        pptCurrentSlide--;
-        document.getElementById('pptCurrentSlide').value = pptCurrentSlide;
-        pptGoToSlide();
+// Extract all unique PPTs from a list of rows (supports multiple PPTs per topic)
+function getTopicPPTs(rows) {
+    const seen = new Set();
+    const ppts = [];
+    for (const r of rows) {
+        if (!r.ppt || !r.ppt.trim()) continue;
+        const url = r.ppt.trim();
+        const name = (r.ppt_name && r.ppt_name.trim()) ? r.ppt_name.trim() : '📑 PPT ' + (ppts.length + 1);
+        const key = url + '|||' + name;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        ppts.push({ url, name });
     }
+    return ppts;
 }
 
-function pptNextSlide() {
-    if (pptTotalSlides === 0) {
-        showToast('⚠️ আগে মোট স্লাইড সংখ্যা লেখো!', 'err');
-        return;
-    }
-    if (pptCurrentSlide < pptTotalSlides) {
-        pptCurrentSlide++;
-        document.getElementById('pptCurrentSlide').value = pptCurrentSlide;
-        pptGoToSlide();
-    }
+// Generate HTML for multiple PPT chips (used in topic divider)
+function renderPPTChips(ppts) {
+    if (!ppts || ppts.length === 0) return '';
+    let h = '<div class="td-ppt-group">';
+    ppts.forEach((p, i) => {
+        h += `<button class="ppt-chip" onclick="openPPT('${escJs(p.url)}', '${escJs(p.name)}')">📑 ${escAttr(p.name)}</button>`;
+    });
+    h += '</div>';
+    return h;
 }
 
-function pptShowNavBar() {
-    const bar = document.getElementById('pptNavBar');
-    bar.classList.remove('hidden');
-    clearTimeout(pptNavTimer);
-    pptNavTimer = setTimeout(() => {
-        // Keep visible - don't auto hide since user needs it
-    }, 5000);
+// Generate HTML for PPT banner (used in topic view - shows all PPTs as cards)
+function renderPPTBanner(ppts) {
+    if (!ppts || ppts.length === 0) return '';
+    let h = '<div class="ppt-banner"><span class="tb-ico">📑</span><div style="flex:1;min-width:150px"><div class="tb-label">PPT Notes</div><h3>' + ppts.length + ' টি PPT পাওয়া গেছে</h3></div></div>';
+    h += '<div class="ppt-banner-grid">';
+    ppts.forEach((p) => {
+        h += `<div class="ppt-banner-card" onclick="openPPT('${escJs(p.url)}', '${escJs(p.name)}')"><span class="ppt-ico">📑</span><span class="ppt-name">${escAttr(p.name)}</span><span class="ppt-play">▶ দেখো</span></div>`;
+    });
+    h += '</div>';
+    return h;
 }
-
-// Keyboard navigation
-document.addEventListener('keydown', (e) => {
-    if (document.getElementById('pptOverlay').style.display !== 'flex') return;
-    
-    // Don't trigger if user is typing in an input
-    if (e.target.tagName === 'INPUT') return;
-    
-    if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        pptPrevSlide();
-    } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        pptNextSlide();
-    }
-});
-
-// Mouse movement shows nav bar
-document.getElementById('pptOverlay').addEventListener('mousemove', pptShowNavBar);
-document.getElementById('pptOverlay').addEventListener('touchstart', pptShowNavBar, {passive: true});
 
 window.addEventListener('popstate',()=>{
     if(document.getElementById('simOverlay').classList.contains('active'))closeSimOverlay(false);
@@ -1627,8 +1488,10 @@ function buildGrouped(rows){
     const topics=groupByTopic(rows);
     let h='';
     topics.forEach((e, ti)=>{
+        // Get ALL unique PPTs for this topic (supports multiple PPTs)
         const ppts = getTopicPPTs(e[1]);
         const pptChipsHtml = renderPPTChips(ppts);
+
         h += `<div class="topic-divider"><span class="td-num">${ti + 1}</span><span class="td-name">${escAttr(e[0])}</span><span class="td-count">${e[1].length} টি প্রশ্ন</span>${pptChipsHtml}</div>`;
         h += renderQuestions(e[1]);
     });
@@ -1731,6 +1594,7 @@ function renderTopicView(subject,chapter,topic){
     const rows=all.filter(r=>topicOf(r)===topic);
     if(!rows.length){renderChapter(subject,chapter);return}
     
+    // Get ALL unique PPTs for this topic (supports multiple PPTs)
     const ppts = getTopicPPTs(rows);
     const pptBannerHtml = renderPPTBanner(ppts);
 
@@ -1757,37 +1621,31 @@ const IMG_URL_RE=/https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(
 function renderQuestions(rows){
     let html='';
     rows.forEach((r,i)=>{
-        const rawQ = (r.question || '(প্রশ্ন নেই)').toString();
-        const qImgs = rawQ.match(IMG_URL_RE) || [];
-        const q = rawQ.replace(IMG_URL_RE, '').trim() || '(প্রশ্ন নেই)';
-        const rawA = (r.answer || '(উত্তর নেই)').toString();
-        const smartA = engine.render(rawA);
-        const allImgs = [...qImgs];
-        const colImg = r.image ? String(r.image).trim() : '';
-        if(colImg && /^https?:\/\//i.test(colImg)) allImgs.push(colImg);
-        
-        const cid = 'card-' + Date.now() + '-' + i + '-' + Math.random().toString(36).slice(2,6);
-        html += '<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>';
-        html += allImgs.map(u => '<img src="'+u+'" class="question-image" loading="lazy"/>').join('');
-        html += '<div class="a">'+smartA+'</div>';
-        html += '<div class="action-row">';
-        
-        const stim = r.stimulation ? String(r.stimulation).trim() : '';
-        if(stim){
-            const si = simSave(stim);
-            const nm = getSimTitle(r);
-            html += '<button class="sim-chip" onclick="openSimulation('+si+',\''+escJs(nm)+'\')"><span class="sim-chip-ico">🔬</span><span class="sim-chip-name">'+escAttr(nm)+'</span><span class="sim-chip-play">▶ চালু</span></button>';
+        const rawQ=r.question||'(প্রশ্ন নেই)';
+        const qImgs=rawQ.match(IMG_URL_RE)||[];
+        const q=rawQ.replace(IMG_URL_RE,'').trim()||'(প্রশ্ন নেই)';
+        const rawA=r.answer||'(উত্তর নেই)';
+        const smartA=engine.render(rawA);
+        const allImgs=[...qImgs];
+        const colImg=r.image?r.image.trim():'';
+        if(colImg&&/^https?:\/\//i.test(colImg))allImgs.push(colImg);
+        const cid='card-'+Date.now()+'-'+i+'-'+Math.random().toString(36).slice(2,6);
+        html+='<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>';
+        html+=allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('');
+        html+='<div class="a">'+smartA+'</div>';
+        html+='<div class="action-row">';
+        if(r.stimulation&&r.stimulation.trim()){
+            const si=simSave(r.stimulation);
+            const nm=getSimTitle(r);
+            html+='<button class="sim-chip" onclick="openSimulation('+si+',\''+escJs(nm)+'\')"><span class="sim-chip-ico">🔬</span><span class="sim-chip-name">'+escAttr(nm)+'</span><span class="sim-chip-play">▶ চালু</span></button>';
         }
-        
-        const vid = r.video ? String(r.video).trim() : '';
-        if(vid){
-            const vi = vidSave(vid);
-            const vnm = getVideoTitle(r);
-            html += '<button class="vid-chip" onclick="openVideo('+vi+',\''+escJs(vnm)+'\')"><span class="sim-chip-ico">📺</span><span class="vid-chip-name">'+escAttr(vnm)+'</span><span class="vid-chip-play">▶ দেখো</span></button>';
+        if(r.video&&r.video.trim()){
+            const vi=vidSave(r.video);
+            const vnm=getVideoTitle(r);
+            html+='<button class="vid-chip" onclick="openVideo('+vi+',\''+escJs(vnm)+'\')"><span class="sim-chip-ico">📺</span><span class="vid-chip-name">'+escAttr(vnm)+'</span><span class="vid-chip-play">▶ দেখো</span></button>';
         }
-        
-        html += '<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'" data-type="'+encodeURIComponent(r.type||'')+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button>';
-        html += '</div><div id="ai-panel-'+cid+'"></div></div>';
+        html+='<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'" data-type="'+encodeURIComponent(r.type||'')+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button>';
+        html+='</div><div id="ai-panel-'+cid+'"></div></div>';
     });
     return html;
 }
