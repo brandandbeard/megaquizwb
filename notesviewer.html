@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=yes">
 <title>Class 10 Notes | Mega QUIZ</title>
-<link href="https://funcs.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -285,34 +285,41 @@ body.day .smart-table th{color:#8B6508}
 .vid-hint .vh-brand{font-weight:700;color:rgba(255,255,255,.6)}
 .vid-hint .vh-sep{opacity:.4}
 
+/* ===== PPT Viewer Overlay (Simplified - No Whiteboard) ===== */
 #pptOverlay{position:fixed;inset:0;z-index:10000;background:#0a0a12;display:none;flex-direction:column}
 #pptOverlay.active{display:flex;animation:ovIn .35s ease}
-#pptCanvasContainer{position:relative;flex:1;width:100%;min-height:0;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#pptFrameWrap{flex:1;width:100%;min-height:0;position:relative;background:#000;display:flex;align-items:center;justify-content:center}
 #pptFrame{width:100%;height:100%;border:none;display:block;background:#fff}
-#drawingCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;touch-action:none;cursor:crosshair}
-#drawingCanvas.disabled{pointer-events:none;cursor:default}
 
-#pptToolbar{position:absolute;top:70px;right:20px;z-index:100;background:rgba(20,20,46,0.95);backdrop-filter:blur(12px);padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;gap:12px;align-items:center;box-shadow:0 8px 32px rgba(0,0,0,0.4);transition:transform .3s}
-body.day #pptToolbar{background:rgba(255,253,245,0.95);border:1px solid #E6D5B8}
-.toolbar-group{display:flex;flex-direction:column;gap:8px;align-items:center;width:100%}
-.toolbar-divider{width:100%;height:1px;background:rgba(255,255,255,0.1);margin:4px 0}
-body.day .toolbar-divider{background:rgba(0,0,0,0.1)}
-.tool-btn{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;transition:all .2s}
-body.day .tool-btn{background:rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.1);color:#000}
-.tool-btn:hover{background:rgba(240,192,64,0.2);border-color:rgba(240,192,64,0.4)}
-.tool-btn.active{background:rgba(240,192,64,0.3);border-color:#f0c040;color:#f0c040}
-body.day .tool-btn.active{color:#B8860B;border-color:#B8860B}
-.tool-btn.danger:hover{background:rgba(244,63,94,0.2);border-color:rgba(244,63,94,0.4);color:#f43f5e}
-.color-picker{width:40px;height:40px;border-radius:10px;border:2px solid rgba(255,255,255,0.2);cursor:pointer;padding:0;overflow:hidden}
-body.day .color-picker{border-color:rgba(0,0,0,0.2)}
-.thickness-slider{width:100px;accent-color:#f0c040;cursor:pointer}
-.page-control{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);padding:6px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1)}
-body.day .page-control{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.1)}
-.page-control input{width:40px;text-align:center;background:transparent;border:none;color:#fff;font-weight:700;font-size:.9rem;outline:none}
-body.day .page-control input{color:#000}
-.page-btn{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.1);border:none;color:#fff;transition:.2s}
-body.day .page-btn{background:rgba(0,0,0,0.1);color:#000}
-.page-btn:hover{background:rgba(240,192,64,0.3)}
+/* PPT Navigation Bar */
+#pptNavBar{position:absolute;bottom:0;left:0;right:0;z-index:100;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.85) 40%,rgba(0,0,0,0.95) 100%);padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;transition:opacity .4s,transform .4s}
+#pptNavBar.hidden{opacity:0;transform:translateY(100%);pointer-events:none}
+.ppt-nav-btn{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;backdrop-filter:blur(10px);transition:all .25s;flex-shrink:0}
+.ppt-nav-btn:hover{background:rgba(234,67,53,0.5);border-color:rgba(234,67,53,0.7);transform:scale(1.08)}
+.ppt-nav-btn:active{transform:scale(0.95)}
+.ppt-nav-btn:disabled{opacity:0.3;cursor:not-allowed}
+.ppt-nav-btn:disabled:hover{background:rgba(255,255,255,0.1);transform:scale(1)}
+
+.ppt-slide-info{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.08);padding:8px 16px;border-radius:30px;border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(10px)}
+.ppt-slide-info label{color:rgba(255,255,255,0.7);font-family:'Space Grotesk',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.05em}
+.ppt-slide-input{width:50px;text-align:center;background:transparent;border:none;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;outline:none;-moz-appearance:textfield}
+.ppt-slide-input::-webkit-outer-spin-button,.ppt-slide-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ppt-slide-total{color:rgba(255,255,255,0.6);font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600}
+.ppt-slide-total-input{width:50px;text-align:center;background:transparent;border:none;color:rgba(255,255,255,0.9);font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;outline:none;border-bottom:1px dashed rgba(255,255,255,0.3);-moz-appearance:textfield}
+.ppt-slide-total-input::-webkit-outer-spin-button,.ppt-slide-total-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ppt-slide-total-input:focus{border-bottom-color:#ea4335}
+
+.ppt-go-btn{padding:8px 18px;border-radius:20px;background:linear-gradient(135deg,#dc2626,#ea4335);color:#fff;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.05em;transition:all .25s;box-shadow:0 4px 14px rgba(234,67,53,0.3)}
+.ppt-go-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(234,67,53,0.5)}
+
+.ppt-setup-hint{color:rgba(255,255,255,0.5);font-family:'Space Grotesk',sans-serif;font-size:.65rem;text-align:center;margin-top:4px;width:100%}
+
+@media(max-width:768px){
+    #pptNavBar{padding:10px;gap:10px}
+    .ppt-nav-btn{width:40px;height:40px}
+    .ppt-slide-info{padding:6px 12px;gap:8px}
+    .ppt-slide-input,.ppt-slide-total-input{width:40px;font-size:.9rem}
+}
 
 .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden;animation:panelIn .5s ease}
 @keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -492,50 +499,37 @@ body.day .sidebar{background:#FFFCF0}
     <div class="vid-hint"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""/><span class="vh-brand">MEGA QUIZ · By Arif Hussain</span><span class="vh-sep">•</span><span>📚 শুধু পড়ার জন্য — কোনো distraction নেই</span></div>
 </div>
 
+<!-- ===== PPT Viewer Overlay (Simplified) ===== -->
 <div id="pptOverlay">
     <div class="vid-bar" id="pptBar" style="pointer-events:auto; z-index:100;">
         <div class="ov-brand"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz"/><span class="ovb-txt"><span class="ovb-name">MEGA QUIZ</span><span class="ovb-by">By Arif Hussain</span></span></div>
         <span class="vid-title" id="pptTitle" style="color:#ea4335">📑 PPT Viewer</span>
         <button class="vid-fs-btn" onclick="closePPT()" title="বন্ধ করো" style="border-color:rgba(234,67,53,0.4)"><i data-lucide="x" width="18"></i></button>
     </div>
-    
-    <div id="pptToolbar">
-        <div class="toolbar-group">
-            <button class="tool-btn active" id="toggleDrawBtn" title="ড্রয়িং মোড চালু/বন্ধ" onclick="toggleDrawingMode()">
-                <i data-lucide="pencil" width="18"></i>
-            </button>
-        </div>
-        <div class="toolbar-divider"></div>
-        <div class="toolbar-group">
-            <input type="color" id="colorPicker" class="color-picker" value="#f0c040" title="রং পরিবর্তন করো">
-            <input type="range" id="thicknessSlider" class="thickness-slider" min="1" max="20" value="3" title="লাইন মোটা/পাতলা">
-        </div>
-        <div class="toolbar-divider"></div>
-        <div class="toolbar-group">
-            <button class="tool-btn" onclick="undoDrawing()" title="Undo (পূর্বাবস্থায় ফেরা)">
-                <i data-lucide="undo-2" width="18"></i>
-            </button>
-            <button class="tool-btn danger" onclick="clearCurrentPage()" title="এই পেজ মুছে ফেলো">
-                <i data-lucide="eraser" width="18"></i>
-            </button>
-        </div>
-        <div class="toolbar-divider"></div>
-        <div class="toolbar-group">
-            <div class="page-control">
-                <button class="page-btn" onclick="changePage(-1)"><i data-lucide="chevron-left" width="16"></i></button>
-                <span style="color:#fff;font-size:.8rem;font-weight:600">Page</span>
-                <input type="number" id="currentPageNum" value="1" min="1" onchange="loadPageDrawing()">
-                <button class="page-btn" onclick="changePage(1)"><i data-lucide="chevron-right" width="16"></i></button>
-            </div>
-            <button class="tool-btn" style="width:100%; font-size:.7rem; height:32px; gap:4px;" onclick="addBlankPage()" title="নতুন সাদা পেজ যোগ করো">
-                <i data-lucide="plus" width="14"></i> Blank Page
-            </button>
-        </div>
+
+    <div id="pptFrameWrap">
+        <iframe id="pptFrame" allowfullscreen allow="fullscreen"></iframe>
     </div>
 
-    <div id="pptCanvasContainer">
-        <iframe id="pptFrame" allowfullscreen></iframe>
-        <canvas id="drawingCanvas"></canvas>
+    <!-- Navigation Bar -->
+    <div id="pptNavBar">
+        <button class="ppt-nav-btn" id="pptPrevBtn" onclick="pptPrevSlide()" title="আগের স্লাইড">
+            <i data-lucide="chevron-left" width="22"></i>
+        </button>
+        
+        <div class="ppt-slide-info">
+            <label>Slide</label>
+            <input type="number" id="pptCurrentSlide" class="ppt-slide-input" value="1" min="1" onchange="pptGoToSlide()">
+            <span class="ppt-slide-total">/</span>
+            <input type="number" id="pptTotalSlides" class="ppt-slide-total-input" value="" min="1" placeholder="?" onchange="pptSaveTotal()">
+            <button class="ppt-go-btn" onclick="pptGoToSlide()">Go</button>
+        </div>
+        
+        <button class="ppt-nav-btn" id="pptNextBtn" onclick="pptNextSlide()" title="পরের স্লাইড">
+            <i data-lucide="chevron-right" width="22"></i>
+        </button>
+        
+        <div class="ppt-setup-hint" id="pptSetupHint">💡 প্রথমবার মোট স্লাইড সংখ্যা লিখে দাও — পরে অটো সেভ থাকবে</div>
     </div>
 </div>
 
@@ -870,23 +864,50 @@ function vidTrueFS(){
 document.getElementById('vidOverlay').addEventListener('mousemove',vidBarShow);
 document.getElementById('vidOverlay').addEventListener('touchstart',vidBarShow,{passive:true});
 
-// ===== PPT & Whiteboard Functions =====
+// ===== PPT Viewer Functions (Simplified - No Whiteboard) =====
 let currentPptUrl = '';
-let isDrawingMode = true;
-let isDrawing = false;
-let lastX = 0;
-let lastY = 0;
-let drawHistory = [];
-let historyStep = -1;
-const MAX_HISTORY = 30;
+let currentPptId = '';
+let pptCurrentSlide = 1;
+let pptTotalSlides = 0;
+let pptNavTimer = null;
 
-function openPPT(url, name) {
-    const ov = document.getElementById('pptOverlay');
-    const fr = document.getElementById('pptFrame');
-    document.getElementById('pptTitle').textContent = name || '📑 PPT Viewer';
-    currentPptUrl = url;
-    document.getElementById('currentPageNum').value = 1;
-    
+function pptGetStorageKey() {
+    return 'megaquiz_ppt_total_' + encodeURIComponent(currentPptId || currentPptUrl);
+}
+
+function pptSaveTotal() {
+    const val = parseInt(document.getElementById('pptTotalSlides').value) || 0;
+    if (val > 0) {
+        pptTotalSlides = val;
+        localStorage.setItem(pptGetStorageKey(), val);
+        document.getElementById('pptSetupHint').style.display = 'none';
+        pptUpdateNavButtons();
+    }
+}
+
+function pptLoadTotal() {
+    const saved = localStorage.getItem(pptGetStorageKey());
+    if (saved) {
+        pptTotalSlides = parseInt(saved) || 0;
+        document.getElementById('pptTotalSlides').value = pptTotalSlides || '';
+        document.getElementById('pptSetupHint').style.display = 'none';
+    } else {
+        pptTotalSlides = 0;
+        document.getElementById('pptTotalSlides').value = '';
+        document.getElementById('pptSetupHint').style.display = 'block';
+    }
+    pptUpdateNavButtons();
+}
+
+function pptUpdateNavButtons() {
+    const prevBtn = document.getElementById('pptPrevBtn');
+    const nextBtn = document.getElementById('pptNextBtn');
+    prevBtn.disabled = pptCurrentSlide <= 1;
+    nextBtn.disabled = pptTotalSlides > 0 && pptCurrentSlide >= pptTotalSlides;
+}
+
+function pptBuildEmbedUrl(startSlide) {
+    const url = currentPptUrl;
     let embedUrl = url;
     if (url.includes('drive.google.com')) {
         const match = url.match(/\/d\/([^/]+)/);
@@ -897,20 +918,41 @@ function openPPT(url, name) {
         }
     } else if (url.includes('docs.google.com/presentation')) {
         const match = url.match(/\/d\/([^/]+)/);
-        if (match) embedUrl = 'https://docs.google.com/presentation/d/' + match[1] + '/embed?rm=minimal';
+        if (match) {
+            // Google Slides embed supports start slide parameter
+            embedUrl = 'https://docs.google.com/presentation/d/' + match[1] + '/embed?start=true&loop=false&delayms=3000';
+            // For specific slide, we use slide id format - but simpler is to use the normal embed
+            // and let user navigate manually. For jumping to specific slide, we can use:
+            // /embed?slide=id.gXXX but that requires knowing slide IDs
+            // Best approach: use normal embed and let Google's own controls handle navigation
+        }
     } else {
         embedUrl = 'https://docs.google.com/gview?url=' + encodeURIComponent(url) + '&embedded=true';
     }
+    return embedUrl;
+}
+
+function openPPT(url, name) {
+    const ov = document.getElementById('pptOverlay');
+    const fr = document.getElementById('pptFrame');
+    document.getElementById('pptTitle').textContent = name || '📑 PPT Viewer';
+    currentPptUrl = url;
     
-    fr.src = embedUrl;
+    // Extract PPT ID for storage key
+    const match = url.match(/\/d\/([^/]+)/);
+    currentPptId = match ? match[1] : url;
+    
+    pptCurrentSlide = 1;
+    document.getElementById('pptCurrentSlide').value = 1;
+    
+    fr.src = pptBuildEmbedUrl(1);
     ov.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     
-    setTimeout(() => {
-        initCanvas();
-        loadPageDrawing();
-        lucide.createIcons();
-    }, 300);
+    pptLoadTotal();
+    pptShowNavBar();
+    
+    setTimeout(() => lucide.createIcons(), 100);
 }
 
 function closePPT() {
@@ -919,207 +961,74 @@ function closePPT() {
     ov.style.display = 'none';
     fr.src = '';
     document.body.style.overflow = '';
-    drawHistory = [];
-    historyStep = -1;
+    clearTimeout(pptNavTimer);
 }
 
-function initCanvas() {
-    const canvas = document.getElementById('drawingCanvas');
-    const container = document.getElementById('pptCanvasContainer');
-    canvas.width = container.offsetWidth;
-    canvas.height = container.offsetHeight;
-    
-    const ctx = canvas.getContext('2d');
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseout', stopDrawing);
-    
-    canvas.addEventListener('touchstart', handleTouchStart, {passive: false});
-    canvas.addEventListener('touchmove', handleTouchMove, {passive: false});
-    canvas.addEventListener('touchend', stopDrawing);
-}
-
-function toggleDrawingMode() {
-    isDrawingMode = !isDrawingMode;
-    const canvas = document.getElementById('drawingCanvas');
-    const btn = document.getElementById('toggleDrawBtn');
-    if (isDrawingMode) {
-        canvas.classList.remove('disabled');
-        btn.classList.add('active');
-    } else {
-        canvas.classList.add('disabled');
-        btn.classList.remove('active');
-    }
-}
-
-function getPos(e, canvas) {
-    const rect = canvas.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    return { x: clientX - rect.left, y: clientY - rect.top };
-}
-
-function startDrawing(e) {
-    if (!isDrawingMode) return;
-    isDrawing = true;
-    const canvas = document.getElementById('drawingCanvas');
-    const pos = getPos(e, canvas);
-    lastX = pos.x;
-    lastY = pos.y;
-}
-
-function draw(e) {
-    if (!isDrawing || !isDrawingMode) return;
-    e.preventDefault();
-    const canvas = document.getElementById('drawingCanvas');
-    const ctx = canvas.getContext('2d');
-    const pos = getPos(e, canvas);
-    
-    ctx.strokeStyle = document.getElementById('colorPicker').value;
-    ctx.lineWidth = document.getElementById('thicknessSlider').value;
-    
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
-    
-    lastX = pos.x;
-    lastY = pos.y;
-}
-
-function stopDrawing() {
-    if (isDrawing) {
-        isDrawing = false;
-        saveHistory();
-    }
-}
-
-function handleTouchStart(e) {
-    if (!isDrawingMode) return;
-    e.preventDefault();
-    startDrawing(e);
-}
-
-function handleTouchMove(e) {
-    if (!isDrawingMode) return;
-    e.preventDefault();
-    draw(e);
-}
-
-function saveHistory() {
-    const canvas = document.getElementById('drawingCanvas');
-    historyStep++;
-    if (historyStep < drawHistory.length) {
-        drawHistory.length = historyStep;
-    }
-    drawHistory.push(canvas.toDataURL());
-    if (drawHistory.length > MAX_HISTORY) {
-        drawHistory.shift();
-        historyStep--;
-    }
-    saveToLocalStorage();
-}
-
-function undoDrawing() {
-    if (historyStep > 0) {
-        historyStep--;
-        restoreHistory();
-    } else if (historyStep === 0) {
-        historyStep = -1;
-        const canvas = document.getElementById('drawingCanvas');
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        saveToLocalStorage();
-    }
-}
-
-function restoreHistory() {
-    const canvas = document.getElementById('drawingCanvas');
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    img.src = drawHistory[historyStep];
-    img.onload = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
-    };
-}
-
-function clearCurrentPage() {
-    const canvas = document.getElementById('drawingCanvas');
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawHistory = [];
-    historyStep = -1;
-    saveToLocalStorage();
-    showToast('✅ এই পেজ মুছে ফেলা হয়েছে', 'okk');
-}
-
-function getStorageKey() {
-    const pageNum = document.getElementById('currentPageNum').value || 1;
-    return 'megaquiz_ppt_drawings_' + encodeURIComponent(currentPptUrl) + '_page_' + pageNum;
-}
-
-function saveToLocalStorage() {
-    const canvas = document.getElementById('drawingCanvas');
-    const data = canvas.toDataURL();
-    localStorage.setItem(getStorageKey(), data);
-}
-
-function loadPageDrawing() {
-    const canvas = document.getElementById('drawingCanvas');
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    const data = localStorage.getItem(getStorageKey());
-    if (data) {
-        const img = new Image();
-        img.onload = () => {
-            ctx.drawImage(img, 0, 0);
-            drawHistory = [data];
-            historyStep = 0;
-        };
-        img.src = data;
-    } else {
-        drawHistory = [];
-        historyStep = -1;
-    }
-}
-
-function changePage(delta) {
-    const input = document.getElementById('currentPageNum');
+function pptGoToSlide() {
+    const input = document.getElementById('pptCurrentSlide');
     let val = parseInt(input.value) || 1;
-    val += delta;
     if (val < 1) val = 1;
+    if (pptTotalSlides > 0 && val > pptTotalSlides) val = pptTotalSlides;
+    
+    pptCurrentSlide = val;
     input.value = val;
-    loadPageDrawing();
-}
-
-function addBlankPage() {
+    
+    // Reload iframe with new start slide
     const fr = document.getElementById('pptFrame');
-    fr.src = 'about:blank';
-    fr.style.background = '#ffffff';
-    document.getElementById('currentPageNum').value = parseInt(document.getElementById('currentPageNum').value) + 1;
-    clearCurrentPage();
-    showToast('📄 নতুন সাদা পেজ যোগ করা হয়েছে', 'okk');
+    fr.src = pptBuildEmbedUrl(val);
+    
+    pptUpdateNavButtons();
+    pptShowNavBar();
 }
 
-window.addEventListener('resize', () => {
-    if (document.getElementById('pptOverlay').style.display === 'flex') {
-        const canvas = document.getElementById('drawingCanvas');
-        const container = document.getElementById('pptCanvasContainer');
-        const tempData = canvas.toDataURL();
-        canvas.width = container.offsetWidth;
-        canvas.height = container.offsetHeight;
-        const ctx = canvas.getContext('2d');
-        const img = new Image();
-        img.onload = () => ctx.drawImage(img, 0, 0);
-        img.src = tempData;
+function pptPrevSlide() {
+    if (pptCurrentSlide > 1) {
+        pptCurrentSlide--;
+        document.getElementById('pptCurrentSlide').value = pptCurrentSlide;
+        pptGoToSlide();
+    }
+}
+
+function pptNextSlide() {
+    if (pptTotalSlides === 0) {
+        showToast('⚠️ আগে মোট স্লাইড সংখ্যা লেখো!', 'err');
+        return;
+    }
+    if (pptCurrentSlide < pptTotalSlides) {
+        pptCurrentSlide++;
+        document.getElementById('pptCurrentSlide').value = pptCurrentSlide;
+        pptGoToSlide();
+    }
+}
+
+function pptShowNavBar() {
+    const bar = document.getElementById('pptNavBar');
+    bar.classList.remove('hidden');
+    clearTimeout(pptNavTimer);
+    pptNavTimer = setTimeout(() => {
+        // Keep visible - don't auto hide since user needs it
+    }, 5000);
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (document.getElementById('pptOverlay').style.display !== 'flex') return;
+    
+    // Don't trigger if user is typing in an input
+    if (e.target.tagName === 'INPUT') return;
+    
+    if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        pptPrevSlide();
+    } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        pptNextSlide();
     }
 });
+
+// Mouse movement shows nav bar
+document.getElementById('pptOverlay').addEventListener('mousemove', pptShowNavBar);
+document.getElementById('pptOverlay').addEventListener('touchstart', pptShowNavBar, {passive: true});
 
 window.addEventListener('popstate',()=>{
     if(document.getElementById('simOverlay').classList.contains('active'))closeSimOverlay(false);
@@ -1392,7 +1301,6 @@ async function loadSheet(){
         const lines=tsv.split(/\r?\n/).filter(l=>l.trim());
         if(lines.length<2)throw new Error('ডাটা নেই');
         const header=lines[0].split('\t').map(h=>h.trim().toLowerCase());
-        console.log("Sheet Headers Detected:", header); // Debugging line
         
         function findColumnIndex(header, possibleNames) {
             for (const name of possibleNames) {
@@ -1467,10 +1375,7 @@ async function loadSheet(){
                 chapterNumber, topicNumber, rowIndex
             });
         }
-        if(!rows.length) {
-            console.error("No valid rows found in TSV. Check column headers.");
-            throw new Error('কোনো প্রশ্ন পাওয়া যায়নি। দয়া করে Google Sheet-এর Column-এর নাম (Subject, Chapter, Question, Answer) ঠিক আছে কিনা চেক করো।');
-        }
+        if(!rows.length)throw new Error('কোনো প্রশ্ন নেই');
         
         rows.sort((a, b) => {
             const subjectCmp = (a.subject || '').localeCompare(b.subject || '', 'bn');
@@ -1493,7 +1398,6 @@ async function loadSheet(){
         buildNav();
     }catch(err){
         dynamicContent.innerHTML='<div class="empty-state"><p style="font-size:1.1rem;font-weight:600">⚠️ লোড ব্যর্থ!</p><p style="font-size:.9rem;color:var(--text-muted)">'+err.message+'</p></div>';
-        console.error("Load Sheet Error:", err);
     }
 }
 
