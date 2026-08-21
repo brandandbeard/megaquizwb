@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=yes">
 <title>Class 10 Notes | Mega QUIZ</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://funcs.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -285,7 +285,6 @@ body.day .smart-table th{color:#8B6508}
 .vid-hint .vh-brand{font-weight:700;color:rgba(255,255,255,.6)}
 .vid-hint .vh-sep{opacity:.4}
 
-/* ===== PPT Whiteboard Overlay Styles ===== */
 #pptOverlay{position:fixed;inset:0;z-index:10000;background:#0a0a12;display:none;flex-direction:column}
 #pptOverlay.active{display:flex;animation:ovIn .35s ease}
 #pptCanvasContainer{position:relative;flex:1;width:100%;min-height:0;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -314,13 +313,6 @@ body.day .page-control input{color:#000}
 .page-btn{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.1);border:none;color:#fff;transition:.2s}
 body.day .page-btn{background:rgba(0,0,0,0.1);color:#000}
 .page-btn:hover{background:rgba(240,192,64,0.3)}
-
-@media(max-width:768px){
-    #pptToolbar{top:auto;bottom:20px;right:50%;transform:translateX(50%);flex-direction:row;flex-wrap:wrap;width:90%;justify-content:center;padding:10px}
-    #pptToolbar.hidden-mobile{transform:translateX(50%) translateY(200%)}
-    .toolbar-divider{width:1px;height:30px;margin:0 4px}
-    .thickness-slider{width:80px}
-}
 
 .ai-panel{margin-top:16px;padding:20px 24px;border-radius:16px;background:var(--ai-glow);border:1px solid var(--ai-border);position:relative;overflow:hidden;animation:panelIn .5s ease}
 @keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -500,7 +492,6 @@ body.day .sidebar{background:#FFFCF0}
     <div class="vid-hint"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""/><span class="vh-brand">MEGA QUIZ · By Arif Hussain</span><span class="vh-sep">•</span><span>📚 শুধু পড়ার জন্য — কোনো distraction নেই</span></div>
 </div>
 
-<!-- ===== PPT Overlay with Whiteboard ===== -->
 <div id="pptOverlay">
     <div class="vid-bar" id="pptBar" style="pointer-events:auto; z-index:100;">
         <div class="ov-brand"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Mega Quiz"/><span class="ovb-txt"><span class="ovb-name">MEGA QUIZ</span><span class="ovb-by">By Arif Hussain</span></span></div>
@@ -508,7 +499,6 @@ body.day .sidebar{background:#FFFCF0}
         <button class="vid-fs-btn" onclick="closePPT()" title="বন্ধ করো" style="border-color:rgba(234,67,53,0.4)"><i data-lucide="x" width="18"></i></button>
     </div>
     
-    <!-- Whiteboard Toolbar -->
     <div id="pptToolbar">
         <div class="toolbar-group">
             <button class="tool-btn active" id="toggleDrawBtn" title="ড্রয়িং মোড চালু/বন্ধ" onclick="toggleDrawingMode()">
@@ -943,13 +933,11 @@ function initCanvas() {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     
-    // Mouse events
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mouseout', stopDrawing);
     
-    // Touch events
     canvas.addEventListener('touchstart', handleTouchStart, {passive: false});
     canvas.addEventListener('touchmove', handleTouchMove, {passive: false});
     canvas.addEventListener('touchend', stopDrawing);
@@ -972,10 +960,7 @@ function getPos(e, canvas) {
     const rect = canvas.getBoundingClientRect();
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    return {
-        x: clientX - rect.left,
-        y: clientY - rect.top
-    };
+    return { x: clientX - rect.left, y: clientY - rect.top };
 }
 
 function startDrawing(e) {
@@ -1122,16 +1107,13 @@ function addBlankPage() {
     showToast('📄 নতুন সাদা পেজ যোগ করা হয়েছে', 'okk');
 }
 
-// Window resize handler for canvas
 window.addEventListener('resize', () => {
     if (document.getElementById('pptOverlay').style.display === 'flex') {
         const canvas = document.getElementById('drawingCanvas');
         const container = document.getElementById('pptCanvasContainer');
-        // Save current drawing
         const tempData = canvas.toDataURL();
         canvas.width = container.offsetWidth;
         canvas.height = container.offsetHeight;
-        // Restore drawing
         const ctx = canvas.getContext('2d');
         const img = new Image();
         img.onload = () => ctx.drawImage(img, 0, 0);
@@ -1410,6 +1392,7 @@ async function loadSheet(){
         const lines=tsv.split(/\r?\n/).filter(l=>l.trim());
         if(lines.length<2)throw new Error('ডাটা নেই');
         const header=lines[0].split('\t').map(h=>h.trim().toLowerCase());
+        console.log("Sheet Headers Detected:", header); // Debugging line
         
         function findColumnIndex(header, possibleNames) {
             for (const name of possibleNames) {
@@ -1484,7 +1467,10 @@ async function loadSheet(){
                 chapterNumber, topicNumber, rowIndex
             });
         }
-        if(!rows.length)throw new Error('কোনো প্রশ্ন নেই');
+        if(!rows.length) {
+            console.error("No valid rows found in TSV. Check column headers.");
+            throw new Error('কোনো প্রশ্ন পাওয়া যায়নি। দয়া করে Google Sheet-এর Column-এর নাম (Subject, Chapter, Question, Answer) ঠিক আছে কিনা চেক করো।');
+        }
         
         rows.sort((a, b) => {
             const subjectCmp = (a.subject || '').localeCompare(b.subject || '', 'bn');
@@ -1507,6 +1493,7 @@ async function loadSheet(){
         buildNav();
     }catch(err){
         dynamicContent.innerHTML='<div class="empty-state"><p style="font-size:1.1rem;font-weight:600">⚠️ লোড ব্যর্থ!</p><p style="font-size:.9rem;color:var(--text-muted)">'+err.message+'</p></div>';
+        console.error("Load Sheet Error:", err);
     }
 }
 
@@ -1866,31 +1853,37 @@ const IMG_URL_RE=/https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|svg|webp|bmp|avif)(
 function renderQuestions(rows){
     let html='';
     rows.forEach((r,i)=>{
-        const rawQ=r.question||'(প্রশ্ন নেই)';
-        const qImgs=rawQ.match(IMG_URL_RE)||[];
-        const q=rawQ.replace(IMG_URL_RE,'').trim()||'(প্রশ্ন নেই)';
-        const rawA=r.answer||'(উত্তর নেই)';
-        const smartA=engine.render(rawA);
-        const allImgs=[...qImgs];
-        const colImg=r.image?r.image.trim():'';
-        if(colImg&&/^https?:\/\//i.test(colImg))allImgs.push(colImg);
-        const cid='card-'+Date.now()+'-'+i+'-'+Math.random().toString(36).slice(2,6);
-        html+='<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>';
-        html+=allImgs.map(u=>'<img src="'+u+'" class="question-image" loading="lazy"/>').join('');
-        html+='<div class="a">'+smartA+'</div>';
-        html+='<div class="action-row">';
-        if(r.stimulation&&r.stimulation.trim()){
-            const si=simSave(r.stimulation);
-            const nm=getSimTitle(r);
-            html+='<button class="sim-chip" onclick="openSimulation('+si+',\''+escJs(nm)+'\')"><span class="sim-chip-ico">🔬</span><span class="sim-chip-name">'+escAttr(nm)+'</span><span class="sim-chip-play">▶ চালু</span></button>';
+        const rawQ = (r.question || '(প্রশ্ন নেই)').toString();
+        const qImgs = rawQ.match(IMG_URL_RE) || [];
+        const q = rawQ.replace(IMG_URL_RE, '').trim() || '(প্রশ্ন নেই)';
+        const rawA = (r.answer || '(উত্তর নেই)').toString();
+        const smartA = engine.render(rawA);
+        const allImgs = [...qImgs];
+        const colImg = r.image ? String(r.image).trim() : '';
+        if(colImg && /^https?:\/\//i.test(colImg)) allImgs.push(colImg);
+        
+        const cid = 'card-' + Date.now() + '-' + i + '-' + Math.random().toString(36).slice(2,6);
+        html += '<div class="question-card" id="'+cid+'"><div class="q"><span class="num">'+(i+1)+'</span><span>'+q+'</span></div>';
+        html += allImgs.map(u => '<img src="'+u+'" class="question-image" loading="lazy"/>').join('');
+        html += '<div class="a">'+smartA+'</div>';
+        html += '<div class="action-row">';
+        
+        const stim = r.stimulation ? String(r.stimulation).trim() : '';
+        if(stim){
+            const si = simSave(stim);
+            const nm = getSimTitle(r);
+            html += '<button class="sim-chip" onclick="openSimulation('+si+',\''+escJs(nm)+'\')"><span class="sim-chip-ico">🔬</span><span class="sim-chip-name">'+escAttr(nm)+'</span><span class="sim-chip-play">▶ চালু</span></button>';
         }
-        if(r.video&&r.video.trim()){
-            const vi=vidSave(r.video);
-            const vnm=getVideoTitle(r);
-            html+='<button class="vid-chip" onclick="openVideo('+vi+',\''+escJs(vnm)+'\')"><span class="sim-chip-ico">📺</span><span class="vid-chip-name">'+escAttr(vnm)+'</span><span class="vid-chip-play">▶ দেখো</span></button>';
+        
+        const vid = r.video ? String(r.video).trim() : '';
+        if(vid){
+            const vi = vidSave(vid);
+            const vnm = getVideoTitle(r);
+            html += '<button class="vid-chip" onclick="openVideo('+vi+',\''+escJs(vnm)+'\')"><span class="sim-chip-ico">📺</span><span class="vid-chip-name">'+escAttr(vnm)+'</span><span class="vid-chip-play">▶ দেখো</span></button>';
         }
-        html+='<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'" data-type="'+encodeURIComponent(r.type||'')+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button>';
-        html+='</div><div id="ai-panel-'+cid+'"></div></div>';
+        
+        html += '<button class="ai-btn" onclick="getAIExp(\''+cid+'\',this)" data-q="'+encodeURIComponent(rawQ)+'" data-a="'+encodeURIComponent(rawA)+'" data-subject="'+encodeURIComponent(r.subject)+'" data-chapter="'+encodeURIComponent(r.chapter)+'" data-type="'+encodeURIComponent(r.type||'')+'"><i data-lucide="graduation-cap" width="14"></i> AI Explanation</button>';
+        html += '</div><div id="ai-panel-'+cid+'"></div></div>';
     });
     return html;
 }
