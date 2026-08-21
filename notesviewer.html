@@ -808,13 +808,15 @@ function vidTrueFS(){
 document.getElementById('vidOverlay').addEventListener('mousemove',vidBarShow);
 document.getElementById('vidOverlay').addEventListener('touchstart',vidBarShow,{passive:true});
 
-// ===== PPT Functions (Multiple PPTs Support) =====
+// ===== PPT Functions (Updated to support Google Slides) =====
 function openPPT(url, name) {
     const ov = document.getElementById('pptOverlay');
     const fr = document.getElementById('pptFrame');
     document.getElementById('pptTitle').textContent = name || '📑 PPT Viewer';
     
     let embedUrl = url;
+    
+    // 1. Google Drive File Link
     if (url.includes('drive.google.com')) {
         const match = url.match(/\/d\/([^/]+)/);
         if (match) {
@@ -823,7 +825,16 @@ function openPPT(url, name) {
             const idMatch = url.match(/[?&]id=([^&]+)/);
             if (idMatch) embedUrl = 'https://drive.google.com/file/d/' + idMatch[1] + '/preview';
         }
-    } else {
+    } 
+    // 2. Google Slides (Presentation) Link - FIXED!
+    else if (url.includes('docs.google.com/presentation')) {
+        const match = url.match(/\/d\/([^/]+)/);
+        if (match) {
+            embedUrl = 'https://docs.google.com/presentation/d/' + match[1] + '/embed?rm=minimal';
+        }
+    }
+    // 3. Other Links (Fallback)
+    else {
         embedUrl = 'https://docs.google.com/gview?url=' + encodeURIComponent(url) + '&embedded=true';
     }
     
