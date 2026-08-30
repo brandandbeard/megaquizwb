@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Universal Quiz System</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="https://i.ibb.co/7qJGpT1/icon-192.png">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- KaTeX for Math/LaTeX rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #6366f1;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --question-red: #c53030;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: 'Hind Siliguri', 'Segoe UI', Tahoma, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .page { display: none; min-height: 100vh; animation: fadeIn 0.5s ease-in; }
+        .page.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            height: 100vh;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content { text-align: center; color: white; z-index: 1; animation: scaleIn 1s ease-out; }
+        .hero h1 { font-size: 4rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .hero p { font-size: 1.5rem; opacity: 0.9; }
+
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .class-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 5px;
+            background: var(--gradient);
+        }
+
+        .class-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .class-card h3 { font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--primary); }
+        .class-card p { color: #64748b; }
+        .class-card.disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 2rem; left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .nav-header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: transform 0.2s;
+        }
+
+        .back-btn:hover { transform: scale(1.05); }
+        .nav-title { font-size: 1.5rem; font-weight: bold; color: var(--dark); }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .subject-card, .chapter-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .subject-card:hover, .chapter-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .subject-card h3, .chapter-card h3 { color: var(--primary); margin-bottom: 0.5rem; }
+
+        .hero-heading {
+            background: var(--gradient);
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .hero-heading small {
+            display: block;
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .questions-container { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
+
+        .controls {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pdf-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .pdf-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.6); }
+        .pdf-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .column-mode-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: #f1f5f9;
+            padding: 0.3rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .column-mode-btn {
+            flex: 1;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            background: transparent;
+            color: #64748b;
+        }
+
+        .column-mode-btn.active {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+        }
+
+        .word-limit-box {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .word-limit-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .word-limit-input {
+            width: 100px;
+            padding: 0.5rem;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .word-limit-hint {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+
+        .topic-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .topic-header input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+        .topic-header label {
+            flex: 1; cursor: pointer;
+            font-size: 1.1rem; font-weight: 600;
+            color: var(--primary); margin: 0;
+        }
+
+        .question-item { padding: 0.8rem 0.5rem; border-radius: 8px; transition: background 0.2s; }
+        .question-item:hover { background: #f8fafc; }
+
+        .question-top { display: flex; align-items: flex-start; gap: 0.6rem; }
+        .question-top input[type="checkbox"] {
+            width: 18px; height: 18px;
+            cursor: pointer; margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .question-body { flex: 1; }
+
+        .question-text {
+            color: var(--question-red);
+            font-weight: 600;
+            font-size: 1.02rem;
+            line-height: 1.6;
+            margin-bottom: 0.3rem;
+        }
+
+        .question-image {
+            max-width: 220px; max-height: 160px;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            object-fit: contain;
+            display: block;
+        }
+
+        .answer-line {
+            margin-top: 0.4rem;
+            color: var(--dark);
+            font-size: 0.98rem;
+            line-height: 1.55;
+            padding-left: 1.6rem;
+        }
+
+        .answer-line strong { color: #2563eb; font-weight: 700; }
+
+        .answer-line table {
+            border-collapse: collapse;
+            margin-top: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .answer-line table td, .answer-line table th { padding: 4px 8px; }
+
+        .answer-image {
+            max-width: 180px; max-height: 130px;
+            margin-top: 0.3rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            object-fit: contain;
+            display: inline-block;
+        }
+
+        .layout-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0.4rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .layout-option {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .layout-option input[type="radio"] {
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+        }
+
+        .layout-option:hover { background: #e2e8f0; }
+        .layout-option label { cursor: pointer; font-size: 0.85rem; margin: 0; }
+
+        /* Color Picker Styles */
+        .color-picker-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .color-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .color-opt {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .color-opt:hover { transform: scale(1.1); }
+        .color-opt.active {
+            transform: scale(1.15);
+            box-shadow: 0 0 0 2px white, 0 0 0 4px #6366f1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active { display: flex; }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 550px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--dark);
+            line-height: 1;
+        }
+
+        .checkbox-group { margin-bottom: 1rem; }
+        .checkbox-group label {
+            display: flex; align-items: center;
+            gap: 0.6rem; padding: 0.6rem;
+            cursor: pointer; border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .checkbox-group label:hover { background: #f1f5f9; }
+        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; }
+
+        .select-group { margin-bottom: 1rem; }
+        .select-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .select-group select, .select-group input[type="number"], .select-group input[type="text"] {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        .loading { text-align: center; padding: 3rem; }
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 50px; height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .progress-bar {
+            display: none;
+            width: 100%; height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        .progress-bar.active { display: block; }
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .preview-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            flex-direction: column;
+        }
+
+        .preview-modal.active { display: flex; }
+
+        .preview-header {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .preview-header h2 { font-size: 1.3rem; color: var(--dark); }
+
+        .preview-controls { display: flex; gap: 1rem; align-items: center; }
+
+        .preview-nav-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .preview-nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .page-indicator { font-size: 0.95rem; color: var(--dark); font-weight: 600; }
+
+        .preview-body {
+            flex: 1;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .preview-page {
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            transform-origin: center;
+            transition: transform 0.3s;
+        }
+
+        .preview-footer {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .preview-footer .pdf-btn { min-width: 150px; }
+
+        /* ============ PDF RENDER STYLES ============ */
+        #pdf-render-container {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            z-index: -1;
+        }
+
+        .pdf-page {
+            background: white;
+            padding: 70px 70px 80px 70px;
+            font-family: 'Hind Siliguri', sans-serif;
+            position: relative;
+            box-sizing: border-box;
+            line-height: var(--pdf-line-height, 1.6);
+            overflow: hidden;
+            
+            --pdf-heading-size: 26px;
+            --pdf-question-size: 15px;
+            --pdf-answer-size: 14px;
+        }
+
+        .pdf-page.portrait { width: 794px; height: 1123px; }
+        .pdf-page.landscape { width: 1123px; height: 794px; }
+
+        .pdf-watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 70px;
+            color: rgba(0, 0, 0, 0.12); /* Deeper: visible enough to prevent theft, light enough for print */
+            font-weight: 800;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 0;
+            letter-spacing: 3px;
+        }
+
+        .pdf-watermark-footer {
+            position: absolute;
+            bottom: 25px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: rgba(0, 0, 0, 0.25);
+            font-weight: 700;
+            z-index: 0;
+            letter-spacing: 1px;
+        }
+
+        .pdf-content { position: relative; z-index: 1; }
+        .pdf-dual-column { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .pdf-column { display: flex; flex-direction: column; }
+
+        .pdf-hero-title {
+            text-align: center;
+            font-size: var(--pdf-heading-size);
+            font-weight: 700;
+            color: var(--pdf-heading-color, #1e293b);
+            margin-bottom: 4px;
+        }
+
+        .pdf-hero-subtitle {
+            text-align: center;
+            font-size: calc(var(--pdf-heading-size) * 0.6);
+            font-weight: 600;
+            color: var(--pdf-subheading-color, #667eea);
+            margin-bottom: 8px;
+        }
+
+        .pdf-hero-divider {
+            width: 100%;
+            height: 2.5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            margin-bottom: 18px;
+            border-radius: 2px;
+        }
+
+        .pdf-topic {
+            font-size: calc(var(--pdf-heading-size) * 0.65);
+            font-weight: 700;
+            color: var(--pdf-subheading-color, #667eea);
+            margin-top: 18px;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 3.5px solid var(--pdf-subheading-color, #667eea);
+        }
+        .pdf-topic:first-child { margin-top: 0; }
+        .pdf-qa-block { margin-bottom: 14px; }
+
+        .pdf-question {
+            color: var(--pdf-question-color, #c53030);
+            font-weight: 600;
+            font-size: var(--pdf-question-size);
+            line-height: var(--pdf-line-height, 1.6);
+            margin-bottom: 6px;
+        }
+
+        .pdf-question img {
+            max-width: 220px; max-height: 150px;
+            margin: 5px 0;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ANSWER IS ALWAYS DARKEST BLACK */
+        .pdf-answer {
+            font-size: var(--pdf-answer-size);
+            line-height: var(--pdf-line-height, 1.6);
+            color: #000000 !important;
+            padding-left: 18px;
+        }
+
+        .pdf-answer .ans-label {
+            font-weight: 800 !important;
+            color: #000000 !important;
+        }
+
+        .pdf-answer img {
+            max-width: 180px; max-height: 120px;
+            margin: 4px 0;
+            object-fit: contain;
+        }
+
+        .pdf-answer table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 6px;
+            font-size: calc(var(--pdf-answer-size) * 0.9);
+        }
+
+        .pdf-answer table th, .pdf-answer table td {
+            border: 1px solid #d1d5db;
+            padding: 8px 10px;
+            text-align: left;
+        }
+
+        .pdf-answer table thead {
+            background-color: #2F5597;
+            color: white;
+        }
+
+        .pdf-answer table thead th {
+            font-weight: 600;
+            border-color: #2F5597;
+        }
+
+        .pdf-answer table tbody tr:nth-child(odd) { background-color: #f9fafb; }
+        .pdf-answer table tbody tr:nth-child(even) { background-color: #ffffff; }
+
+        .pdf-footer-logo {
+            position: absolute;
+            bottom: 20px; right: 25px;
+            width: 28px; height: 28px;
+            opacity: 0.6;
+        }
+
+        .pdf-footer-qr {
+            position: absolute;
+            bottom: 15px; left: 25px;
+            width: 40px; height: 40px;
+            z-index: 1;
+        }
+
+        .pdf-footer-website {
+            position: absolute;
+            bottom: 22px; left: 25px;
+            font-size: 10px;
+            color: #667eea;
+            font-weight: 600;
+            z-index: 1;
+            letter-spacing: 0.3px;
+        }
+
+        .pdf-page-num {
+            position: absolute;
+            bottom: 22px; left: 0; right: 0;
+            text-align: center;
+            font-size: 10px;
+            color: #94a3b8;
+            z-index: 1;
+        }
+
+        /* ============ PDF TEMPLATES ============ */
+        /* Template 1: Modern Tech (Default) */
+        .pdf-page.template-modern {
+            --pdf-heading-color: #1e293b;
+            --pdf-subheading-color: #667eea;
+            --pdf-question-color: #c53030;
+        }
+
+        /* Template 2: Corporate Professional */
+        .pdf-page.template-corporate {
+            --pdf-heading-color: #0f172a;
+            --pdf-subheading-color: #1e40af;
+            --pdf-question-color: #1e293b;
+            font-family: 'Segoe UI', 'Hind Siliguri', sans-serif;
+        }
+        .pdf-page.template-corporate .pdf-hero-title {
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+        }
+        .pdf-page.template-corporate .pdf-hero-divider { background: #0f172a; height: 1px; }
+        .pdf-page.template-corporate .pdf-topic {
+            background: #0f172a;
+            color: white;
+            padding: 6px 12px;
+            border-left: none;
+            border-radius: 4px;
+            font-size: calc(var(--pdf-heading-size) * 0.6);
+            letter-spacing: 0.5px;
+        }
+        .pdf-page.template-corporate .pdf-question {
+            font-weight: 700;
+            border-left: 4px solid #1e40af;
+            padding-left: 12px;
+            background: #f8fafc;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            border-radius: 0 6px 6px 0;
+        }
+        .pdf-page.template-corporate .pdf-answer table thead { background-color: #0f172a; }
+
+        /* Template 3: Academic Premium */
+        .pdf-page.template-academic {
+            --pdf-heading-color: #292524;
+            --pdf-subheading-color: #78716c;
+            --pdf-question-color: #44403c;
+            font-family: 'Georgia', 'Hind Siliguri', serif;
+        }
+        .pdf-page.template-academic .pdf-hero-title { font-family: 'Georgia', serif; font-weight: 700; letter-spacing: -0.5px; }
+        .pdf-page.template-academic .pdf-hero-divider { background: #a8a29e; height: 1px; }
+        .pdf-page.template-academic .pdf-topic {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            color: #78716c;
+            border-left: 3px solid #a8a29e;
+            font-size: calc(var(--pdf-heading-size) * 0.65);
+        }
+        .pdf-page.template-academic .pdf-question { font-weight: 600; color: #292524; }
+        .pdf-page.template-academic .pdf-answer { line-height: 1.75; }
+        .pdf-page.template-academic .pdf-answer .ans-label { color: #78716c; font-style: italic; }
+        .pdf-page.template-academic .pdf-answer table thead { background-color: #44403c; }
+
+        /* Template 4: Minimalist Clean */
+        .pdf-page.template-minimal {
+            --pdf-heading-color: #000000;
+            --pdf-subheading-color: #525252;
+            --pdf-question-color: #171717;
+        }
+        .pdf-page.template-minimal .pdf-hero-title { text-align: left; font-weight: 800; }
+        .pdf-page.template-minimal .pdf-hero-subtitle { text-align: left; color: #737373; }
+        .pdf-page.template-minimal .pdf-hero-divider { background: #000000; height: 2px; }
+        .pdf-page.template-minimal .pdf-topic {
+            color: #000000;
+            border-left: 4px solid #000000;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: calc(var(--pdf-heading-size) * 0.6);
+        }
+        .pdf-page.template-minimal .pdf-question { color: #000000; font-weight: 700; }
+        .pdf-page.template-minimal .pdf-answer .ans-label { color: #000000; }
+        .pdf-page.template-minimal .pdf-answer table thead { background-color: #171717; }
+
+        /* Template 5: Aesthetic Pastel (Beautiful & Elegant) */
+        .pdf-page.template-aesthetic {
+            --pdf-heading-color: #be185d;
+            --pdf-subheading-color: #f43f5e;
+            --pdf-question-color: #881337;
+            font-family: 'Hind Siliguri', 'Segoe UI', sans-serif;
+        }
+        .pdf-page.template-aesthetic .pdf-hero-title {
+            color: #be185d;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .pdf-page.template-aesthetic .pdf-hero-divider {
+            background: linear-gradient(90deg, #fda4af, #be185d);
+            height: 3px;
+            border-radius: 2px;
+        }
+        .pdf-page.template-aesthetic .pdf-topic {
+            color: #be185d;
+            background: #fff1f2;
+            border-left: 4px solid #f43f5e;
+            padding: 8px 12px;
+            border-radius: 0 8px 8px 0;
+            font-weight: 700;
+        }
+        .pdf-page.template-aesthetic .pdf-question {
+            color: #881337;
+            font-weight: 700;
+        }
+        .pdf-page.template-aesthetic .pdf-answer {
+            line-height: 1.7;
+        }
+        .pdf-page.template-aesthetic .pdf-answer table thead {
+            background-color: #be185d;
+        }
+
+        /* Measuring container */
+        #pdf-measure-container {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            background: white;
+            font-family: 'Hind Siliguri', sans-serif;
+            color: #1e293b;
+            line-height: var(--pdf-line-height, 1.6);
+            padding: 0;
+            z-index: -1;
+            --pdf-heading-size: 26px;
+            --pdf-question-size: 15px;
+            --pdf-answer-size: 14px;
+        }
+
+        #pdf-measure-container .pdf-hero-title { text-align: center; font-size: var(--pdf-heading-size); font-weight: 700; margin-bottom: 4px; }
+        #pdf-measure-container .pdf-hero-subtitle { text-align: center; font-size: calc(var(--pdf-heading-size) * 0.6); font-weight: 600; margin-bottom: 8px; }
+        #pdf-measure-container .pdf-hero-divider { width: 100%; height: 2.5px; background: linear-gradient(90deg, #667eea, #764ba2); margin-bottom: 18px; border-radius: 2px; }
+        #pdf-measure-container .pdf-topic { font-size: calc(var(--pdf-heading-size) * 0.65); font-weight: 700; margin-top: 18px; margin-bottom: 10px; padding-left: 10px; border-left: 3.5px solid currentColor; }
+        #pdf-measure-container .pdf-qa-block { margin-bottom: 14px; }
+        #pdf-measure-container .pdf-question { font-weight: 600; font-size: var(--pdf-question-size); line-height: var(--pdf-line-height, 1.6); margin-bottom: 6px; }
+        #pdf-measure-container .pdf-question img { max-width: 220px; max-height: 150px; margin: 5px 0; object-fit: contain; display: block; }
+        #pdf-measure-container .pdf-answer { font-size: var(--pdf-answer-size); line-height: var(--pdf-line-height, 1.6); padding-left: 18px; color: #000000 !important; }
+        #pdf-measure-container .pdf-answer .ans-label { font-weight: 800 !important; color: #000000 !important; }
+        #pdf-measure-container .pdf-answer img { max-width: 180px; max-height: 120px; margin: 4px 0; object-fit: contain; }
+        #pdf-measure-container .pdf-answer table { border-collapse: collapse; width: 100%; margin-top: 6px; font-size: calc(var(--pdf-answer-size) * 0.9); }
+        #pdf-measure-container .pdf-answer table th, #pdf-measure-container .pdf-answer table td { border: 1px solid #d1d5db; padding: 8px 10px; text-align: left; }
+        #pdf-measure-container .pdf-answer table thead { background-color: #2F5597; color: white; }
+        #pdf-measure-container .pdf-answer table thead th { font-weight: 600; border-color: #2F5597; }
+        #pdf-measure-container .pdf-answer table tbody tr:nth-child(odd) { background-color: #f9fafb; }
+        #pdf-measure-container .pdf-answer table tbody tr:nth-child(even) { background-color: #ffffff; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.2rem; }
+            .classes-grid, .content-grid { grid-template-columns: 1fr; padding: 2rem 1rem; }
+            .hero-heading { font-size: 1.4rem; padding: 1.5rem 1rem; }
+            .question-image { max-width: 100%; }
+            .answer-image { max-width: 140px; }
+            .layout-selector { flex-wrap: wrap; }
+            .preview-header { padding: 0.8rem 1rem; flex-wrap: wrap; }
+            .preview-header h2 { font-size: 1rem; }
+            .preview-controls { flex-wrap: wrap; }
+            .preview-footer { padding: 0.8rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="home-page" class="page active">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>📚 Universal Quiz System</h1>
+                <p>Select Your Class to Start Learning</p>
+            </div>
+            <div class="scroll-indicator" onclick="scrollToClasses()">⬇️</div>
+        </div>
+        <div class="classes-grid" id="classes-grid"></div>
+    </div>
+
+    <div id="subjects-page" class="page">
+        <div class="nav-header">
+            <button class="back-btn" onclick="goBack()">← Back</button>
+            <div class="nav-title" id="subjects-title">Subjects</div>
+        </div>
+        <div class="content-grid" id="subjects-grid"></div>
+    </div>
+
+    <div id="chapters-page" class="page">
+        <div class="nav-header">
+            <button class="back-btn" onclick="goBack()">← Back</button>
+            <div class="nav-title" id="chapters-title">Chapters</div>
+        </div>
+        <div class="content-grid" id="chapters-grid"></div>
+    </div>
+
+    <div id="questions-page" class="page">
+        <div class="nav-header">
+            <button class="back-btn" onclick="goBack()">← Back</button>
+            <div class="nav-title" id="questions-title">Questions</div>
+        </div>
+        <div class="hero-heading" id="chapter-hero">
+            <span id="hero-main-title">Class • Subject</span>
+            <small id="hero-chapter-name">Chapter Name</small>
+        </div>
+        <div class="questions-container">
+            <div class="controls">
+                <button class="pdf-btn" id="pdf-open-btn" onclick="showPDFModal()">📄 Turn into PDF</button>
+            </div>
+            <div id="questions-list"></div>
+        </div>
+    </div>
+
+    <div id="pdf-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Generate Professional PDF</h2>
+                <button class="close-modal" onclick="closePDFModal()">&times;</button>
+            </div>
+            
+            <div class="select-group">
+                <label for="orientation-select">📐 Page Orientation:</label>
+                <select id="orientation-select">
+                    <option value="portrait" selected>Portrait (Vertical)</option>
+                    <option value="landscape">Landscape (Horizontal)</option>
+                </select>
+            </div>
+
+            <div class="select-group">
+                <label for="template-select">🎨 PDF Template Style:</label>
+                <select id="template-select">
+                    <option value="template-modern" selected>Modern Tech (Default)</option>
+                    <option value="template-corporate">Corporate Professional</option>
+                    <option value="template-academic">Academic Premium</option>
+                    <option value="template-minimal">Minimalist Clean</option>
+                    <option value="template-aesthetic">Aesthetic Pastel (Beautiful)</option>
+                </select>
+            </div>
+
+            <div class="select-group">
+                <label for="header-right-text">📝 Header Right Text (Next to Chapter):</label>
+                <input type="text" id="header-right-text" value="By Arif Hussain" placeholder="e.g., By Arif Hussain">
+            </div>
+
+            <div class="select-group" style="background: #f8fafc; padding: 1rem; border-radius: 10px; border: 1px solid #e2e8f0;">
+                <label style="margin-bottom: 0.8rem; display: block; font-weight: 700; color: #0f172a;">🔤 Custom Font Sizes (for better A4 readability):</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem;">
+                    <div>
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569;">Heading (px)</label>
+                        <input type="number" id="font-heading" value="26" min="18" max="40" style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 0.3rem; font-weight: 600;">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569;">Question (px)</label>
+                        <input type="number" id="font-question" value="15" min="12" max="24" style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 0.3rem; font-weight: 600;">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569;">Answer (px)</label>
+                        <input type="number" id="font-answer" value="14" min="11" max="20" style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 0.3rem; font-weight: 600;">
+                    </div>
+                </div>
+                <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.6rem;">💡 Higher values = larger, more readable text on A4 print.</p>
+            </div>
+
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="watermark-option" checked>
+                    Add Watermark
+                </label>
+            </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="watermark-custom">
+                    Custom Watermark Text
+                </label>
+            </div>
+            <div class="checkbox-group" id="custom-watermark-box" style="display:none; padding-left: 2rem;">
+                <label>Watermark:
+                    <input type="text" id="watermark-text" value="BY Arif Hussain" placeholder="Enter watermark" style="flex:1; padding:0.4rem; border:1px solid #cbd5e1; border-radius:6px; margin-left: 0.5rem;">
+                </label>
+            </div>
+            <div class="checkbox-group" style="padding-left: 2rem;">
+                <label style="font-size:0.9rem; color:#64748b;">Default: "BY Arif Hussain" (if custom not checked)</label>
+            </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="logo-option" checked>
+                    Show Quiz Logo at Bottom
+                </label>
+            </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="images-option" checked>
+                    Include Images
+                </label>
+            </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="qr-option" checked>
+                    Add Website/QR at Bottom (Alternating)
+                </label>
+            </div>
+            <div class="checkbox-group" id="qr-website-box" style="padding-left: 2rem;">
+                <label>Website URL:
+                    <input type="text" id="website-url" value="megaquizwb.vercel.app" placeholder="Enter website" style="flex:1; padding:0.4rem; border:1px solid #cbd5e1; border-radius:6px; margin-left: 0.5rem;">
+                </label>
+                <p style="font-size:0.8rem; color:#64748b; margin-top:0.3rem; padding-left:0.6rem;">
+                    Odd pages = Website URL, Even pages = QR Code (Fixed)
+                </p>
+            </div>
+            
+            <div style="display: flex; gap: 0.8rem; margin-top: 1rem;">
+                <button class="pdf-btn" style="flex: 1;" onclick="previewPDF()">👁️ Preview</button>
+                <button class="pdf-btn" id="generate-btn" style="flex: 1;" onclick="generatePDF()">💾 Save as PDF</button>
+            </div>
+            
+            <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        </div>
+    </div>
+
+    <div id="preview-modal" class="preview-modal">
+        <div class="preview-header">
+            <h2>📖 PDF Preview</h2>
+            <div class="preview-controls">
+                <button class="preview-nav-btn" id="prev-page-btn" onclick="prevPage()">← Previous</button>
+                <span class="page-indicator" id="page-indicator">Page 1 of 1</span>
+                <button class="preview-nav-btn" id="next-page-btn" onclick="nextPage()">Next →</button>
+            </div>
+        </div>
+        <div class="preview-body" id="preview-body"></div>
+        <div class="preview-footer">
+            <button class="pdf-btn" onclick="closePreview()">❌ Close Preview</button>
+            <button class="pdf-btn" onclick="downloadFromPreview()">💾 Download PDF</button>
+        </div>
+    </div>
+
+    <div id="pdf-measure-container"></div>
+    <div id="pdf-render-container"></div>
+
+    <script>
+        const CLASS_DATA = {
+            'class-5': { name: 'Class 5', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxpBxo2TsVkwERn8vLB_QioPRcmb8jUq4j-Ty1lO2apcfh5INuD_EUtCCo0KTHozdv7OIziPCFezSt/pub?output=tsv' },
+            'class-6': { name: 'Class 6', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vREQlxiDlpTm6VhhE5hSE5eDHX-pBTkPWXUKmOg91Co0ajB26PU2j651imGRKJ11Z-Dzmi-ftdiIwjj/pub?output=tsv' },
+            'class-7': { name: 'Class 7', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbivu3W0_RbadB9g7x-KbDTQ6kmfNg3074FEc6HONECtVfJctWS1EtdCzkHccQ8KQCUUhp6YEqahtu/pub?output=tsv' },
+            'class-8': { name: 'Class 8', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVHdP2gFappkd8SYZQdXQx4W5n4OeKAjdPFtfRGwUv3k6iaTy8WeuAbZ-5kLKEZzUK9Bj6LrLUdm69/pub?output=tsv' },
+            'class-9': { name: 'Class 9', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKbe6KpQd1_XJHeSel7-UFYZLHx85_oCcB-qDSgRxEPXZWlBLVTE14qDC8o10HWUqpi6_WLBZiUNPq/pub?output=tsv' },
+            'class-10': { name: 'Class 10', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQe4A-MY370LBqCUALYepHLsfxSMPSQkkOuEerOcWSRCqAoyrGQ5SvI01je4CFsNbdT-16l30SV7nK0/pub?output=tsv' }
+        };
+
+        let currentPage = 'home-page';
+        let pageHistory = [];
+        let currentClass = null;
+        let currentSubject = null;
+        let currentChapter = null;
+        let allQuestions = [];
+        let selectedQuestions = new Set();
+        let questionLayouts = new Map();
+        let questionColors = new Map(); // NEW: Store custom question colors
+        let columnMode = 'single';
+        let wordLimit = 50;
+
+        const PAGE_WIDTH_PX = 794;
+        const PAGE_HEIGHT_PX = 1123;
+        const MARGIN_TOP = 70;
+        const MARGIN_BOTTOM = 80;
+        const MARGIN_SIDE = 70;
+        const CONTENT_HEIGHT_PX = PAGE_HEIGHT_PX - MARGIN_TOP - MARGIN_BOTTOM;
+        const SAFETY_BUFFER = 30;
+        const QR_WEBSITE = 'https://megaquizwb.vercel.app';
+
+        let previewPages = [];
+        let currentPreviewPage = 0;
+
+        const KATEX_DELIMITERS = [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            {left: "\\(", right: "\\)", display: false},
+            {left: "\\[", right: "\\]", display: true},
+            {left: "((", right: "))", display: false}
+        ];
+
+        function renderLatex(element) {
+            if (window.renderMathInElement && element) {
+                try {
+                    window.renderMathInElement(element, {
+                        delimiters: KATEX_DELIMITERS,
+                        throwOnError: false,
+                        errorColor: '#cc0000'
+                    });
+                } catch (e) {
+                    console.warn('KaTeX render error:', e);
+                }
+            }
+        }
+
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                || window.innerWidth < 768;
+        }
+
+        function countWords(text) {
+            if (!text) return 0;
+            return text.trim().split(/\s+/).filter(w => w.length > 0).length;
+        }
+
+        function getQuestionWordCount(q) {
+            const questionWords = countWords(q.question);
+            const answerWords = countWords(q.answer);
+            return questionWords + answerWords;
+        }
+
+        function autoAssignLayouts() {
+            allQuestions.forEach(q => {
+                const qId = q.id.toString();
+                const wordCount = getQuestionWordCount(q);
+                if (columnMode === 'double' && wordCount <= wordLimit) {
+                    questionLayouts.set(qId, 'dual');
+                } else {
+                    questionLayouts.set(qId, 'single');
+                }
+            });
+            renderQuestionList();
+        }
+
+        // NEW: Function to set question color
+        function setQuestionColor(qId, color) {
+            if (color === 'default') {
+                questionColors.delete(qId);
+            } else {
+                questionColors.set(qId, color);
+            }
+            renderQuestionList();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderClassCards();
+            window.addEventListener('popstate', handlePopState);
+            document.getElementById('watermark-custom').addEventListener('change', (e) => {
+                document.getElementById('custom-watermark-box').style.display = e.target.checked ? 'block' : 'none';
+            });
+            document.getElementById('qr-option').addEventListener('change', (e) => {
+                document.getElementById('qr-website-box').style.display = e.target.checked ? 'block' : 'none';
+            });
+        });
+
+        function renderClassCards() {
+            const grid = document.getElementById('classes-grid');
+            const classes = [
+                ...Object.entries(CLASS_DATA).map(([id, data]) => ({ id, ...data, available: true })),
+                { id: 'class-11-arts', name: 'Class 11 Arts', available: false },
+                { id: 'class-11-science', name: 'Class 11 Science', available: false },
+                { id: 'class-12-arts', name: 'Class 12 Arts', available: false },
+                { id: 'class-12-science', name: 'Class 12 Science', available: false }
+            ];
+            grid.innerHTML = classes.map(cls => `
+                <div class="class-card ${cls.available ? '' : 'disabled'}" onclick="${cls.available ? `selectClass('${cls.id}')` : ''}">
+                    <h3>${cls.name}</h3>
+                    <p>${cls.available ? 'Click to explore subjects' : 'Coming Soon'}</p>
+                </div>
+            `).join('');
+        }
+
+        function selectClass(classId) {
+            currentClass = classId;
+            pageHistory.push(currentPage);
+            history.pushState({ page: 'subjects-page' }, '');
+            navigateTo('subjects-page');
+            loadSubjects();
+        }
+
+        async function loadSubjects() {
+            document.getElementById('subjects-title').textContent = CLASS_DATA[currentClass].name + ' - Subjects';
+            const grid = document.getElementById('subjects-grid');
+            grid.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading subjects...</p></div>';
+            try {
+                const data = await fetchSheetData(CLASS_DATA[currentClass].url);
+                const subjects = [...new Set(data.map(r => r.subject))].filter(s => s);
+                grid.innerHTML = subjects.map(s => `
+                    <div class="subject-card" onclick="selectSubject('${escapeAttr(s)}')">
+                        <h3>📘 ${escapeHtml(s)}</h3><p>Click to view chapters</p>
+                    </div>
+                `).join('');
+            } catch (e) {
+                grid.innerHTML = '<div class="loading"><p>Error loading subjects.</p></div>';
+            }
+        }
+
+        async function selectSubject(subject) {
+            currentSubject = subject;
+            pageHistory.push(currentPage);
+            history.pushState({ page: 'chapters-page' }, '');
+            navigateTo('chapters-page');
+            document.getElementById('chapters-title').textContent = subject + ' - Chapters';
+            const grid = document.getElementById('chapters-grid');
+            grid.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading chapters...</p></div>';
+            try {
+                const data = await fetchSheetData(CLASS_DATA[currentClass].url);
+                const subjectData = data.filter(r => r.subject === subject);
+                const chapterMap = new Map();
+                subjectData.forEach(r => {
+                    if (r.chapter && !chapterMap.has(r.chapter)) {
+                        chapterMap.set(r.chapter, parseInt(r.chapter_number) || 0);
+                    }
+                });
+                const chapters = [...chapterMap.entries()].sort((a, b) => a[1] - b[1]).map(([name]) => name);
+                grid.innerHTML = chapters.map(ch => `
+                    <div class="chapter-card" onclick="selectChapter('${escapeAttr(ch)}')">
+                        <h3>📖 ${escapeHtml(ch)}</h3><p>Click to view questions</p>
+                    </div>
+                `).join('');
+            } catch (e) {
+                grid.innerHTML = '<div class="loading"><p>Error loading chapters.</p></div>';
+            }
+        }
+
+        async function selectChapter(chapter) {
+            currentChapter = chapter;
+            pageHistory.push(currentPage);
+            history.pushState({ page: 'questions-page' }, '');
+            navigateTo('questions-page');
+            document.getElementById('questions-title').textContent = chapter;
+            document.getElementById('hero-main-title').textContent = `${CLASS_DATA[currentClass].name} • ${currentSubject}`;
+            document.getElementById('hero-chapter-name').textContent = chapter;
+            const list = document.getElementById('questions-list');
+            list.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading questions...</p></div>';
+            try {
+                const data = await fetchSheetData(CLASS_DATA[currentClass].url);
+                allQuestions = data.filter(r => r.subject === currentSubject && r.chapter === chapter);
+                allQuestions.sort((a, b) => {
+                    const ca = parseInt(a.chapter_number) || 0;
+                    const cb = parseInt(b.chapter_number) || 0;
+                    if (ca !== cb) return ca - cb;
+                    const ta = parseInt(a.topic_number) || 0;
+                    const tb = parseInt(b.topic_number) || 0;
+                    return ta - tb;
+                });
+                questionLayouts.clear();
+                questionColors.clear(); // Reset colors on new chapter load
+                allQuestions.forEach(q => {
+                    questionLayouts.set(q.id.toString(), 'single');
+                });
+                renderQuestionList();
+            } catch (e) {
+                list.innerHTML = '<div class="loading"><p>Error loading questions.</p></div>';
+            }
+        }
+
+        function renderQuestionList() {
+            const list = document.getElementById('questions-list');
+            const topics = [];
+            const topicMap = new Map();
+            allQuestions.forEach(q => {
+                const topic = q.topic || 'General';
+                if (!topicMap.has(topic)) { topicMap.set(topic, []); topics.push(topic); }
+                topicMap.get(topic).push(q);
+            });
+            selectedQuestions = new Set(allQuestions.map(q => q.id.toString()));
+            
+            let html = `
+                <div class="column-mode-toggle">
+                    <button class="column-mode-btn ${columnMode === 'single' ? 'active' : ''}" onclick="setColumnMode('single')">
+                        📄 Single Column
+                    </button>
+                    <button class="column-mode-btn ${columnMode === 'double' ? 'active' : ''}" onclick="setColumnMode('double')">
+                        📑 Double Column
+                    </button>
+                </div>
+            `;
+            
+            if (columnMode === 'double') {
+                html += `
+                    <div class="word-limit-box">
+                        <div class="word-limit-label">
+                            📝 Word Limit for Double Column:
+                            <input type="number" class="word-limit-input" id="word-limit-input" value="${wordLimit}" min="10" max="500" onchange="updateWordLimit(this.value)">
+                        </div>
+                        <div class="word-limit-hint">
+                            💡 Questions with ${wordLimit} words or less will automatically go to double column. 
+                            You can manually override any question below.
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += topics.map(topic => {
+                const questions = topicMap.get(topic);
+                const topicId = 'topic-' + encodeURIComponent(topic).replace(/%/g, '').replace(/[^a-zA-Z0-9]/g, '');
+                return `
+                    <div class="topic-section">
+                        <div class="topic-header">
+                            <input type="checkbox" id="${topicId}" onchange="toggleTopic('${escapeAttr(topic)}', this.checked)">
+                            <label for="${topicId}">📝 ${escapeHtml(topic)}</label>
+                        </div>
+                        ${questions.map(q => renderQuestionItem(q)).join('')}
+                    </div>
+                `;
+            }).join('');
+            
+            list.innerHTML = html;
+            renderLatex(list);
+            updateTopicCheckboxes();
+        }
+
+        function setColumnMode(mode) {
+            columnMode = mode;
+            autoAssignLayouts();
+        }
+
+        function updateWordLimit(value) {
+            wordLimit = parseInt(value) || 50;
+            autoAssignLayouts();
+        }
+
+        function renderQuestionItem(q) {
+            const qId = q.id.toString();
+            const answerHTML = q.answer ? q.answer : '';
+            const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
+            const savedLayout = questionLayouts.get(qId) || 'single';
+            const wordCount = getQuestionWordCount(q);
+            const currentQColor = questionColors.get(qId) || 'default';
+            
+            let html = `
+                <div class="question-item">
+                    <div class="question-top">
+                        <input type="checkbox" class="question-checkbox" 
+                            data-topic="${escapeAttr(q.topic || 'General')}"
+                            data-qid="${qId}" checked
+                            onchange="toggleQuestion(this)">
+                        <div class="question-body">
+                            <div class="question-text">Q: ${q.question}</div>
+            `;
+            if (q.image && q.image.trim()) {
+                html += `<img src="${escapeAttr(q.image)}" class="question-image" alt="Question" onerror="this.style.display='none'">`;
+            }
+            html += `<div class="answer-line"><strong>Ans:</strong> ${answerHTML}`;
+            if (ansImg && ansImg.toString().trim()) {
+                html += `<br><img src="${escapeAttr(ansImg)}" class="answer-image" alt="Answer" onerror="this.style.display='none'">`;
+            }
+            html += `</div>`;
+            
+            // NEW: Color picker row
+            html += `
+                <div class="color-picker-row">
+                    <span class="color-label">Q Color:</span>
+                    <div class="color-opt ${currentQColor === 'default' ? 'active' : ''}" 
+                         style="background: linear-gradient(135deg, #667eea, #764ba2);" 
+                         onclick="setQuestionColor('${qId}', 'default')" title="Template Default"></div>
+                    <div class="color-opt ${currentQColor === 'red' ? 'active' : ''}" 
+                         style="background: #dc2626;" 
+                         onclick="setQuestionColor('${qId}', 'red')" title="Red"></div>
+                    <div class="color-opt ${currentQColor === 'yellow' ? 'active' : ''}" 
+                         style="background: #ca8a04;" 
+                         onclick="setQuestionColor('${qId}', 'yellow')" title="Yellow"></div>
+                    <div class="color-opt ${currentQColor === 'green' ? 'active' : ''}" 
+                         style="background: #16a34a;" 
+                         onclick="setQuestionColor('${qId}', 'green')" title="Green"></div>
+                    <div class="color-opt ${currentQColor === 'black' ? 'active' : ''}" 
+                         style="background: #000000;" 
+                         onclick="setQuestionColor('${qId}', 'black')" title="Black"></div>
+                </div>
+            `;
+            
+            html += `
+                <div class="layout-selector">
+                    <span style="font-size: 0.75rem; color: #94a3b8; margin-right: 0.3rem;">(${wordCount} words)</span>
+                    <div class="layout-option">
+                        <input type="radio" name="layout-${qId}" id="layout-single-${qId}" value="single" ${savedLayout === 'single' ? 'checked' : ''} onchange="updateLayout('${qId}', 'single')">
+                        <label for="layout-single-${qId}">📄 Single</label>
+                    </div>
+                    <div class="layout-option">
+                        <input type="radio" name="layout-${qId}" id="layout-dual-${qId}" value="dual" ${savedLayout === 'dual' ? 'checked' : ''} onchange="updateLayout('${qId}', 'dual')">
+                        <label for="layout-dual-${qId}">📑 Double</label>
+                    </div>
+                </div>
+            `;
+            html += `</div></div></div>`;
+            return html;
+        }
+
+        function updateLayout(qId, layout) {
+            questionLayouts.set(qId, layout);
+        }
+
+        async function fetchSheetData(url) {
+            const response = await fetch(url);
+            const text = await response.text();
+            const lines = text.split('\n').filter(line => line.trim());
+            if (lines.length === 0) return [];
+            const headers = parseTSVLine(lines[0]);
+            return lines.slice(1).map((line, index) => {
+                const values = parseTSVLine(line);
+                const row = { id: index };
+                headers.forEach((header, i) => {
+                    const key = header.toLowerCase().replace(/[\s""]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+                    row[key] = values[i] || '';
+                });
+                return row;
+            });
+        }
+
+        function parseTSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const ch = line[i];
+                if (ch === '"') {
+                    if (inQuotes && line[i+1] === '"') { current += '"'; i++; }
+                    else { inQuotes = !inQuotes; }
+                } else if (ch === '\t' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += ch;
+                }
+            }
+            result.push(current.trim());
+            return result;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function escapeAttr(str) {
+            return escapeHtml(str).replace(/'/g, '&#39;');
+        }
+
+        function toggleTopic(topic, checked) {
+            document.querySelectorAll(`.question-checkbox[data-topic="${CSS.escape(topic)}"]`).forEach(cb => {
+                cb.checked = checked;
+                toggleQuestion(cb);
+            });
+        }
+
+        function toggleQuestion(cb) {
+            const qid = cb.dataset.qid;
+            if (cb.checked) selectedQuestions.add(qid);
+            else selectedQuestions.delete(qid);
+            updateTopicCheckboxes();
+        }
+
+        function updateTopicCheckboxes() {
+            document.querySelectorAll('.topic-section').forEach(section => {
+                const cbs = section.querySelectorAll('.question-checkbox');
+                const checked = section.querySelectorAll('.question-checkbox:checked').length;
+                const topicCb = section.querySelector('.topic-header input[type="checkbox"]');
+                if (checked === cbs.length) { topicCb.checked = true; topicCb.indeterminate = false; }
+                else if (checked > 0) { topicCb.checked = false; topicCb.indeterminate = true; }
+                else { topicCb.checked = false; topicCb.indeterminate = false; }
+            });
+        }
+
+        function showPDFModal() { document.getElementById('pdf-modal').classList.add('active'); }
+        function closePDFModal() { document.getElementById('pdf-modal').classList.remove('active'); }
+
+        function generateQRCodeDataURL(url, size = 100) {
+            return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}&qzone=1&margin=5`;
+        }
+
+        async function previewPDF() {
+            await generatePDF(true);
+        }
+
+        async function generatePDF(isPreview = false) {
+            const mobile = isMobile();
+            const addWatermark = document.getElementById('watermark-option').checked;
+            const useCustomWatermark = document.getElementById('watermark-custom').checked;
+            const watermarkText = useCustomWatermark 
+                ? (document.getElementById('watermark-text').value || 'BY Arif Hussain')
+                : 'BY Arif Hussain';
+            const addLogo = document.getElementById('logo-option').checked;
+            const includeImages = document.getElementById('images-option').checked;
+            const addQRWebsite = document.getElementById('qr-option').checked;
+            const websiteURL = document.getElementById('website-url').value || 'megaquizwb.vercel.app';
+            const orientation = document.getElementById('orientation-select').value;
+            
+            const headingSize = document.getElementById('font-heading').value || 26;
+            const questionSize = document.getElementById('font-question').value || 15;
+            const answerSize = document.getElementById('font-answer').value || 14;
+            const template = document.getElementById('template-select').value;
+            const headerRightText = document.getElementById('header-right-text').value || 'By Arif Hussain';
+
+            const selectedData = allQuestions.filter(q => selectedQuestions.has(q.id.toString()));
+            if (selectedData.length === 0) {
+                alert('Please select at least one question!');
+                return;
+            }
+
+            const genBtn = document.getElementById('generate-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const progressFill = document.getElementById('progress-fill');
+            genBtn.disabled = true;
+            genBtn.textContent = '⏳ Generating...';
+            progressBar.classList.add('active');
+            progressFill.style.width = '5%';
+
+            try {
+                await document.fonts.load('16px "Hind Siliguri"');
+                await document.fonts.load('bold 16px "Hind Siliguri"');
+                await document.fonts.ready;
+            } catch (e) {
+                console.log('Font loading warning:', e);
+            }
+
+            progressFill.style.width = '10%';
+
+            const topics = [];
+            const topicMap = new Map();
+            selectedData.forEach(q => {
+                const topic = q.topic || 'General';
+                if (!topicMap.has(topic)) { topicMap.set(topic, []); topics.push(topic); }
+                topicMap.get(topic).push(q);
+            });
+
+            if (includeImages) {
+                const imgPromises = [];
+                selectedData.forEach(q => {
+                    if (q.image && q.image.trim()) imgPromises.push(preloadImage(q.image));
+                    const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
+                    if (ansImg && ansImg.toString().trim()) imgPromises.push(preloadImage(ansImg));
+                });
+                await Promise.allSettled(imgPromises);
+            }
+
+            let qrCodeDataURL = null;
+            if (addQRWebsite) {
+                qrCodeDataURL = generateQRCodeDataURL(QR_WEBSITE, 100);
+                await preloadImage(qrCodeDataURL);
+            }
+
+            progressFill.style.width = '20%';
+
+            const pageWidth = orientation === 'portrait' ? PAGE_WIDTH_PX : PAGE_HEIGHT_PX;
+            const pageHeight = orientation === 'portrait' ? PAGE_HEIGHT_PX : PAGE_WIDTH_PX;
+            const contentHeight = pageHeight - MARGIN_TOP - MARGIN_BOTTOM;
+
+            // STEP 1: Measure
+            const measureContainer = document.getElementById('pdf-measure-container');
+            measureContainer.innerHTML = '';
+            
+            measureContainer.style.setProperty('--pdf-heading-size', headingSize + 'px');
+            measureContainer.style.setProperty('--pdf-question-size', questionSize + 'px');
+            measureContainer.style.setProperty('--pdf-answer-size', answerSize + 'px');
+            measureContainer.style.width = (pageWidth - MARGIN_SIDE * 2) + 'px';
+
+            const measurements = [];
+            let qCounter = 1;
+
+            const headerWrap = document.createElement('div');
+            // NEW: Header with right-aligned custom text
+            headerWrap.innerHTML = `
+                <div class="pdf-hero-title" style="text-align: left; margin-bottom: 6px;">${escapeHtml(CLASS_DATA[currentClass].name)} • ${escapeHtml(currentSubject)}</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <div class="pdf-hero-subtitle" style="text-align: left; margin: 0; flex: 1;">${escapeHtml(currentChapter)}</div>
+                    <div style="font-size: 13px; font-weight: 700; color: #475569; text-align: right; white-space: nowrap; margin-left: 10px;">${escapeHtml(headerRightText)}</div>
+                </div>
+                <div class="pdf-hero-divider"></div>
+            `;
+            measureContainer.appendChild(headerWrap);
+            await waitForRender(mobile ? 200 : 100);
+            measurements.push({ type: 'header', height: getFullHeight(headerWrap), html: headerWrap.innerHTML });
+
+            topics.forEach(topic => {
+                const topicDiv = document.createElement('div');
+                topicDiv.className = 'pdf-topic';
+                topicDiv.textContent = '📝 ' + topic;
+                measureContainer.appendChild(topicDiv);
+                measurements.push({ type: 'topic', height: getFullHeight(topicDiv), html: `<div class="pdf-topic">📝 ${escapeHtml(topic)}</div>` });
+
+                const singleColumnQuestions = [];
+                const dualColumnQuestions = [];
+
+                topicMap.get(topic).forEach(q => {
+                    const qId = q.id.toString();
+                    const layout = questionLayouts.get(qId) || 'single';
+                    if (layout === 'dual') {
+                        dualColumnQuestions.push(q);
+                    } else {
+                        singleColumnQuestions.push(q);
+                    }
+                });
+
+                singleColumnQuestions.forEach(q => {
+                    const block = document.createElement('div');
+                    block.className = 'pdf-qa-block';
+
+                    // NEW: Apply custom question color
+                    const qColor = questionColors.get(q.id.toString()) || 'default';
+                    let colorStyle = '';
+                    if (qColor === 'red') colorStyle = 'color: #dc2626 !important;';
+                    else if (qColor === 'yellow') colorStyle = 'color: #a16207 !important;'; // Darker yellow for print readability
+                    else if (qColor === 'green') colorStyle = 'color: #16a34a !important;';
+                    else if (qColor === 'black') colorStyle = 'color: #000000 !important;';
+
+                    let qHTML = `<div class="pdf-question" style="${colorStyle}">Q${qCounter}: ${q.question}`;
+                    if (includeImages && q.image && q.image.trim()) {
+                        qHTML += `<img src="${escapeAttr(q.image)}" crossorigin="anonymous">`;
+                    }
+                    qHTML += `</div>`;
+
+                    // NEW: Answer is ALWAYS darkest black
+                    let aHTML = `<div class="pdf-answer" style="color: #000000 !important;"><span class="ans-label" style="color: #000000 !important; font-weight: 800;">Ans: </span>${q.answer || ''}`;
+                    const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
+                    if (includeImages && ansImg && ansImg.toString().trim()) {
+                        aHTML += `<img src="${escapeAttr(ansImg)}" crossorigin="anonymous">`;
+                    }
+                    aHTML += `</div>`;
+
+                    block.innerHTML = qHTML + aHTML;
+                    renderLatex(block);
+                    measureContainer.appendChild(block);
+                    measurements.push({ type: 'qa', height: getFullHeight(block), html: block.outerHTML, layout: 'single', qId: q.id.toString() });
+                    qCounter++;
+                });
+
+                if (dualColumnQuestions.length > 0) {
+                    const dualBlock = document.createElement('div');
+                    dualBlock.className = 'pdf-dual-column';
+                    const col1 = document.createElement('div');
+                    col1.className = 'pdf-column';
+                    const col2 = document.createElement('div');
+                    col2.className = 'pdf-column';
+
+                    dualColumnQuestions.forEach((q, index) => {
+                        const block = document.createElement('div');
+                        block.className = 'pdf-qa-block';
+
+                        const qColor = questionColors.get(q.id.toString()) || 'default';
+                        let colorStyle = '';
+                        if (qColor === 'red') colorStyle = 'color: #dc2626 !important;';
+                        else if (qColor === 'yellow') colorStyle = 'color: #a16207 !important;';
+                        else if (qColor === 'green') colorStyle = 'color: #16a34a !important;';
+                        else if (qColor === 'black') colorStyle = 'color: #000000 !important;';
+
+                        let qHTML = `<div class="pdf-question" style="${colorStyle}">Q${qCounter}: ${q.question}`;
+                        if (includeImages && q.image && q.image.trim()) {
+                            qHTML += `<img src="${escapeAttr(q.image)}" crossorigin="anonymous">`;
+                        }
+                        qHTML += `</div>`;
+
+                        let aHTML = `<div class="pdf-answer" style="color: #000000 !important;"><span class="ans-label" style="color: #000000 !important; font-weight: 800;">Ans: </span>${q.answer || ''}`;
+                        const ansImg = q.answer_image || q.answerimage || q['answer image'] || '';
+                        if (includeImages && ansImg && ansImg.toString().trim()) {
+                            aHTML += `<img src="${escapeAttr(ansImg)}" crossorigin="anonymous">`;
+                        }
+                        aHTML += `</div>`;
+
+                        block.innerHTML = qHTML + aHTML;
+                        renderLatex(block);
+                        
+                        if (index % 2 === 0) {
+                            col1.appendChild(block);
+                        } else {
+                            col2.appendChild(block);
+                        }
+                        qCounter++;
+                    });
+
+                    dualBlock.appendChild(col1);
+                    dualBlock.appendChild(col2);
+                    measureContainer.appendChild(dualBlock);
+                    measurements.push({ type: 'dual', height: getFullHeight(dualBlock), html: dualBlock.outerHTML, layout: 'dual' });
+                }
+            });
+
+            progressFill.style.width = '35%';
+
+            // STEP 2: Page layout
+            const pages = [];
+            let currentPageItems = [];
+            let usedHeight = 0;
+
+            for (let i = 0; i < measurements.length; i++) {
+                const item = measurements[i];
+                const isFirstHeader = i === 0 && item.type === 'header';
+
+                if (isFirstHeader) {
+                    currentPageItems.push(item);
+                    usedHeight += item.height;
+                    continue;
+                }
+
+                if (usedHeight + item.height > contentHeight - SAFETY_BUFFER) {
+                    if (currentPageItems.length > 0) pages.push(currentPageItems);
+                    currentPageItems = [item];
+                    usedHeight = item.height;
+                } else {
+                    currentPageItems.push(item);
+                    usedHeight += item.height;
+                }
+            }
+            if (currentPageItems.length > 0) pages.push(currentPageItems);
+
+            progressFill.style.width = '45%';
+
+            // STEP 3: Render pages
+            const renderContainer = document.getElementById('pdf-render-container');
+            renderContainer.innerHTML = '';
+
+            for (let p = 0; p < pages.length; p++) {
+                const pageDiv = document.createElement('div');
+                pageDiv.className = `pdf-page ${orientation} ${template}`;
+                pageDiv.style.width = pageWidth + 'px';
+                pageDiv.style.height = pageHeight + 'px';
+                
+                pageDiv.style.setProperty('--pdf-heading-size', headingSize + 'px');
+                pageDiv.style.setProperty('--pdf-question-size', questionSize + 'px');
+                pageDiv.style.setProperty('--pdf-answer-size', answerSize + 'px');
+
+                if (addWatermark && watermarkText) {
+                    const wm = document.createElement('div');
+                    wm.className = 'pdf-watermark';
+                    wm.textContent = watermarkText;
+                    pageDiv.appendChild(wm);
+
+                    const wmFooter = document.createElement('div');
+                    wmFooter.className = 'pdf-watermark-footer';
+                    wmFooter.textContent = watermarkText;
+                    pageDiv.appendChild(wmFooter);
+                }
+
+                const content = document.createElement('div');
+                content.className = 'pdf-content';
+                pages[p].forEach(item => {
+                    const div = document.createElement('div');
+                    div.innerHTML = item.html;
+                    while (div.firstChild) content.appendChild(div.firstChild);
+                });
+                pageDiv.appendChild(content);
+                renderLatex(content);
+
+                if (addLogo) {
+                    const logo = document.createElement('img');
+                    logo.className = 'pdf-footer-logo';
+                    logo.src = 'https://i.ibb.co/7qJGpT1/icon-192.png';
+                    logo.crossOrigin = 'anonymous';
+                    pageDiv.appendChild(logo);
+                }
+
+                if (addQRWebsite) {
+                    const pageNum = p + 1;
+                    if (pageNum % 2 === 1) {
+                        const websiteEl = document.createElement('div');
+                        websiteEl.className = 'pdf-footer-website';
+                        websiteEl.textContent = websiteURL;
+                        pageDiv.appendChild(websiteEl);
+                    } else {
+                        const qrEl = document.createElement('img');
+                        qrEl.className = 'pdf-footer-qr';
+                        qrEl.src = qrCodeDataURL;
+                        qrEl.crossOrigin = 'anonymous';
+                        pageDiv.appendChild(qrEl);
+                    }
+                }
+
+                const pageNumEl = document.createElement('div');
+                pageNumEl.className = 'pdf-page-num';
+                pageNumEl.textContent = `Page ${p + 1} of ${pages.length}`;
+                pageDiv.appendChild(pageNumEl);
+
+                renderContainer.appendChild(pageDiv);
+            }
+
+            await waitForRender(mobile ? 500 : 300);
+            await document.fonts.ready;
+
+            progressFill.style.width = '55%';
+
+            if (isPreview) {
+                previewPages = Array.from(renderContainer.querySelectorAll('.pdf-page'));
+                currentPreviewPage = 0;
+                showPreview();
+                
+                setTimeout(() => {
+                    progressBar.classList.remove('active');
+                    progressFill.style.width = '0%';
+                    genBtn.disabled = false;
+                    genBtn.textContent = '💾 Save as PDF';
+                }, 500);
+                return;
+            }
+
+            // STEP 4: Capture pages
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ 
+                orientation: orientation, 
+                unit: 'mm', 
+                format: 'a4' 
+            });
+
+            pdf.setProperties({
+                title: currentChapter,
+                subject: currentSubject,
+                author: watermarkText || 'BY Arif Hussain',
+                creator: 'Universal Quiz System',
+                keywords: 'quiz, education, protected',
+                protected: true
+            });
+
+            const pageDivs = renderContainer.querySelectorAll('.pdf-page');
+            const totalPages = pageDivs.length;
+
+            const scale = mobile ? 1.5 : 2;
+            const jpegQuality = mobile ? 0.92 : 0.95;
+
+            for (let p = 0; p < totalPages; p++) {
+                if (p > 0) pdf.addPage();
+
+                try {
+                    await waitForRender(mobile ? 300 : 100);
+
+                    const canvas = await html2canvas(pageDivs[p], {
+                        scale: scale,
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: '#ffffff',
+                        logging: false,
+                        width: pageWidth,
+                        height: pageHeight,
+                        windowWidth: pageWidth + 200,
+                        windowHeight: pageHeight + 200,
+                        scrollX: 0,
+                        scrollY: 0,
+                        foreignObjectRendering: false,
+                        imageTimeout: 15000
+                    });
+
+                    const imgData = canvas.toDataURL('image/jpeg', jpegQuality);
+                    const pageWidthMM = pdf.internal.pageSize.getWidth();
+                    const pageHeightMM = pdf.internal.pageSize.getHeight();
+                    pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, pageHeightMM);
+
+                    if (mobile && canvas) {
+                        canvas.width = 0;
+                        canvas.height = 0;
+                    }
+                } catch (err) {
+                    console.error('Page render failed:', p, err);
+                    if (mobile) {
+                        try {
+                            const canvas = await html2canvas(pageDivs[p], {
+                                scale: 1,
+                                useCORS: true,
+                                backgroundColor: '#ffffff',
+                                logging: false,
+                                width: pageWidth,
+                                height: pageHeight
+                            });
+                            const imgData = canvas.toDataURL('image/jpeg', 0.85);
+                            const pageWidthMM = pdf.internal.pageSize.getWidth();
+                            const pageHeightMM = pdf.internal.pageSize.getHeight();
+                            pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, pageHeightMM);
+                        } catch (retryErr) {
+                            console.error('Retry also failed:', retryErr);
+                        }
+                    }
+                }
+
+                const progress = 55 + (p + 1) / totalPages * 45;
+                progressFill.style.width = Math.min(progress, 99) + '%';
+                
+                if (mobile) await waitForRender(200);
+            }
+
+            progressFill.style.width = '100%';
+            if (mobile) await waitForRender(500);
+
+            pdf.save(`${currentChapter}.pdf`);
+            
+            setTimeout(() => {
+                progressBar.classList.remove('active');
+                progressFill.style.width = '0%';
+                genBtn.disabled = false;
+                genBtn.textContent = '💾 Save as PDF';
+                closePDFModal();
+            }, 500);
+        }
+
+        function showPreview() {
+            document.getElementById('preview-modal').classList.add('active');
+            renderPreviewPage();
+        }
+
+        function closePreview() {
+            document.getElementById('preview-modal').classList.remove('active');
+            previewPages = [];
+            currentPreviewPage = 0;
+        }
+
+        function renderPreviewPage() {
+            const previewBody = document.getElementById('preview-body');
+            previewBody.innerHTML = '';
+            if (previewPages.length === 0) return;
+
+            const page = previewPages[currentPreviewPage].cloneNode(true);
+            const maxWidth = window.innerWidth - 80;
+            const maxHeight = window.innerHeight - 200;
+            const pageWidth = parseInt(page.style.width);
+            const pageHeight = parseInt(page.style.height);
+            
+            const scaleX = maxWidth / pageWidth;
+            const scaleY = maxHeight / pageHeight;
+            const scale = Math.min(scaleX, scaleY, 1);
+            
+            page.style.transform = `scale(${scale})`;
+            previewBody.appendChild(page);
+
+            document.getElementById('prev-page-btn').disabled = currentPreviewPage === 0;
+            document.getElementById('next-page-btn').disabled = currentPreviewPage === previewPages.length - 1;
+            document.getElementById('page-indicator').textContent = `Page ${currentPreviewPage + 1} of ${previewPages.length}`;
+        }
+
+        function prevPage() {
+            if (currentPreviewPage > 0) {
+                currentPreviewPage--;
+                renderPreviewPage();
+            }
+        }
+
+        function nextPage() {
+            if (currentPreviewPage < previewPages.length - 1) {
+                currentPreviewPage++;
+                renderPreviewPage();
+            }
+        }
+
+        async function downloadFromPreview() {
+            closePreview();
+            await generatePDF(false);
+        }
+
+        function getFullHeight(element) {
+            const style = window.getComputedStyle(element);
+            const marginTop = parseFloat(style.marginTop) || 0;
+            const marginBottom = parseFloat(style.marginBottom) || 0;
+            return element.offsetHeight + marginTop + marginBottom;
+        }
+
+        function preloadImage(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+                setTimeout(() => resolve(false), 10000);
+            });
+        }
+
+        function waitForRender(ms = 50) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            currentPage = pageId;
+            window.scrollTo(0, 0);
+        }
+
+        function goBack() {
+            if (pageHistory.length > 0) {
+                const prev = pageHistory.pop();
+                navigateTo(prev);
+                history.back();
+            } else {
+                navigateTo('home-page');
+            }
+        }
+
+        function handlePopState() {
+            if (pageHistory.length > 0) {
+                const prev = pageHistory.pop();
+                navigateTo(prev);
+            } else {
+                navigateTo('home-page');
+            }
+        }
+
+        function scrollToClasses() {
+            document.getElementById('classes-grid').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+    </script>
+</body>
+</html>
