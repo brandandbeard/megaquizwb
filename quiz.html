@@ -744,6 +744,7 @@ explanation = explanation
 .replace(/\*/g, '')
 .replace(/#{1,6}\s/g, '')
 .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+.replace(/<think>[\s\S]*?<\/think>/gi, '')
 .trim();
 
 return explanation;
