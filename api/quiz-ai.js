@@ -1,4 +1,5 @@
 // api/quiz-ai.js
+// এটা শুধু explanation generate করার জন্য GROQ_API_KEY_2 ব্যবহার করবে
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -11,28 +12,10 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'question required' });
   }
 
-  const GROQ_KEY = process.env.GROQ_API_KEY_2 || process.env.GROQ_API_KEY;
-
+  const GROQ_KEY = process.env.GROQ_API_KEY_2;
   if (!GROQ_KEY) {
-    return res.status(500).json({ error: 'GROQ API key not set in Vercel env' });
+    return res.status(500).json({ error: 'GROQ_API_KEY_2 not set in Vercel env' });
   }
-
-  const optionList = String(options || '')
-    .split('|')
-    .map(x => x.trim())
-    .filter(Boolean);
-
-  const letters = ['A', 'B', 'C', 'D'];
-
-  const optionText = optionList
-    .map((opt, i) => `${letters[i]}. ${opt}`)
-    .join('\n');
-
-  const correctIndex = optionList.findIndex(
-    opt => opt.trim() === String(correctAnswer || '').trim()
-  );
-
-  const correctLetter = correctIndex >= 0 ? letters[correctIndex] : '';
 
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -46,123 +29,63 @@ export default async function handler(req, res) {
         messages: [
           {
             role: 'system',
-            content: `You are an MCQ explanation generator.
+            content: `তুমি একজন expert শিক্ষক। তোমাকে বাংলায় (বা ইংরেজি গ্রামার প্রশ্নে ইংরেজিতে) ব্যাখ্যা দিতে হবে।
 
-Return ONLY the final explanation.
-Do NOT write thinking, analysis, reasoning process, planning, notes, or hidden thoughts.
-Do NOT use <think> tags.
-Do NOT mention subject or chapter.
+📌 কঠোর নিয়ম:
+- সরাসরি চূড়ান্ত উত্তর লিখবে। কোনো "Let me think", "The subject is", "We need to" বা প্ল্যানিং টেক্সট লিখবে না।
+- ফরম্যাট হুবহু এরকম হবে:
+  প্রথম লাইনে: ✅ সঠিক উত্তর: [অপশন লেটার]. [অপশন টেক্সট] — [এক লাইনে কেন সঠিক]
+  তারপর বাকি ৩টি অপশন বুলেট পয়েন্টে:
+  • [অপশন লেটার]. [অপশন টেক্সট] → [কেন ভুল, সংক্ষেপে]
+- সাবজেক্ট বা চ্যাপ্টারের নাম উল্লেখ করবে না।
+- ৪ লাইনের মধ্যে শেষ করো।
+- কোনো code block বা অতিরিক্ত শিরোনাম দিবে না।
+- সহজ বাংলায় লিখবে।
 
-Language rule:
-- If the question is English grammar, vocabulary, synonym, antonym, sentence correction, or other English-language question, explain in English.
-- Otherwise explain in simple Bengali.
+📌 উদাহরণ (বাংলা):
+✅ সঠিক উত্তর: D. H₂O — জলে ২টি হাইড্রোজেন ও ১টি অক্সিজেন পরমাণু থাকে।
+• A. CO₂ → কার্বন ডাই-অক্সাইড, বাতাসে থাকা গ্যাস।
+• B. HCl → হাইড্রোক্লোরিক অ্যাসিড।
+• C. NaCl → সোডিয়াম ক্লোরাইড, অর্থাৎ খাবার লবণ।
 
-Output format must be exactly 4 lines:
-
-✅ সঠিক উত্তর: [LETTER]. [ANSWER] — [one short reason]
-• [LETTER]. [OPTION] → [why wrong]
-• [LETTER]. [OPTION] → [why wrong]
-• [LETTER]. [OPTION] → [why wrong]
-
-For English questions use:
-✅ Correct Answer: [LETTER]. [ANSWER] — [one short reason]
-• [LETTER]. [OPTION] → [why wrong]
-• [LETTER]. [OPTION] → [why wrong]
-• [LETTER]. [OPTION] → [why wrong]
-
-Keep it short and student-friendly.`
+📌 উদাহরণ (ইংরেজি গ্রামার):
+✅ Correct Answer: B. Fearless — "Fearless" means having no fear, same as "Brave".
+• A. Coward → means someone who is not brave.
+• C. Weak → means lacking physical strength.
+• D. Timid → means easily scared.`
           },
           {
             role: 'user',
-            content:
-`Question:
-${question}
-
-Options:
-${optionText}
-
-Correct Answer:
-${correctLetter ? correctLetter + '. ' : ''}${correctAnswer}
-
-Now give only the final 4-line explanation.`
+            content: `প্রশ্ন: ${question}\nঅপশন: ${options}\nসঠিক উত্তর: ${correctAnswer}`
           }
         ],
-        temperature: 0.2,
-        max_tokens: 250
+        temperature: 0.3,
+        max_tokens: 300
       })
     });
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
-      return res.status(response.status).json({
-        error: err.error?.message || 'Groq API error'
-      });
+      return res.status(response.status).json({ error: err.error?.message || 'Groq API error' });
     }
 
     const data = await response.json();
     let text = data.choices?.[0]?.message?.content || '';
 
-    text = cleanExplanation(text);
+    // ✅ <think> ট্যাগ ফিল্টার করা (যেটা আগে সমস্যা করছিল)
+    text = text
+      .replace(/<think>[\s\S]*?<\/think>/gi, '')
+      .replace(/```[\s\S]*?```/g, '')
+      .replace(/`/g, '')
+      .replace(/\*\*/g, '')
+      .replace(/\*/g, '')
+      .replace(/#{1,6}\s/g, '')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .trim();
 
     return res.status(200).json({ explanation: text });
 
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
-}
-
-function cleanExplanation(text) {
-  if (!text) return '';
-
-  let t = String(text);
-
-  // Remove complete <think>...</think> blocks
-  t = t.replace(/<think>[\s\S]*?<\/think>/gi, '');
-
-  // If model started with <think> but did not close it, keep only from final answer marker
-  const finalBangla = t.indexOf('✅ সঠিক উত্তর:');
-  const finalEnglish = t.indexOf('✅ Correct Answer:');
-
-  if (finalBangla !== -1 || finalEnglish !== -1) {
-    const start = finalBangla !== -1
-      ? finalBangla
-      : finalEnglish;
-
-    t = t.slice(start);
-  }
-
-  // Remove any remaining think tags
-  t = t.replace(/<\/?think>/gi, '');
-
-  // Remove common unwanted phrases if leaked
-  t = t.replace(/Here's a thinking process:[\s\S]*?(?=✅)/gi, '');
-  t = t.replace(/Analyze User Input:[\s\S]*?(?=✅)/gi, '');
-  t = t.replace(/Check Constraints:[\s\S]*?(?=✅)/gi, '');
-  t = t.replace(/Map Options[\s\S]*?(?=✅)/gi, '');
-
-  // Clean markdown/code symbols
-  t = t
-    .replace(/```[\s\S]*?```/g, '')
-    .replace(/`/g, '')
-    .replace(/\*\*/g, '')
-    .replace(/#{1,6}\s/g, '')
-    .trim();
-
-  // Keep max 4 useful lines
-  let lines = t
-    .split(/\r?\n/)
-    .map(x => x.trim())
-    .filter(Boolean);
-
-  const answerLineIndex = lines.findIndex(line =>
-    line.startsWith('✅ সঠিক উত্তর:') || line.startsWith('✅ Correct Answer:')
-  );
-
-  if (answerLineIndex > 0) {
-    lines = lines.slice(answerLineIndex);
-  }
-
-  lines = lines.slice(0, 4);
-
-  return lines.join('\n').trim();
 }
