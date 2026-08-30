@@ -383,7 +383,10 @@ function normalizeQuestion(q){
   if(!txt||!Array.isArray(opts)||opts.length!==4)return null;
   const c=Number(ans);
   if(!Number.isInteger(c)||c<0||c>3)return null;
-  return{q:String(txt),o:opts.map(String),a:c,note:String(q.note||q.explanation||""),difficulty:String(q.difficulty||"medium")};
+  const norm={q:String(txt),o:opts.map(String),a:c,note:String(q.note||q.explanation||""),difficulty:String(q.difficulty||"medium")};
+  if(q._sheetRowIndex!==undefined)norm._sheetRowIndex=q._sheetRowIndex;
+  if(q._aiGenerated)norm._aiGenerated=true;
+  return norm;
 }
 function loadJson(key,fb){try{const r=safeGet(key);return r===null?cloneValue(fb):JSON.parse(r)}catch{return cloneValue(fb)}}
 function saveBank(){safeSet(BANK_KEY,JSON.stringify(questionBank));populateSubjectsUI()}
@@ -418,7 +421,7 @@ function populateSubjectsUI(){
 
 function getSelectedKeys(){const ks=[];document.querySelectorAll(".chapter-cb:checked").forEach(cb=>ks.push(cb.value));return ks}
 function shuffle(arr){const c=[...arr];for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}return c}
-function shuffleOptions(q){const o=shuffle([0,1,2,3]);return{...q,o:o.map(i=>q.o[i]),a:o.indexOf(q.a)}}
+function shuffleOptions(q){const o=shuffle([0,1,2,3]);const shuffled={...q,o:o.map(i=>q.o[i]),a:o.indexOf(q.a)};if(q._sheetRowIndex!==undefined)shuffled._sheetRowIndex=q._sheetRowIndex;if(q._aiGenerated)shuffled._aiGenerated=true;return shuffled}
 function collectQuestions(ks){const all=[];for(const k of ks)(questionBank[k]||[]).forEach((_,i)=>{const r=getQuestionRef(k,i);if(r)all.push(r)});return all}
 function generateQuiz(ks,sz,rnd=false){
   if(!ks.length){alert("⚠️ কোনো subject selected নেই! 'Select Subjects' থেকে chapter select করুন।");return}
@@ -466,6 +469,7 @@ async function syncFromSheet(url){
     }
     if(parsedRows.length===0){showSyncStatus("Sheet এ কোনো valid data নেই।",false);return}
     const chapterKeyMap=new Map();const chapterOrderMap=new Map();
+    // ✅ এই লুপটি অপরিহার্য - এটি chapterKeyMap তৈরি করে
     for(let i=0;i<parsedRows.length;i++){
       const row=parsedRows[i];
       const mappedG=row.gRaw;const mappedC=row.cRaw;
@@ -481,7 +485,23 @@ async function syncFromSheet(url){
     questionBank.__subjects__=subjectsList;
     const matchedKeys=new Set(chapterKeyMap.values());
     matchedKeys.forEach(k=>{questionBank[k]=[]});
-    for(let i=0;i<parsedRows.length;i++){const row=parsedRows[i];const chapKey=chapterKeyMap.get(i);const q=normalizeQuestion({q:row.qText,o:row.opts,a:row.correctIdx,note:row.explanation,difficulty:row.difficulty});if(q)questionBank[chapKey].push(q)}
+    // ✅ এই লুপে sheet row number যোগ করা হয়েছে
+    for(let i=0;i<parsedRows.length;i++){
+      const row=parsedRows[i];
+      const chapKey=chapterKeyMap.get(i);
+      const sheetRowNumber = i + 2;
+      const q=normalizeQuestion({
+        q:row.qText,
+        o:row.opts,
+        a:row.correctIdx,
+        note:row.explanation,
+        difficulty:row.difficulty
+      });
+      if(q){
+        q._sheetRowIndex = sheetRowNumber;
+        questionBank[chapKey].push(q);
+      }
+    }
     saveBank();selectedKeys=new Set();saveSelection();populateSubjectsUI();
     safeSet(LAST_SYNC_KEY,Date.now().toString());
     showSyncStatus(`${questionBank.__subjects__.length} chapters sync হয়েছে!`,true);
@@ -582,7 +602,9 @@ function renderQuiz(){
   if(!currentQuestions.length){$("questionsArea").innerHTML="<div class='question-card' style='text-align:center;padding:50px'>⬆️ Select subjects and click Generate</div>";return}
   currentIndex=Math.max(0,Math.min(currentIndex,currentQuestions.length-1));
   const q=currentQuestions[currentIndex];
-  if(!q.note&&!q._aiFetched&&quizMode!=='mock'){setTimeout(async()=>{const explanation=await fetchAIExplanation(q);if(explanation){q.note=explanation;q._aiGenerated=true;if(q._subject&&q._index!==undefined&&questionBank[q._subject]){questionBank[q._subject][q._index].note=explanation;questionBank[q._subject][q._index]._aiGenerated=true;saveBank()}if(currentQuestions[currentIndex]===q){renderQuiz()}}},200)}
+  const sheetRowIndex = q._sheetRowIndex || null;
+  const quizType = CURRENT_CLASS;
+  if(!q.note&&!q._aiFetched&&quizMode!=='mock'){setTimeout(async()=>{const explanation=await fetchAIExplanation(q, sheetRowIndex, quizType);if(explanation){q.note=explanation;q._aiGenerated=true;if(q._subject&&q._index!==undefined&&questionBank[q._subject]){questionBank[q._subject][q._index].note=explanation;questionBank[q._subject][q._index]._aiGenerated=true;saveBank()}if(currentQuestions[currentIndex]===q){renderQuiz()}}},200)}
   const answered=userAnswers[currentIndex]!==null;
   const showResult=quizSubmitted||(quizMode==="practice"&&answered);
   const noteVisible=quizSubmitted||(quizMode==="practice"&&answered)||(quizMode!=="mock"&&$("showNoteBeforeAnswer").checked);
