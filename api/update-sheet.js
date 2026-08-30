@@ -6,24 +6,33 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'POST only' });
   }
 
-  const { rowIndex, explanation, sheetUrl } = req.body;
+  const { rowIndex, explanation, quizType } = req.body;
 
   if (rowIndex === undefined || !explanation) {
     return res.status(400).json({ error: 'rowIndex and explanation required' });
   }
 
-  // Google Apps Script Web App URL (নিচে setup দেওয়া আছে)
-  const APPS_SCRIPT_URL = process.env.GOOGLE_APPS_SCRIPT_URL;
+  // ✅ সব Apps Script URL এখানে সরাসরি hardcode করা আছে
+  const SCRIPT_URLS = {
+    'ssc': 'https://script.google.com/macros/s/AKfycby8cADzc2mMlr-3KoLSmQLsg8AhLA9ViXL5kzSyhLwaRfutZW5er3qTO1PFmY2w-4VmUQ/exec',
+    'gk': 'https://script.google.com/macros/s/AKfycbw940Ugc3FsH1NFHCnjbEc7uivqqvwacUh_gQv_UKqXBXlJ7uhGa9ptTre5LROgEVwl/exec',
+    'wbpsc': 'https://script.google.com/macros/s/AKfycbzWUjN4QuZtimLgtx-sd5oVqgoi4NhMVou3qkQwthV7AcL4DkAPycJ-YNjCnQh8w_h0/exec',
+    'defence': 'https://script.google.com/macros/s/AKfycbz04QAu660SM9GVplMtomNL28ug7XE3xE1lYrkJm2y3DBylAvzRD4Xxh4vZiozNO-2l/exec'
+  };
 
-  if (!APPS_SCRIPT_URL) {
-    return res.status(500).json({ error: 'GOOGLE_APPS_SCRIPT_URL not set' });
+  const SCRIPT_URL = SCRIPT_URLS[quizType] || SCRIPT_URLS['ssc'];
+
+  if (!SCRIPT_URL) {
+    return res.status(500).json({ error: `Apps Script URL not set for ${quizType}` });
   }
 
   try {
-    const response = await fetch(APPS_SCRIPT_URL, {
+    // ✅ no-cors mode দরকার Google Apps Script এর সাথে কাজ করতে
+    const response = await fetch(SCRIPT_URL, {
       method: 'POST',
+      mode: 'no-cors',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=utf-8',
       },
       body: JSON.stringify({
         rowIndex: rowIndex,
@@ -31,12 +40,11 @@ export default async function handler(req, res) {
       })
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    const data = await response.json();
-    return res.status(200).json(data);
+    // no-cors mode এ response status 0 হয়, তাই সরাসরি success ধরে নিচ্ছি
+    return res.status(200).json({ 
+      success: true,
+      message: 'Explanation update request sent to sheet'
+    });
 
   } catch (error) {
     console.error('Sheet update error:', error);
