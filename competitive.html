@@ -494,21 +494,66 @@ function autoLoadSheetIfNeeded(){
 }
 window.autoLoadSheetIfNeeded=autoLoadSheetIfNeeded;
 
-async function fetchAIExplanation(questionObj){
-  if(!questionObj||!questionObj.q)return null;
-  if(questionObj.note&&questionObj.note.trim().length>10)return null;
-  if(questionObj._aiFetched)return null;
-  questionObj._aiFetched=true;
+async function fetchAIExplanation(questionObj, rowIndex, quizType){
+  if(!questionObj || !questionObj.q) return null;
+  
+  if(questionObj.note && questionObj.note.trim().length > 10 && !questionObj._aiGenerated){
+    return null;
+  }
+  
+  if(questionObj._aiFetched) return null;
+  questionObj._aiFetched = true;
+  
   try{
-    const response=await fetch('/api/quiz-ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:questionObj.q,options:questionObj.o?questionObj.o.join(' | '):'',correctAnswer:questionObj.o&&questionObj.a!==undefined?questionObj.o[questionObj.a]:'',subject:questionObj._groupName||'',chapter:questionObj._chapterName||''})});
-    if(!response.ok)return null;
-    const data=await response.json();if(data.error)return null;
-    let explanation=data.explanation||'';
-    explanation=explanation.replace(/```[\s\S]*?```/g,'').replace(/`/g,'').replace(/\*\*/g,'').replace(/\*/g,'').replace(/#{1,6}\s/g,'').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1').trim();
+    const response = await fetch('/api/quiz-ai', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        question: questionObj.q,
+        options: questionObj.o ? questionObj.o.join(' | ') : '',
+        correctAnswer: questionObj.o && questionObj.a !== undefined ? questionObj.o[questionObj.a] : '',
+        subject: questionObj._groupName || '',
+        chapter: questionObj._chapterName || ''
+      })
+    });
+    
+    if(!response.ok) return null;
+    const data = await response.json();
+    if(data.error) return null;
+    
+    let explanation = data.explanation || '';
+    explanation = explanation
+      .replace(/```[\s\S]*?```/g, '')
+      .replace(/`/g, '')
+      .replace(/\*\*/g, '')
+      .replace(/\*/g, '')
+      .replace(/#{1,6}\s/g, '')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .trim();
+    
+    if(explanation && rowIndex){
+      try{
+        await fetch('/api/update-sheet', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            rowIndex: rowIndex,
+            explanation: explanation,
+            quizType: quizType
+          })
+        });
+        console.log('✅ Explanation শীটে সেভ হয়েছে, রো নম্বর:', rowIndex);
+      }catch(sheetError){
+        console.warn('⚠️ শীটে সেভ করতে সমস্যা হয়েছে:', sheetError);
+      }
+    }
+    
     return explanation;
-  }catch(e){console.warn('AI fetch failed:',e);return null}
+  }catch(e){
+    console.warn('AI ব্যাখ্যা আনতে সমস্যা:', e);
+    return null;
+  }
 }
-
 function playFeedbackSound(pct){var sound=(pct===100)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3':(pct>=90)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3':(pct>=80)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3':(pct>=60)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3':(pct>=45)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3':'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3';if(!sound)return;try{var audio=new Audio(sound);audio.volume=1.0;var p=audio.play();if(p&&p.catch)p.catch(function(e){console.warn("Audio blocked:",e)})}catch(e){console.warn("Audio error:",e)}}
 function fireConfetti(){const count=500;const defaults={spread:360,ticks:80,gravity:0.6,decay:0.9,startVelocity:30};for(let i=0;i<5;i++)confetti({...defaults,particleCount:count/5,origin:{x:Math.random(),y:Math.random()*0.5}})}
 function showResultsOverlay(){
