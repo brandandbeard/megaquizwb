@@ -451,22 +451,35 @@ async function syncFromSheet(url){
     if(rows.length<2)return;
     const dataRows=rows.slice(1);
     const parsedRows=[];const rawGroups=new Set();const rawChapters=new Set();
-    for(const row of dataRows){
-      const cols=row.split('\t').map(c=>c.trim());
-      if(cols.length<8)continue;
-      const chapterNum=parseInt(cols[0])||9999;
-      const gRaw=cols[1]||'সাধারণ';
-      const cRaw=cols[2]||'অশ্রেণীবদ্ধ';
-      const qText=cols[3];
-      const opts=[cols[4],cols[5],cols[6],cols[7]];
-      let correctIdx=parseInt(cols[8]);
-      if(isNaN(correctIdx)){const map={'A':0,'B':1,'C':2,'D':3,'a':0,'b':1,'c':2,'d':3};const letter=(cols[8]||'').trim().toUpperCase();if(letter in map)correctIdx=map[letter];else continue}
-      if(correctIdx<0||correctIdx>3)continue;
-      const explanation=cols.length>9?cols[9]:'';
-      const difficulty=cols.length>10?cols[10].toLowerCase():'medium';
-      parsedRows.push({chapterNum,gRaw,cRaw,qText,opts,correctIdx,explanation,difficulty});
-      rawGroups.add(gRaw);rawChapters.add(cRaw);
-    }
+    let actualSheetRowNumber = 2; // Row 1 = header, তাই Row 2 থেকে শুরু
+for(const row of dataRows){
+  const cols=row.split('\t').map(c=>c.trim());
+  
+  // ✅ শুধুমাত্র valid question rows এর জন্য sheet row number সেভ করো
+  if(cols.length>=8){
+    const chapterNum=parseInt(cols[0])||9999;
+    const gRaw=cols[1]||'সাধারণ';
+    const cRaw=cols[2]||'অশ্রেণীবদ্ধ';
+    const qText=cols[3];
+    const opts=[cols[4],cols[5],cols[6],cols[7]];
+    let correctIdx=parseInt(cols[8]);
+    if(isNaN(correctIdx)){const map={'A':0,'B':1,'C':2,'D':3,'a':0,'b':1,'c':2,'d':3};const letter=(cols[8]||'').trim().toUpperCase();if(letter in map)correctIdx=map[letter];else{actualSheetRowNumber++;continue;}}
+    if(correctIdx<0||correctIdx>3){actualSheetRowNumber++;continue;}
+    const explanation=cols.length>9?cols[9]:'';
+    const difficulty=cols.length>10?cols[10].toLowerCase():'medium';
+    
+    // ✅ আসল sheet row number সহ push করো
+    parsedRows.push({
+      chapterNum, gRaw, cRaw, qText, opts, correctIdx, explanation, difficulty,
+      sheetRow: actualSheetRowNumber  // ← এটি যোগ করো
+    });
+    rawGroups.add(gRaw);
+    rawChapters.add(cRaw);
+  }
+  
+  // ✅ প্রতিটি row (blank সহ) এর জন্য counter বাড়াও
+  actualSheetRowNumber++;
+}
     if(parsedRows.length===0){showSyncStatus("Sheet এ কোনো valid data নেই।",false);return}
     const chapterKeyMap=new Map();const chapterOrderMap=new Map();
     // ✅ এই লুপটি অপরিহার্য - এটি chapterKeyMap তৈরি করে
@@ -487,9 +500,9 @@ async function syncFromSheet(url){
     matchedKeys.forEach(k=>{questionBank[k]=[]});
     // ✅ এই লুপে sheet row number যোগ করা হয়েছে
     for(let i=0;i<parsedRows.length;i++){
-      const row=parsedRows[i];
-      const chapKey=chapterKeyMap.get(i);
-      const sheetRowNumber = i + 2;
+  const row=parsedRows[i];
+  const chapKey=chapterKeyMap.get(i);
+  const sheetRowNumber = row.sheetRow;  // ✅ আসল row number ব্যবহার করো
       const q=normalizeQuestion({
         q:row.qText,
         o:row.opts,
