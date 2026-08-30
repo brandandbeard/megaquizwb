@@ -1,21 +1,38 @@
 // api/quiz-ai.js
-// এটা শুধু explanation generate করার জন্য GROQ_API_KEY_2 ব্যবহার করবে
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'POST only' });
   }
 
-  const { question, options, correctAnswer, subject, chapter } = req.body;
+  const { question, options, correctAnswer } = req.body;
 
   if (!question) {
     return res.status(400).json({ error: 'question required' });
   }
 
-  const GROQ_KEY = process.env.GROQ_API_KEY_2;
+  const GROQ_KEY = process.env.GROQ_API_KEY_2 || process.env.GROQ_API_KEY;
+
   if (!GROQ_KEY) {
-    return res.status(500).json({ error: 'GROQ_API_KEY_2 not set in Vercel env' });
+    return res.status(500).json({ error: 'GROQ API key not set in Vercel env' });
   }
+
+  const optionList = String(options || '')
+    .split('|')
+    .map(x => x.trim())
+    .filter(Boolean);
+
+  const letters = ['A', 'B', 'C', 'D'];
+
+  const optionText = optionList
+    .map((opt, i) => `${letters[i]}. ${opt}`)
+    .join('\n');
+
+  const correctIndex = optionList.findIndex(
+    opt => opt.trim() === String(correctAnswer || '').trim()
+  );
+
+  const correctLetter = correctIndex >= 0 ? letters[correctIndex] : '';
 
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -29,71 +46,123 @@ export default async function handler(req, res) {
         messages: [
           {
             role: 'system',
-            content: `তুমি একজন expert MCQ শিক্ষক। তোমার কাজ শুধু প্রশ্নের সরাসরি ব্যাখ্যা দেওয়া।
+            content: `You are an MCQ explanation generator.
 
-📌 কঠোর নিয়ম (অবশ্যই মানতে হবে):
+Return ONLY the final explanation.
+Do NOT write thinking, analysis, reasoning process, planning, notes, or hidden thoughts.
+Do NOT use <think> tags.
+Do NOT mention subject or chapter.
 
-১. ❗ তুমি সরাসরি শুধু চূড়ান্ত উত্তর লিখবে। কোনো পরিকল্পনা, বিশ্লেষণ, চিন্তাভাবনা, "Let me think", "The subject is", "We need to", "Let's structure" জাতীয় কিছু লিখবে না। এটা খুবই গুরুত্বপূর্ণ।
+Language rule:
+- If the question is English grammar, vocabulary, synonym, antonym, sentence correction, or other English-language question, explain in English.
+- Otherwise explain in simple Bengali.
 
-২. ভাষা নির্ধারণ:
-   - যদি প্রশ্ন ও অপশন ইংরেজিতে থাকে (বিশেষত English Grammar, Spelling, Vocabulary, Synonym, Antonym, Sentence Correction ইত্যাদি), তাহলে ব্যাখ্যা ইংরেজিতে দাও।
-   - অন্য সব ক্ষেত্রে সহজ বাংলায় ব্যাখ্যা দাও।
+Output format must be exactly 4 lines:
 
-৩. ফরম্যাট (হুবহু এইভাবে):
-   প্রথম লাইনে সঠিক উত্তর:
-   ✅ সঠিক উত্তর: [অপশন লেটার]. [অপশন টেক্সট] — [এক লাইনে কেন সঠিক]
-   
-   এরপর বাকি ৩টি ভুল অপশন বুলেট পয়েন্টে:
-   • [অপশন লেটার]. [অপশন টেক্সট] → [কেন ভুল, খুব সংক্ষেপে]
-   • [অপশন লেটার]. [অপশন টেক্সট] → [কেন ভুল, খুব সংক্ষেপে]
-   • [অপশন লেটার]. [অপশন টেক্সট] → [কেন ভুল, খুব সংক্ষেপে]
+✅ সঠিক উত্তর: [LETTER]. [ANSWER] — [one short reason]
+• [LETTER]. [OPTION] → [why wrong]
+• [LETTER]. [OPTION] → [why wrong]
+• [LETTER]. [OPTION] → [why wrong]
 
-৪. সাবজেক্ট বা চ্যাপ্টারের নাম কখনোই উল্লেখ করবে না।
+For English questions use:
+✅ Correct Answer: [LETTER]. [ANSWER] — [one short reason]
+• [LETTER]. [OPTION] → [why wrong]
+• [LETTER]. [OPTION] → [why wrong]
+• [LETTER]. [OPTION] → [why wrong]
 
-৫. মোট ৪ লাইনের মধ্যে শেষ করো (১ লাইন সঠিক উত্তর + ৩ লাইন ভুল অপশন)।
-
-৬. কোনো code block, markdown fence (\`\`\`), অতিরিক্ত শিরোনাম, বা ভূমিকা লিখবে না।
-
-৭. খুব সহজ ভাষায় লিখবে যাতে একজন ছাত্র সাথে সাথে বুঝতে পারে।
-
-উদাহরণ:
-
-প্রশ্ন: জলের রাসায়নিক সংকেত কী? (অপশন: CO₂, HCl, NaCl, H₂O; সঠিক: H₂O)
-
-✅ সঠিক উত্তর: D. H₂O — জলে ২টি হাইড্রোজেন ও ১টি অক্সিজেন পরমাণু থাকে।
-• A. CO₂ → কার্বন ডাই-অক্সাইড, বাতাসে থাকা গ্যাস।
-• B. HCl → হাইড্রোক্লোরিক অ্যাসিড।
-• C. NaCl → সোডিয়াম ক্লোরাইড, অর্থাৎ খাবার লবণ।
-
-ইংরেজি উদাহরণ:
-
-প্রশ্ন: Choose the correct synonym of "Brave" (অপশন: Coward, Fearless, Weak, Timid; সঠিক: Fearless)
-
-✅ Correct Answer: B. Fearless — "Fearless" means having no fear, which matches "Brave".
-• A. Coward → means a person who lacks courage, opposite of brave.
-• C. Weak → means lacking strength, not related to courage.
-• D. Timid → means easily frightened, opposite of brave.`
+Keep it short and student-friendly.`
           },
           {
             role: 'user',
-            content: `প্রশ্ন: ${question}\nঅপশন: ${options}\nসঠিক উত্তর: ${correctAnswer}`
+            content:
+`Question:
+${question}
+
+Options:
+${optionText}
+
+Correct Answer:
+${correctLetter ? correctLetter + '. ' : ''}${correctAnswer}
+
+Now give only the final 4-line explanation.`
           }
         ],
-        temperature: 0.3,
-        max_tokens: 300
+        temperature: 0.2,
+        max_tokens: 250
       })
     });
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
-      return res.status(response.status).json({ error: err.error?.message || 'Groq API error' });
+      return res.status(response.status).json({
+        error: err.error?.message || 'Groq API error'
+      });
     }
 
     const data = await response.json();
-    const text = data.choices?.[0]?.message?.content || '';
+    let text = data.choices?.[0]?.message?.content || '';
+
+    text = cleanExplanation(text);
+
     return res.status(200).json({ explanation: text });
 
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
+}
+
+function cleanExplanation(text) {
+  if (!text) return '';
+
+  let t = String(text);
+
+  // Remove complete <think>...</think> blocks
+  t = t.replace(/<think>[\s\S]*?<\/think>/gi, '');
+
+  // If model started with <think> but did not close it, keep only from final answer marker
+  const finalBangla = t.indexOf('✅ সঠিক উত্তর:');
+  const finalEnglish = t.indexOf('✅ Correct Answer:');
+
+  if (finalBangla !== -1 || finalEnglish !== -1) {
+    const start = finalBangla !== -1
+      ? finalBangla
+      : finalEnglish;
+
+    t = t.slice(start);
+  }
+
+  // Remove any remaining think tags
+  t = t.replace(/<\/?think>/gi, '');
+
+  // Remove common unwanted phrases if leaked
+  t = t.replace(/Here's a thinking process:[\s\S]*?(?=✅)/gi, '');
+  t = t.replace(/Analyze User Input:[\s\S]*?(?=✅)/gi, '');
+  t = t.replace(/Check Constraints:[\s\S]*?(?=✅)/gi, '');
+  t = t.replace(/Map Options[\s\S]*?(?=✅)/gi, '');
+
+  // Clean markdown/code symbols
+  t = t
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`/g, '')
+    .replace(/\*\*/g, '')
+    .replace(/#{1,6}\s/g, '')
+    .trim();
+
+  // Keep max 4 useful lines
+  let lines = t
+    .split(/\r?\n/)
+    .map(x => x.trim())
+    .filter(Boolean);
+
+  const answerLineIndex = lines.findIndex(line =>
+    line.startsWith('✅ সঠিক উত্তর:') || line.startsWith('✅ Correct Answer:')
+  );
+
+  if (answerLineIndex > 0) {
+    lines = lines.slice(answerLineIndex);
+  }
+
+  lines = lines.slice(0, 4);
+
+  return lines.join('\n').trim();
 }
