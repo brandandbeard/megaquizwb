@@ -187,8 +187,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0
 .results-media video{width:100%}
 .results-media audio{width:100%;max-width:320px}
 .results-chapters{margin-top:10px;font-size:9px;color:var(--muted);max-height:80px;overflow-y:auto;text-align:left;line-height:1.6;border-top:1px solid var(--line);padding-top:8px}
-
-/* ===== 3D RESTRICTED ACCESS GATE ===== */
 .warning-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0a0a0a;perspective:800px;transition:opacity .6s ease,visibility .6s ease;opacity:1;visibility:visible;font-family:'Georgia','Times New Roman',serif}
 .warning-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .card{background:linear-gradient(160deg,#0f0a0a,#0d0808);border:1px solid #3a1010;padding:3rem 2.5rem;text-align:center;border-radius:2px;box-shadow:0 20px 50px rgba(0,0,0,0.7),0 0 0 1px rgba(200,30,30,0.15),0 0 40px rgba(180,20,20,0.1);transform-style:preserve-3d;transform:rotateX(0deg) rotateY(0deg);transition:transform .1s ease,box-shadow .3s;will-change:transform;max-width:420px;width:90%}
@@ -204,15 +202,12 @@ input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0
 .error-msg{color:#d44a4a;font-size:.65rem;letter-spacing:.08em;margin-top:1rem;min-height:1.2em;text-shadow:0 0 10px rgba(200,20,20,0.4);transform:translateZ(10px)}
 .shake{animation:shakeAnim .6s ease-in-out}
 @keyframes shakeAnim{0%,100%{transform:translateX(0)}10%{transform:translateX(-14px)}20%{transform:translateX(14px)}30%{transform:translateX(-10px)}40%{transform:translateX(10px)}50%{transform:translateX(-5px)}60%{transform:translateX(5px)}70%{transform:translateX(-2px)}80%{transform:translateX(2px)}90%{transform:translateX(0)}}
-
 @media(max-width:960px){.quiz-panel{grid-template-columns:1fr}.sidebar{position:static}.options{grid-template-columns:1fr}}
 @media(max-width:640px){body{padding:6px}.container{border-radius:14px;padding:10px}.main-header{margin:-10px -10px 14px;border-radius:14px 14px 0 0;padding:10px 14px}.footer-contact{border-radius:20px;gap:6px 4px;font-size:11px;padding:10px 6px;display:flex!important;flex-wrap:wrap!important;justify-content:center!important;align-items:center!important}.footer-social-row{display:flex!important;width:100%;justify-content:space-between;align-items:center;gap:2px;padding:0 2px}.footer-link{padding:4px 5px;justify-content:center;font-size:11px;flex:1 1 auto;min-width:0;white-space:nowrap}.footer-link svg{width:14px;height:14px;flex-shrink:0}.footer-divider{display:none!important}.footer-divider-upi{display:none!important}.footer-contact>.footer-link.upi-link{width:100%;justify-content:center;margin-top:6px;font-size:11px;flex:1 1 100%;text-align:center}.controls{padding:8px 8px}.controls-outer{flex-direction:column;gap:8px}.controls-left{width:100%;justify-content:center;flex-wrap:nowrap;gap:6px}.controls-right{width:100%;justify-content:center;flex-wrap:nowrap;gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}.controls-right button{font-size:10px;padding:5px 9px;flex-shrink:0}.controls-right input{font-size:10px;padding:5px 6px;width:42px!important;flex-shrink:0}.controls-right label{font-size:9px;white-space:nowrap;flex-shrink:0}.mode-btn{font-size:10px;padding:4px 9px;white-space:nowrap}#chapterToggleBtn{font-size:10px;padding:5px 10px;white-space:nowrap}.mode-selector{gap:3px;padding:2px;flex-shrink:0}.question-text{font-size:16px}.option{font-size:14px;padding:9px 12px}.card{padding:2rem 1.5rem}.warning-line{font-size:1.2rem;letter-spacing:.15em}.warning-subtitle{font-size:.75rem}}
 @media(max-width:380px){.footer-contact{font-size:10px;padding:8px 4px;gap:4px 2px}.footer-social-row{gap:1px;padding:0 1px}.footer-link{font-size:9.5px;padding:3px 3px}.footer-link svg{width:12px;height:12px}.footer-contact>.footer-link.upi-link{font-size:10px;margin-top:5px}.controls-right button{font-size:9px;padding:4px 7px}.controls-right input{font-size:9px;padding:4px 5px;width:36px!important}.controls-right label{font-size:8px}.mode-btn{font-size:9px;padding:3px 7px}#chapterToggleBtn{font-size:9px;padding:4px 8px}.controls-left{gap:3px}.controls-right{gap:3px}.question-text{font-size:15px}.option{font-size:13px}}
 </style>
 </head>
 <body>
-
-<!-- 3D RESTRICTED ACCESS GATE -->
 <div class="warning-overlay" id="warningOverlay">
 <div class="card" id="authCard">
 <div class="warning-line">⚠️ RESTRICTED ACCESS</div>
@@ -225,8 +220,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0
 <div class="error-msg" id="errorMsg"></div>
 </div>
 </div>
-
-<!-- RESULTS OVERLAY -->
 <div class="results-overlay hidden" id="resultsOverlay">
 <div class="results-card">
 <span class="results-emoji" id="resultsEmoji">🎉</span>
@@ -245,8 +238,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0
 <button class="close-results-btn" id="closeResultsBtn">✅ উত্তর দেখুন</button>
 </div>
 </div>
-
-<!-- MAIN APP -->
 <main class="app" id="app" style="display:none">
 <div class="container">
 <div class="main-header">
@@ -258,7 +249,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0
 <button style="background:var(--red)" id="resetHeaderBtn" title="Reset Answers">🗑️</button>
 </div>
 </div>
-
 <section class="controls">
 <div class="controls-outer">
 <div class="controls-left">
@@ -288,7 +278,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0
 </div>
 <div id="syncStatus" class="status-msg"></div>
 </section>
-
 <section class="quiz-panel">
 <div class="questions-area" id="questionsArea"><div class="question-card" style="text-align:center;padding:50px">⬆️ Select subjects and click Generate</div></div>
 <aside class="sidebar">
@@ -301,8 +290,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0
 </aside>
 </section>
 </div>
-
-<!-- FOOTER -->
 <div class="footer-contact">
 <span class="footer-social-row">
 <a href="mailto:arifbeldanga@gmail.com" class="footer-link email-link" title="ইমেইল করুন">
@@ -327,16 +314,13 @@ arifhussain.x
 </a>
 </div>
 </main>
-
 <script>
-// ===== CLASS CONFIGS =====
 const CLASS_CONFIGS = {
   gk: { title:"GK", password:"ggk", tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSlvgL0wNeBT9WLIh-_aAwCO4JmyPUeWyqORWaIOxdqA09KndBPCP0A_GL0xny3JIp3TmhzNKFPXwAu/pub?output=tsv", subjects:"সাধারণ জ্ঞান" },
   ssc: { title:"SSC", password:"@competitive", tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQSNigFSr_yf4GGnyrzDYJJuETzyLjGvfYjXwvuXLGzKcRZRghA23hDOZEQW2-fJdmZR6Nk4g2hFg7U/pub?output=tsv", subjects:"SSC Competitive" },
   wbpsc: { title:"WBPSC", password:"westbengal", tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTPCbxSue4I4aRFkf6wu3kR_Iyzj2Rq6MEVZ4y-SIeuU1DcJml6bbeG6BpH3UEoXz7O-tEesnkTTNSl/pub?output=tsv", subjects:"WBPSC" },
   defence: { title:"Defence", password:"india", tsv:"https://docs.google.com/spreadsheets/d/e/2PACX-1vReSms5LcUXVKsNiBpmwN-MBvoAPxBtScjgFJUAxqZqzxMqxrycOPbROAh1f6EDKNVU9DD_RpLY-B9z/pub?output=tsv", subjects:"Defence" }
 };
-
 function detectClass(){
   const params=new URLSearchParams(window.location.search);
   const c=(params.get('c')||'ssc').toLowerCase().trim();
@@ -353,15 +337,12 @@ const SELECTED_KEY="COMP_SELECTED_"+APP_VERSION;
 const THEME_KEY="COMP_THEME_"+CURRENT_CLASS;
 const LAST_SYNC_KEY="COMP_SYNC_"+APP_VERSION;
 const ACCORDION_STATE_KEY="COMP_ACCORDION_"+APP_VERSION;
-
 document.title=CONFIG.title+" || Competitive Quiz";
 document.getElementById('mainTitle').innerHTML='🏆 '+CONFIG.title+' <small>| '+CONFIG.subjects+' |</small>';
 document.getElementById('gateSubtitle').textContent=CONFIG.title+' · '+CONFIG.subjects;
-
 let openAccordions=new Set();
 function loadAccordionState(){openAccordions=new Set();try{const s=localStorage.getItem(ACCORDION_STATE_KEY);if(s)openAccordions=new Set(JSON.parse(s));}catch(e){}}
 function saveAccordionState(){try{localStorage.setItem(ACCORDION_STATE_KEY,JSON.stringify([...openAccordions]));}catch(e){}}
-
 const $=id=>document.getElementById(id);
 function safeGet(k){try{return localStorage.getItem(k)}catch{return null}}
 function safeSet(k,v){try{localStorage.setItem(k,v)}catch{}}
@@ -407,7 +388,6 @@ function getCount(k){return questionBank[k]?.length||0}
 function groupLabel(gk){const groups=getSubjectGroups(),found=groups.find(g=>g.key===gk);return found?found.name.replace(/^[^\s]+ /,""):gk}
 function getQuestionRef(sk,idx){const s=getSubjects().find(x=>x.key===sk),q=questionBank[sk]?.[idx];if(!s||!q)return null;return{...q,_subject:sk,_index:idx,_chapterName:s.name,_groupName:groupLabel(s.group)}}
 function getRandomColorExcluding(ex){const all=['gk','aptitude','reasoning','english','science_comp','current'];const av=all.filter(c=>!ex.includes(c));if(av.length===0)return all[Math.floor(Math.random()*all.length)];return av[Math.floor(Math.random()*av.length)]}
-
 function populateSubjectsUI(){
   const groups=getSubjectGroups();
   $("subjectAccordions").innerHTML=groups.map((g,gi)=>{
@@ -418,7 +398,6 @@ function populateSubjectsUI(){
   document.querySelectorAll(".subject-header").forEach(h=>{h.onclick=()=>{const a=h.closest(".subject-accordion"),b=a.querySelector(".subject-chapters");const gk=h.dataset.group;a.classList.toggle("open");b.classList.toggle("open");if(a.classList.contains("open"))openAccordions.add(gk);else openAccordions.delete(gk);saveAccordionState()}});
   document.querySelectorAll(".chapter-cb").forEach(cb=>{cb.onchange=()=>{cb.checked?selectedKeys.add(cb.value):selectedKeys.delete(cb.value);saveSelection()}});
 }
-
 function getSelectedKeys(){const ks=[];document.querySelectorAll(".chapter-cb:checked").forEach(cb=>ks.push(cb.value));return ks}
 function shuffle(arr){const c=[...arr];for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}return c}
 function shuffleOptions(q){const o=shuffle([0,1,2,3]);const shuffled={...q,o:o.map(i=>q.o[i]),a:o.indexOf(q.a)};if(q._sheetRowIndex!==undefined)shuffled._sheetRowIndex=q._sheetRowIndex;if(q._aiGenerated)shuffled._aiGenerated=true;return shuffled}
@@ -447,62 +426,105 @@ async function syncFromSheet(url){
     const res=await fetch(url,{mode:'cors'});
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
     const tsv=await res.text();
-    const rows=tsv.split(/\r?\n/).filter(line=>line.trim()!=='');
-    if(rows.length<2)return;
-    const dataRows=rows.slice(1);
-    const parsedRows=[];const rawGroups=new Set();const rawChapters=new Set();
-    let actualSheetRowNumber = 2; // Row 1 = header, তাই Row 2 থেকে শুরু
-for(const row of dataRows){
-  const cols=row.split('\t').map(c=>c.trim());
-  
-  // ✅ শুধুমাত্র valid question rows এর জন্য sheet row number সেভ করো
-  if(cols.length>=8){
-    const chapterNum=parseInt(cols[0])||9999;
-    const gRaw=cols[1]||'সাধারণ';
-    const cRaw=cols[2]||'অশ্রেণীবদ্ধ';
-    const qText=cols[3];
-    const opts=[cols[4],cols[5],cols[6],cols[7]];
-    let correctIdx=parseInt(cols[8]);
-    if(isNaN(correctIdx)){const map={'A':0,'B':1,'C':2,'D':3,'a':0,'b':1,'c':2,'d':3};const letter=(cols[8]||'').trim().toUpperCase();if(letter in map)correctIdx=map[letter];else{actualSheetRowNumber++;continue;}}
-    if(correctIdx<0||correctIdx>3){actualSheetRowNumber++;continue;}
-    const explanation=cols.length>9?cols[9]:'';
-    const difficulty=cols.length>10?cols[10].toLowerCase():'medium';
     
-    // ✅ আসল sheet row number সহ push করো
-    parsedRows.push({
-      chapterNum, gRaw, cRaw, qText, opts, correctIdx, explanation, difficulty,
-      sheetRow: actualSheetRowNumber  // ← এটি যোগ করো
-    });
-    rawGroups.add(gRaw);
-    rawChapters.add(cRaw);
-  }
-  
-  // ✅ প্রতিটি row (blank সহ) এর জন্য counter বাড়াও
-  actualSheetRowNumber++;
-}
+    // ✅ FIX: Blank rows আর filter করছি না! সব rows রাখছি
+    const rows=tsv.split(/\r?\n/);
+    if(rows.length<2)return;
+    
+    const dataRows=rows.slice(1);
+    const parsedRows=[];
+    const rawGroups=new Set();
+    const rawChapters=new Set();
+    
+    // ✅ FIX: আসল sheet row number track করছি (Row 1 = header, তাই Row 2 থেকে শুরু)
+    let actualSheetRowNumber = 2;
+    
+    for(const row of dataRows){
+      const cols=row.split('\t').map(c=>c.trim());
+      
+      // শুধু valid question rows (যেখানে প্রশ্ন আছে) process করছি
+      if(cols.length>=8 && cols[3] && cols[3].trim()!==''){
+        const chapterNum=parseInt(cols[0])||9999;
+        const gRaw=cols[1]||'সাধারণ';
+        const cRaw=cols[2]||'অশ্রেণীবদ্ধ';
+        const qText=cols[3];
+        const opts=[cols[4],cols[5],cols[6],cols[7]];
+        let correctIdx=parseInt(cols[8]);
+        if(isNaN(correctIdx)){
+          const map={'A':0,'B':1,'C':2,'D':3,'a':0,'b':1,'c':2,'d':3};
+          const letter=(cols[8]||'').trim().toUpperCase();
+          if(letter in map)correctIdx=map[letter];
+          else{actualSheetRowNumber++;continue;}
+        }
+        if(correctIdx<0||correctIdx>3){actualSheetRowNumber++;continue;}
+        const explanation=cols.length>9?cols[9]:'';
+        const difficulty=cols.length>10?cols[10].toLowerCase():'medium';
+        
+        // ✅ আসল sheet row number সহ push করছি
+        parsedRows.push({
+          chapterNum,gRaw,cRaw,qText,opts,correctIdx,explanation,difficulty,
+          sheetRow: actualSheetRowNumber
+        });
+        rawGroups.add(gRaw);
+        rawChapters.add(cRaw);
+      }
+      
+      // ✅ প্রতিটি row এর জন্য (blank সহ) counter বাড়াচ্ছি
+      actualSheetRowNumber++;
+    }
+    
     if(parsedRows.length===0){showSyncStatus("Sheet এ কোনো valid data নেই।",false);return}
-    const chapterKeyMap=new Map();const chapterOrderMap=new Map();
-    // ✅ এই লুপটি অপরিহার্য - এটি chapterKeyMap তৈরি করে
+    
+    const chapterKeyMap=new Map();
+    const chapterOrderMap=new Map();
+    
     for(let i=0;i<parsedRows.length;i++){
       const row=parsedRows[i];
-      const mappedG=row.gRaw;const mappedC=row.cRaw;
+      const mappedG=row.gRaw;
+      const mappedC=row.cRaw;
       let group=questionBank.__subjectGroups__.find(g=>g.name===mappedG);
-      if(!group){const key=mappedG.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g,'_')+'_g_'+Date.now()+i;const existingColors=questionBank.__subjectGroups__.map(g=>g.className).filter(Boolean);const newColor=getRandomColorExcluding(existingColors);group={key,name:mappedG,className:newColor};questionBank.__subjectGroups__.push(group)}
+      if(!group){
+        const key=mappedG.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g,'_')+'_g_'+Date.now()+i;
+        const existingColors=questionBank.__subjectGroups__.map(g=>g.className).filter(Boolean);
+        const newColor=getRandomColorExcluding(existingColors);
+        group={key,name:mappedG,className:newColor};
+        questionBank.__subjectGroups__.push(group);
+      }
       let chapter=questionBank.__subjects__.find(s=>s.name===mappedC&&s.group===group.key);
-      if(!chapter){chapter=questionBank.__subjects__.find(s=>s.name===mappedC);if(!chapter){const key=mappedC.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g,'_')+'_c_'+Date.now()+i;chapter={key,name:mappedC,group:group.key,num:questionBank.__subjects__.length+1};questionBank.__subjects__.push(chapter);questionBank[key]=[]}}
+      if(!chapter){
+        chapter=questionBank.__subjects__.find(s=>s.name===mappedC);
+        if(!chapter){
+          const key=mappedC.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]/g,'_')+'_c_'+Date.now()+i;
+          chapter={key,name:mappedC,group:group.key,num:questionBank.__subjects__.length+1};
+          questionBank.__subjects__.push(chapter);
+          questionBank[key]=[];
+        }
+      }
       chapterKeyMap.set(i,chapter.key);
-      if(!chapterOrderMap.has(chapter.key)||row.chapterNum<chapterOrderMap.get(chapter.key)){chapterOrderMap.set(chapter.key,row.chapterNum)}
+      if(!chapterOrderMap.has(chapter.key)||row.chapterNum<chapterOrderMap.get(chapter.key)){
+        chapterOrderMap.set(chapter.key,row.chapterNum);
+      }
     }
+    
     const subjectsList=[...questionBank.__subjects__];
-    subjectsList.sort((a,b)=>{const groupA=questionBank.__subjectGroups__.findIndex(g=>g.key===a.group);const groupB=questionBank.__subjectGroups__.findIndex(g=>g.key===b.group);if(groupA!==groupB)return groupA-groupB;const orderA=chapterOrderMap.get(a.key)||9999;const orderB=chapterOrderMap.get(b.key)||9999;return orderA-orderB});
+    subjectsList.sort((a,b)=>{
+      const groupA=questionBank.__subjectGroups__.findIndex(g=>g.key===a.group);
+      const groupB=questionBank.__subjectGroups__.findIndex(g=>g.key===b.group);
+      if(groupA!==groupB)return groupA-groupB;
+      const orderA=chapterOrderMap.get(a.key)||9999;
+      const orderB=chapterOrderMap.get(b.key)||9999;
+      return orderA-orderB;
+    });
     questionBank.__subjects__=subjectsList;
+    
     const matchedKeys=new Set(chapterKeyMap.values());
     matchedKeys.forEach(k=>{questionBank[k]=[]});
-    // ✅ এই লুপে sheet row number যোগ করা হয়েছে
+    
+    // ✅ FIX: আসল sheet row number ব্যবহার করছি
     for(let i=0;i<parsedRows.length;i++){
-  const row=parsedRows[i];
-  const chapKey=chapterKeyMap.get(i);
-  const sheetRowNumber = row.sheetRow;  // ✅ আসল row number ব্যবহার করো
+      const row=parsedRows[i];
+      const chapKey=chapterKeyMap.get(i);
+      const sheetRowNumber = row.sheetRow;  // ✅ আসল row number!
       const q=normalizeQuestion({
         q:row.qText,
         o:row.opts,
@@ -515,10 +537,17 @@ for(const row of dataRows){
         questionBank[chapKey].push(q);
       }
     }
-    saveBank();selectedKeys=new Set();saveSelection();populateSubjectsUI();
+    
+    saveBank();
+    selectedKeys=new Set();
+    saveSelection();
+    populateSubjectsUI();
     safeSet(LAST_SYNC_KEY,Date.now().toString());
     showSyncStatus(`${questionBank.__subjects__.length} chapters sync হয়েছে!`,true);
-  }catch(err){console.warn("Sync failed:",err);showSyncStatus("Sync failed: "+err.message,false)}
+  }catch(err){
+    console.warn("Sync failed:",err);
+    showSyncStatus("Sync failed: "+err.message,false);
+  }
 }
 
 function autoLoadSheetIfNeeded(){
@@ -529,11 +558,7 @@ window.autoLoadSheetIfNeeded=autoLoadSheetIfNeeded;
 
 async function fetchAIExplanation(questionObj, rowIndex, quizType){
   if(!questionObj || !questionObj.q) return null;
-  
-  if(questionObj.note && questionObj.note.trim().length > 10 && !questionObj._aiGenerated){
-    return null;
-  }
-  
+  if(questionObj.note && questionObj.note.trim().length > 10 && !questionObj._aiGenerated) return null;
   if(questionObj._aiFetched) return null;
   questionObj._aiFetched = true;
   
@@ -587,6 +612,7 @@ async function fetchAIExplanation(questionObj, rowIndex, quizType){
     return null;
   }
 }
+
 function playFeedbackSound(pct){var sound=(pct===100)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3':(pct>=90)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3':(pct>=80)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3':(pct>=60)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3':(pct>=45)?'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3':'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3';if(!sound)return;try{var audio=new Audio(sound);audio.volume=1.0;var p=audio.play();if(p&&p.catch)p.catch(function(e){console.warn("Audio blocked:",e)})}catch(e){console.warn("Audio error:",e)}}
 function fireConfetti(){const count=500;const defaults={spread:360,ticks:80,gravity:0.6,decay:0.9,startVelocity:30};for(let i=0;i<5;i++)confetti({...defaults,particleCount:count/5,origin:{x:Math.random(),y:Math.random()*0.5}})}
 function showResultsOverlay(){
@@ -617,7 +643,23 @@ function renderQuiz(){
   const q=currentQuestions[currentIndex];
   const sheetRowIndex = q._sheetRowIndex || null;
   const quizType = CURRENT_CLASS;
-  if(!q.note&&!q._aiFetched&&quizMode!=='mock'){setTimeout(async()=>{const explanation=await fetchAIExplanation(q, sheetRowIndex, quizType);if(explanation){q.note=explanation;q._aiGenerated=true;if(q._subject&&q._index!==undefined&&questionBank[q._subject]){questionBank[q._subject][q._index].note=explanation;questionBank[q._subject][q._index]._aiGenerated=true;saveBank()}if(currentQuestions[currentIndex]===q){renderQuiz()}}},200)}
+  
+  if(!q.note&&!q._aiFetched&&quizMode!=='mock'){
+    setTimeout(async()=>{
+      const explanation=await fetchAIExplanation(q, sheetRowIndex, quizType);
+      if(explanation){
+        q.note=explanation;
+        q._aiGenerated=true;
+        if(q._subject&&q._index!==undefined&&questionBank[q._subject]){
+          questionBank[q._subject][q._index].note=explanation;
+          questionBank[q._subject][q._index]._aiGenerated=true;
+          saveBank();
+        }
+        if(currentQuestions[currentIndex]===q){renderQuiz()}
+      }
+    },50);
+  }
+  
   const answered=userAnswers[currentIndex]!==null;
   const showResult=quizSubmitted||(quizMode==="practice"&&answered);
   const noteVisible=quizSubmitted||(quizMode==="practice"&&answered)||(quizMode!=="mock"&&$("showNoteBeforeAnswer").checked);
@@ -644,7 +686,6 @@ function updateModeButtons(){document.querySelectorAll('.mode-btn').forEach(b=>{
 function setQuizMode(mode){quizMode=mode;updateModeButtons();stopTimer();timeRemaining=null;timerActive=false;quizSubmitted=false;optionsVisible=true;updateTimerDisplay();if(currentQuestions.length>0&&mode==="mock"){const tl=parseInt($("timeLimit").value)||30;timeRemaining=tl*60;startTimer(timeRemaining)}saveQuizState()}
 function applyTheme(theme){document.documentElement.setAttribute('data-theme',theme);const btn=$('themeToggleBtn');if(btn)btn.textContent=theme==='dark'?'☀️':'🌙'}
 function toggleTheme(){const current=document.documentElement.getAttribute('data-theme')||'light';const next=current==='dark'?'light':'dark';applyTheme(next);localStorage.setItem(THEME_KEY,next)}
-
 function wireEvents(){
   $("chapterToggleBtn").onclick=()=>$("chapterPanel").classList.toggle("open");
   $("selectAllBtn").onclick=()=>{selectedKeys=new Set(getSubjects().map(s=>s.key));populateSubjectsUI();saveSelection()};
@@ -661,9 +702,7 @@ function wireEvents(){
   $("closeResultsBtn").onclick=hideResultsOverlay;
   document.addEventListener("keydown",e=>{const t=document.activeElement?.tagName?.toLowerCase();if(["input","textarea","select"].includes(t))return;if(["1","2","3","4"].includes(e.key)){const o=document.querySelector(`.option[data-opt="${Number(e.key)-1}"]`);if(o)o.click()}if(e.key==="ArrowRight")moveQuestion(1);if(e.key==="ArrowLeft")moveQuestion(-1)});
 }
-
 function initCredits(){$("creditName").textContent="✨ By Arif Hussain"}
-
 function init(){
   const savedTheme=localStorage.getItem(THEME_KEY)||'light';
   applyTheme(savedTheme);
@@ -675,7 +714,6 @@ function init(){
   if(!loadQuizState()){renderQuiz();renderNav();updateScore()}
   updateTimerDisplay();
 }
-
 let questionBank=normalizeBank(loadJson(BANK_KEY,null)||buildDefaultBank());
 let selectedKeys=new Set();
 let currentQuestions=[],userAnswers=[],answerStatus=[],currentIndex=0,totalQuestions=0;
@@ -684,8 +722,6 @@ let quizSubmitted=false;
 let optionsVisible=true;
 let quizGeneratedBy=null;
 let quizTimeLimit=null;
-
-// ===== 3D GATE PASSWORD CHECK =====
 (function(){
   const overlay=document.getElementById('warningOverlay');
   const pwdInput=document.getElementById('passwordInput');
@@ -693,7 +729,6 @@ let quizTimeLimit=null;
   const errorMsg=document.getElementById('errorMsg');
   const card=document.getElementById('authCard');
   const app=document.getElementById('app');
-  
   if(card){
     document.addEventListener('mousemove',e=>{
       const xAxis=(window.innerWidth/2-e.clientX)/25;
@@ -702,7 +737,6 @@ let quizTimeLimit=null;
     });
     document.addEventListener('mouseleave',()=>{card.style.transform='rotateY(0deg) rotateX(0deg)'});
   }
-  
   function unlock(){
     errorMsg.textContent='';
     pwdInput.style.borderColor='#00cc44';
@@ -717,7 +751,6 @@ let quizTimeLimit=null;
       if(typeof autoLoadSheetIfNeeded==='function')autoLoadSheetIfNeeded();
     },400);
   }
-  
   function attempt(pswd){
     if(pswd===CORRECT_PASSWORD){unlock()}else{
       errorMsg.textContent='⛔ INCORRECT AUTHORIZATION CODE';
@@ -727,12 +760,10 @@ let quizTimeLimit=null;
       setTimeout(()=>{pwdInput.classList.remove('shake');pwdInput.focus()},500);
     }
   }
-  
   submitBtn.addEventListener('click',()=>{const val=pwdInput.value.trim();if(!val){errorMsg.textContent='Please enter the code.';return}attempt(val)});
   pwdInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitBtn.click()}});
   pwdInput.focus();
 })();
-
 init();
 </script>
 </body>
