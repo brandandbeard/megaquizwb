@@ -216,7 +216,27 @@ input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0
 @media(max-width:960px){.quiz-panel{grid-template-columns:1fr}.sidebar{position:static}.options{grid-template-columns:1fr}}
 @media(max-width:640px){body{padding:6px}.container{border-radius:14px;padding:10px}.main-header{margin:-10px -10px 14px;border-radius:14px 14px 0 0;padding:10px 14px}.footer-contact{border-radius:20px;gap:6px 4px;font-size:11px;padding:10px 6px;display:flex!important;flex-wrap:wrap!important;justify-content:center!important;align-items:center!important}.footer-social-row{display:flex!important;width:100%;justify-content:space-between;align-items:center;gap:2px;padding:0 2px}.footer-link{padding:4px 5px;justify-content:center;font-size:11px;flex:1 1 auto;min-width:0;white-space:nowrap}.footer-link svg{width:14px;height:14px;flex-shrink:0}.footer-divider{display:none!important}.footer-divider-upi{display:none!important}.footer-contact>.footer-link.upi-link{width:100%;justify-content:center;margin-top:6px;font-size:11px;flex:1 1 100%;text-align:center}.controls{padding:8px 8px}.controls-outer{flex-direction:column;gap:8px}.controls-left{width:100%;justify-content:center;flex-wrap:nowrap;gap:6px}.controls-right{width:100%;justify-content:center;flex-wrap:nowrap;gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}.controls-right button{font-size:10px;padding:5px 9px;flex-shrink:0}.controls-right input{font-size:10px;padding:5px 6px;width:42px!important;flex-shrink:0}.controls-right label{font-size:9px;white-space:nowrap;flex-shrink:0}.mode-btn{font-size:10px;padding:4px 9px;white-space:nowrap}#chapterToggleBtn{font-size:10px;padding:5px 10px;white-space:nowrap}.mode-selector{gap:3px;padding:2px;flex-shrink:0}.question-text{font-size:16px}.option{font-size:14px;padding:9px 12px}.card{padding:2rem 1.5rem}.warning-line{font-size:1.2rem;letter-spacing:.15em}.warning-subtitle{font-size:.75rem}}
 @media(max-width:380px){.footer-contact{font-size:10px;padding:8px 4px;gap:4px 2px}.footer-social-row{gap:1px;padding:0 1px}.footer-link{font-size:9.5px;padding:3px 3px}.footer-link svg{width:12px;height:12px}.footer-contact>.footer-link.upi-link{font-size:10px;margin-top:5px}.controls-right button{font-size:9px;padding:4px 7px}.controls-right input{font-size:9px;padding:4px 5px;width:36px!important}.controls-right label{font-size:8px}.mode-btn{font-size:9px;padding:3px 7px}#chapterToggleBtn{font-size:9px;padding:4px 8px}.controls-left{gap:3px}.controls-right{gap:3px}.question-text{font-size:15px}.option{font-size:13px}}
+/* KaTeX Math & Chemistry Styling */
+.katex-display {
+    margin: 16px 0;
+    text-align: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px 0;
+}
+.katex { 
+    font-size: 1.1em; 
+    line-height: 1.6;
+}
+.katex-display > .katex {
+    font-size: 1.3em;
+}
 </style>
+<!-- KaTeX for Math & Chemistry -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/mhchem.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 <div class="warning-overlay" id="warningOverlay">
@@ -688,6 +708,7 @@ function renderQuiz(){
   document.querySelectorAll(".option").forEach(el=>{el.onclick=()=>{if(quizSubmitted)return;if(optionsHidden)return;const sel=Number(el.dataset.opt);userAnswers[currentIndex]=sel;answerStatus[currentIndex]=(sel===q.a);if(answerStatus[currentIndex]&&quizMode!=="mock")fireConfetti();renderQuiz();renderNav();updateScore();saveQuizState()}});
   const prevBtn=document.getElementById('prevQ'),nextBtn=document.getElementById('nextQ');if(prevBtn)prevBtn.onclick=()=>moveQuestion(-1);if(nextBtn)nextBtn.onclick=()=>moveQuestion(1);
   updateTimerDisplay();
+  renderLatex(); // ✅ KaTeX রেন্ডার করার জন্য
 }
 function moveQuestion(d){const n=currentIndex+d;if(n<0||n>=totalQuestions)return;currentIndex=n;renderQuiz();renderNav();saveQuizState()}
 function renderNav(){let g="";const isMockActive=(quizMode==="mock"&&!quizSubmitted);for(let i=0;i<totalQuestions;i++){let cls="q-num";if(isMockActive){if(userAnswers[i]!==null&&userAnswers[i]!==-1)cls+=" attempted-mock"}else{if(userAnswers[i]!==null&&userAnswers[i]!==-1)cls+=answerStatus[i]?" answered-correct":" answered-wrong";else if(quizMode==="mock"&&quizSubmitted&&(userAnswers[i]===null||userAnswers[i]===-1))cls+=" skipped"}if(i===currentIndex)cls+=" current";g+=`<div class="${cls}" data-idx="${i}">${i+1}</div>`}$("navGrid").innerHTML=g;document.querySelectorAll(".q-num").forEach(el=>{el.onclick=()=>{currentIndex=Number(el.dataset.idx);renderQuiz();renderNav();saveQuizState()}})}
@@ -719,6 +740,23 @@ function wireEvents(){
   $("themeToggleBtn").onclick=toggleTheme;
   $("closeResultsBtn").onclick=hideResultsOverlay;
   document.addEventListener("keydown",e=>{const t=document.activeElement?.tagName?.toLowerCase();if(["input","textarea","select"].includes(t))return;if(["1","2","3","4"].includes(e.key)&&!optionsHidden){const o=document.querySelector(`.option[data-opt="${Number(e.key)-1}"]`);if(o)o.click()}if(e.key==="ArrowRight")moveQuestion(1);if(e.key==="ArrowLeft")moveQuestion(-1)});
+}
+// ✅ KaTeX রেন্ডার করার ফাংশন
+function renderLatex() {
+    if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.getElementById('questionsArea'), {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false},
+                {left: '\\[', right: '\\]', display: true}
+            ],
+            throwOnError: false
+        });
+    } else {
+        // লাইব্রেরি লোড হতে সময় নিলে অপেক্ষা করবে
+        setTimeout(renderLatex, 300);
+    }
 }
 function initCredits(){$("creditName").textContent="✨ By Arif Hussain"}
 function init(){
