@@ -68,6 +68,11 @@ input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0
 [data-theme="dark"] .subject-header.english{background:rgba(59,130,246,0.2);color:#60a5fa}
 [data-theme="dark"] .subject-header.science_comp{background:rgba(34,197,94,0.2);color:#22c55e}
 [data-theme="dark"] .subject-header.current{background:rgba(249,115,22,0.2);color:#f97316}
+.subject-checkbox{width:18px;height:18px;border-radius:4px;border:1.5px solid rgba(0,0,0,0.5);background:transparent;cursor:pointer;margin-right:10px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;opacity:1.0}
+.subject-checkbox.checked{background:var(--primary);border-color:var(--primary)}
+.subject-checkbox.checked::after{content:'✓';color:white;font-size:12px;font-weight:700}
+[data-theme="dark"] .subject-checkbox{border-color:rgba(148,163,184,0.5)}
+[data-theme="dark"] .subject-checkbox.checked{background:var(--primary);border-color:var(--primary)}
 .subject-arrow{transition:transform .35s ease;font-size:12px}
 .subject-accordion.open .subject-arrow{transform:rotate(180deg)}
 .subject-chapters{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1);border-top:1px solid #e2e8f0}
@@ -107,6 +112,12 @@ input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0
 .timer-display.warn{color:#c2410c;background:#fff7ed;animation:blink .7s ease-in-out infinite}
 .timer-display.danger{color:#dc2626;background:#fef2f2;animation:blink .4s ease-in-out infinite}
 @keyframes blink{50%{opacity:.5}}
+.hide-options-btn{position:absolute;top:18px;right:14px;width:32px;height:32px;border-radius:50%;background:transparent;border:1px solid rgba(100,116,139,0.2);color:var(--muted);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.45;transition:all 0.25s ease;padding:0;z-index:5;box-shadow:none}
+.hide-options-btn:hover{opacity:0.85;background:rgba(100,116,139,0.08);border-color:rgba(100,116,139,0.3);transform:scale(1.05)}
+[data-theme="dark"] .hide-options-btn{border-color:rgba(148,163,184,0.25);color:var(--muted)}
+[data-theme="dark"] .hide-options-btn:hover{background:rgba(148,163,184,0.1);border-color:rgba(148,163,184,0.4);opacity:0.9}
+.hide-options-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.options.hidden-options{display:none!important}
 .question-text{font-weight:700;font-size:clamp(17px,4vw,21px);line-height:1.6;margin-bottom:16px;word-wrap:break-word;overflow-wrap:break-word}
 .options{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;margin:12px 0}
 .option{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:10px;min-height:48px;padding:10px 14px;border:2px solid #dce3ed;border-radius:12px;background:#f8fafc;cursor:pointer;font-size:15px;transition:all .18s ease;font-weight:500;word-wrap:break-word;overflow-wrap:break-word}
@@ -372,14 +383,14 @@ function normalizeQuestion(q){
 function loadJson(key,fb){try{const r=safeGet(key);return r===null?cloneValue(fb):JSON.parse(r)}catch{return cloneValue(fb)}}
 function saveBank(){safeSet(BANK_KEY,JSON.stringify(questionBank));populateSubjectsUI()}
 function saveSelection(){safeSet(SELECTED_KEY,JSON.stringify([...selectedKeys]))}
-function saveQuizState(){safeSet(SESSION_KEY,JSON.stringify({questions:currentQuestions,answers:userAnswers,status:answerStatus,index:currentIndex,total:totalQuestions,quizSize:$("quizSize").value,timeLimit:$("timeLimit").value,quizMode:quizMode,timeRemaining:timeRemaining,timerActive:timerActive,quizSubmitted:quizSubmitted,optionsVisible:optionsVisible,generatedBy:quizGeneratedBy,quizTimeLimit:quizTimeLimit}))}
+function saveQuizState(){safeSet(SESSION_KEY,JSON.stringify({questions:currentQuestions,answers:userAnswers,status:answerStatus,index:currentIndex,total:totalQuestions,quizSize:$("quizSize").value,timeLimit:$("timeLimit").value,quizMode:quizMode,timeRemaining:timeRemaining,timerActive:timerActive,quizSubmitted:quizSubmitted,optionsVisible:optionsVisible,optionsHidden:optionsHidden,generatedBy:quizGeneratedBy,quizTimeLimit:quizTimeLimit}))}
 function loadQuizState(){
   const st=loadJson(SESSION_KEY,null);if(!st||!st.questions?.length)return false;
   currentQuestions=st.questions;userAnswers=st.answers||[];answerStatus=st.status||[];
   currentIndex=Math.min(st.index||0,currentQuestions.length-1);totalQuestions=st.total||currentQuestions.length;
   $("quizSize").value=st.quizSize||25;$("timeLimit").value=st.timeLimit||30;quizMode=st.quizMode||"practice";
   timeRemaining=st.timeRemaining??null;timerActive=st.timerActive||false;quizSubmitted=st.quizSubmitted||false;
-  optionsVisible=st.optionsVisible!==undefined?st.optionsVisible:true;quizGeneratedBy=st.generatedBy||null;quizTimeLimit=st.quizTimeLimit??null;
+  optionsVisible=st.optionsVisible!==undefined?st.optionsVisible:true;optionsHidden=st.optionsHidden||false;quizGeneratedBy=st.generatedBy||null;quizTimeLimit=st.quizTimeLimit??null;
   updateModeButtons();if(quizMode==="mock"&&timerActive&&timeRemaining!==null&&timeRemaining>0){startTimer(timeRemaining)}
   renderQuiz();renderNav();updateScore();return true;
 }
@@ -393,11 +404,15 @@ function populateSubjectsUI(){
   $("subjectAccordions").innerHTML=groups.map((g,gi)=>{
     const isOpen=gi===0||openAccordions.has(g.key);
     const chs=getSubjects().filter(s=>s.group===g.key);
-    return `<div class="subject-accordion ${isOpen?"open":""}"><div class="subject-header ${g.className||''}" data-group="${g.key}"><span>${g.name}</span><span class="subject-arrow">▼</span></div><div class="subject-chapters ${isOpen?"open":""}"><div class="subject-chapters-inner">${chs.map(s=>`<label class="chapter-item"><input type="checkbox" class="chapter-cb" value="${escapeAttr(s.key)}" ${selectedKeys.has(s.key)?"checked":""}><span>${escapeHtml(s.name)}</span><span class="q-count">[${getCount(s.key)}]</span></label>`).join("")||"<span style='font-size:13px;color:#64748b'>এই গ্রুপে কোনো chapter নেই।</span>"}</div></div></div>`;
+    const allChaptersSelected=chs.length>0&&chs.every(s=>selectedKeys.has(s.key));
+    const checkboxClass=allChaptersSelected?'subject-checkbox checked':'subject-checkbox';
+    return `<div class="subject-accordion ${isOpen?"open":""}"><div class="subject-header ${g.className||''}" data-group="${g.key}"><div style="display:flex;align-items:center;gap:8px;flex:1;"><div class="${checkboxClass}" data-subject-group="${g.key}" onclick="event.stopPropagation();toggleSubjectSelection('${g.key}')"></div><span style="flex:1;">${g.name}</span></div><span class="subject-arrow">▼</span></div><div class="subject-chapters ${isOpen?"open":""}"><div class="subject-chapters-inner">${chs.map(s=>`<label class="chapter-item"><input type="checkbox" class="chapter-cb" value="${escapeAttr(s.key)}" ${selectedKeys.has(s.key)?"checked":""}><span>${escapeHtml(s.name)}</span><span class="q-count">[${getCount(s.key)}]</span></label>`).join("")||"<span style='font-size:13px;color:#64748b'>এই গ্রুপে কোনো chapter নেই।</span>"}</div></div></div>`;
   }).join("");
-  document.querySelectorAll(".subject-header").forEach(h=>{h.onclick=()=>{const a=h.closest(".subject-accordion"),b=a.querySelector(".subject-chapters");const gk=h.dataset.group;a.classList.toggle("open");b.classList.toggle("open");if(a.classList.contains("open"))openAccordions.add(gk);else openAccordions.delete(gk);saveAccordionState()}});
-  document.querySelectorAll(".chapter-cb").forEach(cb=>{cb.onchange=()=>{cb.checked?selectedKeys.add(cb.value):selectedKeys.delete(cb.value);saveSelection()}});
+  document.querySelectorAll(".subject-header").forEach(h=>{h.onclick=(e)=>{if(e.target.classList.contains('subject-checkbox')||e.target.closest('.subject-checkbox'))return;const a=h.closest(".subject-accordion"),b=a.querySelector(".subject-chapters");const gk=h.dataset.group;a.classList.toggle("open");b.classList.toggle("open");if(a.classList.contains("open"))openAccordions.add(gk);else openAccordions.delete(gk);saveAccordionState()}});
+  document.querySelectorAll(".chapter-cb").forEach(cb=>{cb.onchange=()=>{cb.checked?selectedKeys.add(cb.value):selectedKeys.delete(cb.value);saveSelection();populateSubjectsUI()}});
 }
+function toggleSubjectSelection(groupKey){const chaptersInSubject=getSubjects().filter(s=>s.group===groupKey);const allSelected=chaptersInSubject.every(s=>selectedKeys.has(s.key));if(allSelected){chaptersInSubject.forEach(s=>selectedKeys.delete(s.key))}else{chaptersInSubject.forEach(s=>selectedKeys.add(s.key))}saveSelection();populateSubjectsUI()}
+window.toggleSubjectSelection=toggleSubjectSelection;
 function getSelectedKeys(){const ks=[];document.querySelectorAll(".chapter-cb:checked").forEach(cb=>ks.push(cb.value));return ks}
 function shuffle(arr){const c=[...arr];for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}return c}
 function shuffleOptions(q){const o=shuffle([0,1,2,3]);const shuffled={...q,o:o.map(i=>q.o[i]),a:o.indexOf(q.a)};if(q._sheetRowIndex!==undefined)shuffled._sheetRowIndex=q._sheetRowIndex;if(q._aiGenerated)shuffled._aiGenerated=true;return shuffled}
@@ -636,6 +651,8 @@ function showResultsOverlay(){
   document.getElementById('resultsOverlay').classList.remove('hidden');
 }
 function hideResultsOverlay(){document.getElementById('resultsOverlay').classList.add('hidden')}
+function toggleOptionsVisibility(){optionsHidden=!optionsHidden;const oc=document.getElementById('optionsContainer');const hb=document.getElementById('hideOptionsBtn');if(oc){if(optionsHidden){oc.classList.add('hidden-options');if(hb){hb.innerHTML='<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';hb.title='Options দেখাও'}}else{oc.classList.remove('hidden-options');if(hb){hb.innerHTML='<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';hb.title='Options লুকান'}}}saveQuizState()}
+window.toggleOptionsVisibility=toggleOptionsVisibility;
 
 function renderQuiz(){
   if(!currentQuestions.length){$("questionsArea").innerHTML="<div class='question-card' style='text-align:center;padding:50px'>⬆️ Select subjects and click Generate</div>";return}
@@ -643,7 +660,6 @@ function renderQuiz(){
   const q=currentQuestions[currentIndex];
   const sheetRowIndex = q._sheetRowIndex || null;
   const quizType = CURRENT_CLASS;
-  
   if(!q.note&&!q._aiFetched&&quizMode!=='mock'){
     setTimeout(async()=>{
       const explanation=await fetchAIExplanation(q, sheetRowIndex, quizType);
@@ -659,15 +675,17 @@ function renderQuiz(){
       }
     },50);
   }
-  
   const answered=userAnswers[currentIndex]!==null;
   const showResult=quizSubmitted||(quizMode==="practice"&&answered);
   const noteVisible=quizSubmitted||(quizMode==="practice"&&answered)||(quizMode!=="mock"&&$("showNoteBeforeAnswer").checked);
   const diffClass='pill difficulty-'+(q.difficulty||'medium');
   const diffLabel={easy:'🟢 Easy',medium:'🟠 Medium',hard:'🔴 Hard'}[q.difficulty||'medium']||'Medium';
   const optHtml=q.o.map((opt,i)=>{let cls="option";if(showResult&&i===q.a)cls+=" correct-answer";if(showResult&&userAnswers[currentIndex]===i&&userAnswers[currentIndex]!==-1&&!answerStatus[currentIndex])cls+=" wrong-feedback";if(quizMode==="mock"&&!quizSubmitted&&userAnswers[currentIndex]===i&&answered)cls+=" selected-mock";return`<div class="${cls}" data-opt="${i}"><span class="key">${i+1}</span><span>${String.fromCharCode(65+i)}. ${escapeHtml(opt)}</span></div>`}).join("");
-  $("questionsArea").innerHTML=`<div class="question-card" id="questionCardEl"><div class="question-meta"><span class="pill">${currentIndex+1}/${totalQuestions}</span><span class="pill">${escapeHtml(q._groupName||"")}</span><span class="pill">${escapeHtml(q._chapterName||"")}</span><span class="${diffClass}">${diffLabel}</span>${quizMode==="mock"&&timerActive?`<span class="timer-display" id="timerPill">⏱️ <span id="timerPillText">--:--</span></span>`:""}</div><div class="question-text">${currentIndex+1}. ${escapeHtml(q.q)}</div><div class="options" id="optionsContainer">${optHtml}</div><div class="info ${noteVisible?"show":""} ${q._aiGenerated?'ai-generated':''}" id="noteBox">📖 ${escapeHtml(q.note||"No explanation")}</div><div class="nav-buttons-large"><button id="prevQ" ${currentIndex===0?"disabled":""}>◀ Previous</button><button id="nextQ" ${currentIndex===totalQuestions-1?"disabled":""}>Next ▶</button></div></div>`;
-  document.querySelectorAll(".option").forEach(el=>{el.onclick=()=>{if(quizSubmitted)return;const sel=Number(el.dataset.opt);userAnswers[currentIndex]=sel;answerStatus[currentIndex]=(sel===q.a);if(answerStatus[currentIndex]&&quizMode!=="mock")fireConfetti();renderQuiz();renderNav();updateScore();saveQuizState()}});
+  const hideBtnIcon=optionsHidden?'<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>':'<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+  const hideBtnTitle=optionsHidden?'Options দেখাও':'Options লুকান';
+  const optionsHiddenClass=optionsHidden?'hidden-options':'';
+  $("questionsArea").innerHTML=`<div class="question-card" id="questionCardEl" style="position:relative"><button class="hide-options-btn" id="hideOptionsBtn" title="${hideBtnTitle}" onclick="toggleOptionsVisibility()">${hideBtnIcon}</button><div class="question-meta"><span class="pill">${currentIndex+1}/${totalQuestions}</span><span class="pill">${escapeHtml(q._groupName||"")}</span><span class="pill">${escapeHtml(q._chapterName||"")}</span><span class="${diffClass}">${diffLabel}</span>${quizMode==="mock"&&timerActive?`<span class="timer-display" id="timerPill">⏱️ <span id="timerPillText">--:--</span></span>`:""}</div><div class="question-text" style="padding-right:30px">${currentIndex+1}. ${escapeHtml(q.q)}</div><div class="options ${optionsHiddenClass}" id="optionsContainer">${optHtml}</div><div class="info ${noteVisible?"show":""} ${q._aiGenerated?'ai-generated':''}" id="noteBox">📖 ${escapeHtml(q.note||"No explanation")}</div><div class="nav-buttons-large"><button id="prevQ" ${currentIndex===0?"disabled":""}>◀ Previous</button><button id="nextQ" ${currentIndex===totalQuestions-1?"disabled":""}>Next ▶</button></div></div>`;
+  document.querySelectorAll(".option").forEach(el=>{el.onclick=()=>{if(quizSubmitted)return;if(optionsHidden)return;const sel=Number(el.dataset.opt);userAnswers[currentIndex]=sel;answerStatus[currentIndex]=(sel===q.a);if(answerStatus[currentIndex]&&quizMode!=="mock")fireConfetti();renderQuiz();renderNav();updateScore();saveQuizState()}});
   const prevBtn=document.getElementById('prevQ'),nextBtn=document.getElementById('nextQ');if(prevBtn)prevBtn.onclick=()=>moveQuestion(-1);if(nextBtn)nextBtn.onclick=()=>moveQuestion(1);
   updateTimerDisplay();
 }
@@ -700,7 +718,7 @@ function wireEvents(){
   document.querySelectorAll('.mode-btn').forEach(btn=>{btn.addEventListener('click',()=>setQuizMode(btn.dataset.mode))});
   $("themeToggleBtn").onclick=toggleTheme;
   $("closeResultsBtn").onclick=hideResultsOverlay;
-  document.addEventListener("keydown",e=>{const t=document.activeElement?.tagName?.toLowerCase();if(["input","textarea","select"].includes(t))return;if(["1","2","3","4"].includes(e.key)){const o=document.querySelector(`.option[data-opt="${Number(e.key)-1}"]`);if(o)o.click()}if(e.key==="ArrowRight")moveQuestion(1);if(e.key==="ArrowLeft")moveQuestion(-1)});
+  document.addEventListener("keydown",e=>{const t=document.activeElement?.tagName?.toLowerCase();if(["input","textarea","select"].includes(t))return;if(["1","2","3","4"].includes(e.key)&&!optionsHidden){const o=document.querySelector(`.option[data-opt="${Number(e.key)-1}"]`);if(o)o.click()}if(e.key==="ArrowRight")moveQuestion(1);if(e.key==="ArrowLeft")moveQuestion(-1)});
 }
 function initCredits(){$("creditName").textContent="✨ By Arif Hussain"}
 function init(){
@@ -720,6 +738,7 @@ let currentQuestions=[],userAnswers=[],answerStatus=[],currentIndex=0,totalQuest
 let quizMode="practice";
 let quizSubmitted=false;
 let optionsVisible=true;
+let optionsHidden=false;
 let quizGeneratedBy=null;
 let quizTimeLimit=null;
 (function(){
