@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     });
   }
 
-  const GROQ_KEY = process.env.GROQ_API_KEY_2;
+  const GROQ_KEY = process.env.GROQ_API_KEY_3;
   if (!GROQ_KEY) {
     return res.status(500).json({ error: 'GROQ_API_KEY_2 not set in Vercel env' });
   }
