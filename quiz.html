@@ -93,6 +93,50 @@ font-weight: 700; cursor: pointer; user-select: none; transition: background 0.2
 [data-theme="dark"] .subject-header.english { background: rgba(59,130,246,0.2); color: #60a5fa; }
 [data-theme="dark"] .subject-header.science_comp { background: rgba(34,197,94,0.2); color: #22c55e; }
 [data-theme="dark"] .subject-header.current { background: rgba(249,115,22,0.2); color: #f97316; }
+/* Subject-level checkbox - subtle & transparent */
+.subject-checkbox {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1.5px solid rgba(100, 116, 139, 0.3);
+    background: transparent;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    opacity: 0.5;
+}
+.subject-checkbox:hover {
+    opacity: 0.9;
+    border-color: rgba(100, 116, 139, 0.5);
+    background: rgba(100, 116, 139, 0.08);
+}
+.subject-checkbox.checked {
+    background: var(--primary);
+    border-color: var(--primary);
+    opacity: 0.85;
+}
+.subject-checkbox.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+}
+[data-theme="dark"] .subject-checkbox {
+    border-color: rgba(148, 163, 184, 0.3);
+}
+[data-theme="dark"] .subject-checkbox:hover {
+    border-color: rgba(148, 163, 184, 0.5);
+    background: rgba(148, 163, 184, 0.1);
+}
+[data-theme="dark"] .subject-checkbox.checked {
+    background: var(--primary);
+    border-color: var(--primary);
+}
 .subject-arrow { transition: transform 0.35s ease; font-size: 12px; }
 .subject-accordion.open .subject-arrow { transform: rotate(180deg); }
 .subject-chapters { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); border-top: 1px solid #e2e8f0; }
@@ -603,23 +647,72 @@ function getQuestionRef(sk,idx){ const s=getSubjects().find(x=>x.key===sk),q=que
 function getRandomColorExcluding(ex){ const all=['gk','aptitude','reasoning','english','science_comp','current']; const av=all.filter(c=>!ex.includes(c)); if(av.length===0) return all[Math.floor(Math.random()*all.length)]; return av[Math.floor(Math.random()*av.length)]; }
 
 function populateSubjectsUI(){
-const groups=getSubjectGroups();
-$("subjectAccordions").innerHTML=groups.map((g, gi)=>{
-const isOpen = gi === 0 || openAccordions.has(g.key);
-const chs=getSubjects().filter(s=>s.group===g.key);
-return `<div class="subject-accordion ${isOpen?"open":""}"><div class="subject-header ${g.className||''}" data-group="${g.key}"><span>${g.name}</span><span class="subject-arrow">▼</span></div><div class="subject-chapters ${isOpen?"open":""}"><div class="subject-chapters-inner">${chs.map(s=>`<label class="chapter-item"><input type="checkbox" class="chapter-cb" value="${escapeAttr(s.key)}" ${selectedKeys.has(s.key)?"checked":""}><span>${escapeHtml(s.name)}</span><span class="q-count">[${getCount(s.key)}]</span></label>`).join("")||"<span style='font-size:13px;color:#64748b;'>এই গ্রুপে কোনো chapter নেই।</span>"}</div></div></div>`;
-}).join("");
-document.querySelectorAll(".subject-header").forEach(h=>{
-h.onclick=()=>{
-const a=h.closest(".subject-accordion"),b=a.querySelector(".subject-chapters");
-const gk=h.dataset.group;
-a.classList.toggle("open"); b.classList.toggle("open");
-if(a.classList.contains("open")) openAccordions.add(gk); else openAccordions.delete(gk);
-saveAccordionState();
-};
-});
-document.querySelectorAll(".chapter-cb").forEach(cb=>{ cb.onchange=()=>{ cb.checked?selectedKeys.add(cb.value):selectedKeys.delete(cb.value); saveSelection(); }; });
+  const groups=getSubjectGroups();
+  $("subjectAccordions").innerHTML=groups.map((g, gi)=>{
+    const isOpen = gi === 0 || openAccordions.has(g.key);
+    const chs=getSubjects().filter(s=>s.group===g.key);
+    
+    // ✅ Check if all chapters in this subject are selected
+    const allChaptersSelected = chs.length > 0 && chs.every(s => selectedKeys.has(s.key));
+    const checkboxClass = allChaptersSelected ? 'subject-checkbox checked' : 'subject-checkbox';
+    
+    return `<div class="subject-accordion ${isOpen?"open":""}">
+      <div class="subject-header ${g.className||''}" data-group="${g.key}">
+        <div style="display:flex;align-items:center;gap:8px;flex:1;">
+          <div class="${checkboxClass}" data-subject-group="${g.key}" onclick="event.stopPropagation();toggleSubjectSelection('${g.key}')"></div>
+          <span style="flex:1;">${g.name}</span>
+        </div>
+        <span class="subject-arrow">▼</span>
+      </div>
+      <div class="subject-chapters ${isOpen?"open":""}">
+        <div class="subject-chapters-inner">
+          ${chs.map(s=>`<label class="chapter-item"><input type="checkbox" class="chapter-cb" value="${escapeAttr(s.key)}" ${selectedKeys.has(s.key)?"checked":""}><span>${escapeHtml(s.name)}</span><span class="q-count">[${getCount(s.key)}]</span></label>`).join("")||"<span style='font-size:13px;color:#64748b;'>এই গ্রুপে কোনো chapter নেই।</span>"}
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+  
+  document.querySelectorAll(".subject-header").forEach(h=>{
+    h.onclick=(e)=>{
+      // Don't toggle accordion if clicked on checkbox
+      if(e.target.classList.contains('subject-checkbox') || e.target.closest('.subject-checkbox')) return;
+      
+      const a=h.closest(".subject-accordion"),b=a.querySelector(".subject-chapters");
+      const gk=h.dataset.group;
+      a.classList.toggle("open"); b.classList.toggle("open");
+      if(a.classList.contains("open")) openAccordions.add(gk); else openAccordions.delete(gk);
+      saveAccordionState();
+    };
+  });
+  
+  document.querySelectorAll(".chapter-cb").forEach(cb=>{ 
+    cb.onchange=()=>{ 
+      cb.checked?selectedKeys.add(cb.value):selectedKeys.delete(cb.value); 
+      saveSelection();
+      populateSubjectsUI(); // ✅ Re-render to update subject checkbox state
+    }; 
+  });
 }
+
+// ✅ New function: Toggle all chapters in a subject
+function toggleSubjectSelection(groupKey){
+  const chaptersInSubject = getSubjects().filter(s => s.group === groupKey);
+  const allSelected = chaptersInSubject.every(s => selectedKeys.has(s.key));
+  
+  if(allSelected){
+    // Unselect all
+    chaptersInSubject.forEach(s => selectedKeys.delete(s.key));
+  } else {
+    // Select all
+    chaptersInSubject.forEach(s => selectedKeys.add(s.key));
+  }
+  
+  saveSelection();
+  populateSubjectsUI();
+}
+
+// Make toggleSubjectSelection available globally
+window.toggleSubjectSelection = toggleSubjectSelection;
 
 function getSelectedKeys(){ const ks=[]; document.querySelectorAll(".chapter-cb:checked").forEach(cb=>ks.push(cb.value)); return ks; }
 function shuffle(arr){ const c=[...arr]; for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];} return c; }
