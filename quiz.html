@@ -937,7 +937,6 @@ async function fetchAIExplanation(questionObj) {
 }
 
 // ✅ AI Question Checker - underline, grammar, answer key fix
-// ✅ Parallel AI calls - fix + explanation একসাথে
 async function checkAndFixQuestion(questionObj) {
   if (!questionObj || !questionObj.q) return null;
   if (questionObj._checked) return null;
@@ -946,111 +945,48 @@ async function checkAndFixQuestion(questionObj) {
   const sheetRowIndex = questionObj._sheetRowIndex || null;
   const quizType = CURRENT_CLASS;
 
-  const requestBody = {
-    question: questionObj.q,
-    options: questionObj.o,
-    correctAnswer: questionObj.a,
-    subject: questionObj._groupName || '',
-    chapter: questionObj._chapterName || '',
-    rowIndex: sheetRowIndex,
-    quizType: quizType,
-    alreadyChecked: questionObj._aiChecked || false
-  };
-
   try {
-    // 🚀 Parallel calls - দুটো একসাথে চলবে
-    const [fixResponse, explanationResponse] = await Promise.all([
-      // Call 1: Question fix (underline, LaTeX, HTML)
-      fetch('/api/questionfix', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-      }).catch(() => null),
-      
-      // Call 2: Explanation (only if no explanation yet)
-      (!questionObj.note || questionObj.note.trim().length < 10)
-        ? fetch('/api/quiz-ai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              question: questionObj.q,
-              options: questionObj.o ? questionObj.o.join(' | ') : '',
-              correctAnswer: questionObj.o && questionObj.a !== undefined ? questionObj.o[questionObj.a] : '',
-              subject: questionObj._groupName || '',
-              chapter: questionObj._chapterName || ''
-            })
-          }).catch(() => null)
-        : Promise.resolve(null)
-    ]);
+    const response = await fetch('/api/questioncheck', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        question: questionObj.q,
+        options: questionObj.o,
+        correctAnswer: questionObj.a,
+        subject: questionObj._groupName || '',
+        chapter: questionObj._chapterName || '',
+        rowIndex: sheetRowIndex,
+        quizType: quizType,
+        alreadyChecked: false
+      })
+    });
 
-    let fixed = false;
-    let explained = false;
+    if (!response.ok) return null;
+    const data = await response.json();
 
-    // Process fix response
-    if (fixResponse && fixResponse.ok) {
-      const fixData = await fixResponse.json();
-      if (fixData.needsCorrection) {
-        if (fixData.correctedQuestion) questionObj.q = fixData.correctedQuestion;
-        if (fixData.correctedOptions && fixData.correctedOptions.length === 4) {
-          questionObj.o = fixData.correctedOptions;
-        }
-        if (fixData.correctAnswer !== undefined && fixData.correctAnswer !== null) {
-          questionObj.a = fixData.correctAnswer;
-        }
-        fixed = true;
-      }
-      questionObj._aiChecked = true;
+    if (!data.needsCorrection) return null;
+
+    questionObj.q = data.correctedQuestion;
+    questionObj.o = data.correctedOptions;
+    questionObj.a = data.correctAnswer;
+    questionObj._aiChecked = true;
+    if (data.aiExplanation && (!questionObj.note || questionObj.note.trim().length < 10)) {
+      questionObj.note = data.aiExplanation;
+      questionObj._aiGenerated = true;
     }
 
-    // Process explanation response
-    if (explanationResponse && explanationResponse.ok) {
-      const expData = await explanationResponse.json();
-      if (expData.explanation && (!questionObj.note || questionObj.note.trim().length < 10)) {
-        let explanation = expData.explanation
-          .replace(/```[\s\S]*?```/g, '')
-          .replace(/`/g, '')
-          .replace(/\*\*/g, '')
-          .replace(/\*/g, '')
-          .replace(/#{1,6}\s/g, '')
-          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-          .trim();
-        
-        if (explanation) {
-          questionObj.note = explanation;
-          questionObj._aiGenerated = true;
-          explained = true;
-        }
-      }
+    if (questionObj._subject && questionObj._index !== undefined && questionBank[questionObj._subject]) {
+      questionBank[questionObj._subject][questionObj._index] = questionObj;
+      saveBank();
     }
 
-    // Save to bank if anything changed
-    if ((fixed || explained) && questionObj._subject && questionObj._index !== undefined && questionBank[questionObj._subject]) {
-      const bankQ = questionBank[questionObj._subject][questionObj._index];
-      if (bankQ) {
-        if (fixed) {
-          bankQ.q = questionObj.q;
-          bankQ.o = questionObj.o;
-          bankQ.a = questionObj.a;
-          bankQ._aiChecked = true;
-        }
-        if (explained) {
-          bankQ.note = questionObj.note;
-          bankQ._aiGenerated = true;
-        }
-        saveBank();
-      }
-    }
-
-    if (fixed || explained) {
-      return { fixed, explained };
-    }
-    return null;
-
+    return data;
   } catch (e) {
-    console.warn('Question fix failed:', e);
+    console.warn('Question check failed:', e);
     return null;
   }
 }
+
 async function loadResultMedia(){
 try {
 const res = await fetch(RESULT_SHEET_URL, {mode:'cors'});
