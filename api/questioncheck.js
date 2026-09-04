@@ -1,5 +1,7 @@
 // api/questioncheck.js
-// AI-based question checker - underline, grammar, answer key verification, LaTeX/HTML support
+// AI-based question checker with hybrid approach
+// Primary: Qwen3 (fast, high quota)
+// Fallback: OpenAI GPT-oss-120b (better underline detection)
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -21,7 +23,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'question and options required' });
   }
 
-  // ✅ Already AI-checked? Skip to save quota
   if (alreadyChecked) {
     return res.status(200).json({ 
       needsCorrection: false, 
@@ -35,14 +36,11 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'GROQ_API_KEY_2 not set in Vercel env' });
   }
 
-  // ✅ All class URLs (competitive + class 5-10)
   const SCRIPT_URLS = {
-    // Competitive exams (competitive.html)
     'ssc': 'https://script.google.com/macros/s/AKfycby8cADzc2mMlr-3KoLSmQLsg8AhLA9ViXL5kzSyhLwaRfutZW5er3qTO1PFmY2w-4VmUQ/exec',
     'gk': 'https://script.google.com/macros/s/AKfycbw940Ugc3FsH1NFHCnjbEc7uivqqvwacUh_gQv_UKqXBXlJ7uhGa9ptTre5LROgEVwl/exec',
     'wbpsc': 'https://script.google.com/macros/s/AKfycbzWUjN4QuZtimLgtx-sd5oVqgoi4NhMVou3qkQwthV7AcL4DkAPycJ-YNjCnQh8w_h0/exec',
     'defence': 'https://script.google.com/macros/s/AKfycbz04QAu660SM9GVplMtomNL28ug7XE3xE1lYrkJm2y3DBylAvzRD4Xxh4vZiozNO-2l/exec',
-    // Class 5-10 (quiz.html)
     'class5': 'https://script.google.com/macros/s/AKfycbwtJzw0xGfY-3p2KY3z-vf_d5CVdR_alfIX4B5S9QEFi1tYtrb6_MtzX9OSiQ6-L91w/exec',
     'class6': 'https://script.google.com/macros/s/AKfycbxmUCjeYIu7Dikfnbl2LmZoeplLS0iuLWEsvGTx0jYi4i1uK3WMEF3Bqqmf72teEjgI/exec',
     'class7': 'https://script.google.com/macros/s/AKfycbwoKkn_uJRnjsccqTpROptSkFxjMIvi-S9UlX6qZaYeA7N0nWoL-FZJILhqFFmKMjjKhQ/exec',
@@ -51,22 +49,7 @@ export default async function handler(req, res) {
     'class10': 'https://script.google.com/macros/s/AKfycbwB5PT3N8nUByW5GVv9--JenYdRm7rKTixkLe_XYmKkavIKlvoVrMLIgAXgmAiS3cUSOQ/exec'
   };
 
-  try {
-    // ═══════════════════════════════════════════════════════
-    // STEP 1: AI call to check & correct question
-    // ═══════════════════════════════════════════════════════
-    const aiResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${GROQ_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'qwen/qwen3.6-27b',
-        messages: [
-          {
-            role: 'system',
-            content: `তুমি একজন expert question checker ও শিক্ষক। তোমার কাজ প্রতিটি MCQ প্রশ্ন carefully check করা ও প্রয়োজনে fix করা।
+  const systemPrompt = `তুমি একজন expert question checker ও শিক্ষক। তোমার কাজ প্রতিটি MCQ প্রশ্ন carefully check করা ও প্রয়োজনে fix করা।
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 তোমার প্রধান কাজ:
@@ -130,11 +113,9 @@ IMPORTANT RULES:
 - aiExplanation বাংলায় লেখো, সহজ ভাষায়, ৩-৪ লাইনের মধ্যে
 - original meaning পরিবর্তন করো না
 - option order change করো না, শুধু format fix করো
-- Underline detect করার সময় question text carefully পড়ো — কোন word টা underlined হওয়া উচিত সেটা বোঝার চেষ্টা করো`
-          },
-          {
-            role: 'user',
-            content: `এই প্রশ্নটি check করো এবং JSON format এ উত্তর দাও:
+- Underline detect করার সময় question text carefully পড়ো — কোন word টা underlined হওয়া উচিত সেটা বোঝার চেষ্টা করো`;
+
+  const userPrompt = `এই প্রশ্নটি check করো এবং JSON format এ উত্তর দাও:
 
 প্রশ্ন: ${question}
 
@@ -148,41 +129,104 @@ D. ${options[3] || ''}
 বিষয়: ${subject || 'General'}
 অধ্যায়: ${chapter || 'General'}
 
-Return JSON only.`
-          }
-        ],
-        temperature: 0.2,
-        max_tokens: 1500,
-        response_format: { type: 'json_object' }
-      })
-    });
+Return JSON only.`;
 
-    if (!aiResponse.ok) {
-      const err = await aiResponse.json().catch(() => ({}));
-      return res.status(aiResponse.status).json({ 
-        error: err.error?.message || 'AI API error',
-        needsCorrection: false
-      });
-    }
-
-    const aiData = await aiResponse.json();
-    let parsed;
+  // ═══════════════════════════════════════════════════════
+  // Helper: Call AI with specific model
+  // ═══════════════════════════════════════════════════════
+  async function callAI(model) {
     try {
-      const rawContent = aiData.choices?.[0]?.message?.content || '{}';
-      parsed = JSON.parse(rawContent);
-    } catch (e) {
-      console.error('Failed to parse AI response:', e);
-      return res.status(500).json({ 
-        error: 'Invalid AI response format',
-        needsCorrection: false
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${GROQ_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ],
+          temperature: 0.2,
+          max_tokens: 1500,
+          response_format: { type: 'json_object' }
+        })
       });
+
+      if (!response.ok) {
+        console.warn(`${model} API error: ${response.status}`);
+        return null;
+      }
+
+      const data = await response.json();
+      const rawContent = data.choices?.[0]?.message?.content || '{}';
+      return JSON.parse(rawContent);
+    } catch (e) {
+      console.warn(`${model} call failed:`, e.message);
+      return null;
     }
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // Helper: Check if question mentions underline
+  // ═══════════════════════════════════════════════════════
+  function questionMentionsUnderline(q) {
+    const lowerQ = q.toLowerCase();
+    return lowerQ.includes('underlined') || 
+           lowerQ.includes('underline') || 
+           lowerQ.includes('under-line');
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // Helper: Check if response has underline tag
+  // ═══════════════════════════════════════════════════════
+  function responseHasUnderline(parsed) {
+    if (!parsed || !parsed.correctedQuestion) return false;
+    return parsed.correctedQuestion.includes('<u>') && parsed.correctedQuestion.includes('</u>');
+  }
+
+  try {
+    // ═══════════════════════════════════════════════════════
+    // STEP 1: Try Qwen3 first (fast, high quota)
+    // ═══════════════════════════════════════════════════════
+    console.log('🤖 Trying Qwen3 first...');
+    let parsed = await callAI('qwen/qwen3.6-27b');
+    let usedModel = 'qwen/qwen3.6-27b';
 
     // ═══════════════════════════════════════════════════════
-    // STEP 2: No correction needed — just mark as checked
+    // STEP 2: Check if we need fallback to GPT-oss
+    // ═══════════════════════════════════════════════════════
+    const needsUnderline = questionMentionsUnderline(question);
+    const hasUnderline = parsed && responseHasUnderline(parsed);
+
+    if (needsUnderline && !hasUnderline) {
+      console.log('🔄 Qwen3 missed underline, falling back to GPT-oss...');
+      const gptParsed = await callAI('openai/gpt-oss-120b');
+      if (gptParsed && responseHasUnderline(gptParsed)) {
+        parsed = gptParsed;
+        usedModel = 'openai/gpt-oss-120b';
+        console.log('✅ GPT-oss successfully added underline');
+      } else if (gptParsed) {
+        parsed = gptParsed;
+        usedModel = 'openai/gpt-oss-120b';
+        console.log('⚠️ GPT-oss also could not add underline, using its response anyway');
+      }
+    }
+
+    if (!parsed) {
+      return res.status(500).json({ 
+        error: 'Both AI models failed',
+        needsCorrection: false
+      });
+    }
+
+    console.log(`✅ Used model: ${usedModel}`);
+
+    // ═══════════════════════════════════════════════════════
+    // STEP 3: No correction needed — just mark as checked
     // ═══════════════════════════════════════════════════════
     if (!parsed.needsCorrection) {
-      // Mark as checked in sheet even if no correction needed
       if (rowIndex && quizType) {
         const SCRIPT_URL = SCRIPT_URLS[quizType] || SCRIPT_URLS['ssc'];
         try {
@@ -201,12 +245,13 @@ Return JSON only.`
       }
       return res.status(200).json({ 
         needsCorrection: false,
-        message: 'Question is perfect'
+        message: 'Question is perfect',
+        usedModel: usedModel
       });
     }
 
     // ═══════════════════════════════════════════════════════
-    // STEP 3: Correction needed — update Google Sheet
+    // STEP 4: Correction needed — update Google Sheet
     // ═══════════════════════════════════════════════════════
     let sheetUpdated = false;
     if (rowIndex && quizType) {
@@ -225,20 +270,20 @@ Return JSON only.`
           })
         });
         sheetUpdated = sheetRes.ok;
-        console.log(`✅ Sheet updated for row ${rowIndex} (${quizType})`);
+        console.log(`✅ Sheet updated for row ${rowIndex} (${quizType}) using ${usedModel}`);
       } catch (e) {
         console.warn('Sheet update failed:', e);
       }
     }
 
-    // Return corrected data to frontend
     return res.status(200).json({
       needsCorrection: true,
       correctedQuestion: parsed.correctedQuestion || question,
       correctedOptions: parsed.correctedOptions || options,
       correctAnswer: parsed.correctAnswer !== undefined ? parsed.correctAnswer : correctAnswer,
       aiExplanation: parsed.aiExplanation || '',
-      sheetUpdated: sheetUpdated
+      sheetUpdated: sheetUpdated,
+      usedModel: usedModel
     });
 
   } catch (e) {
