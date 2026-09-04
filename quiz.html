@@ -1085,15 +1085,12 @@ ${quizMode==="mock"&&timerActive?`<span class="timer-display" id="timerPill">⏱
 </div>
 </div>`;
 document.querySelectorAll(".option").forEach(el=>{el.onclick=()=>{if(quizSubmitted)return;if(!optionsVisible)return;if(optionsHidden)return;if(quizMode==="mock"){if(userAnswers[currentIndex]!==null)return;}else{if(userAnswers[currentIndex]!==null)return;}const sel=Number(el.dataset.opt);userAnswers[currentIndex]=sel;answerStatus[currentIndex]=(sel===q.a);if(answerStatus[currentIndex]&&quizMode!=="mock")fireConfetti();renderQuiz();renderNav();updateScore();saveQuizState();};});
-const prevBtn=document.getElementById('prevQ'),nextBtn=document.getElementById('nextQ'); if(prevBtn)prevBtn.onclick=()=>moveQuestion(-1); if(nextBtn)nextBtn.onclick=()=>moveQuestion(1);
-updateTimerDisplay();
-}
 const prevBtn=document.getElementById('prevQ'),nextBtn=document.getElementById('nextQ'); 
 if(prevBtn)prevBtn.onclick=()=>moveQuestion(-1); 
 if(nextBtn)nextBtn.onclick=()=>moveQuestion(1);
 updateTimerDisplay();
-renderLatex(); // ✅ এই লাইনটি নতুন যুক্ত করুন
-} // renderQuiz() এর ক্লোজিং ব্র্যাকেট
+renderLatex(); // ✅ KaTeX রেন্ডার করার জন্য
+}
 function moveQuestion(d){const n=currentIndex+d;if(n<0||n>=totalQuestions)return;currentIndex=n;renderQuiz();renderNav();saveQuizState();}
 function renderNav(){
 let g="";
@@ -1191,7 +1188,6 @@ pwdInput.addEventListener('keydown',(e)=>{if(e.key==='Enter'){e.preventDefault()
 pwdInput.focus();
 })();
 
-init();
 // ✅ KaTeX রেন্ডার করার ফাংশন
 function renderLatex() {
     if (typeof renderMathInElement === 'function') {
@@ -1209,10 +1205,21 @@ function renderLatex() {
         setTimeout(renderLatex, 300);
     }
 }
-</script>
-</body>
-</html>
 
+(function(){
+const overlay=document.getElementById('warningOverlay');
+const pwdInput=document.getElementById('passwordInput');
+const submitBtn=document.getElementById('submitBtn');
+const errorMsg=document.getElementById('errorMsg');
+function unlock(){
+errorMsg.textContent='';
+pwdInput.style.borderColor='#00cc44';
+pwdInput.style.boxShadow='0 0 30px rgba(0,255,80,0.7)';
+submitBtn.style.background='linear-gradient(180deg,#00cc44,#008800)';
+submitBtn.style.borderColor='#00ff55';
+submitBtn.textContent='✅ খুলছে...';
+setTimeout(()=>{overlay.classList.add('hidden');if(typeof autoLoadSheetIfNeeded==='function')autoLoadSheetIfNeeded();},400);
+}
 function attempt(pswd){
 if(pswd===CORRECT_PASSWORD){unlock();}else{
 errorMsg.textContent='❌ ভুল পাসওয়ার্ড!';
