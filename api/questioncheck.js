@@ -62,7 +62,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'openai/gpt-oss-120b',
         messages: [
           {
             role: 'system',
@@ -73,19 +73,23 @@ export default async function handler(req, res) {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1️⃣ **UNDERLINE DETECTION** (সবচেয়ে গুরুত্বপূর্ণ):
-   - English grammar question এ যদি লেখা থাকে "substitute the underlined segment" বা "replace the underlined part" বা "underlined portion" — তাহলে সেই sentence এর মধ্যে কোন phrase/word টা underlined হওয়া উচিত সেটা detect করো
+   - English grammar question এ যদি লেখা থাকে "underlined word", "underlined segment", "underlined portion" — তাহলে সেই sentence এর মধ্যে কোন word/phrase টা underlined হওয়া উচিত সেটা detect করো
    - উদাহরণ: 
-     Input: "Do not later about the street."
-     Output: "Do not <u>later</u> about the street."
-   - Common patterns:
-     * "substitute the underlined segment" → which part is being substituted? underline সেটা
-     * "choose the synonym of the underlined word" → underline the target word
-     * "the underlined part contains error" → underline the erroneous part
+     Input: "He gave a haughty consent without honouring him with a single word."
+     Question mentions: "underlined word"
+     Output: "He gave a <u>haughty</u> consent without honouring him with a single word."
+   
+   - Common patterns detect করো:
+     * "ANTONYM of the underlined word" → underline the target word
+     * "SYNONYM of the underlined word" → underline the target word  
+     * "substitute the underlined segment" → underline the phrase
+     * "replace the underlined part" → underline the part
+     * "underlined portion contains error" → underline the erroneous part
 
 2️⃣ **GRAMMAR & SPELLING**:
    - Obvious typos fix করো
    - Grammatical errors থাকলে correct করো
-   - Example: "Do not later" → "Do not loiter" (but if underlining needed, "Do not <u>later</u>")
+   - কিন্তু original meaning পরিবর্তন করো না
 
 3️⃣ **ANSWER KEY VERIFICATION**:
    - Current answer key টা সত্যিই সঠিক কিনা verify করো
@@ -125,7 +129,8 @@ IMPORTANT RULES:
 - শুধু valid JSON return করো, কোনো markdown fence বা extra text না
 - aiExplanation বাংলায় লেখো, সহজ ভাষায়, ৩-৪ লাইনের মধ্যে
 - original meaning পরিবর্তন করো না
-- option order change করো না, শুধু format fix করো`
+- option order change করো না, শুধু format fix করো
+- Underline detect করার সময় question text carefully পড়ো — কোন word টা underlined হওয়া উচিত সেটা বোঝার চেষ্টা করো`
           },
           {
             role: 'user',
@@ -179,7 +184,7 @@ Return JSON only.`
     if (!parsed.needsCorrection) {
       // Mark as checked in sheet even if no correction needed
       if (rowIndex && quizType) {
-        const SCRIPT_URL = SCRIPT_URLS[quizType] || SCRIPT_URLS['class6'];
+        const SCRIPT_URL = SCRIPT_URLS[quizType] || SCRIPT_URLS['ssc'];
         try {
           await fetch(SCRIPT_URL, {
             method: 'POST',
@@ -205,7 +210,7 @@ Return JSON only.`
     // ═══════════════════════════════════════════════════════
     let sheetUpdated = false;
     if (rowIndex && quizType) {
-      const SCRIPT_URL = SCRIPT_URLS[quizType] || SCRIPT_URLS['class6'];
+      const SCRIPT_URL = SCRIPT_URLS[quizType] || SCRIPT_URLS['ssc'];
       try {
         const sheetRes = await fetch(SCRIPT_URL, {
           method: 'POST',
