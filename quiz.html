@@ -444,7 +444,23 @@ body { padding: 6px; }
 @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
 .shake { animation: shake 0.5s ease-in-out; }
 [data-theme="dark"] #quizSize, [data-theme="dark"] #timeLimit { color: #1a1e2b !important; }
+/* KaTeX Math & Chemistry Styling */
+.katex-display {
+    margin: 16px 0;
+    text-align: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.katex { 
+    font-size: 1.1em; 
+    line-height: 1.6;
+}
 </style>
+<!-- KaTeX for Math & Chemistry -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/mhchem.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 <div class="warning-overlay" id="warningOverlay">
@@ -1072,6 +1088,12 @@ document.querySelectorAll(".option").forEach(el=>{el.onclick=()=>{if(quizSubmitt
 const prevBtn=document.getElementById('prevQ'),nextBtn=document.getElementById('nextQ'); if(prevBtn)prevBtn.onclick=()=>moveQuestion(-1); if(nextBtn)nextBtn.onclick=()=>moveQuestion(1);
 updateTimerDisplay();
 }
+const prevBtn=document.getElementById('prevQ'),nextBtn=document.getElementById('nextQ'); 
+if(prevBtn)prevBtn.onclick=()=>moveQuestion(-1); 
+if(nextBtn)nextBtn.onclick=()=>moveQuestion(1);
+updateTimerDisplay();
+renderLatex(); // ✅ এই লাইনটি নতুন যুক্ত করুন
+} // renderQuiz() এর ক্লোজিং ব্র্যাকেট
 function moveQuestion(d){const n=currentIndex+d;if(n<0||n>=totalQuestions)return;currentIndex=n;renderQuiz();renderNav();saveQuizState();}
 function renderNav(){
 let g="";
@@ -1155,6 +1177,42 @@ submitBtn.style.borderColor='#00ff55';
 submitBtn.textContent='✅ খুলছে...';
 setTimeout(()=>{overlay.classList.add('hidden');if(typeof autoLoadSheetIfNeeded==='function')autoLoadSheetIfNeeded();},400);
 }
+function attempt(pswd){
+if(pswd===CORRECT_PASSWORD){unlock();}else{
+errorMsg.textContent='❌ ভুল পাসওয়ার্ড!';
+pwdInput.classList.add('shake');
+pwdInput.style.borderColor='#ff0000';
+pwdInput.value='';
+setTimeout(()=>{pwdInput.classList.remove('shake');pwdInput.style.borderColor='#cc0000';pwdInput.focus();},500);
+}
+}
+submitBtn.addEventListener('click',()=>{const val=pwdInput.value.trim();if(!val){errorMsg.textContent='⚠️ পাসওয়ার্ড লিখুন!';return;}attempt(val);});
+pwdInput.addEventListener('keydown',(e)=>{if(e.key==='Enter'){e.preventDefault();submitBtn.click();}});
+pwdInput.focus();
+})();
+
+init();
+// ✅ KaTeX রেন্ডার করার ফাংশন
+function renderLatex() {
+    if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.getElementById('questionsArea'), {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false},
+                {left: '\\[', right: '\\]', display: true}
+            ],
+            throwOnError: false
+        });
+    } else {
+        // লাইব্রেরি লোড হতে সময় নিলে অপেক্ষা করবে
+        setTimeout(renderLatex, 300);
+    }
+}
+</script>
+</body>
+</html>
+
 function attempt(pswd){
 if(pswd===CORRECT_PASSWORD){unlock();}else{
 errorMsg.textContent='❌ ভুল পাসওয়ার্ড!';
