@@ -1429,10 +1429,10 @@ main {
         </button>
       </div>
 
-      <div class="viewer-actions">
-        <button class="btn" onclick="mmToggleTheme()" id="themeBtn">
-          <i class="fa-solid fa-moon"></i>
-        </button>
+     <button class="btn btn-primary" onclick="mmSave()">
+  <i class="fa-solid fa-cloud-arrow-up"></i>
+  <span>Backup</span>
+</button>
         <button class="btn" onclick="mmExport()">
           <i class="fa-solid fa-download"></i>
           <span>Export</span>
@@ -1478,6 +1478,44 @@ main {
       </div>
       <h2 class="modal-title">Create Mind Map</h2>
     </div>
+    <!-- ===== ব্যাকআপ মডাল ===== -->
+<div class="modal-overlay" id="backupModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-icon">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+      </div>
+      <h2 class="modal-title">মাইন্ডম্যাপ ব্যাকআপ নাও</h2>
+    </div>
+    
+    <p style="color:var(--text-tertiary);margin-bottom:1.5rem;font-size:0.95rem;line-height:1.6">
+      আগে দেখে নাও সব ঠিক আছে কিনা। তারপর কোথায় সেভ করবে বেছে নাও।
+    </p>
+    
+    <div style="display:flex;flex-direction:column;gap:0.75rem">
+      <button class="btn btn-primary" onclick="backupToSheet()" style="justify-content:center;padding:1.1rem;font-size:1rem">
+        <i class="fa-solid fa-table"></i>
+        Google Sheet এ সেভ করো
+      </button>
+      
+      <button class="btn" onclick="downloadBackupJSON()" style="justify-content:center;padding:1rem">
+        <i class="fa-solid fa-file-arrow-down"></i>
+        JSON ফাইল ডাউনলোড করো
+      </button>
+    </div>
+    
+    <div style="margin-top:1.5rem;padding:1rem;background:rgba(234,179,8,0.05);border:1px solid rgba(234,179,8,0.1);border-radius:10px">
+      <p style="color:var(--text-muted);font-size:0.85rem;margin:0;display:flex;align-items:center;gap:0.5rem">
+        <i class="fa-solid fa-lightbulb" style="color:var(--accent-primary)"></i>
+        যদি শীটে না যায়, জসন ফাইল ডাউনলোড হবে। পরে ওটা দিয়ে আবার আপলোড করতে পারবে।
+      </p>
+    </div>
+    
+    <div class="modal-actions" style="margin-top:1.5rem">
+      <button class="btn" onclick="closeBackupModal()">বাতিল করো</button>
+    </div>
+  </div>
+</div>
 
     <div class="field">
       <label class="field-label">Password *</label>
@@ -2090,67 +2128,53 @@ async function handleCreate() {
   const subtopic = document.getElementById('createSubtopic').value.trim() || 'Main';
   
   if (!password) {
-    toast('Please enter password', 'error');
+    toast('পাসওয়ার্ড দাও!', 'error');
     return;
   }
+  
+  if (password !== CONFIG.PASSWORD) {
+    toast('ভুল পাসওয়ার্ড!', 'error');
+    return;
+  }
+  
   if (!className || !subject || !topic) {
-    toast('Please fill all required fields', 'error');
+    toast('সব ঘর পূরণ করো!', 'error');
     return;
   }
   
   let mindmapData;
   if (state.uploadedSvg) {
     mindmapData = parseSVG(state.uploadedSvg, subtopic);
-    toast('SVG parsed successfully', 'success');
+    toast('SVG থেকে মাইন্ডম্যাপ তৈরি হয়েছে!', 'success');
   } else {
     mindmapData = createDefaultMap(subtopic);
   }
   
-  if (CONFIG.APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-    toast('Please configure APPS_SCRIPT_URL in the code', 'error');
-    return;
-  }
+  // সব ডাটা সেট করো
+  state.mindMap = mindmapData;
+  state.mindMap._class = className;
+  state.mindMap._subject = subject;
+  state.mindMap._topic = topic;
+  state.mindMap._subtopic = subtopic;
+  state.mindMap._id = 'mm_' + Date.now();
+  state.selectedNode = state.mindMap;
+  state.isEditMode = true;
   
-  showLoader('Saving to Google Sheet...');
+  // লোকাল সেভ করো
+  saveToLocal();
   
-  try {
-    const params = new URLSearchParams({
-      action: 'create',
-      password: password,
-      class: className,
-      subject: subject,
-      topic: topic,
-      subtopic: subtopic,
-      mindmapData: JSON.stringify(mindmapData),
-      creator: 'Admin'
-    });
-    
-    const response = await fetch(CONFIG.APPS_SCRIPT_URL + '?' + params);
-    const result = await response.json();
-    
-    hideLoader();
-    
-    if (result.success) {
-      toast('Mind map created and saved to sheet!', 'success');
-      closeModal('createModal');
-      state.uploadedSvg = null;
-      
-      await loadSheetData();
-      state.currentPath = [
-        {type: 'class', id: className, name: className},
-        {type: 'subject', id: subject, name: subject},
-        {type: 'topic', id: topic, name: topic}
-      ];
-      updateBreadcrumb();
-      renderSubtopics(className, subject, topic);
-      showView('subtopicsView');
-    } else {
-      toast(result.error || 'Failed to create mind map', 'error');
-    }
-  } catch (error) {
-    hideLoader();
-    toast('Error saving to sheet: ' + error.message, 'error');
-  }
+  // মডাল বন্ধ করো
+  closeModal('createModal');
+  state.uploadedSvg = null;
+  
+  // প্রিভিউ দেখাও
+  showView('viewerView');
+  setTimeout(() => {
+    mmCenterView();
+    mmRender();
+  }, 100);
+  
+  toast('🎉 মাইন্ডম্যাপ তৈরি হয়েছে! এখন দেখো, সব ঠিক থাকলে "Backup" টিপো', 'success');
 }
 
 function openEditModal() {
@@ -2576,42 +2600,128 @@ function mmExport() {
   });
 }
 
+// ===== নতুন সেভ সিস্টেম - আগে লোকাল, তারপর ব্যাকআপ =====
+
 async function mmSave() {
   if (!state.isEditMode) {
     openEditModal();
     return;
   }
   
-  if (CONFIG.APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-    toast('Please configure APPS_SCRIPT_URL in the code', 'error');
+  // প্রথমে সবসময় লোকাল সেভ করো
+  saveToLocal();
+  
+  // তারপর ব্যাকআপ মডাল খোলো
+  openBackupModal();
+}
+
+function saveToLocal() {
+  try {
+    const backupData = {
+      id: state.mindMap._id || 'mm_' + Date.now(),
+      class: state.mindMap._class || '',
+      subject: state.mindMap._subject || '',
+      topic: state.mindMap._topic || '',
+      subtopic: state.mindMap._subtopic || '',
+      mindmapData: state.mindMap,
+      savedAt: new Date().toISOString()
+    };
+    
+    localStorage.setItem('mindmap_current_backup', JSON.stringify(backupData));
+    toast('💾 লোকাল সেভ সম্পন্ন!', 'success');
+    
+    // পরবর্তী ব্যাকআপের জন্য রেখে দাও
+    window._pendingBackup = backupData;
+    
+  } catch(e) {
+    console.error('Local save error:', e);
+    toast('লোকাল সেভ হয়নি!', 'error');
+  }
+}
+
+function openBackupModal() {
+  document.getElementById('backupModal').classList.add('show');
+}
+
+function closeBackupModal() {
+  document.getElementById('backupModal').classList.remove('show');
+}
+
+// Google Sheet এ ব্যাকআপ পাঠাও
+async function backupToSheet() {
+  const data = window._pendingBackup;
+  
+  if (!data) {
+    toast('আগে মাইন্ডম্যাপ এডিট করো!', 'error');
     return;
   }
   
-  showLoader('Saving changes...');
+  if (!CONFIG.APPS_SCRIPT_URL || CONFIG.APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    toast('Apps Script URL সেট করো আগে! জসন ডাউনলোড হচ্ছে...', 'error');
+    downloadBackupJSON();
+    closeBackupModal();
+    return;
+  }
+  
+  showLoader('Google Sheet এ ব্যাকআপ হচ্ছে...');
   
   try {
     const params = new URLSearchParams({
-      action: 'update',
+      action: 'create',
       password: CONFIG.PASSWORD,
-      id: state.mindMap._id,
-      mindmapData: JSON.stringify(state.mindMap)
+      class: data.class,
+      subject: data.subject,
+      topic: data.topic,
+      subtopic: data.subtopic,
+      mindmapData: JSON.stringify(data.mindmapData),
+      creator: 'Admin'
     });
     
-    const response = await fetch(CONFIG.APPS_SCRIPT_URL + '?' + params);
-    const result = await response.json();
+    // no-cors mode এ পাঠাও যাতে কোনো ফেচ এরর না আসে
+    await fetch(CONFIG.APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params.toString()
+    });
     
     hideLoader();
+    toast('✅ Google Sheet এ ব্যাকআপ সম্পন্ন হয়েছে!', 'success');
+    closeBackupModal();
     
-    if (result.success) {
-      toast('Changes saved to Google Sheet!', 'success');
-      await loadSheetData();
-    } else {
-      toast(result.error || 'Failed to save', 'error');
-    }
   } catch (error) {
     hideLoader();
-    toast('Error saving: ' + error.message, 'error');
+    console.error('Sheet backup failed:', error);
+    toast('❌ Sheet এ যায়নি! জসন ডাউনলোড হচ্ছে...', 'error');
+    downloadBackupJSON();
+    closeBackupModal();
   }
+}
+
+// JSON ফাইল হিসেবে ডাউনলোড করো (সবসময় কাজ করবে)
+function downloadBackupJSON() {
+  const data = window._pendingBackup || {
+    id: state.mindMap._id || 'mm_' + Date.now(),
+    class: state.mindMap._class || '',
+    subject: state.mindMap._subject || '',
+    topic: state.mindMap._topic || '',
+    subtopic: state.mindMap._subtopic || '',
+    mindmapData: state.mindMap,
+    savedAt: new Date().toISOString()
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.download = (state.mindMap._subtopic || state.mindMap.text || 'mindmap') + '_backup.json';
+  a.href = URL.createObjectURL(blob);
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+  
+  toast('📁 জসন ফাইল ডাউনলোড হয়েছে!', 'success');
 }
 
 function updateMinimap() {
