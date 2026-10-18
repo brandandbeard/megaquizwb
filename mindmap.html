@@ -2,1625 +2,580 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>Mind Maps — Mega Quiz</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-:root {
-  --bg-primary: #050505;
-  --bg-secondary: #0a0a0a;
-  --bg-tertiary: #141414;
-  --bg-card: rgba(20, 20, 20, 0.6);
-  --bg-card-hover: rgba(30, 30, 30, 0.8);
-  
-  --accent-primary: #eab308;
-  --accent-secondary: #facc15;
-  --accent-tertiary: #ca8a04;
-  
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.85);
-  --text-tertiary: rgba(255, 255, 255, 0.6);
-  --text-muted: rgba(255, 255, 255, 0.4);
-  
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-medium: rgba(255, 255, 255, 0.12);
-  --border-strong: rgba(255, 255, 255, 0.2);
-  
-  --purple: #a78bfa;
-  --blue: #60a5fa;
-  --pink: #f472b6;
-  --green: #34d399;
-  --orange: #fb923c;
-  --cyan: #22d3ee;
-  --red: #ef4444;
-  
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 40px rgba(234, 179, 8, 0.2);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-html, body {
-  height: 100%;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.bg-animation {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.bg-grid {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(rgba(234, 179, 8, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(234, 179, 8, 0.03) 1px, transparent 1px);
-  background-size: 80px 80px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
-}
-
-.bg-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.15;
-  animation: orbFloat 20s ease-in-out infinite;
-}
-
-.bg-orb-1 {
-  width: 600px;
-  height: 600px;
-  background: var(--accent-primary);
-  top: -200px;
-  left: -200px;
-}
-
-.bg-orb-2 {
-  width: 500px;
-  height: 500px;
-  background: var(--purple);
-  bottom: -150px;
-  right: -150px;
-  animation-delay: -7s;
-}
-
-.bg-orb-3 {
-  width: 400px;
-  height: 400px;
-  background: var(--blue);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation-delay: -14s;
-}
-
-@keyframes orbFloat {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(100px, -100px) scale(1.1); }
-  66% { transform: translate(-50px, 50px) scale(0.9); }
-}
-
-.topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  height: 72px;
-  padding: 0 2rem;
-  background: rgba(5, 5, 5, 0.8);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  text-decoration: none;
-  color: inherit;
-}
-
-.logo-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-tertiary));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  box-shadow: var(--shadow-glow);
-}
-
-.logo-text {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 800;
-  font-size: 1.25rem;
-  letter-spacing: -0.02em;
-}
-
-.logo-text .mega {
-  color: var(--text-primary);
-}
-
-.logo-text .quiz {
-  color: var(--accent-primary);
-}
-
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.btn {
-  padding: 0.65rem 1.25rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-medium);
-  background: var(--bg-card);
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: inherit;
-  white-space: nowrap;
-}
-
-.btn:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-strong);
-  color: var(--text-primary);
-  transform: translateY(-1px);
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-tertiary));
-  color: #000;
-  border: none;
-  font-weight: 600;
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
-  box-shadow: var(--shadow-glow);
-}
-
-.btn-ghost {
-  background: transparent;
-  border-color: transparent;
-}
-
-.btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.breadcrumb {
-  position: fixed;
-  top: 72px;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  padding: 1rem 2rem;
-  background: rgba(10, 10, 10, 0.9);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.crumb {
-  color: var(--text-tertiary);
-  font-size: 0.9rem;
-  cursor: pointer;
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-sm);
-  transition: all 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  text-decoration: none;
-}
-
-.crumb:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
-}
-
-.crumb.active {
-  color: var(--accent-primary);
-  font-weight: 600;
-}
-
-.crumb-sep {
-  color: var(--text-muted);
-  font-size: 0.8rem;
-}
-
-main {
-  position: relative;
-  z-index: 1;
-  padding-top: 140px;
-  min-height: 100vh;
-}
-
-.view {
-  display: none;
-  animation: viewFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.view.active {
-  display: block;
-}
-
-@keyframes viewFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.hero {
-  padding: 3rem 2rem 4rem;
-  text-align: center;
-  position: relative;
-}
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 100px;
-  background: rgba(234, 179, 8, 0.1);
-  border: 1px solid rgba(234, 179, 8, 0.2);
-  color: var(--accent-primary);
-  font-size: 0.85rem;
-  font-weight: 500;
-  margin-bottom: 2rem;
-}
-
-.hero-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero-title .gradient {
-  background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-primary) 50%, var(--accent-tertiary) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero-subtitle {
-  color: var(--text-tertiary);
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  max-width: 600px;
-  margin: 0 auto 3rem;
-  line-height: 1.6;
-}
-
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  margin-bottom: 4rem;
-  flex-wrap: wrap;
-}
-
-.stat {
-  text-align: center;
-}
-
-.stat-value {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--accent-primary);
-  line-height: 1;
-  margin-bottom: 0.5rem;
-}
-
-.stat-label {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 500;
-}
-
-.section-header {
-  padding: 2rem 2rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.section-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.section-title .icon {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(234, 179, 8, 0.1));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent-primary);
-  font-size: 0.9rem;
-}
-
-.section-count {
-  padding: 0.35rem 0.75rem;
-  border-radius: 100px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  font-size: 0.8rem;
-  color: var(--text-tertiary);
-  font-weight: 500;
-}
-
-.cards-grid {
-  display: grid;
-  gap: 1.25rem;
-  padding: 0 2rem 4rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-}
-
-.card {
-  position: relative;
-  padding: 2rem;
-  border-radius: var(--radius-lg);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, transparent, rgba(234, 179, 8, 0.2), transparent);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-medium);
-  background: var(--bg-card-hover);
-  box-shadow: var(--shadow-md);
-}
-
-.card:hover::before {
-  opacity: 1;
-}
-
-.card-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.15), rgba(234, 179, 8, 0.05));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: var(--accent-primary);
-  flex-shrink: 0;
-}
-
-.card-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.card-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-
-.card-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-}
-
-.card-desc {
-  font-size: 0.9rem;
-  color: var(--text-tertiary);
-  line-height: 1.5;
-}
-
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-subtle);
-  margin-top: auto;
-}
-
-.card-meta {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.card-arrow {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-tertiary);
-  transition: all 0.3s;
-}
-
-.card:hover .card-arrow {
-  background: var(--accent-primary);
-  color: #000;
-  transform: rotate(-45deg);
-}
-
-.card-add {
-  border-style: dashed;
-  border-color: var(--border-medium);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-}
-
-.card-add:hover {
-  border-color: var(--accent-primary);
-  background: rgba(234, 179, 8, 0.05);
-}
-
-.card-add-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: rgba(234, 179, 8, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: var(--accent-primary);
-  margin-bottom: 1rem;
-}
-
-.card-add-text {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text-tertiary);
-}
-
-.empty-state {
-  text-align: center;
-  padding: 6rem 2rem;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.empty-state-icon {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.1), rgba(234, 179, 8, 0.05));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  color: var(--accent-primary);
-  margin: 0 auto 2rem;
-}
-
-.empty-state h3 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-  color: var(--text-primary);
-}
-
-.empty-state p {
-  color: var(--text-tertiary);
-  margin-bottom: 2rem;
-  line-height: 1.6;
-}
-
-.viewer-container {
-  position: relative;
-  height: calc(100vh - 140px);
-  margin: 0;
-  overflow: hidden;
-}
-
-.viewer-toolbar {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 100;
-  display: flex;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  background: rgba(10, 10, 10, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-}
-
-.toolbar-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-sm);
-  border: none;
-  background: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-}
-
-.toolbar-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
-}
-
-.toolbar-btn.active {
-  background: rgba(234, 179, 8, 0.15);
-  color: var(--accent-primary);
-}
-
-.toolbar-sep {
-  width: 1px;
-  background: var(--border-subtle);
-  margin: 0.25rem 0;
-}
-
-.viewer-actions {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 100;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.mm-canvas {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: var(--bg-secondary);
-  cursor: grab;
-  touch-action: none;
-}
-
-.mm-canvas:active {
-  cursor: grabbing;
-}
-
-.mm-canvas.light-mode {
-  background: #fafafa;
-}
-
-.mm-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.mm-node {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  padding: 1rem 1.5rem;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  border: 2px solid transparent;
-  color: #fff;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: var(--shadow-md);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  max-width: 320px;
-  min-width: 120px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  line-height: 1.4;
-  white-space: normal;
-  word-wrap: break-word;
-  animation: nodeAppear 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes nodeAppear {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-.mm-node:hover {
-  transform: translate(-50%, -50%) scale(1.03);
-  box-shadow: var(--shadow-lg);
-  z-index: 10;
-}
-
-.mm-node.selected {
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.2), var(--shadow-lg);
-}
-
-.mm-node.root {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-tertiary));
-  color: #000;
-  font-size: 1.2rem;
-  font-weight: 700;
-  padding: 1.25rem 2rem;
-  box-shadow: var(--shadow-glow), var(--shadow-lg);
-}
-
-.mm-node.depth-1 {
-  background: linear-gradient(135deg, var(--purple), #7c3aed);
-  font-weight: 600;
-}
-
-.mm-node.depth-2 {
-  background: linear-gradient(135deg, var(--blue), #3b82f6);
-}
-
-.mm-node.depth-3 {
-  background: linear-gradient(135deg, var(--green), #059669);
-  font-size: 0.9rem;
-}
-
-.mm-node.depth-4 {
-  background: linear-gradient(135deg, var(--pink), #db2777);
-  font-size: 0.85rem;
-}
-
-.mm-node .toggle {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  margin-left: 0.5rem;
-  flex-shrink: 0;
-}
-
-.mm-node[data-collapsed="true"] {
-  border-style: dashed;
-  opacity: 0.7;
-}
-
-.mm-canvas.light-mode .mm-node {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-}
-
-.mm-canvas.light-mode .mm-node.root {
-  box-shadow: 0 8px 24px rgba(234, 179, 8, 0.3);
-}
-
-.zoom-controls {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  background: rgba(10, 10, 10, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 0.25rem;
-  box-shadow: var(--shadow-md);
-}
-
-.zoom-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  border: none;
-  background: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  transition: all 0.2s;
-}
-
-.zoom-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
-}
-
-.zoom-info {
-  text-align: center;
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  padding: 0.25rem;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.minimap {
-  position: absolute;
-  left: 1rem;
-  bottom: 1rem;
-  z-index: 100;
-  width: 200px;
-  height: 140px;
-  background: rgba(10, 10, 10, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: var(--shadow-md);
-}
-
-.minimap-svg {
-  width: 100%;
-  height: 100%;
-}
-
-.minimap-viewport {
-  stroke: var(--accent-primary);
-  stroke-width: 2;
-  fill: rgba(234, 179, 8, 0.1);
-}
-
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 5000;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.modal-overlay.show {
-  display: flex;
-  animation: modalFadeIn 0.2s ease;
-}
-
-@keyframes modalFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.modal {
-  background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-xl);
-  padding: 2.5rem;
-  width: 100%;
-  max-width: 500px;
-  box-shadow: var(--shadow-lg);
-  animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes modalSlideIn {
-  from {
-    transform: translateY(20px) scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
-
-.modal-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
-}
-
-.modal-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(234, 179, 8, 0.1));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  color: var(--accent-primary);
-}
-
-.modal-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.field {
-  margin-bottom: 1.5rem;
-}
-
-.field-label {
-  display: block;
-  font-size: 0.8rem;
-  color: var(--text-tertiary);
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-}
-
-.input, .select, .textarea {
-  width: 100%;
-  padding: 0.9rem 1.1rem;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-medium);
-  color: var(--text-primary);
-  font-size: 1rem;
-  font-family: inherit;
-  transition: all 0.2s;
-}
-
-.input:focus, .select:focus, .textarea:focus {
-  outline: none;
-  border-color: var(--accent-primary);
-  background: rgba(234, 179, 8, 0.05);
-  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.1);
-}
-
-.select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 16px;
-  padding-right: 2.5rem;
-}
-
-.select option {
-  background: var(--bg-tertiary);
-}
-
-.textarea {
-  resize: vertical;
-  min-height: 120px;
-  line-height: 1.6;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 2rem;
-}
-
-.modal-actions .btn {
-  flex: 1;
-  justify-content: center;
-  padding: 0.9rem;
-}
-
-.ctx-menu {
-  position: fixed;
-  z-index: 2000;
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-md);
-  padding: 0.5rem;
-  min-width: 200px;
-  box-shadow: var(--shadow-lg);
-  display: none;
-}
-
-.ctx-menu.show {
-  display: block;
-  animation: ctxIn 0.15s ease;
-}
-
-@keyframes ctxIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.ctx-item {
-  padding: 0.6rem 0.9rem;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  transition: all 0.15s;
-}
-
-.ctx-item:hover {
-  background: rgba(234, 179, 8, 0.15);
-  color: var(--text-primary);
-}
-
-.ctx-item i {
-  width: 16px;
-  color: var(--accent-primary);
-}
-
-.ctx-item.danger {
-  color: var(--red);
-}
-
-.ctx-item.danger i {
-  color: var(--red);
-}
-
-.ctx-sep {
-  height: 1px;
-  background: var(--border-subtle);
-  margin: 0.3rem 0;
-}
-
-.toast {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  padding: 1rem 1.5rem;
-  border-radius: var(--radius-md);
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-medium);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  box-shadow: var(--shadow-lg);
-  z-index: 6000;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-.toast.success {
-  border-color: var(--green);
-}
-
-.toast.success i {
-  color: var(--green);
-}
-
-.toast.error {
-  border-color: var(--red);
-}
-
-.toast.error i {
-  color: var(--red);
-}
-
-.toast.info {
-  border-color: var(--blue);
-}
-
-.toast.info i {
-  color: var(--blue);
-}
-
-.loader {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  background: rgba(5, 5, 5, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.loader.show {
-  display: flex;
-}
-
-.loader-spinner {
-  width: 60px;
-  height: 60px;
-  border: 3px solid var(--border-medium);
-  border-top-color: var(--accent-primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.loader-text {
-  color: var(--text-tertiary);
-  font-size: 0.95rem;
-}
-
-@media (max-width: 768px) {
-  .topbar {
-    padding: 0 1rem;
-  }
-  
-  .logo-text {
-    display: none;
-  }
-  
-  .btn {
-    padding: 0.5rem 0.9rem;
-    font-size: 0.85rem;
-  }
-  
-  .btn span {
-    display: none;
-  }
-  
-  .breadcrumb {
-    padding: 0.75rem 1rem;
-    font-size: 0.85rem;
-  }
-  
-  .hero {
-    padding: 2rem 1rem 3rem;
-  }
-  
-  .stats {
-    gap: 2rem;
-  }
-  
-  .stat-value {
-    font-size: 2rem;
-  }
-  
-  .section-header {
-    padding: 1.5rem 1rem 1rem;
-  }
-  
-  .section-title {
-    font-size: 1.4rem;
-  }
-  
-  .cards-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 0 1rem 3rem;
-  }
-  
-  .card {
-    padding: 1.5rem;
-  }
-  
-  .card-title {
-    font-size: 1.2rem;
-  }
-  
-  .viewer-toolbar, .viewer-actions {
-    top: 0.5rem;
-    left: 0.5rem;
-    right: 0.5rem;
-  }
-  
-  .viewer-actions {
-    left: auto;
-  }
-  
-  .minimap {
-    display: none;
-  }
-  
-  .modal {
-    padding: 1.5rem;
-    margin: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.hidden {
-  display: none !important;
-}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0a0b;--bg2:#111113;--bg3:#1a1a1d;--bg4:#222226;
+  --accent:#f59e0b;--accent2:#fbbf24;--accent3:#d97706;
+  --text:#fafafa;--text2:rgba(255,255,255,.75);--text3:rgba(255,255,255,.5);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
+}
+html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* Topbar */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:56px;
+  padding:0 1rem;background:rgba(10,10,11,.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.logo{display:flex;align-items:center;gap:.5rem;text-decoration:none;color:inherit}
+.logo-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent)}
+.logo-text{font-family:'Space Grotesk';font-weight:700;font-size:1rem;letter-spacing:-.01em}
+.logo-text .quiz{color:var(--accent)}
+
+.topbar-center{
+  display:flex;align-items:center;gap:.5rem;flex:1;max-width:400px;
+}
+.title-input{
+  flex:1;padding:.4rem .8rem;background:transparent;border:1px solid transparent;
+  border-radius:8px;color:var(--text);font-size:.9rem;font-weight:500;
+  font-family:inherit;transition:all .2s;
+}
+.title-input:focus{outline:none;border-color:var(--accent);background:var(--bg3)}
+
+.topbar-actions{display:flex;align-items:center;gap:.5rem}
+
+.btn{
+  padding:.45rem .9rem;border-radius:8px;border:1px solid var(--border2);
+  background:var(--bg3);color:var(--text2);font-size:.82rem;font-weight:500;
+  cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;
+  transition:all .15s;font-family:inherit;white-space:nowrap;
+}
+.btn:hover{background:var(--bg4);color:var(--text);border-color:var(--border2)}
+.btn.primary{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+.btn.primary:hover{background:var(--accent2);box-shadow:0 4px 14px rgba(245,158,11,.3)}
+.btn.ghost{background:transparent;border-color:transparent}
+.btn.ghost:hover{background:var(--bg3)}
+.btn-icon{width:34px;height:34px;padding:0;justify-content:center}
+
+/* Canvas */
+#canvasWrap{
+  position:fixed;top:56px;left:0;right:0;bottom:0;
+  overflow:hidden;background:var(--bg);
+  background-image:
+    radial-gradient(circle at 1px 1px,rgba(255,255,255,.04) 1px,transparent 0);
+  background-size:24px 24px;
+}
+#mmSvg{width:100%;height:100%;cursor:grab;touch-action:none}
+#mmSvg:active{cursor:grabbing}
+
+.mm-link{fill:none;stroke-width:2;opacity:.6;stroke-linecap:round}
+.mm-link.highlight{opacity:1;stroke-width:3}
+
+/* Nodes */
+#nodesLayer{position:absolute;top:0;left:0;pointer-events:none}
+.mm-node{
+  position:absolute;pointer-events:all;
+  padding:10px 16px;border-radius:10px;
+  background:linear-gradient(135deg,#1e293b,#0f172a);
+  border:1.5px solid rgba(255,255,255,.08);
+  color:#fff;font-size:14px;font-weight:500;line-height:1.45;
+  cursor:pointer;user-select:none;
+  box-shadow:0 4px 12px rgba(0,0,0,.3);
+  transition:all .2s cubic-bezier(.2,.8,.2,1);
+  max-width:360px;word-wrap:break-word;
+  transform:translate(-50%,-50%);
+  display:flex;align-items:center;gap:8px;
+  animation:nodeIn .3s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes nodeIn{from{opacity:0;transform:translate(-50%,-50%) scale(.7)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+
+.mm-node:hover{transform:translate(-50%,-50%) scale(1.04);z-index:10;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.mm-node.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(245,158,11,.3),0 8px 24px rgba(0,0,0,.5);z-index:11}
+.mm-node.root{
+  background:linear-gradient(135deg,var(--accent),var(--accent3));
+  color:#000;font-size:15px;font-weight:700;
+  padding:12px 20px;box-shadow:0 6px 20px rgba(245,158,11,.3);
+}
+.mm-node.depth-1{font-weight:600}
+.mm-node.depth-2{font-size:13px}
+.mm-node.depth-3{font-size:12.5px}
+.mm-node.depth-4{font-size:12px}
+
+.mm-node .toggle{
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(0,0,0,.4);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;cursor:pointer;
+  margin-left:auto;flex-shrink:0;
+}
+.mm-node[data-collapsed="true"]{border-style:dashed;opacity:.75}
+.mm-node[data-collapsed="true"] .toggle{background:var(--accent);color:#000}
+
+.mm-node[contenteditable="true"]{
+  outline:2px solid var(--accent);cursor:text;user-select:text;
+  background:var(--bg3);color:var(--text);
+}
+
+/* Floating Toolbar */
+.floating-toolbar{
+  position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:50;
+  background:rgba(17,17,19,.95);backdrop-filter:blur(20px);
+  border:1px solid var(--border2);border-radius:12px;
+  padding:.35rem;display:flex;align-items:center;gap:2px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  max-width:calc(100vw - 2rem);flex-wrap:wrap;
+}
+.tb-btn{
+  width:34px;height:34px;border-radius:8px;border:none;
+  background:transparent;color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;transition:all .15s;position:relative;
+}
+.tb-btn:hover{background:var(--bg4);color:var(--text)}
+.tb-btn.active{background:var(--accent);color:#000}
+.tb-btn[disabled]{opacity:.35;cursor:not-allowed}
+.tb-sep{width:1px;height:20px;background:var(--border);margin:0 2px}
+
+/* Font size controls */
+.font-size-ctrl{
+  display:flex;align-items:center;gap:2px;
+  padding:0 .25rem;
+}
+.font-size-display{
+  font-size:.75rem;color:var(--text2);
+  min-width:28px;text-align:center;
+  font-family:'Space Grotesk',monospace;
+  padding:0 2px;
+}
+
+/* Color palette */
+.color-palette{
+  display:flex;gap:3px;padding:0 4px;
+}
+.color-dot{
+  width:18px;height:18px;border-radius:50%;
+  cursor:pointer;border:2px solid transparent;
+  transition:all .15s;position:relative;
+}
+.color-dot:hover{transform:scale(1.15)}
+.color-dot.selected{border-color:#fff;transform:scale(1.15)}
+.color-dot.selected::after{
+  content:'✓';position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:.7rem;font-weight:700;
+  text-shadow:0 1px 2px rgba(0,0,0,.5);
+}
+
+/* Layout switcher */
+.layout-switcher{
+  position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:50;
+  background:rgba(17,17,19,.95);backdrop-filter:blur(20px);
+  border:1px solid var(--border2);border-radius:12px;padding:.35rem;
+  display:flex;gap:2px;box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.layout-btn{
+  padding:.5rem .9rem;border-radius:8px;border:none;
+  background:transparent;color:var(--text3);cursor:pointer;
+  font-size:.82rem;font-weight:500;font-family:inherit;
+  transition:all .15s;display:flex;align-items:center;gap:.4rem;
+}
+.layout-btn:hover{color:var(--text);background:var(--bg4)}
+.layout-btn.active{background:var(--accent);color:#000;font-weight:600}
+
+/* Zoom controls */
+.zoom-ctrl{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:50;
+  background:rgba(17,17,19,.95);backdrop-filter:blur(20px);
+  border:1px solid var(--border2);border-radius:12px;
+  padding:.35rem;display:flex;flex-direction:column;gap:2px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.zoom-btn{
+  width:36px;height:36px;border-radius:8px;border:none;
+  background:transparent;color:var(--text2);cursor:pointer;
+  font-size:.9rem;transition:all .15s;
+}
+.zoom-btn:hover{background:var(--bg4);color:var(--text)}
+.zoom-info{
+  text-align:center;font-size:.7rem;color:var(--text3);
+  padding:.3rem;font-family:'Space Grotesk',monospace;
+}
+
+/* Side Actions */
+.side-actions{
+  position:fixed;top:70px;right:1rem;z-index:50;
+  display:flex;flex-direction:column;gap:.5rem;
+}
+
+/* Modal */
+.modal-bg{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:1rem;
+}
+.modal-bg.show{display:flex;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{
+  background:linear-gradient(135deg,var(--bg2),var(--bg));
+  border:1px solid var(--border2);border-radius:16px;
+  padding:1.75rem;width:100%;max-width:480px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+  animation:modalIn .3s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes modalIn{from{transform:translateY(20px) scale(.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.modal h2{
+  font-family:'Space Grotesk';font-size:1.25rem;margin-bottom:1.25rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.modal h2 i{color:var(--accent)}
+.field{margin-bottom:1.1rem}
+.field label{
+  display:block;font-size:.72rem;color:var(--text3);
+  margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;
+}
+.input,.select,.textarea{
+  width:100%;padding:.7rem .9rem;border-radius:8px;
+  background:var(--bg3);border:1px solid var(--border2);
+  color:var(--text);font-size:.9rem;font-family:inherit;transition:all .2s;
+}
+.input:focus,.select:focus,.textarea:focus{
+  outline:none;border-color:var(--accent);background:var(--bg4);
+}
+.textarea{resize:vertical;min-height:100px;line-height:1.5}
+.modal-actions{display:flex;gap:.5rem;margin-top:1.5rem}
+.modal-actions .btn{flex:1;justify-content:center;padding:.7rem}
+
+/* Tab bar inside modal */
+.tabs{
+  display:flex;gap:2px;margin-bottom:1.25rem;
+  background:var(--bg3);padding:3px;border-radius:10px;
+}
+.tab{
+  flex:1;padding:.55rem;border-radius:7px;border:none;
+  background:transparent;color:var(--text3);cursor:pointer;
+  font-size:.82rem;font-weight:500;font-family:inherit;transition:all .15s;
+  display:flex;align-items:center;justify-content:center;gap:.4rem;
+}
+.tab:hover{color:var(--text)}
+.tab.active{background:var(--bg);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+
+.tab-pane{display:none}
+.tab-pane.active{display:block;animation:fadeIn .2s ease}
+
+/* AI Generate form */
+.ai-prompt{min-height:120px;font-family:'Inter';line-height:1.5}
+.preset-chips{
+  display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.75rem;
+}
+.chip{
+  padding:.35rem .7rem;border-radius:100px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-size:.75rem;cursor:pointer;
+  transition:all .15s;font-family:inherit;
+}
+.chip:hover{background:var(--bg4);color:var(--accent);border-color:var(--accent)}
+
+/* Loading overlay */
+.loader{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(10,10,11,.85);backdrop-filter:blur(10px);
+  display:none;align-items:center;justify-content:center;
+  flex-direction:column;gap:1rem;
+}
+.loader.show{display:flex}
+.loader-spinner{
+  width:48px;height:48px;border:3px solid var(--border2);
+  border-top-color:var(--accent);border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-text{color:var(--text2);font-size:.9rem}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:6rem;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  padding:.75rem 1.25rem;border-radius:10px;
+  background:rgba(17,17,19,.95);backdrop-filter:blur(20px);
+  border:1px solid var(--border2);
+  display:flex;align-items:center;gap:.6rem;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  z-index:300;opacity:0;pointer-events:none;
+  transition:all .3s;font-size:.88rem;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:var(--accent);color:var(--accent)}
+.toast.error{border-color:#ef4444;color:#ef4444}
+
+/* Empty state */
+.empty{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;color:var(--text3);max-width:400px;
+}
+.empty i{font-size:3rem;margin-bottom:1rem;opacity:.3;color:var(--accent)}
+.empty h3{color:var(--text);margin-bottom:.5rem;font-size:1.1rem}
+.empty p{margin-bottom:1.25rem;font-size:.9rem;line-height:1.5}
+.empty-actions{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
+
+/* Context menu */
+.ctx-menu{
+  position:fixed;z-index:150;
+  background:rgba(17,17,19,.95);backdrop-filter:blur(20px);
+  border:1px solid var(--border2);border-radius:10px;
+  padding:.3rem;min-width:180px;
+  box-shadow:0 12px 40px rgba(0,0,0,.5);display:none;
+}
+.ctx-menu.show{display:block;animation:fadeIn .12s ease}
+.ctx-item{
+  padding:.5rem .7rem;border-radius:7px;cursor:pointer;
+  display:flex;align-items:center;gap:.5rem;
+  font-size:.85rem;color:var(--text2);transition:all .15s;
+}
+.ctx-item:hover{background:var(--bg4);color:var(--text)}
+.ctx-item i{width:14px;color:var(--accent);font-size:.8rem}
+.ctx-item.danger{color:#ef4444}
+.ctx-item.danger i{color:#ef4444}
+.ctx-sep{height:1px;background:var(--border);margin:.25rem 0}
+
+@media(max-width:768px){
+  .topbar-center{display:none}
+  .btn span{display:none}
+  .floating-toolbar{top:60px;padding:.25rem;gap:1px}
+  .tb-btn{width:32px;height:32px;font-size:.8rem}
+  .font-size-display{min-width:24px}
+  .layout-switcher{bottom:1rem}
+  .zoom-ctrl{bottom:1rem;right:.75rem}
+  .side-actions{top:65px;right:.75rem}
+  .mm-node{max-width:240px;font-size:12px;padding:8px 12px}
+}
+@media(max-width:480px){
+  .color-palette{gap:2px}
+  .color-dot{width:16px;height:16px}
+  .layout-btn{padding:.4rem .7rem;font-size:.75rem}
+  .layout-btn span{display:none}
+}
+
+.hidden{display:none!important}
 </style>
 </head>
 <body>
 
-<div class="bg-animation">
-  <div class="bg-grid"></div>
-  <div class="bg-orb bg-orb-1"></div>
-  <div class="bg-orb bg-orb-2"></div>
-  <div class="bg-orb bg-orb-3"></div>
-</div>
-
 <nav class="topbar">
   <a href="index.html" class="logo">
-    <div class="logo-icon">🧠</div>
-    <div class="logo-text">
-      <span class="mega">MEGA</span> <span class="quiz">QUIZ</span>
-    </div>
+    <div class="logo-dot"></div>
+    <div class="logo-text"><span class="mega">MEGA</span> <span class="quiz">QUIZ</span></div>
   </a>
-  <div class="nav-actions">
-    <button class="btn btn-ghost" onclick="showHome()">
-      <i class="fa-solid fa-house"></i>
-      <span>Home</span>
+  
+  <div class="topbar-center">
+    <input class="title-input" id="mapTitle" placeholder="Untitled mind map" value="Indian Modern History (1498-1950)">
+  </div>
+  
+  <div class="topbar-actions">
+    <button class="btn ghost btn-icon" onclick="mmAI()" title="Generate with AI">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
     </button>
-    <button class="btn btn-primary" onclick="openCreateModal()">
-      <i class="fa-solid fa-plus"></i>
-      <span>Create Mind Map</span>
+    <button class="btn ghost btn-icon" onclick="mmBackup()" title="Backup">
+      <i class="fa-solid fa-cloud-arrow-up"></i>
+    </button>
+    <button class="btn ghost btn-icon" onclick="mmExport()" title="Export PNG">
+      <i class="fa-solid fa-download"></i>
+    </button>
+    <button class="btn primary" onclick="openCreateModal()">
+      <i class="fa-solid fa-plus"></i><span> New</span>
     </button>
   </div>
 </nav>
 
-<div class="breadcrumb" id="breadcrumb">
-  <span class="crumb active" onclick="showHome()">
-    <i class="fa-solid fa-house"></i>
-    Home
-  </span>
-</div>
-
-<main>
-  <section id="homeView" class="view active">
-    <div class="hero">
-      <div class="hero-badge">
-        <i class="fa-solid fa-sparkles"></i>
-        Interactive Learning Platform
-      </div>
-      <h1 class="hero-title">
-        Visualize Your<br>
-        <span class="gradient">Knowledge</span>
-      </h1>
-      <p class="hero-subtitle">
-        Create, explore, and connect ideas with interactive mind maps. 
-        Upload SVG files, build from scratch, and share your learning journey.
-      </p>
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-value" id="statClasses">0</div>
-          <div class="stat-label">Classes</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="statMaps">0</div>
-          <div class="stat-label">Mind Maps</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="statNodes">0</div>
-          <div class="stat-label">Total Nodes</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-header">
-      <h2 class="section-title">
-        <div class="icon">
-          <i class="fa-solid fa-layer-group"></i>
-        </div>
-        Browse Classes
-      </h2>
-      <span class="section-count" id="classesCount">0 classes</span>
-    </div>
-    <div class="cards-grid" id="classesGrid"></div>
-  </section>
-
-  <section id="subjectsView" class="view">
-    <div class="section-header">
-      <h2 class="section-title">
-        <div class="icon">
-          <i class="fa-solid fa-book"></i>
-        </div>
-        <span id="subjectsClassName">Subjects</span>
-      </h2>
-      <span class="section-count" id="subjectsCount">0 subjects</span>
-    </div>
-    <div class="cards-grid" id="subjectsGrid"></div>
-  </section>
-
-  <section id="topicsView" class="view">
-    <div class="section-header">
-      <h2 class="section-title">
-        <div class="icon">
-          <i class="fa-solid fa-list"></i>
-        </div>
-        <span id="topicsSubjectName">Topics</span>
-      </h2>
-      <span class="section-count" id="topicsCount">0 topics</span>
-    </div>
-    <div class="cards-grid" id="topicsGrid"></div>
-  </section>
-
-  <section id="subtopicsView" class="view">
-    <div class="section-header">
-      <h2 class="section-title">
-        <div class="icon">
-          <i class="fa-solid fa-list-ul"></i>
-        </div>
-        <span id="subtopicsName">Mind Maps</span>
-      </h2>
-      <span class="section-count" id="subtopicsCount">0 maps</span>
-    </div>
-    <div class="cards-grid" id="subtopicsGrid"></div>
-  </section>
-
-  <section id="viewerView" class="view">
-    <div class="viewer-container">
-      <div class="viewer-toolbar">
-        <button class="toolbar-btn" onclick="mmAddChild()" title="Add child (Tab)">
-          <i class="fa-solid fa-plus"></i>
-        </button>
-        <button class="toolbar-btn" onclick="mmAddSibling()" title="Add sibling (Enter)">
-          <i class="fa-solid fa-grip-lines"></i>
-        </button>
-        <div class="toolbar-sep"></div>
-        <button class="toolbar-btn" onclick="mmFormat('bold')" title="Bold (Ctrl+B)">
-          <i class="fa-solid fa-bold"></i>
-        </button>
-        <button class="toolbar-btn" onclick="mmFormat('italic')" title="Italic (Ctrl+I)">
-          <i class="fa-solid fa-italic"></i>
-        </button>
-        <button class="toolbar-btn" onclick="mmFormat('underline')" title="Underline (Ctrl+U)">
-          <i class="fa-solid fa-underline"></i>
-        </button>
-        <div class="toolbar-sep"></div>
-        <button class="toolbar-btn" onclick="mmCollapseAll()" title="Collapse all">
-          <i class="fa-solid fa-compress"></i>
-        </button>
-        <button class="toolbar-btn" onclick="mmExpandAll()" title="Expand all">
-          <i class="fa-solid fa-expand"></i>
-        </button>
-        <button class="toolbar-btn" onclick="mmCenterView()" title="Center view">
-          <i class="fa-solid fa-crosshairs"></i>
-        </button>
-      </div>
-
-     <button class="btn btn-primary" onclick="mmSave()">
-  <i class="fa-solid fa-cloud-arrow-up"></i>
-  <span>Backup</span>
-</button>
-        <button class="btn" onclick="mmExport()">
-          <i class="fa-solid fa-download"></i>
-          <span>Export</span>
-        </button>
-        <button class="btn btn-primary" onclick="mmSave()">
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-          <span>Save</span>
-        </button>
-      </div>
-
-      <div class="mm-canvas" id="mmCanvas">
-        <svg class="mm-svg" id="mmSvg">
-          <g id="mmLinks"></g>
-          <g id="mmNodes"></g>
-        </svg>
-      </div>
-
-      <div class="zoom-controls">
-        <button class="zoom-btn" onclick="mmZoom(1.2)" title="Zoom in">
-          <i class="fa-solid fa-plus"></i>
-        </button>
-        <div class="zoom-info" id="zoomInfo">100%</div>
-        <button class="zoom-btn" onclick="mmZoom(0.8)" title="Zoom out">
-          <i class="fa-solid fa-minus"></i>
-        </button>
-      </div>
-
-      <div class="minimap" id="minimap" onclick="mmMinimapClick(event)">
-        <svg class="minimap-svg" id="minimapSvg">
-          <g id="minimapContent"></g>
-          <rect class="minimap-viewport" id="minimapViewport"/>
-        </svg>
-      </div>
-    </div>
-  </section>
-</main>
-
-<div class="modal-overlay" id="createModal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-icon">
-        <i class="fa-solid fa-wand-magic-sparkles"></i>
-      </div>
-      <h2 class="modal-title">Create Mind Map</h2>
-    </div>
-    <!-- ===== ব্যাকআপ মডাল ===== -->
-<div class="modal-overlay" id="backupModal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-icon">
-        <i class="fa-solid fa-cloud-arrow-up"></i>
-      </div>
-      <h2 class="modal-title">মাইন্ডম্যাপ ব্যাকআপ নাও</h2>
-    </div>
-    
-    <p style="color:var(--text-tertiary);margin-bottom:1.5rem;font-size:0.95rem;line-height:1.6">
-      আগে দেখে নাও সব ঠিক আছে কিনা। তারপর কোথায় সেভ করবে বেছে নাও।
-    </p>
-    
-    <div style="display:flex;flex-direction:column;gap:0.75rem">
-      <button class="btn btn-primary" onclick="backupToSheet()" style="justify-content:center;padding:1.1rem;font-size:1rem">
-        <i class="fa-solid fa-table"></i>
-        Google Sheet এ সেভ করো
+<div id="canvasWrap">
+  <svg id="mmSvg">
+    <g id="linksG"></g>
+  </svg>
+  <div id="nodesLayer"></div>
+  
+  <div class="empty" id="emptyState" style="display:none">
+    <i class="fa-solid fa-diagram-project"></i>
+    <h3>No mind map yet</h3>
+    <p>Create a new mind map, upload SVG, or generate with AI</p>
+    <div class="empty-actions">
+      <button class="btn primary" onclick="openCreateModal()">
+        <i class="fa-solid fa-plus"></i> Create New
       </button>
-      
-      <button class="btn" onclick="downloadBackupJSON()" style="justify-content:center;padding:1rem">
-        <i class="fa-solid fa-file-arrow-down"></i>
-        JSON ফাইল ডাউনলোড করো
+      <button class="btn" onclick="mmAI()">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> AI Generate
       </button>
-    </div>
-    
-    <div style="margin-top:1.5rem;padding:1rem;background:rgba(234,179,8,0.05);border:1px solid rgba(234,179,8,0.1);border-radius:10px">
-      <p style="color:var(--text-muted);font-size:0.85rem;margin:0;display:flex;align-items:center;gap:0.5rem">
-        <i class="fa-solid fa-lightbulb" style="color:var(--accent-primary)"></i>
-        যদি শীটে না যায়, জসন ফাইল ডাউনলোড হবে। পরে ওটা দিয়ে আবার আপলোড করতে পারবে।
-      </p>
-    </div>
-    
-    <div class="modal-actions" style="margin-top:1.5rem">
-      <button class="btn" onclick="closeBackupModal()">বাতিল করো</button>
     </div>
   </div>
 </div>
 
-    <div class="field">
-      <label class="field-label">Password *</label>
-      <input type="password" class="input" id="createPassword" placeholder="Enter password (mindmap0)">
-    </div>
+<!-- Floating Toolbar -->
+<div class="floating-toolbar">
+  <!-- Add nodes -->
+  <button class="tb-btn" onclick="mmAddChild()" title="Add child (Tab)"><i class="fa-solid fa-plus"></i></button>
+  <button class="tb-btn" onclick="mmAddSibling()" title="Add sibling (Enter)"><i class="fa-solid fa-grip-lines"></i></button>
+  <div class="tb-sep"></div>
+  
+  <!-- Font size -->
+  <div class="font-size-ctrl">
+    <button class="tb-btn" onclick="mmChangeFontSize(-1)" title="Decrease font"><i class="fa-solid fa-minus"></i></button>
+    <div class="font-size-display" id="fontSizeDisplay">14</div>
+    <button class="tb-btn" onclick="mmChangeFontSize(1)" title="Increase font"><i class="fa-solid fa-plus"></i></button>
+  </div>
+  <div class="tb-sep"></div>
+  
+  <!-- Format -->
+  <button class="tb-btn" id="btnBold" onclick="mmFormat('bold')" title="Bold (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
+  <button class="tb-btn" id="btnItalic" onclick="mmFormat('italic')" title="Italic (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
+  <button class="tb-btn" id="btnUnderline" onclick="mmFormat('underline')" title="Underline"><i class="fa-solid fa-underline"></i></button>
+  <div class="tb-sep"></div>
+  
+  <!-- Colors -->
+  <div class="color-palette" id="colorPalette">
+    <div class="color-dot" style="background:#f59e0b" onclick="mmSetColor('#f59e0b')"></div>
+    <div class="color-dot" style="background:#a78bfa" onclick="mmSetColor('#a78bfa')"></div>
+    <div class="color-dot" style="background:#60a5fa" onclick="mmSetColor('#60a5fa')"></div>
+    <div class="color-dot" style="background:#34d399" onclick="mmSetColor('#34d399')"></div>
+    <div class="color-dot" style="background:#f472b6" onclick="mmSetColor('#f472b6')"></div>
+    <div class="color-dot" style="background:#fb923c" onclick="mmSetColor('#fb923c')"></div>
+    <div class="color-dot" style="background:#22d3ee" onclick="mmSetColor('#22d3ee')"></div>
+  </div>
+  <div class="tb-sep"></div>
+  
+  <!-- View -->
+  <button class="tb-btn" onclick="mmCollapseAll()" title="Collapse all"><i class="fa-solid fa-compress"></i></button>
+  <button class="tb-btn" onclick="mmExpandAll()" title="Expand all"><i class="fa-solid fa-expand"></i></button>
+  <button class="tb-btn" onclick="mmFit()" title="Fit view"><i class="fa-solid fa-crosshairs"></i></button>
+</div>
 
-    <div class="field">
-      <label class="field-label">Class *</label>
-      <input class="input" id="createClass" placeholder="e.g. Class 10">
-    </div>
+<!-- Layout Switcher -->
+<div class="layout-switcher">
+  <button class="layout-btn active" data-layout="timeline" onclick="setLayout('timeline')">
+    <i class="fa-solid fa-arrow-right"></i><span> Timeline</span>
+  </button>
+  <button class="layout-btn" data-layout="tree" onclick="setLayout('tree')">
+    <i class="fa-solid fa-sitemap"></i><span> Tree</span>
+  </button>
+  <button class="layout-btn" data-layout="radial" onclick="setLayout('radial')">
+    <i class="fa-solid fa-circle-nodes"></i><span> Radial</span>
+  </button>
+</div>
 
-    <div class="field">
-      <label class="field-label">Subject *</label>
-      <input class="input" id="createSubject" placeholder="e.g. History">
-    </div>
+<!-- Zoom Controls -->
+<div class="zoom-ctrl">
+  <button class="zoom-btn" onclick="mmZoom(1.25)"><i class="fa-solid fa-plus"></i></button>
+  <div class="zoom-info" id="zoomInfo">100%</div>
+  <button class="zoom-btn" onclick="mmZoom(0.8)"><i class="fa-solid fa-minus"></i></button>
+</div>
 
-    <div class="field">
-      <label class="field-label">Topic *</label>
-      <input class="input" id="createTopic" placeholder="e.g. Modern India">
+<!-- Create Modal -->
+<div class="modal-bg" id="createModal">
+  <div class="modal">
+    <h2><i class="fa-solid fa-wand-magic-sparkles"></i> New Mind Map</h2>
+    
+    <div class="tabs">
+      <button class="tab active" data-tab="blank" onclick="switchTab('blank')">
+        <i class="fa-solid fa-file"></i> Blank
+      </button>
+      <button class="tab" data-tab="upload" onclick="switchTab('upload')">
+        <i class="fa-solid fa-upload"></i> Upload SVG
+      </button>
+      <button class="tab" data-tab="ai" onclick="switchTab('ai')">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> AI
+      </button>
     </div>
-
-    <div class="field">
-      <label class="field-label">Subtopic</label>
-      <input class="input" id="createSubtopic" placeholder="e.g. 1857 Revolt (optional)">
-    </div>
-
-    <div class="field">
-      <label class="field-label">Upload SVG (Optional)</label>
-      <div class="drop-zone" id="dropZone" onclick="document.getElementById('svgFile').click()" style="padding:2rem;border:2px dashed var(--border-medium);border-radius:var(--radius-md);text-align:center;cursor:pointer;transition:all 0.3s">
-        <i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem;color:var(--accent-primary);margin-bottom:0.5rem"></i>
-        <p style="color:var(--text-secondary);font-size:0.95rem">Click or drag SVG file here</p>
-        <small style="color:var(--text-muted);font-size:0.8rem;margin-top:0.25rem;display:block">Supports .svg files</small>
+    
+    <!-- Blank Tab -->
+    <div class="tab-pane active" id="tab-blank">
+      <div class="field">
+        <label>Title</label>
+        <input class="input" id="newBlankTitle" placeholder="e.g. World War II Timeline" autofocus>
       </div>
-      <input type="file" id="svgFile" accept=".svg" style="display:none">
     </div>
-
+    
+    <!-- Upload Tab -->
+    <div class="tab-pane" id="tab-upload">
+      <div class="field">
+        <label>Upload SVG File</label>
+        <input type="file" class="input" id="svgFile" accept=".svg" style="padding:.5rem">
+        <small style="color:var(--text3);font-size:.75rem;margin-top:.3rem;display:block">
+          Supported: SVG files exported from mind map tools
+        </small>
+      </div>
+      <div class="field">
+        <label>Title</label>
+        <input class="input" id="newUploadTitle" placeholder="Mind map title">
+      </div>
+    </div>
+    
+    <!-- AI Tab -->
+    <div class="tab-pane" id="tab-ai">
+      <div class="preset-chips">
+        <span class="chip" onclick="setAIPreset('history')">📜 History timeline</span>
+        <span class="chip" onclick="setAIPreset('science')">🔬 Science concepts</span>
+        <span class="chip" onclick="setAIPreset('math')">📐 Math formulas</span>
+        <span class="chip" onclick="setAIPreset('book')">📖 Book summary</span>
+        <span class="chip" onclick="setAIPreset('language')">🗣️ Language learning</span>
+      </div>
+      <div class="field">
+        <label>Topic / Prompt</label>
+        <textarea class="textarea ai-prompt" id="aiPrompt" placeholder="e.g. Create a mind map about the French Revolution with key events, causes, and outcomes"></textarea>
+      </div>
+    </div>
+    
     <div class="modal-actions">
       <button class="btn" onclick="closeModal('createModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="handleCreate()">
-        <i class="fa-solid fa-bolt"></i>
-        Create & Save
+      <button class="btn primary" id="createBtn" onclick="handleCreate()">
+        <i class="fa-solid fa-bolt"></i> Create
       </button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="editModal">
+<!-- Backup Modal -->
+<div class="modal-bg" id="backupModal">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-icon">
-        <i class="fa-solid fa-pen-to-square"></i>
-      </div>
-      <h2 class="modal-title">Edit Mind Map</h2>
-    </div>
-
-    <div class="field">
-      <label class="field-label">Password *</label>
-      <input type="password" class="input" id="editPassword" placeholder="Enter password to enable editing">
-    </div>
-
-    <p style="color:var(--text-tertiary);font-size:0.85rem;margin-bottom:1.5rem">
-      Editing mode allows you to modify nodes, add children, and save changes back to Google Sheet.
+    <h2><i class="fa-solid fa-cloud-arrow-up"></i> Backup Mind Map</h2>
+    <p style="color:var(--text3);margin-bottom:1.25rem;font-size:.88rem;line-height:1.5">
+      Mind map is saved locally. Choose where to backup:
     </p>
-
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('editModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="handleEdit()">
-        <i class="fa-solid fa-unlock"></i>
-        Unlock Editing
+    <div style="display:flex;flex-direction:column;gap:.5rem">
+      <button class="btn primary" onclick="backupToSheet()" style="justify-content:center;padding:.9rem">
+        <i class="fa-solid fa-table"></i> Save to Google Sheet
       </button>
+      <button class="btn" onclick="downloadBackupJSON()" style="justify-content:center;padding:.8rem">
+        <i class="fa-solid fa-file-arrow-down"></i> Download JSON
+      </button>
+    </div>
+    <div style="margin-top:1.25rem;padding:.85rem;background:var(--bg3);border-radius:10px">
+      <p style="color:var(--text3);font-size:.78rem;margin:0;display:flex;align-items:start;gap:.4rem">
+        <i class="fa-solid fa-lightbulb" style="color:var(--accent);margin-top:2px"></i>
+        <span>JSON backup can be re-imported anytime. Changes auto-save to browser storage.</span>
+      </p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('backupModal')">Close</button>
     </div>
   </div>
 </div>
 
+<!-- AI Loading Modal -->
+<div class="modal-bg" id="aiModal">
+  <div class="modal" style="text-align:center;padding:2.5rem">
+    <div class="loader-spinner" style="margin:0 auto 1rem"></div>
+    <h2 style="justify-content:center"><i class="fa-solid fa-wand-magic-sparkles"></i> AI is thinking...</h2>
+    <p style="color:var(--text3);font-size:.88rem">Generating your mind map structure</p>
+  </div>
+</div>
+
+<!-- Context Menu -->
 <div class="ctx-menu" id="ctxMenu">
-  <div class="ctx-item" onclick="ctxEdit()">
-    <i class="fa-solid fa-pen"></i>
-    Edit Text
-  </div>
-  <div class="ctx-item" onclick="ctxAddChild()">
-    <i class="fa-solid fa-plus"></i>
-    Add Child
-  </div>
-  <div class="ctx-item" onclick="ctxAddSibling()">
-    <i class="fa-solid fa-grip-lines"></i>
-    Add Sibling
-  </div>
+  <div class="ctx-item" onclick="ctxEdit()"><i class="fa-solid fa-pen"></i> Edit text</div>
+  <div class="ctx-item" onclick="ctxAddChild()"><i class="fa-solid fa-plus"></i> Add child</div>
+  <div class="ctx-item" onclick="ctxAddSibling()"><i class="fa-solid fa-grip-lines"></i> Add sibling</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-item" onclick="ctxBold()">
-    <i class="fa-solid fa-bold"></i>
-    Toggle Bold
-  </div>
-  <div class="ctx-item" onclick="ctxColor()">
-    <i class="fa-solid fa-palette"></i>
-    Change Color
-  </div>
-  <div class="ctx-item" onclick="ctxCollapse()">
-    <i class="fa-solid fa-compress"></i>
-    Toggle Collapse
-  </div>
+  <div class="ctx-item" onclick="ctxBold()"><i class="fa-solid fa-bold"></i> Toggle bold</div>
+  <div class="ctx-item" onclick="ctxColor()"><i class="fa-solid fa-palette"></i> Random color</div>
+  <div class="ctx-item" onclick="ctxCollapse()"><i class="fa-solid fa-compress"></i> Toggle collapse</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-item danger" onclick="ctxDelete()">
-    <i class="fa-solid fa-trash"></i>
-    Delete
-  </div>
+  <div class="ctx-item danger" onclick="ctxDelete()"><i class="fa-solid fa-trash"></i> Delete</div>
 </div>
 
 <div class="toast" id="toast">
@@ -1634,1370 +589,1195 @@ main {
 </div>
 
 <script>
+// ===== CONFIG =====
 const CONFIG = {
   SHEET_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQ7k5BSCdOKc27LOEAmSgSe0aBcMNhnK45hSPIlH2RBsh4Jo50Wx3NbGcO-vsEni9eTPIMVuUQHdVT/pub?output=tsv',
-  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxbjOtPR-UAq5etBeHd0nxrY_76Pj0gEPCfLBddGLEk_PIxMSAIa23UEF-Jc3ePfXwN/exec',
+  AI_URL: 'https://megaquizwb.vercel.app/api/ai',
+  SHEET_SAVE_URL: 'https://megaquizwb.vercel.app/api/update-sheet',
+  STORAGE_KEY: 'megaquiz_mindmaps_v3',
   PASSWORD: 'mindmap0'
 };
 
-let state = {
-  sheetData: [],
-  currentPath: [],
-  mindMap: null,
-  selectedNode: null,
-  zoom: 1,
-  offset: {x: 0, y: 0},
-  isDragging: false,
-  dragStart: null,
-  isDark: true,
-  isEditMode: false,
-  uploadedSvg: null
+// ===== STATE =====
+let mindMap = null;
+let selectedNode = null;
+let currentLayout = 'timeline';
+let zoom = 1, panX = 0, panY = 0;
+let isDragging = false, dragStart = null;
+let currentTab = 'blank';
+let autoSaveTimer = null;
+
+// ===== DEFAULT DEMO (from your SVG) =====
+const demoData = {
+  id: 'root', text: 'Indian Modern History (1498–1950)',
+  style: { color: '#f59e0b', bold: true, fontSize: 16 },
+  children: [
+    {
+      id: uid(), text: '1498–1550: Sea Route & Early Mughal Rise',
+      style: { color: '#4f69e8', fontSize: 14 },
+      children: [
+        { id: uid(), text: '1498: Vasco da Gama reaches Calicut, opening European sea route to India', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1500: Pedro Alvarez Cabral establishes factory at Calicut', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1505: Francisco de Almeida becomes first Portuguese Governor at Cochin', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1510: Afonso de Albuquerque captures Goa as Portuguese capital in Asia', style: { fontSize: 13 }, children: [
+          { id: uid(), text: 'Real founder of Portuguese power in the East', style: { fontSize: 12 }, children: [] },
+          { id: uid(), text: 'First European territory in India', style: { fontSize: 12 }, children: [] },
+          { id: uid(), text: 'Abolition of sati', style: { fontSize: 12 }, children: [] },
+          { id: uid(), text: 'Introduced tobacco, cashew nut', style: { fontSize: 12 }, children: [] }
+        ]},
+        { id: uid(), text: '1526: Babur defeats Ibrahim Lodi at First Panipat, founds Mughal Empire', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1527: Babur defeats Rana Sanga at Khanwa', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1540: Sher Shah Suri defeats Humayun at Kannauj', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1545: Sher Shah dies after introducing Grand Trunk Road', style: { fontSize: 13 }, children: [] }
+      ]
+    },
+    {
+      id: uid(), text: '1551–1600: Akbar\'s Empire & English Entry',
+      style: { color: '#f29f7c', fontSize: 14 },
+      children: [
+        { id: uid(), text: '1556: Akbar crowned at Kalanaur; Second Panipat defeats Hemu', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1565: Battle of Talikota destroys Vijayanagara Empire', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1575: Akbar founds Ibadat Khana for religious discussions', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1576: Battle of Haldighati — Rana Pratap vs Man Singh', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1582: Akbar introduces Din-i-Ilahi syncretic faith', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1598: Abul Fazl completes Ain-i-Akbari', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1600: Queen Elizabeth I grants charter to East India Company', style: { fontSize: 13 }, children: [] }
+      ]
+    },
+    {
+      id: uid(), text: '1601–1650: Jahangir, Shah Jahan & English Foothold',
+      style: { color: '#4caa70', fontSize: 14 },
+      children: [
+        { id: uid(), text: '1608: Captain Hawkins at Jahangir\'s Agra court', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1611: British first factory at Masulipatnam (temporary)', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1612: Captain Best defeats Portuguese at Swally; factory at Surat', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1613: Jahangir grants permanent factory at Surat', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1615: Sir Thomas Roe arrives as ambassador', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1627: Jahangir dies; Shah Jahan succeeds', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1632: Mughals capture Portuguese Hooghly', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1632: Taj Mahal construction begins at Agra', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1639: Fort St George built in Madras', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1648: Taj Mahal completed; Shahjahanabad founded', style: { fontSize: 13 }, children: [] }
+      ]
+    },
+    {
+      id: uid(), text: '1651–1700: Aurangzeb, Marathas & Company Expansion',
+      style: { color: '#2566df', fontSize: 14 },
+      children: [
+        { id: uid(), text: '1658: Aurangzeb imprisons Shah Jahan, takes throne', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1661: Bombay given to England as dowry from Portugal', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1664: Shivaji sacks Surat; French East India Company founded', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1665: Treaty of Purandar between Shivaji & Mirza Raja Jai Singh', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1668: Charles II leases Bombay to EIC', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1674: Shivaji crowned at Raigad; French Pondicherry founded', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1679: Aurangzeb reimposes jizya tax', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1690: Job Charnock establishes Calcutta', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1699: Guru Gobind Singh founds Khalsa at Anandpur', style: { fontSize: 13 }, children: [] }
+      ]
+    },
+    {
+      id: uid(), text: '1701–1750: Mughal Decline & Regional Powers',
+      style: { color: '#6178eb', fontSize: 14 },
+      children: [
+        { id: uid(), text: '1707: Aurangzeb dies; Bahadur Shah I succeeds', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1717: Farrukhsiyar\'s farman grants duty-free trade rights', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1720: Baji Rao I becomes Peshwa; Maratha expansion', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1722: Nizam-ul-Mulk founds Hyderabad state', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1737: Baji Rao I raids Delhi, exposes Mughal weakness', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1739: Nadir Shah sacks Delhi, takes Peacock Throne', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1746: First Carnatic War — French capture Madras', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1748: Treaty of Aix-la-Chapelle returns Madras to British', style: { fontSize: 13 }, children: [] }
+      ]
+    },
+    {
+      id: uid(), text: '1751–1800: Battles, Company Rule & Governor-Generals',
+      style: { color: '#ff6384', fontSize: 14 },
+      children: [
+        { id: uid(), text: '1751: Robert Clive\'s defence of Arcot', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1757: Battle of Plassey — Clive defeats Siraj-ud-Daulah', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1761: Third Panipat — Abdali defeats Marathas', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1764: Battle of Buxar — Company defeats alliance', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1765: Diwani of Bengal, Bihar, Orissa granted to Company', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1773: Regulating Act; Warren Hastings first Governor-General', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1784: Pitt\'s India Act creates Board of Control', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1793: Permanent Settlement by Cornwallis', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1798: Wellesley introduces Subsidiary Alliance', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1799: Tipu Sultan dies in Fourth Anglo-Mysore War', style: { fontSize: 13 }, children: [] }
+      ]
+    },
+    {
+      id: uid(), text: '1801–1850: Expansion, Reform & Resistance',
+      style: { color: '#ffce54', fontSize: 14 },
+      children: [
+        { id: uid(), text: '1803: Lord Lake captures Delhi', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1813: Charter Act ends Company\'s trade monopoly', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1817: Hindu College founded in Calcutta', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1818: Third Anglo-Maratha War ends Maratha power', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1829: Bentinck bans sati through Regulation XVII', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1833: Charter Act — first Governor-General of India', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1835: Macaulay\'s Minute on English education', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1848: Dalhousie applies Doctrine of Lapse', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1849: Punjab annexed after Second Anglo-Sikh War', style: { fontSize: 13 }, children: [] }
+      ]
+    },
+    {
+      id: uid(), text: '1851–1900: Revolt, Crown Rule & Congress',
+      style: { color: '#4bc0c0', fontSize: 14 },
+      children: [
+        { id: uid(), text: '1853: First passenger train Bombay to Thane', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1857: Great Revolt begins at Meerut', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1858: Crown takes over; Canning first Viceroy', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1861: Indian Councils Act & High Courts Act', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1876: Victoria proclaimed Empress of India', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1878: Vernacular Press Act & Arms Act', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1885: Indian National Congress founded in Bombay', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1892: Indian Councils Act expands legislature', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1899: Lord Curzon becomes Viceroy', style: { fontSize: 13 }, children: [] }
+      ]
+    },
+    {
+      id: uid(), text: '1901–1950: Freedom Movement to Republic',
+      style: { color: '#9966ff', fontSize: 14 },
+      children: [
+        { id: uid(), text: '1905: Partition of Bengal; Swadeshi movement', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1906: Muslim League founded at Dhaka', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1909: Morley-Minto Reforms', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1911: Partition annulled; capital shifts to Delhi', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1915: Gandhi returns from South Africa', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1916: Lucknow Pact between Congress & League', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1919: Rowlatt Act; Jallianwala Bagh massacre', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1920: Non-Cooperation Movement launched', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1929: Lahore Congress adopts Purna Swaraj', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1930: Dandi March; Civil Disobedience Movement', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1935: Government of India Act 1935', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1940: Lahore Resolution demands separate states', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1942: Quit India Movement launched', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1946: Cabinet Mission; Direct Action Day riots', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1947: Independence; India & Pakistan created', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1948: Gandhi assassinated on 30 January', style: { fontSize: 13 }, children: [] },
+        { id: uid(), text: '1950: Constitution comes into force; India becomes republic', style: { fontSize: 13 }, children: [] }
+      ]
+    }
+  ]
 };
 
-function uid() {
-  return 'id' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
-}
+function uid(){return 'n'+Math.random().toString(36).substr(2,9)+Date.now().toString(36)}
 
-function showLoader(text = 'Loading...') {
-  document.getElementById('loaderText').textContent = text;
+// ===== UTILITIES =====
+function toast(msg,type='info'){
+  const t=document.getElementById('toast');
+  document.getElementById('toastText').textContent=msg;
+  t.className='toast show '+type;
+  const icons={success:'circle-check',error:'circle-exclamation',info:'circle-info'};
+  t.querySelector('i').className='fa-solid fa-'+(icons[type]||'info');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+function showLoader(t='Loading...'){
+  document.getElementById('loaderText').textContent=t;
   document.getElementById('loader').classList.add('show');
 }
+function hideLoader(){document.getElementById('loader').classList.remove('show')}
+function openModal(id){document.getElementById(id).classList.add('show')}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
 
-function hideLoader() {
-  document.getElementById('loader').classList.remove('show');
-}
-
-function toast(message, type = 'info') {
-  const t = document.getElementById('toast');
-  document.getElementById('toastText').textContent = message;
-  t.className = 'toast show ' + type;
-  const icons = {
-    success: 'circle-check',
-    error: 'circle-exclamation',
-    info: 'circle-info'
-  };
-  t.querySelector('i').className = 'fa-solid fa-' + (icons[type] || 'info');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-function openModal(id) {
-  document.getElementById(id).classList.add('show');
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('show');
-}
-
-function showView(id) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
-async function loadSheetData() {
-  showLoader('Loading mind maps from sheet...');
-  try {
-    const response = await fetch(CONFIG.SHEET_URL);
-    const text = await response.text();
-    const lines = text.trim().split('\n');
-    
-    if (lines.length < 2) {
-      state.sheetData = [];
-      hideLoader();
-      return;
+// ===== AUTO SAVE =====
+function scheduleAutoSave(){
+  if(autoSaveTimer)clearTimeout(autoSaveTimer);
+  autoSaveTimer=setTimeout(()=>{
+    if(mindMap){
+      try{
+        localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify({
+          mindMap,
+          title: document.getElementById('mapTitle').value,
+          layout: currentLayout,
+          savedAt: new Date().toISOString()
+        }));
+      }catch(e){console.warn('Autosave failed',e)}
     }
-    
-    const headers = lines[0].split('\t');
-    state.sheetData = [];
-    
-    for (let i = 1; i < lines.length; i++) {
-      const cols = lines[i].split('\t');
-      const row = {};
-      headers.forEach((h, idx) => {
-        row[h.trim()] = cols[idx] || '';
-      });
-      
-      try {
-        if (row.MindMapData) {
-          row.MindMapData = JSON.parse(row.MindMapData);
-        }
-      } catch (e) {
-        row.MindMapData = null;
-      }
-      
-      state.sheetData.push(row);
-    }
-    
-    hideLoader();
-    updateStats();
-  } catch (error) {
-    console.error('Error loading sheet data:', error);
-    toast('Failed to load data from sheet', 'error');
-    state.sheetData = [];
-    hideLoader();
-  }
+  },1000);
 }
 
-function updateStats() {
-  const classes = new Set(state.sheetData.map(r => r.Class).filter(Boolean));
-  const totalNodes = state.sheetData.reduce((sum, r) => {
-    if (r.MindMapData) {
-      return sum + countNodes(r.MindMapData);
-    }
-    return sum;
-  }, 0);
-  
-  document.getElementById('statClasses').textContent = classes.size;
-  document.getElementById('statMaps').textContent = state.sheetData.length;
-  document.getElementById('statNodes').textContent = totalNodes;
-}
-
-function countNodes(data) {
-  if (!data) return 0;
-  let count = 1;
-  function walk(node) {
-    if (node.children) {
-      node.children.forEach(child => {
-        count++;
-        walk(child);
-      });
-    }
-  }
-  walk(data);
-  return count;
-}
-
-function updateBreadcrumb() {
-  const bc = document.getElementById('breadcrumb');
-  let html = '<span class="crumb" onclick="showHome()"><i class="fa-solid fa-house"></i> Home</span>';
-  
-  state.currentPath.forEach((p, i) => {
-    html += '<span class="crumb-sep"><i class="fa-solid fa-chevron-right"></i></span>';
-    const icons = {
-      class: 'layer-group',
-      subject: 'book',
-      topic: 'list',
-      subtopic: 'list-ul'
-    };
-    const isLast = i === state.currentPath.length - 1;
-    const label = p.name || p.id;
-    
-    if (isLast) {
-      html += `<span class="crumb active"><i class="fa-solid fa-${icons[p.type] || 'circle'}"></i> ${label}</span>`;
-    } else {
-      html += `<span class="crumb" onclick="navigateTo(${i})"><i class="fa-solid fa-${icons[p.type] || 'circle'}"></i> ${label}</span>`;
-    }
-  });
-  
-  bc.innerHTML = html;
-}
-
-function showHome() {
-  state.currentPath = [];
-  updateBreadcrumb();
-  renderClasses();
-  showView('homeView');
-}
-
-function navigateTo(index) {
-  state.currentPath = state.currentPath.slice(0, index + 1);
-  const last = state.currentPath[state.currentPath.length - 1];
-  if (!last) {
-    showHome();
-    return;
-  }
-  if (last.type === 'class') enterClass(last.id);
-  else if (last.type === 'subject') enterSubject(last.id);
-  else if (last.type === 'topic') enterTopic(last.id);
-  else if (last.type === 'subtopic') enterSubtopic(last.id);
-}
-
-function renderClasses() {
-  const grid = document.getElementById('classesGrid');
-  const classes = [...new Set(state.sheetData.map(r => r.Class).filter(Boolean))];
-  
-  let html = '';
-  classes.forEach((cls, i) => {
-    const count = state.sheetData.filter(r => r.Class === cls).length;
-    html += `
-      <div class="card" onclick="enterClass('${cls}')">
-        <div class="card-icon">
-          <i class="fa-solid fa-graduation-cap"></i>
-        </div>
-        <div class="card-content">
-          <div class="card-label">Class</div>
-          <div class="card-title">${cls}</div>
-          <div class="card-desc">${count} mind map${count !== 1 ? 's' : ''} available</div>
-        </div>
-        <div class="card-footer">
-          <div class="card-meta">
-            <i class="fa-solid fa-diagram-project"></i>
-            ${count} maps
-          </div>
-          <div class="card-arrow">
-            <i class="fa-solid fa-arrow-right"></i>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  
-  html += `
-    <div class="card card-add" onclick="openCreateModal()">
-      <div class="card-add-icon">
-        <i class="fa-solid fa-plus"></i>
-      </div>
-      <div class="card-add-text">Create New Mind Map</div>
-    </div>
-  `;
-  
-  grid.innerHTML = html;
-  document.getElementById('classesCount').textContent = `${classes.length} classes`;
-}
-
-function enterClass(className) {
-  state.currentPath = [{type: 'class', id: className, name: className}];
-  updateBreadcrumb();
-  document.getElementById('subjectsClassName').textContent = className + ' — Subjects';
-  renderSubjects(className);
-  showView('subjectsView');
-}
-
-function renderSubjects(className) {
-  const grid = document.getElementById('subjectsGrid');
-  const subjects = [...new Set(
-    state.sheetData
-      .filter(r => r.Class === className)
-      .map(r => r.Subject)
-      .filter(Boolean)
-  )];
-  
-  let html = '';
-  subjects.forEach((subj, i) => {
-    const count = state.sheetData.filter(r => r.Class === className && r.Subject === subj).length;
-    html += `
-      <div class="card" onclick="enterSubject('${subj}')">
-        <div class="card-icon" style="background:linear-gradient(135deg,rgba(167,139,250,0.15),rgba(167,139,250,0.05));color:var(--purple)">
-          <i class="fa-solid fa-book"></i>
-        </div>
-        <div class="card-content">
-          <div class="card-label">Subject</div>
-          <div class="card-title">${subj}</div>
-          <div class="card-desc">${count} topic${count !== 1 ? 's' : ''}</div>
-        </div>
-        <div class="card-footer">
-          <div class="card-meta">
-            <i class="fa-solid fa-list"></i>
-            ${count} topics
-          </div>
-          <div class="card-arrow">
-            <i class="fa-solid fa-arrow-right"></i>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  
-  html += `
-    <div class="card card-add" onclick="openCreateModal()">
-      <div class="card-add-icon">
-        <i class="fa-solid fa-plus"></i>
-      </div>
-      <div class="card-add-text">Add New Subject</div>
-    </div>
-  `;
-  
-  grid.innerHTML = html;
-  document.getElementById('subjectsCount').textContent = `${subjects.length} subjects`;
-}
-
-function enterSubject(subjectName) {
-  state.currentPath.push({type: 'subject', id: subjectName, name: subjectName});
-  updateBreadcrumb();
-  document.getElementById('topicsSubjectName').textContent = subjectName + ' — Topics';
-  renderTopics(state.currentPath[0].name, subjectName);
-  showView('topicsView');
-}
-
-function renderTopics(className, subjectName) {
-  const grid = document.getElementById('topicsGrid');
-  const topics = [...new Set(
-    state.sheetData
-      .filter(r => r.Class === className && r.Subject === subjectName)
-      .map(r => r.Topic)
-      .filter(Boolean)
-  )];
-  
-  let html = '';
-  topics.forEach((topic, i) => {
-    const count = state.sheetData.filter(r => 
-      r.Class === className && r.Subject === subjectName && r.Topic === topic
-    ).length;
-    html += `
-      <div class="card" onclick="enterTopic('${topic}')">
-        <div class="card-icon" style="background:linear-gradient(135deg,rgba(96,165,250,0.15),rgba(96,165,250,0.05));color:var(--blue)">
-          <i class="fa-solid fa-list"></i>
-        </div>
-        <div class="card-content">
-          <div class="card-label">Topic</div>
-          <div class="card-title">${topic}</div>
-          <div class="card-desc">${count} mind map${count !== 1 ? 's' : ''}</div>
-        </div>
-        <div class="card-footer">
-          <div class="card-meta">
-            <i class="fa-solid fa-diagram-project"></i>
-            ${count} maps
-          </div>
-          <div class="card-arrow">
-            <i class="fa-solid fa-arrow-right"></i>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  
-  html += `
-    <div class="card card-add" onclick="openCreateModal()">
-      <div class="card-add-icon">
-        <i class="fa-solid fa-plus"></i>
-      </div>
-      <div class="card-add-text">Add New Topic</div>
-    </div>
-  `;
-  
-  grid.innerHTML = html;
-  document.getElementById('topicsCount').textContent = `${topics.length} topics`;
-}
-
-function enterTopic(topicName) {
-  state.currentPath.push({type: 'topic', id: topicName, name: topicName});
-  updateBreadcrumb();
-  document.getElementById('subtopicsName').textContent = topicName + ' — Mind Maps';
-  renderSubtopics(state.currentPath[0].name, state.currentPath[1].name, topicName);
-  showView('subtopicsView');
-}
-
-function renderSubtopics(className, subjectName, topicName) {
-  const grid = document.getElementById('subtopicsGrid');
-  const maps = state.sheetData.filter(r => 
-    r.Class === className && r.Subject === subjectName && r.Topic === topicName
-  );
-  
-  let html = '';
-  maps.forEach((map, i) => {
-    const subtopic = map.Subtopic || 'Main';
-    const nodeCount = map.MindMapData ? countNodes(map.MindMapData) : 0;
-    html += `
-      <div class="card" onclick="openMindMap('${map.ID}')">
-        <div class="card-icon" style="background:linear-gradient(135deg,rgba(52,211,153,0.15),rgba(52,211,153,0.05));color:var(--green)">
-          <i class="fa-solid fa-diagram-project"></i>
-        </div>
-        <div class="card-content">
-          <div class="card-label">Mind Map</div>
-          <div class="card-title">${subtopic}</div>
-          <div class="card-desc">${nodeCount} nodes • Click to view</div>
-        </div>
-        <div class="card-footer">
-          <div class="card-meta">
-            <i class="fa-solid fa-circle-nodes"></i>
-            ${nodeCount} nodes
-          </div>
-          <div class="card-arrow">
-            <i class="fa-solid fa-arrow-right"></i>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  
-  if (maps.length === 0) {
-    html = `
-      <div class="empty-state">
-        <div class="empty-state-icon">
-          <i class="fa-solid fa-folder-open"></i>
-        </div>
-        <h3>No mind maps yet</h3>
-        <p>Create your first mind map for this topic</p>
-        <button class="btn btn-primary" onclick="openCreateModal()">
-          <i class="fa-solid fa-plus"></i>
-          Create Mind Map
-        </button>
-      </div>
-    `;
-  } else {
-    html += `
-      <div class="card card-add" onclick="openCreateModal()">
-        <div class="card-add-icon">
-          <i class="fa-solid fa-plus"></i>
-        </div>
-        <div class="card-add-text">Create New Mind Map</div>
-      </div>
-    `;
-  }
-  
-  grid.innerHTML = html;
-  document.getElementById('subtopicsCount').textContent = `${maps.length} mind maps`;
-}
-
-function openMindMap(id) {
-  const map = state.sheetData.find(r => r.ID === id);
-  if (!map || !map.MindMapData) {
-    toast('Mind map not found or invalid', 'error');
-    return;
-  }
-  
-  state.mindMap = map.MindMapData;
-  state.mindMap._id = map.ID;
-  state.mindMap._class = map.Class;
-  state.mindMap._subject = map.Subject;
-  state.mindMap._topic = map.Topic;
-  state.mindMap._subtopic = map.Subtopic;
-  state.selectedNode = state.mindMap;
-  state.isEditMode = false;
-  
-  showView('viewerView');
-  setTimeout(() => {
-    mmCenterView();
-    mmRender();
-  }, 100);
-}
-
-function openCreateModal() {
-  document.getElementById('createPassword').value = '';
-  document.getElementById('createClass').value = '';
-  document.getElementById('createSubject').value = '';
-  document.getElementById('createTopic').value = '';
-  document.getElementById('createSubtopic').value = '';
-  
-  if (state.currentPath.length > 0) {
-    document.getElementById('createClass').value = state.currentPath[0].name;
-  }
-  if (state.currentPath.length > 1) {
-    document.getElementById('createSubject').value = state.currentPath[1].name;
-  }
-  if (state.currentPath.length > 2) {
-    document.getElementById('createTopic').value = state.currentPath[2].name;
-  }
-  
+// ===== CREATE MODAL =====
+function openCreateModal(){
+  document.getElementById('newBlankTitle').value='';
+  document.getElementById('newUploadTitle').value='';
+  document.getElementById('aiPrompt').value='';
+  document.getElementById('svgFile').value='';
+  switchTab('blank');
   openModal('createModal');
-  setTimeout(() => document.getElementById('createPassword').focus(), 100);
 }
 
-const dropZone = document.getElementById('dropZone');
-const svgFile = document.getElementById('svgFile');
+function switchTab(tab){
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('active',p.id==='tab-'+tab));
+}
 
-svgFile.addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    state.uploadedSvg = ev.target.result;
-    dropZone.querySelector('p').innerHTML = `<b style="color:var(--accent-primary)">✓ ${file.name}</b>`;
+function setAIPreset(type){
+  const prompts = {
+    history: 'Create a detailed timeline mind map about [TOPIC]. Include key dates, events, people, and outcomes. Organize chronologically with 5-8 main time periods as branches.',
+    science: 'Create a mind map explaining [TOPIC]. Break down into main concepts, sub-concepts, examples, and applications. Use hierarchical structure.',
+    math: 'Create a mind map of mathematical formulas and concepts for [TOPIC]. Organize by categories, include formulas, examples, and applications.',
+    book: 'Create a mind map summarizing the book [TOPIC]. Include main themes, characters, plot points, symbols, and key quotes.',
+    language: 'Create a mind map for learning [TOPIC]. Include grammar rules, vocabulary categories, common phrases, and practice examples.'
   };
-  reader.readAsText(file);
-});
+  document.getElementById('aiPrompt').value = prompts[type] || '';
+}
 
-['dragenter', 'dragover'].forEach(ev => {
-  dropZone.addEventListener(ev, e => {
-    e.preventDefault();
-    dropZone.style.borderColor = 'var(--accent-primary)';
-    dropZone.style.background = 'rgba(234, 179, 8, 0.05)';
-  });
-});
+async function handleCreate(){
+  if(currentTab === 'blank'){
+    const title = document.getElementById('newBlankTitle').value.trim();
+    if(!title){toast('Enter a title','error');return}
+    mindMap = {
+      id: uid(), text: title,
+      style: { color: '#f59e0b', bold: true, fontSize: 16 },
+      children: [
+        { id: uid(), text: 'Main idea 1', style: { color: '#a78bfa', fontSize: 14 }, children: [] },
+        { id: uid(), text: 'Main idea 2', style: { color: '#60a5fa', fontSize: 14 }, children: [] },
+        { id: uid(), text: 'Main idea 3', style: { color: '#34d399', fontSize: 14 }, children: [] }
+      ]
+    };
+    closeModal('createModal');
+    finishCreate(title);
+  }
+  else if(currentTab === 'upload'){
+    const fileInput = document.getElementById('svgFile');
+    const title = document.getElementById('newUploadTitle').value.trim();
+    if(!title){toast('Enter a title','error');return}
+    if(fileInput.files.length === 0){toast('Select an SVG file','error');return}
+    
+    showLoader('Parsing SVG...');
+    const reader = new FileReader();
+    reader.onload = async (e)=>{
+      mindMap = await parseSVG(e.target.result, title);
+      hideLoader();
+      closeModal('createModal');
+      finishCreate(title);
+      toast('SVG parsed successfully!','success');
+    };
+    reader.readAsText(fileInput.files[0]);
+  }
+  else if(currentTab === 'ai'){
+    const prompt = document.getElementById('aiPrompt').value.trim();
+    if(!prompt){toast('Enter a prompt','error');return}
+    closeModal('createModal');
+    await generateWithAI(prompt);
+  }
+}
 
-['dragleave', 'drop'].forEach(ev => {
-  dropZone.addEventListener(ev, e => {
-    e.preventDefault();
-    dropZone.style.borderColor = '';
-    dropZone.style.background = '';
-  });
-});
+function finishCreate(title){
+  document.getElementById('mapTitle').value = title;
+  document.getElementById('emptyState').style.display='none';
+  selectedNode = mindMap;
+  mmRender();
+  setTimeout(mmFit, 100);
+  scheduleAutoSave();
+}
 
-dropZone.addEventListener('drop', e => {
-  const file = e.dataTransfer.files[0];
-  if (!file) return;
-  svgFile.files = e.dataTransfer.files;
-  svgFile.dispatchEvent(new Event('change'));
-});
+// ===== AI GENERATION =====
+async function generateWithAI(prompt){
+  openModal('aiModal');
+  
+  const systemPrompt = `You are a mind map generator. Given a topic, return a JSON mind map structure.
+Return ONLY valid JSON, no markdown, no explanation.
+Format:
+{
+  "id": "root",
+  "text": "Main Topic",
+  "style": {"color": "#f59e0b", "bold": true, "fontSize": 16},
+  "children": [
+    {
+      "id": "unique_id",
+      "text": "Branch name",
+      "style": {"color": "#hex", "fontSize": 14},
+      "children": [
+        {"id": "id", "text": "Leaf", "style": {"fontSize": 12}, "children": []}
+      ]
+    }
+  ]
+}
+Use different colors from: #f59e0b, #a78bfa, #60a5fa, #34d399, #f472b6, #fb923c, #22d3ee, #9966ff, #4bc0c0, #ff6384
+Create 4-8 main branches with 2-5 sub-nodes each. Make it comprehensive and educational.`;
 
-async function handleCreate() {
-  const password = document.getElementById('createPassword').value;
-  const className = document.getElementById('createClass').value.trim();
-  const subject = document.getElementById('createSubject').value.trim();
-  const topic = document.getElementById('createTopic').value.trim();
-  const subtopic = document.getElementById('createSubtopic').value.trim() || 'Main';
-  
-  if (!password) {
-    toast('পাসওয়ার্ড দাও!', 'error');
-    return;
-  }
-  
-  if (password !== CONFIG.PASSWORD) {
-    toast('ভুল পাসওয়ার্ড!', 'error');
-    return;
-  }
-  
-  if (!className || !subject || !topic) {
-    toast('সব ঘর পূরণ করো!', 'error');
-    return;
-  }
-  
-  let mindmapData;
-  if (state.uploadedSvg) {
-    mindmapData = parseSVG(state.uploadedSvg, subtopic);
-    toast('SVG থেকে মাইন্ডম্যাপ তৈরি হয়েছে!', 'success');
-  } else {
-    mindmapData = createDefaultMap(subtopic);
-  }
-  
-  // সব ডাটা সেট করো
-  state.mindMap = mindmapData;
-  state.mindMap._class = className;
-  state.mindMap._subject = subject;
-  state.mindMap._topic = topic;
-  state.mindMap._subtopic = subtopic;
-  state.mindMap._id = 'mm_' + Date.now();
-  state.selectedNode = state.mindMap;
-  state.isEditMode = true;
-  
-  // লোকাল সেভ করো
-  saveToLocal();
-  
-  // মডাল বন্ধ করো
-  closeModal('createModal');
-  state.uploadedSvg = null;
-  
-  // প্রিভিউ দেখাও
-  showView('viewerView');
-  setTimeout(() => {
-    mmCenterView();
+  try {
+    const response = await fetch(CONFIG.AI_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: systemPrompt,
+        user: prompt
+      })
+    });
+    
+    if (!response.ok) throw new Error('AI API error: ' + response.status);
+    const data = await response.json();
+    
+    // Parse JSON from response
+    let text = data.text || '';
+    // Remove markdown code blocks if present
+    text = text.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+    
+    // Try to extract JSON
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON found in response');
+    
+    const parsed = JSON.parse(jsonMatch[0]);
+    
+    // Validate and fix structure
+    mindMap = fixAIResponse(parsed, prompt);
+    
+    closeModal('aiModal');
+    document.getElementById('mapTitle').value = mindMap.text;
+    document.getElementById('emptyState').style.display='none';
+    selectedNode = mindMap;
     mmRender();
-  }, 100);
-  
-  toast('🎉 মাইন্ডম্যাপ তৈরি হয়েছে! এখন দেখো, সব ঠিক থাকলে "Backup" টিপো', 'success');
-}
-
-function openEditModal() {
-  document.getElementById('editPassword').value = '';
-  openModal('editModal');
-  setTimeout(() => document.getElementById('editPassword').focus(), 100);
-}
-
-function handleEdit() {
-  const password = document.getElementById('editPassword').value;
-  
-  if (password === CONFIG.PASSWORD) {
-    state.isEditMode = true;
-    closeModal('editModal');
-    toast('Editing mode enabled! You can now modify the mind map.', 'success');
-  } else {
-    toast('Wrong password', 'error');
+    setTimeout(mmFit, 100);
+    scheduleAutoSave();
+    toast('AI mind map generated!','success');
+    
+  } catch (error) {
+    closeModal('aiModal');
+    console.error('AI generation failed:', error);
+    toast('AI failed: ' + error.message + '. Using fallback.','error');
+    // Fallback to demo
+    mindMap = JSON.parse(JSON.stringify(demoData));
+    mindMap.text = 'AI Failed - Demo Data';
+    document.getElementById('mapTitle').value = mindMap.text;
+    document.getElementById('emptyState').style.display='none';
+    selectedNode = mindMap;
+    mmRender();
+    setTimeout(mmFit, 100);
   }
 }
 
-function parseSVG(svgText, title) {
+function fixAIResponse(obj, fallbackTitle){
+  // Recursively fix the mindmap structure
+  function fix(node, depth=0){
+    if(!node || typeof node !== 'object') return null;
+    
+    const fixed = {
+      id: node.id || uid(),
+      text: String(node.text || node.content || 'Untitled').trim() || 'Untitled',
+      style: node.style || {},
+      children: []
+    };
+    
+    // Default styles
+    if(!fixed.style.fontSize){
+      fixed.style.fontSize = depth === 0 ? 16 : depth === 1 ? 14 : depth === 2 ? 13 : 12;
+    }
+    if(!fixed.style.color && depth > 0){
+      const colors = ['#a78bfa','#60a5fa','#34d399','#f472b6','#fb923c','#22d3ee','#9966ff','#4bc0c0'];
+      fixed.style.color = colors[(depth - 1) % colors.length];
+    }
+    if(depth === 0){
+      fixed.style.color = '#f59e0b';
+      fixed.style.bold = true;
+    }
+    
+    // Process children
+    const kids = node.children || node.items || node.subtopics || [];
+    if(Array.isArray(kids)){
+      fixed.children = kids.map(k => fix(k, depth + 1)).filter(Boolean);
+    }
+    
+    return fixed;
+  }
+  
+  const result = fix(obj, 0);
+  return result || {
+    id: uid(), text: fallbackTitle || 'Untitled',
+    style: { color: '#f59e0b', bold: true, fontSize: 16 },
+    children: []
+  };
+}
+
+// ===== SVG PARSER =====
+async function parseSVG(svgText, title){
   const parser = new DOMParser();
   const doc = parser.parseFromString(svgText, 'image/svg+xml');
   const nodes = Array.from(doc.querySelectorAll('.smm-node'));
   
-  if (nodes.length === 0) {
-    return createDefaultMap(title);
+  if(nodes.length === 0){
+    return { id: uid(), text: title, style: { color: '#f59e0b' }, children: [] };
   }
   
-  const nodeData = [];
-  nodes.forEach((node, idx) => {
-    const texts = Array.from(node.querySelectorAll('tspan'))
-      .map(t => t.textContent.trim())
-      .filter(t => t && t !== '');
-    const text = texts.join(' ').trim();
-    
+  const extracted = [];
+  nodes.forEach(node => {
     const transform = node.getAttribute('transform') || '';
     const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+),([^)]+)\)/);
-    const x = match ? parseFloat(match[1]) : idx * 100;
+    const x = match ? parseFloat(match[1]) : 0;
     const y = match ? parseFloat(match[2]) : 0;
     
-    if (text) {
-      nodeData.push({text, x, y});
+    // Get font size
+    const textEl = node.querySelector('text');
+    const fontSize = textEl ? parseInt(textEl.style.fontSize || 16) : 16;
+    
+    // Get all tspan texts
+    const texts = [];
+    node.querySelectorAll('tspan').forEach(ts => {
+      const t = ts.textContent.trim();
+      if(t && t !== '' && t !== '\ufeff') texts.push(t);
+    });
+    const text = texts.join(' ').replace(/\s+/g, ' ').trim();
+    
+    if(text && text.length > 1){
+      extracted.push({ text, x, y, fontSize });
     }
   });
   
-  if (nodeData.length === 0) {
-    return createDefaultMap(title);
-  }
+  if(extracted.length === 0) return { id: uid(), text: title, children: [] };
   
-  nodeData.sort((a, b) => a.x - b.x);
+  // Sort by x
+  extracted.sort((a,b) => a.x - b.x);
   
-  const root = {
-    id: uid(),
-    text: nodeData[0].text,
-    style: {color: '#eab308', bold: true},
+  // Root is typically the one with biggest font at lowest x
+  const rootCandidates = extracted.filter(n => n.fontSize >= 20);
+  const root = rootCandidates.length > 0 ? rootCandidates[0] : extracted[0];
+  
+  const tree = {
+    id: uid(), text: root.text,
+    style: { color: '#f59e0b', bold: true, fontSize: 16 },
     children: []
   };
   
-  for (let i = 1; i < nodeData.length; i++) {
-    const child = {
-      id: uid(),
-      text: nodeData[i].text,
-      style: {color: ['#a78bfa', '#60a5fa', '#34d399', '#f472b6'][i % 4]},
-      children: []
-    };
-    root.children.push(child);
+  // Group remaining by x position into branches
+  const others = extracted.filter(n => n !== root);
+  const branchThreshold = root.x + 400; // nodes within this are branches
+  const leafThreshold = 300; // leaf spacing
+  
+  let currentBranch = null;
+  let lastBranchX = -1000;
+  
+  others.forEach(n => {
+    if(n.fontSize >= 18 || (n.x - lastBranchX > leafThreshold && n.fontSize >= 16)){
+      // New branch
+      currentBranch = {
+        id: uid(),
+        text: n.text,
+        style: {
+          color: ['#a78bfa','#60a5fa','#34d399','#f472b6','#fb923c','#22d3ee','#9966ff','#4bc0c0'][tree.children.length % 8],
+          fontSize: 14
+        },
+        children: []
+      };
+      tree.children.push(currentBranch);
+      lastBranchX = n.x;
+    } else if(currentBranch){
+      currentBranch.children.push({
+        id: uid(),
+        text: n.text,
+        style: { fontSize: 12 },
+        children: []
+      });
+    }
+  });
+  
+  return tree;
+}
+
+function mmAI(){
+  document.getElementById('aiPrompt').value='';
+  switchTab('ai');
+  // Switch to AI tab directly if modal closed, else open modal
+  if(!document.getElementById('createModal').classList.contains('show')){
+    openCreateModal();
+    switchTab('ai');
+  }
+}
+
+// ===== LAYOUT ALGORITHMS =====
+function layoutTimeline(root){
+  const H_GAP = 280;
+  const V_GAP = 60;
+  
+  function measure(node){
+    const style = node.style || {};
+    const fontSize = style.fontSize || 14;
+    const textLen = node.text.length;
+    const maxChars = Math.max(20, Math.floor(320 / (fontSize * 0.55)));
+    const lines = Math.ceil(textLen / maxChars);
+    return Math.max(44, lines * (fontSize * 1.4) + 20);
   }
   
-  return root;
+  function layout(node, depth, startY){
+    node._depth = depth;
+    node._x = depth * H_GAP;
+    node._h = measure(node);
+    
+    const kids = (node.children || []).filter(c => !node.collapsed);
+    if(kids.length === 0){
+      node._y = startY + node._h / 2;
+      return node._h;
+    }
+    
+    let totalHeight = 0;
+    let childY = startY;
+    kids.forEach(child => {
+      const h = layout(child, depth + 1, childY);
+      childY += h + V_GAP;
+      totalHeight += h + V_GAP;
+    });
+    totalHeight -= V_GAP;
+    
+    const first = kids[0], last = kids[kids.length - 1];
+    node._y = (first._y + last._y) / 2;
+    
+    return Math.max(node._h, totalHeight);
+  }
+  
+  layout(root, 0, 0);
+  
+  let minY = Infinity, maxY = -Infinity;
+  (function walk(n){
+    minY = Math.min(minY, n._y);
+    maxY = Math.max(maxY, n._y);
+    (n.children||[]).forEach(walk);
+  })(root);
+  
+  const centerY = (minY + maxY) / 2;
+  (function walk(n){
+    n._y -= centerY;
+    (n.children||[]).forEach(walk);
+  })(root);
 }
 
-function createDefaultMap(title) {
-  return {
-    id: uid(),
-    text: title,
-    style: {color: '#eab308', bold: true},
-    children: [
-      {
-        id: uid(),
-        text: 'Key Concepts',
-        style: {color: '#a78bfa'},
-        children: [
-          {id: uid(), text: 'Concept 1', children: []},
-          {id: uid(), text: 'Concept 2', children: []}
-        ]
-      },
-      {
-        id: uid(),
-        text: 'Examples',
-        style: {color: '#60a5fa'},
-        children: [
-          {id: uid(), text: 'Example A', children: []},
-          {id: uid(), text: 'Example B', children: []}
-        ]
-      },
-      {
-        id: uid(),
-        text: 'Summary',
-        style: {color: '#34d399'},
-        children: []
+function layoutTree(root){
+  const hierarchy = d3.hierarchy(root, d => d.children && !d.collapsed ? d.children : null);
+  const tree = d3.tree().nodeSize([180, 140]).separation((a,b) => a.parent===b.parent ? 1 : 1.4);
+  tree(hierarchy);
+  
+  hierarchy.each(d => {
+    d.data._x = d.y;
+    d.data._y = d.x;
+    d.data._depth = d.depth;
+  });
+}
+
+function layoutRadial(root){
+  const hierarchy = d3.hierarchy(root, d => d.children && !d.collapsed ? d.children : null);
+  const tree = d3.tree().size([2*Math.PI, 320]).separation((a,b) => (a.parent===b.parent ? 1 : 2) / Math.max(1, a.depth));
+  tree(hierarchy);
+  
+  hierarchy.each(d => {
+    const angle = d.x;
+    const radius = d.y;
+    d.data._x = radius * Math.cos(angle - Math.PI/2);
+    d.data._y = radius * Math.sin(angle - Math.PI/2);
+    d.data._depth = d.depth;
+  });
+}
+
+// ===== RENDER =====
+function mmRender(){
+  if(!mindMap){
+    document.getElementById('emptyState').style.display='block';
+    document.getElementById('linksG').innerHTML='';
+    document.getElementById('nodesLayer').innerHTML='';
+    return;
+  }
+  document.getElementById('emptyState').style.display='none';
+  
+  if(currentLayout==='timeline') layoutTimeline(mindMap);
+  else if(currentLayout==='tree') layoutTree(mindMap);
+  else layoutRadial(mindMap);
+  
+  renderLinks();
+  renderNodes();
+  updateToolbarState();
+}
+
+function renderLinks(){
+  const linksG = document.getElementById('linksG');
+  linksG.innerHTML='';
+  
+  function draw(node){
+    const kids = (node.children||[]).filter(c => !node.collapsed);
+    kids.forEach(child => {
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      const sx=node._x, sy=node._y, tx=child._x, ty=child._y;
+      let d;
+      if(currentLayout==='timeline'){
+        const mx = (sx+tx)/2;
+        d = `M${sx},${sy} C${mx},${sy} ${mx},${ty} ${tx},${ty}`;
+      } else if(currentLayout==='tree'){
+        const my = (sy+ty)/2;
+        d = `M${sx},${sy} C${sx},${my} ${tx},${my} ${tx},${ty}`;
+      } else {
+        d = `M${sx},${sy} L${tx},${ty}`;
       }
-    ]
-  };
+      path.setAttribute('d',d);
+      path.setAttribute('class','mm-link');
+      path.setAttribute('stroke', child.style?.color || '#f59e0b');
+      if(selectedNode && (node.id===selectedNode.id || child.id===selectedNode.id)){
+        path.classList.add('highlight');
+      }
+      linksG.appendChild(path);
+      draw(child);
+    });
+  }
+  draw(mindMap);
 }
 
-function mmRender() {
-  const canvas = document.getElementById('mmCanvas');
-  const svg = document.getElementById('mmSvg');
-  const linksG = document.getElementById('mmLinks');
-  const nodesG = document.getElementById('mmNodes');
+function renderNodes(){
+  const layer = document.getElementById('nodesLayer');
+  layer.innerHTML='';
   
-  linksG.innerHTML = '';
-  nodesG.querySelectorAll('foreignObject').forEach(n => n.remove());
-  
-  if (!state.mindMap) return;
-  
-  const hierarchy = d3.hierarchy(state.mindMap, d => d.children && !d.collapsed ? d.children : null);
-  const layout = d3.tree()
-    .nodeSize([150, 300])
-    .separation((a, b) => a.parent === b.parent ? 1.5 : 2);
-  layout(hierarchy);
-  
-  const w = canvas.clientWidth;
-  const h = canvas.clientHeight;
-  hierarchy.each(n => {
-    n.px = n.y + w / 2;
-    n.py = n.x + h / 2;
-  });
-  
-  const transform = `translate(${state.offset.x},${state.offset.y}) scale(${state.zoom})`;
-  nodesG.setAttribute('transform', transform);
-  linksG.setAttribute('transform', transform);
-  
-  hierarchy.links().forEach(link => {
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    const sx = link.source.px, sy = link.source.py;
-    const tx = link.target.px, ty = link.target.py;
-    const mx = (sx + tx) / 2;
-    path.setAttribute('d', `M${sx},${sy} C${mx},${sy} ${mx},${ty} ${tx},${ty}`);
-    path.setAttribute('class', 'mm-link');
-    path.setAttribute('stroke', link.target.data.style?.color || '#eab308');
-    path.setAttribute('stroke-width', '2');
-    path.setAttribute('fill', 'none');
-    path.setAttribute('opacity', '0.6');
-    linksG.appendChild(path);
-  });
-  
-  hierarchy.each(n => {
-    const d = n.data;
-    const depth = n.depth;
-    
-    const fo = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
-    fo.setAttribute('x', n.px - 160);
-    fo.setAttribute('y', n.py - 40);
-    fo.setAttribute('width', 320);
-    fo.setAttribute('height', 100);
-    fo.style.overflow = 'visible';
-    
+  function drawNode(node){
+    const style = node.style || {};
+    const depth = node._depth || 0;
     const div = document.createElement('div');
     div.className = `mm-node depth-${Math.min(depth, 4)}`;
-    if (depth === 0) {
-      div.classList.remove('depth-0');
-      div.classList.add('root');
-    }
-    div.style.position = 'absolute';
-    div.style.left = '50%';
-    div.style.top = '50%';
-    div.style.transform = 'translate(-50%, -50%)';
-    div.dataset.id = d.id;
-    if (d.collapsed) div.dataset.collapsed = 'true';
-    if (state.selectedNode && state.selectedNode.id === d.id) {
-      div.classList.add('selected');
-    }
+    if(depth===0){div.classList.remove('depth-0');div.classList.add('root')}
     
-    if (d.style) {
-      if (d.style.color) {
-        const c = d.style.color;
-        if (depth === 0) {
-          div.style.background = `linear-gradient(135deg, ${c}, ${shade(c, -0.2)})`;
-        } else {
-          div.style.background = `linear-gradient(135deg, ${c}, ${shade(c, -0.25)})`;
-        }
-      }
-      if (d.style.bold) div.style.fontWeight = '700';
-      if (d.style.italic) div.style.fontStyle = 'italic';
-      if (d.style.underline) div.style.textDecoration = 'underline';
+    div.style.left = (node._x * zoom + panX) + 'px';
+    div.style.top = (node._y * zoom + panY) + 'px';
+    div.style.transform = `translate(-50%,-50%) scale(${zoom})`;
+    div.style.transformOrigin = 'center center';
+    
+    // Apply styles
+    if(style.color && depth > 0){
+      div.style.background = `linear-gradient(135deg, ${style.color}, ${shade(style.color, -0.25)})`;
     }
+    if(style.fontSize) div.style.fontSize = style.fontSize + 'px';
+    if(style.bold) div.style.fontWeight = '700';
+    if(style.italic) div.style.fontStyle = 'italic';
+    if(style.underline) div.style.textDecoration = 'underline';
+    
+    div.dataset.id = node.id;
+    if(node.collapsed) div.dataset.collapsed = 'true';
+    if(selectedNode && selectedNode.id === node.id) div.classList.add('selected');
     
     const textSpan = document.createElement('span');
-    textSpan.textContent = d.text;
-    textSpan.className = 'node-text';
+    textSpan.textContent = node.text;
+    textSpan.style.flex = '1';
     div.appendChild(textSpan);
     
-    if (d.children && d.children.length > 0) {
+    if(node.children && node.children.length > 0){
       const toggle = document.createElement('span');
-      toggle.className = 'toggle';
-      toggle.textContent = d.collapsed ? '+' : d.children.length;
+      toggle.className='toggle';
+      toggle.textContent = node.collapsed ? '+' : node.children.length;
       toggle.onclick = (e) => {
         e.stopPropagation();
-        mmToggleCollapse(d.id);
+        node.collapsed = !node.collapsed;
+        mmRender();
+        scheduleAutoSave();
       };
       div.appendChild(toggle);
     }
     
     div.onclick = (e) => {
       e.stopPropagation();
-      if (!state.isEditMode) {
-        openEditModal();
-        return;
-      }
-      state.selectedNode = d;
+      selectedNode = node;
       mmRender();
     };
+    
     div.ondblclick = (e) => {
       e.stopPropagation();
-      if (!state.isEditMode) {
-        openEditModal();
-        return;
-      }
-      mmEditNode(div, d);
-    };
-    div.oncontextmenu = (e) => {
-      e.preventDefault();
-      if (!state.isEditMode) {
-        openEditModal();
-        return;
-      }
-      mmShowCtx(e, d);
+      editNodeInline(div, node);
     };
     
-    fo.appendChild(div);
-    nodesG.appendChild(fo);
-  });
+    div.oncontextmenu = (e) => {
+      e.preventDefault();
+      selectedNode = node;
+      showCtxMenu(e, node);
+    };
+    
+    layer.appendChild(div);
+    
+    if(!node.collapsed){
+      (node.children||[]).forEach(drawNode);
+    }
+  }
   
-  updateMinimap();
+  drawNode(mindMap);
+  updateTransform();
 }
 
-function shade(hex, amt) {
-  const n = parseInt(hex.replace('#', ''), 16);
-  let r = (n >> 16) + Math.round(255 * amt);
-  let g = ((n >> 8) & 0xff) + Math.round(255 * amt);
-  let b = (n & 0xff) + Math.round(255 * amt);
-  r = Math.max(0, Math.min(255, r));
-  g = Math.max(0, Math.min(255, g));
-  b = Math.max(0, Math.min(255, b));
-  return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
+function updateTransform(){
+  document.getElementById('linksG').setAttribute('transform', `translate(${panX},${panY}) scale(${zoom})`);
 }
 
-function mmToggleCollapse(id) {
-  const n = findNode(state.mindMap, id);
-  if (!n) return;
-  n.collapsed = !n.collapsed;
-  mmRender();
+function updateToolbarState(){
+  if(!selectedNode){
+    document.getElementById('fontSizeDisplay').textContent = '—';
+    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected'));
+    ['btnBold','btnItalic','btnUnderline'].forEach(id => document.getElementById(id).classList.remove('active'));
+    return;
+  }
+  const style = selectedNode.style || {};
+  document.getElementById('fontSizeDisplay').textContent = style.fontSize || 14;
+  document.querySelectorAll('.color-dot').forEach(d => {
+    d.classList.toggle('selected', d.style.background === style.color);
+  });
+  document.getElementById('btnBold').classList.toggle('active', !!style.bold);
+  document.getElementById('btnItalic').classList.toggle('active', !!style.italic);
+  document.getElementById('btnUnderline').classList.toggle('active', !!style.underline);
 }
 
-function mmEditNode(divEl, d) {
-  const textEl = divEl.querySelector('.node-text');
-  const old = d.text;
+function shade(hex, amt){
+  const n = parseInt(hex.replace('#',''),16);
+  let r = Math.max(0,Math.min(255, (n>>16) + Math.round(255*amt)));
+  let g = Math.max(0,Math.min(255, ((n>>8)&0xff) + Math.round(255*amt)));
+  let b = Math.max(0,Math.min(255, (n&0xff) + Math.round(255*amt)));
+  return '#' + ((r<<16)|(g<<8)|b).toString(16).padStart(6,'0');
+}
+
+// ===== INLINE EDIT =====
+function editNodeInline(divEl, node){
+  const textEl = divEl.querySelector('span:first-child');
+  const old = node.text;
   textEl.contentEditable = 'true';
+  divEl.style.minWidth = '200px';
   textEl.focus();
   document.execCommand('selectAll', false, null);
   
   const finish = () => {
     textEl.contentEditable = 'false';
-    d.text = textEl.textContent.trim() || old;
+    node.text = textEl.textContent.trim() || old;
     textEl.removeEventListener('blur', finish);
     textEl.removeEventListener('keydown', kh);
     mmRender();
+    scheduleAutoSave();
   };
-  
-  const kh = e => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      finish();
-    }
-    if (e.key === 'Escape') {
-      textEl.textContent = old;
-      finish();
-    }
+  const kh = (e) => {
+    if(e.key==='Enter' && !e.shiftKey){e.preventDefault();finish()}
+    if(e.key==='Escape'){textEl.textContent=old;finish()}
   };
-  
   textEl.addEventListener('blur', finish);
   textEl.addEventListener('keydown', kh);
 }
 
-function mmAddChild() {
-  if (!state.isEditMode) {
-    openEditModal();
-    return;
-  }
-  if (!state.selectedNode) {
-    toast('Select a node first', 'error');
-    return;
-  }
-  if (!state.selectedNode.children) state.selectedNode.children = [];
-  const child = {id: uid(), text: 'New node', children: []};
-  state.selectedNode.children.push(child);
-  if (state.selectedNode.collapsed) state.selectedNode.collapsed = false;
-  state.selectedNode = child;
+// ===== OPERATIONS =====
+function mmAddChild(){
+  if(!selectedNode){toast('Select a node','error');return}
+  if(!selectedNode.children) selectedNode.children=[];
+  const child = {
+    id: uid(),
+    text: 'New node',
+    style: {
+      color: ['#a78bfa','#60a5fa','#34d399','#f472b6','#fb923c','#22d3ee'][selectedNode.children.length % 6],
+      fontSize: Math.max(12, (selectedNode.style?.fontSize || 14) - 1)
+    },
+    children: []
+  };
+  selectedNode.children.push(child);
+  selectedNode.collapsed = false;
+  selectedNode = child;
   mmRender();
-  setTimeout(() => {
+  scheduleAutoSave();
+  setTimeout(()=>{
     const all = document.querySelectorAll('.mm-node');
-    for (const el of all) {
-      if (el.dataset.id === child.id) {
-        mmEditNode(el, child);
-        break;
-      }
+    for(const el of all){
+      if(el.dataset.id===child.id){editNodeInline(el,child);break}
     }
   }, 100);
 }
 
-function mmAddSibling() {
-  if (!state.isEditMode) {
-    openEditModal();
-    return;
-  }
-  if (!state.selectedNode) {
-    toast('Select a node', 'error');
-    return;
-  }
-  if (state.selectedNode === state.mindMap) {
-    mmAddChild();
-    return;
-  }
-  const p = findParent(state.mindMap, state.selectedNode.id);
-  if (!p) return;
-  const sib = {id: uid(), text: 'New node', children: []};
-  if (!p.children) p.children = [];
-  p.children.push(sib);
-  state.selectedNode = sib;
+function mmAddSibling(){
+  if(!selectedNode){toast('Select a node','error');return}
+  if(selectedNode === mindMap){mmAddChild();return}
+  const parent = findParent(mindMap, selectedNode.id);
+  if(!parent) return;
+  const idx = parent.children.indexOf(selectedNode);
+  const sib = {
+    id: uid(),
+    text: 'New node',
+    style: {
+      color: ['#a78bfa','#60a5fa','#34d399','#f472b6','#fb923c','#22d3ee'][(idx+1) % 6],
+      fontSize: selectedNode.style?.fontSize || 14
+    },
+    children: []
+  };
+  parent.children.splice(idx+1, 0, sib);
+  selectedNode = sib;
   mmRender();
-  setTimeout(() => {
+  scheduleAutoSave();
+  setTimeout(()=>{
     const all = document.querySelectorAll('.mm-node');
-    for (const el of all) {
-      if (el.dataset.id === sib.id) {
-        mmEditNode(el, sib);
-        break;
-      }
+    for(const el of all){
+      if(el.dataset.id===sib.id){editNodeInline(el,sib);break}
     }
   }, 100);
 }
 
-function mmFormat(f) {
-  if (!state.isEditMode) {
-    openEditModal();
-    return;
-  }
-  if (!state.selectedNode) return;
-  if (!state.selectedNode.style) state.selectedNode.style = {};
-  state.selectedNode.style[f] = !state.selectedNode.style[f];
+function mmFormat(f){
+  if(!selectedNode){toast('Select a node','error');return}
+  if(!selectedNode.style) selectedNode.style={};
+  selectedNode.style[f] = !selectedNode.style[f];
   mmRender();
+  scheduleAutoSave();
 }
 
-function mmCollapseAll() {
-  (function walk(n) {
-    if (n.children) {
+function mmChangeFontSize(delta){
+  if(!selectedNode){toast('Select a node','error');return}
+  if(!selectedNode.style) selectedNode.style={};
+  const current = selectedNode.style.fontSize || 14;
+  const next = Math.max(10, Math.min(32, current + delta * 2));
+  selectedNode.style.fontSize = next;
+  mmRender();
+  scheduleAutoSave();
+}
+
+function mmSetColor(color){
+  if(!selectedNode){toast('Select a node','error');return}
+  if(!selectedNode.style) selectedNode.style={};
+  selectedNode.style.color = color;
+  mmRender();
+  scheduleAutoSave();
+}
+
+function mmCollapseAll(){
+  (function walk(n){
+    if(n.children && n.children.length){
       n.collapsed = true;
       n.children.forEach(walk);
     }
-  })(state.mindMap);
-  state.mindMap.collapsed = false;
+  })(mindMap);
+  mindMap.collapsed = false;
   mmRender();
+  scheduleAutoSave();
 }
 
-function mmExpandAll() {
-  (function walk(n) {
+function mmExpandAll(){
+  (function walk(n){
     n.collapsed = false;
-    if (n.children) n.children.forEach(walk);
-  })(state.mindMap);
+    if(n.children) n.children.forEach(walk);
+  })(mindMap);
+  mmRender();
+  scheduleAutoSave();
+}
+
+function mmFit(){
+  if(!mindMap) return;
+  const wrap = document.getElementById('canvasWrap');
+  const w = wrap.clientWidth;
+  const h = wrap.clientHeight;
+  
+  let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+  (function walk(n){
+    minX=Math.min(minX,n._x||0);maxX=Math.max(maxX,n._x||0);
+    minY=Math.min(minY,n._y||0);maxY=Math.max(maxY,n._y||0);
+    (n.children||[]).forEach(walk);
+  })(mindMap);
+  
+  const cw = maxX-minX+500, ch = maxY-minY+300;
+  zoom = Math.min(w/cw, h/ch, 1.5);
+  zoom = Math.max(zoom, 0.2);
+  panX = w/2 - ((minX+maxX)/2)*zoom;
+  panY = h/2 - ((minY+maxY)/2)*zoom;
+  
+  document.getElementById('zoomInfo').textContent = Math.round(zoom*100)+'%';
   mmRender();
 }
 
-function mmCenterView() {
-  state.zoom = 1;
-  state.offset = {x: 0, y: 0};
+function mmZoom(factor){
+  const wrap = document.getElementById('canvasWrap');
+  const cx = wrap.clientWidth/2, cy = wrap.clientHeight/2;
+  const newZoom = Math.max(0.2, Math.min(4, zoom*factor));
+  panX = cx - (cx-panX)*(newZoom/zoom);
+  panY = cy - (cy-panY)*(newZoom/zoom);
+  zoom = newZoom;
+  document.getElementById('zoomInfo').textContent = Math.round(zoom*100)+'%';
   mmRender();
 }
 
-function mmZoom(factor) {
-  state.zoom = Math.max(0.2, Math.min(4, state.zoom * factor));
-  document.getElementById('zoomInfo').textContent = Math.round(state.zoom * 100) + '%';
+function setLayout(layout){
+  currentLayout = layout;
+  document.querySelectorAll('.layout-btn').forEach(b=>b.classList.toggle('active',b.dataset.layout===layout));
   mmRender();
+  setTimeout(mmFit, 50);
+  scheduleAutoSave();
 }
 
-function mmToggleTheme() {
-  state.isDark = !state.isDark;
-  document.getElementById('mmCanvas').classList.toggle('light-mode', !state.isDark);
-  document.getElementById('themeBtn').innerHTML = state.isDark ?
-    '<i class="fa-solid fa-moon"></i>' :
-    '<i class="fa-solid fa-sun"></i>';
-  mmRender();
+// ===== BACKUP =====
+function mmBackup(){
+  if(!mindMap){toast('No mind map to backup','error');return}
+  openModal('backupModal');
 }
 
-function mmExport() {
-  const canvas = document.getElementById('mmCanvas');
-  document.querySelector('.viewer-toolbar').style.display = 'none';
-  document.querySelector('.viewer-actions').style.display = 'none';
-  document.querySelector('.zoom-controls').style.display = 'none';
-  document.getElementById('minimap').style.display = 'none';
-  
-  html2canvas(canvas, {
-    backgroundColor: state.isDark ? '#0a0a0a' : '#fafafa',
-    scale: 2,
-    useCORS: true
-  }).then(c => {
-    document.querySelector('.viewer-toolbar').style.display = '';
-    document.querySelector('.viewer-actions').style.display = '';
-    document.querySelector('.zoom-controls').style.display = '';
-    document.getElementById('minimap').style.display = '';
-    
-    const a = document.createElement('a');
-    a.download = (state.mindMap._subtopic || state.mindMap.text || 'mindmap') + '.png';
-    a.href = c.toDataURL();
-    a.click();
-    toast('Exported as PNG', 'success');
-  }).catch(() => {
-    document.querySelector('.viewer-toolbar').style.display = '';
-    document.querySelector('.viewer-actions').style.display = '';
-    document.querySelector('.zoom-controls').style.display = '';
-    document.getElementById('minimap').style.display = '';
-    toast('Export failed', 'error');
-  });
-}
-
-// ===== নতুন সেভ সিস্টেম - আগে লোকাল, তারপর ব্যাকআপ =====
-
-async function mmSave() {
-  if (!state.isEditMode) {
-    openEditModal();
-    return;
-  }
-  
-  // প্রথমে সবসময় লোকাল সেভ করো
-  saveToLocal();
-  
-  // তারপর ব্যাকআপ মডাল খোলো
-  openBackupModal();
-}
-
-function saveToLocal() {
-  try {
-    const backupData = {
-      id: state.mindMap._id || 'mm_' + Date.now(),
-      class: state.mindMap._class || '',
-      subject: state.mindMap._subject || '',
-      topic: state.mindMap._topic || '',
-      subtopic: state.mindMap._subtopic || '',
-      mindmapData: state.mindMap,
-      savedAt: new Date().toISOString()
-    };
-    
-    localStorage.setItem('mindmap_current_backup', JSON.stringify(backupData));
-    toast('💾 লোকাল সেভ সম্পন্ন!', 'success');
-    
-    // পরবর্তী ব্যাকআপের জন্য রেখে দাও
-    window._pendingBackup = backupData;
-    
-  } catch(e) {
-    console.error('Local save error:', e);
-    toast('লোকাল সেভ হয়নি!', 'error');
-  }
-}
-
-function openBackupModal() {
-  document.getElementById('backupModal').classList.add('show');
-}
-
-function closeBackupModal() {
-  document.getElementById('backupModal').classList.remove('show');
-}
-
-// Google Sheet এ ব্যাকআপ পাঠাও
-async function backupToSheet() {
-  const data = window._pendingBackup;
-  
-  if (!data) {
-    toast('আগে মাইন্ডম্যাপ এডিট করো!', 'error');
-    return;
-  }
-  
-  if (!CONFIG.APPS_SCRIPT_URL || CONFIG.APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-    toast('Apps Script URL সেট করো আগে! জসন ডাউনলোড হচ্ছে...', 'error');
-    downloadBackupJSON();
-    closeBackupModal();
-    return;
-  }
-  
-  showLoader('Google Sheet এ ব্যাকআপ হচ্ছে...');
-  
-  try {
-    const params = new URLSearchParams({
-      action: 'create',
-      password: CONFIG.PASSWORD,
-      class: data.class,
-      subject: data.subject,
-      topic: data.topic,
-      subtopic: data.subtopic,
-      mindmapData: JSON.stringify(data.mindmapData),
-      creator: 'Admin'
-    });
-    
-    // no-cors mode এ পাঠাও যাতে কোনো ফেচ এরর না আসে
-    await fetch(CONFIG.APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: params.toString()
-    });
-    
-    hideLoader();
-    toast('✅ Google Sheet এ ব্যাকআপ সম্পন্ন হয়েছে!', 'success');
-    closeBackupModal();
-    
-  } catch (error) {
-    hideLoader();
-    console.error('Sheet backup failed:', error);
-    toast('❌ Sheet এ যায়নি! জসন ডাউনলোড হচ্ছে...', 'error');
-    downloadBackupJSON();
-    closeBackupModal();
-  }
-}
-
-// JSON ফাইল হিসেবে ডাউনলোড করো (সবসময় কাজ করবে)
-function downloadBackupJSON() {
-  const data = window._pendingBackup || {
-    id: state.mindMap._id || 'mm_' + Date.now(),
-    class: state.mindMap._class || '',
-    subject: state.mindMap._subject || '',
-    topic: state.mindMap._topic || '',
-    subtopic: state.mindMap._subtopic || '',
-    mindmapData: state.mindMap,
-    savedAt: new Date().toISOString()
+function downloadBackupJSON(){
+  const data = {
+    title: document.getElementById('mapTitle').value,
+    layout: currentLayout,
+    mindMap: mindMap,
+    exportedAt: new Date().toISOString()
   };
-  
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
-  a.download = (state.mindMap._subtopic || state.mindMap.text || 'mindmap') + '_backup.json';
+  a.download = (mindMap.text || 'mindmap').replace(/[^a-z0-9]/gi,'_') + '_' + Date.now() + '.json';
   a.href = URL.createObjectURL(blob);
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(a.href);
-  
-  toast('📁 জসন ফাইল ডাউনলোড হয়েছে!', 'success');
+  toast('JSON downloaded!','success');
+  closeModal('backupModal');
 }
 
-function updateMinimap() {
-  if (!state.mindMap) return;
-  const mm = document.getElementById('minimapContent');
-  mm.innerHTML = '';
-  
-  const hierarchy = d3.hierarchy(state.mindMap, d => d.children && !d.collapsed ? d.children : null);
-  const layout = d3.tree().size([120, 180]).separation(() => 1);
-  layout(hierarchy);
-  
-  hierarchy.each(n => {
-    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    circle.setAttribute('cx', n.y + 10);
-    circle.setAttribute('cy', n.x + 60);
-    circle.setAttribute('r', n.depth === 0 ? 3 : 1.5);
-    circle.setAttribute('fill', n.data.style?.color || '#eab308');
-    mm.appendChild(circle);
-  });
-  
-  hierarchy.links().forEach(l => {
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('x1', l.source.y + 10);
-    line.setAttribute('y1', l.source.x + 60);
-    line.setAttribute('x2', l.target.y + 10);
-    line.setAttribute('y2', l.target.x + 60);
-    line.setAttribute('stroke', l.target.data.style?.color || '#eab308');
-    line.setAttribute('stroke-width', '0.5');
-    line.setAttribute('opacity', '0.5');
-    mm.appendChild(line);
-  });
-  
-  const canvas = document.getElementById('mmCanvas');
-  const vp = document.getElementById('minimapViewport');
-  const scaleX = 180 / canvas.clientWidth;
-  const scaleY = 120 / canvas.clientHeight;
-  const vw = canvas.clientWidth / state.zoom * scaleX;
-  const vh = canvas.clientHeight / state.zoom * scaleY;
-  const vx = (canvas.clientWidth / 2 - state.offset.x) / state.zoom * scaleX;
-  const vy = (canvas.clientHeight / 2 - state.offset.y) / state.zoom * scaleY;
-  vp.setAttribute('x', vx);
-  vp.setAttribute('y', vy);
-  vp.setAttribute('width', vw);
-  vp.setAttribute('height', vh);
+async function backupToSheet(){
+  showLoader('Saving to Google Sheet...');
+  try {
+    const params = new URLSearchParams({
+      action: 'create',
+      password: CONFIG.PASSWORD,
+      class: 'MindMaps',
+      subject: document.getElementById('mapTitle').value,
+      topic: currentLayout,
+      subtopic: 'Web',
+      mindmapData: JSON.stringify(mindMap),
+      creator: 'User'
+    });
+    
+    await fetch(CONFIG.SHEET_SAVE_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
+    });
+    
+    hideLoader();
+    toast('✅ Saved to Google Sheet!','success');
+    closeModal('backupModal');
+  } catch(error) {
+    hideLoader();
+    toast('Sheet save failed. Downloading JSON instead...','error');
+    downloadBackupJSON();
+  }
 }
 
-function mmMinimapClick(e) {
-  const mm = document.getElementById('minimapSvg');
-  const rect = mm.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / rect.width;
-  const y = (e.clientY - rect.top) / rect.height;
-  const canvas = document.getElementById('mmCanvas');
-  state.offset.x = canvas.clientWidth / 2 - (x * canvas.clientWidth / state.zoom);
-  state.offset.y = canvas.clientHeight / 2 - (y * canvas.clientHeight / state.zoom);
-  mmRender();
+// ===== EXPORT PNG =====
+async function mmExport(){
+  if(!mindMap){toast('No mind map','error');return}
+  
+  // Use html2canvas via CDN
+  if(!window.html2canvas){
+    await new Promise((res,rej)=>{
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+      s.onload = res;
+      s.onerror = rej;
+      document.head.appendChild(s);
+    });
+  }
+  
+  showLoader('Exporting PNG...');
+  try {
+    const wrap = document.getElementById('canvasWrap');
+    const canvas = await html2canvas(wrap, {
+      backgroundColor: '#0a0a0b',
+      scale: 2,
+      useCORS: true,
+      logging: false
+    });
+    const a = document.createElement('a');
+    a.download = (mindMap.text || 'mindmap').replace(/[^a-z0-9]/gi,'_') + '.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+    hideLoader();
+    toast('PNG exported!','success');
+  } catch(e) {
+    hideLoader();
+    toast('Export failed: '+e.message,'error');
+  }
 }
 
-function initPanZoom() {
+// ===== HELPERS =====
+function findNode(root,id){
+  if(root.id===id) return root;
+  if(root.children){
+    for(const c of root.children){
+      const f = findNode(c,id);
+      if(f) return f;
+    }
+  }
+  return null;
+}
+function findParent(root,id){
+  if(root.children){
+    for(const c of root.children){
+      if(c.id===id) return root;
+      const f = findParent(c,id);
+      if(f) return f;
+    }
+  }
+  return null;
+}
+
+// ===== PAN & ZOOM =====
+(function initPanZoom(){
   const svg = document.getElementById('mmSvg');
   let lastDist = 0;
   
-  svg.addEventListener('mousedown', e => {
-    if (e.target.closest('.mm-node')) return;
-    state.isDragging = true;
-    state.dragStart = {x: e.clientX - state.offset.x, y: e.clientY - state.offset.y};
-    svg.style.cursor = 'grabbing';
+  svg.addEventListener('mousedown',e=>{
+    if(e.target.closest('.mm-node'))return;
+    isDragging = true;
+    dragStart = {x:e.clientX-panX,y:e.clientY-panY};
   });
-  
-  window.addEventListener('mousemove', e => {
-    if (!state.isDragging) return;
-    state.offset.x = e.clientX - state.dragStart.x;
-    state.offset.y = e.clientY - state.dragStart.y;
-    mmRender();
+  window.addEventListener('mousemove',e=>{
+    if(!isDragging)return;
+    panX = e.clientX-dragStart.x;
+    panY = e.clientY-dragStart.y;
+    updateTransform();
+    renderNodes();
   });
+  window.addEventListener('mouseup',()=>isDragging=false);
   
-  window.addEventListener('mouseup', () => {
-    state.isDragging = false;
-    document.getElementById('mmSvg').style.cursor = 'grab';
-  });
-  
-  svg.addEventListener('wheel', e => {
+  svg.addEventListener('wheel',e=>{
     e.preventDefault();
-    const f = e.deltaY > 0 ? 0.92 : 1.08;
-    mmZoom(f);
-  }, {passive: false});
+    const factor = e.deltaY>0 ? 0.92 : 1.08;
+    const rect = document.getElementById('canvasWrap').getBoundingClientRect();
+    const mx = e.clientX-rect.left, my = e.clientY-rect.top;
+    const newZoom = Math.max(0.2,Math.min(4,zoom*factor));
+    panX = mx - (mx-panX)*(newZoom/zoom);
+    panY = my - (my-panY)*(newZoom/zoom);
+    zoom = newZoom;
+    document.getElementById('zoomInfo').textContent = Math.round(zoom*100)+'%';
+    updateTransform();
+    renderNodes();
+  },{passive:false});
   
-  svg.addEventListener('touchstart', e => {
-    if (e.target.closest('.mm-node')) return;
-    if (e.touches.length === 1) {
-      state.isDragging = true;
-      state.dragStart = {x: e.touches[0].clientX - state.offset.x, y: e.touches[0].clientY - state.offset.y};
-    } else if (e.touches.length === 2) {
+  // Touch
+  svg.addEventListener('touchstart',e=>{
+    if(e.target.closest('.mm-node'))return;
+    if(e.touches.length===1){
+      isDragging=true;
+      dragStart={x:e.touches[0].clientX-panX,y:e.touches[0].clientY-panY};
+    } else if(e.touches.length===2){
       lastDist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
+        e.touches[0].clientX-e.touches[1].clientX,
+        e.touches[0].clientY-e.touches[1].clientY
       );
     }
   });
-  
-  svg.addEventListener('touchmove', e => {
-    if (e.touches.length === 1 && state.isDragging) {
-      state.offset.x = e.touches[0].clientX - state.dragStart.x;
-      state.offset.y = e.touches[0].clientY - state.dragStart.y;
-      mmRender();
-      e.preventDefault();
-    } else if (e.touches.length === 2) {
-      const d = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
+  svg.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    if(e.touches.length===1 && isDragging){
+      panX = e.touches[0].clientX-dragStart.x;
+      panY = e.touches[0].clientY-dragStart.y;
+      updateTransform();
+      renderNodes();
+    } else if(e.touches.length===2){
+      const dist = Math.hypot(
+        e.touches[0].clientX-e.touches[1].clientX,
+        e.touches[0].clientY-e.touches[1].clientY
       );
-      if (lastDist) {
-        mmZoom(d / lastDist);
-      }
-      lastDist = d;
-      e.preventDefault();
+      if(lastDist){mmZoom(dist/lastDist)}
+      lastDist = dist;
     }
-  }, {passive: false});
+  },{passive:false});
+  svg.addEventListener('touchend',()=>{isDragging=false;lastDist=0});
   
-  svg.addEventListener('touchend', () => {
-    state.isDragging = false;
-    lastDist = 0;
+  svg.addEventListener('click',e=>{
+    if(!e.target.closest('.mm-node')){selectedNode=null;mmRender()}
   });
-  
-  svg.addEventListener('click', e => {
-    if (!e.target.closest('.mm-node')) {
-      state.selectedNode = null;
-      mmRender();
-    }
-  });
-}
+})();
 
+// ===== CONTEXT MENU =====
 let ctxTarget = null;
-
-function mmShowCtx(e, d) {
-  ctxTarget = d;
+function showCtxMenu(e,node){
+  ctxTarget = node;
   const m = document.getElementById('ctxMenu');
-  m.style.left = e.clientX + 'px';
-  m.style.top = e.clientY + 'px';
+  m.style.left = e.clientX+'px';
+  m.style.top = e.clientY+'px';
   m.classList.add('show');
 }
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.ctx-menu')) {
-    document.getElementById('ctxMenu').classList.remove('show');
-  }
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.ctx-menu')) document.getElementById('ctxMenu').classList.remove('show');
 });
-
-function ctxEdit() {
+function ctxEdit(){
   document.getElementById('ctxMenu').classList.remove('show');
-  state.selectedNode = ctxTarget;
+  selectedNode = ctxTarget;
   mmRender();
-  setTimeout(() => {
+  setTimeout(()=>{
     const all = document.querySelectorAll('.mm-node');
-    for (const el of all) {
-      if (el.dataset.id === ctxTarget.id) {
-        mmEditNode(el, ctxTarget);
-        break;
-      }
+    for(const el of all){
+      if(el.dataset.id===ctxTarget.id){editNodeInline(el,ctxTarget);break}
     }
-  }, 50);
+  },50);
 }
-
-function ctxAddChild() {
+function ctxAddChild(){document.getElementById('ctxMenu').classList.remove('show');selectedNode=ctxTarget;mmAddChild()}
+function ctxAddSibling(){document.getElementById('ctxMenu').classList.remove('show');selectedNode=ctxTarget;mmAddSibling()}
+function ctxBold(){document.getElementById('ctxMenu').classList.remove('show');if(!ctxTarget.style)ctxTarget.style={};ctxTarget.style.bold=!ctxTarget.style.bold;mmRender();scheduleAutoSave()}
+function ctxColor(){
   document.getElementById('ctxMenu').classList.remove('show');
-  state.selectedNode = ctxTarget;
-  mmAddChild();
-}
-
-function ctxAddSibling() {
-  document.getElementById('ctxMenu').classList.remove('show');
-  state.selectedNode = ctxTarget;
-  mmAddSibling();
-}
-
-function ctxBold() {
-  document.getElementById('ctxMenu').classList.remove('show');
-  if (!ctxTarget.style) ctxTarget.style = {};
-  ctxTarget.style.bold = !ctxTarget.style.bold;
+  const colors = ['#a78bfa','#60a5fa','#34d399','#f472b6','#fb923c','#22d3ee','#9966ff'];
+  if(!ctxTarget.style)ctxTarget.style={};
+  ctxTarget.style.color = colors[Math.floor(Math.random()*colors.length)];
   mmRender();
+  scheduleAutoSave();
 }
-
-function ctxColor() {
+function ctxCollapse(){document.getElementById('ctxMenu').classList.remove('show');ctxTarget.collapsed=!ctxTarget.collapsed;mmRender();scheduleAutoSave()}
+function ctxDelete(){
   document.getElementById('ctxMenu').classList.remove('show');
-  const colors = ['#eab308', '#a78bfa', '#60a5fa', '#34d399', '#f472b6', '#fb923c'];
-  const c = colors[Math.floor(Math.random() * colors.length)];
-  if (!ctxTarget.style) ctxTarget.style = {};
-  ctxTarget.style.color = c;
-  mmRender();
-}
-
-function ctxCollapse() {
-  document.getElementById('ctxMenu').classList.remove('show');
-  mmToggleCollapse(ctxTarget.id);
-}
-
-function ctxDelete() {
-  document.getElementById('ctxMenu').classList.remove('show');
-  if (ctxTarget === state.mindMap) {
-    toast('Cannot delete root node', 'error');
-    return;
-  }
-  const p = findParent(state.mindMap, ctxTarget.id);
-  if (p) {
-    p.children = p.children.filter(c => c.id !== ctxTarget.id);
-    state.selectedNode = p;
+  if(ctxTarget===mindMap){toast('Cannot delete root','error');return}
+  const p = findParent(mindMap,ctxTarget.id);
+  if(p){
+    p.children = p.children.filter(c=>c.id!==ctxTarget.id);
+    selectedNode = p;
     mmRender();
-    toast('Node deleted', 'success');
+    scheduleAutoSave();
+    toast('Node deleted','success');
   }
 }
 
-function findNode(root, id) {
-  if (root.id === id) return root;
-  if (root.children) {
-    for (const c of root.children) {
-      const f = findNode(c, id);
-      if (f) return f;
-    }
-  }
-  return null;
-}
-
-function findParent(root, id) {
-  if (root.children) {
-    for (const c of root.children) {
-      if (c.id === id) return root;
-      const f = findParent(c, id);
-      if (f) return f;
-    }
-  }
-  return null;
-}
-
-document.addEventListener('keydown', e => {
-  if (!document.getElementById('viewerView').classList.contains('active')) return;
-  if (e.target.isContentEditable) return;
+// ===== KEYBOARD =====
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.isContentEditable)return;
+  if(!mindMap)return;
   
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    mmAddChild();
-  } else if (e.key === 'Enter') {
-    e.preventDefault();
-    mmAddSibling();
-  } else if (e.key === 'Delete' || e.key === 'Backspace') {
-    if (state.selectedNode && state.selectedNode !== state.mindMap) {
-      ctxTarget = state.selectedNode;
-      ctxDelete();
+  if(e.key==='Tab'){e.preventDefault();mmAddChild()}
+  else if(e.key==='Enter'){e.preventDefault();mmAddSibling()}
+  else if(e.key===' '){e.preventDefault();if(selectedNode){selectedNode.collapsed=!selectedNode.collapsed;mmRender();scheduleAutoSave()}}
+  else if(e.key==='Delete'||e.key==='Backspace'){
+    if(selectedNode && selectedNode!==mindMap){
+      ctxTarget=selectedNode;ctxDelete();
     }
-  } else if (e.key === ' ') {
-    e.preventDefault();
-    if (state.selectedNode) {
-      mmToggleCollapse(state.selectedNode.id);
-    }
-  } else if (e.key === 'F2') {
-    if (state.selectedNode) {
+  }
+  else if(e.key==='F2'){
+    if(selectedNode){
       const all = document.querySelectorAll('.mm-node');
-      for (const el of all) {
-        if (el.dataset.id === state.selectedNode.id) {
-          mmEditNode(el, state.selectedNode);
-          break;
-        }
+      for(const el of all){
+        if(el.dataset.id===selectedNode.id){editNodeInline(el,selectedNode);break}
       }
     }
   }
+  else if((e.ctrlKey||e.metaKey) && e.key==='b'){e.preventDefault();mmFormat('bold')}
+  else if((e.ctrlKey||e.metaKey) && e.key==='i'){e.preventDefault();mmFormat('italic')}
+  else if((e.ctrlKey||e.metaKey) && e.key==='u'){e.preventDefault();mmFormat('underline')}
+  else if((e.ctrlKey||e.metaKey) && e.key==='s'){e.preventDefault();mmBackup()}
 });
 
-window.addEventListener('resize', () => {
-  if (document.getElementById('viewerView').classList.contains('active')) {
-    mmRender();
-  }
-});
+// ===== TITLE CHANGE =====
+document.getElementById('mapTitle').addEventListener('input',scheduleAutoSave);
 
-(async function init() {
-  await loadSheetData();
-  renderClasses();
-  updateBreadcrumb();
-  initPanZoom();
+// ===== INIT =====
+(function init(){
+  // Try to load from localStorage
+  try {
+    const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
+    if(saved){
+      const data = JSON.parse(saved);
+      if(data.mindMap){
+        mindMap = data.mindMap;
+        if(data.title) document.getElementById('mapTitle').value = data.title;
+        if(data.layout){
+          currentLayout = data.layout;
+          document.querySelectorAll('.layout-btn').forEach(b=>b.classList.toggle('active',b.dataset.layout===currentLayout));
+        }
+        selectedNode = mindMap;
+        mmRender();
+        setTimeout(mmFit, 100);
+        return;
+      }
+    }
+  } catch(e){console.warn('Load failed',e)}
+  
+  // Load demo
+  mindMap = JSON.parse(JSON.stringify(demoData));
+  selectedNode = mindMap;
+  mmRender();
+  setTimeout(mmFit, 100);
 })();
 </script>
 
