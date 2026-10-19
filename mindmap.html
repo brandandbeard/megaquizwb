@@ -120,6 +120,13 @@ body.fs #landing{padding:.8rem}
 #styleMenu button.on{background:var(--ac);color:#111}
 body.fs #styleMenu{top:34px}
 
+/* Download dropdown */
+#dlMenu{position:fixed;top:50px;right:8px;display:none;flex-direction:column;gap:2px;background:rgba(21,26,37,.96);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:10px;padding:5px;z-index:201;min-width:180px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+#dlMenu.show{display:flex}
+#dlMenu button{border:none;background:transparent;color:var(--tx2);font:600 .82rem Inter;padding:.55rem .9rem;border-radius:7px;cursor:pointer;display:flex;gap:.45rem;align-items:center;white-space:nowrap;text-align:left}
+#dlMenu button:hover{background:var(--sf2);color:#fff}
+body.fs #dlMenu{top:34px}
+
 /* Hide old bottom #laybar - it's replaced by Style button + dropdown */
 #laybar{display:none!important}
 
@@ -133,13 +140,6 @@ body.fs #styleMenu{top:34px}
 .nav-group .btn.ic{width:28px;height:28px;border:none;background:transparent}
 .nav-group .btn.ic:hover{background:var(--sf2);color:var(--ac)}
 body.fs .nav-group .btn.ic{width:22px;height:22px}
-
-/* ===== Fishbone spine-end header (problem investigation) ===== */
-.spine-head{position:absolute;z-index:6;pointer-events:none;transform:translate(0,-50%);text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:0}
-.spine-label{font:700 16px 'Hind Siliguri',Inter,sans-serif;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.6),0 0 12px rgba(211,32,32,.35);white-space:nowrap;letter-spacing:.3px}
-.spine-q{font:900 46px 'Space Grotesk',Inter,sans-serif;color:#d32020;line-height:1;margin-top:4px;text-shadow:0 0 16px rgba(211,32,32,.75),0 0 32px rgba(211,32,32,.45);animation:spineGlow 2.4s ease-in-out infinite alternate}
-@keyframes spineGlow{from{text-shadow:0 0 14px rgba(211,32,32,.6),0 0 26px rgba(211,32,32,.35)}to{text-shadow:0 0 22px rgba(255,80,80,.95),0 0 44px rgba(211,32,32,.6)}}
-.spine-tail{position:absolute;z-index:5;pointer-events:none;transform:translate(0,-50%);width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:14px solid #d32020;filter:drop-shadow(0 0 6px rgba(211,32,32,.5))}
 </style>
 </head>
 <body data-view="landing">
@@ -153,7 +153,6 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
     <div id="laybar">
       <button data-l="timeline" class="on"><i class="fa-solid fa-timeline"></i> Timeline</button>
       <button data-l="tree"><i class="fa-solid fa-sitemap"></i> Tree</button>
-      <button data-l="fishbone"><i class="fa-solid fa-fish"></i> Fishbone</button>
     </div>
     <div id="zoomc">
       <button onclick="zoomBy(1.25)"><i class="fa-solid fa-plus"></i></button>
@@ -167,7 +166,7 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 <!-- password -->
 <div class="mbg" id="pwModal"><div class="modal">
   <h2><i class="fa-solid fa-lock"></i> Password</h2>
-  <input class="in" type="password" id="pwIn" placeholder="Password (mindmap0)">
+  <input class="in" type="password" id="pwIn" placeholder="Password">
   <div class="mact"><button class="btn" onclick="closeM('pwModal')">Cancel</button><button class="btn pri" onclick="pwOk()">OK</button></div>
 </div></div>
 
@@ -199,7 +198,13 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 <div id="styleMenu">
   <button data-l="timeline" class="on"><i class="fa-solid fa-timeline"></i> Timeline</button>
   <button data-l="tree"><i class="fa-solid fa-sitemap"></i> Tree</button>
-  <button data-l="fishbone"><i class="fa-solid fa-fish"></i> Fishbone</button>
+</div>
+
+<!-- download dropdown -->
+<div id="dlMenu">
+  <button data-fmt="png"><i class="fa-solid fa-image"></i> PNG image</button>
+  <button data-fmt="pdf"><i class="fa-solid fa-file-pdf"></i> PDF (vector)</button>
+  <button data-fmt="svg"><i class="fa-solid fa-bezier-curve"></i> Vector SVG</button>
 </div>
 
 <div id="toast"><i class="fa-solid fa-circle-check"></i><span id="tmsg"></span></div>
@@ -231,14 +236,27 @@ function openM(id){$(id).classList.add('show')}function closeM(id){$(id).classLi
 
 /* ===== MEASURE ===== */
 const mctx=document.createElement('canvas').getContext('2d');
-function measure(t,fs,maxW){mctx.font=fs+'px Inter,sans-serif';
+// measure: if forceW is set, returns exactly that width (used for user-specified box width)
+function measure(t,fs,maxW,forceW){mctx.font=fs+'px Inter,sans-serif';
   const ws=String(t).split(/\s+/),ls=[];let cur='';
   for(const w of ws){const x=cur?cur+' '+w:w;if(mctx.measureText(x).width>maxW-22&&cur){ls.push(cur);cur=w}else cur=x}
   if(cur)ls.push(cur);if(!ls.length)ls.push('');
-  const w=Math.min(maxW,Math.max(46,...ls.map(l=>mctx.measureText(l).width))+22);
+  let w=Math.min(maxW,Math.max(46,...ls.map(l=>mctx.measureText(l).width))+22);
+  if(forceW){w=forceW;}
   return{lines:ls,w,h:ls.length*(fs*1.35)+14}}
 const fsOf=(n,d)=>(n.style&&n.style.fontSize)||[17,14,13,12][Math.min(d,3)];
 const maxWOf=d=>[430,320,340,300,280][Math.min(d,4)];
+// Helper: get effective max width for a node (use n.style.width if set); if set, returns [maxW, forceW]
+const effMaxW=n=>(n.style&&n.style.width)?Math.max(80,+n.style.width):maxWOf(n._d||1);
+// Helper: measure with width override (uses effMaxW + passes forceW if user override set)
+function measureNode(n,d){
+  const fs=fsOf(n,d);
+  if(n.style && n.style.width){
+    const w=Math.max(80,+n.style.width);
+    return measure(n.text,fs,w,w);
+  }
+  return measure(n.text,fs,maxWOf(d));
+}
 const blankMap=()=>({id:uid(),text:'type text',children:[],style:{color:'#f5b301',bold:true}});
 
 /* ===== DEMO ===== */
@@ -469,13 +487,14 @@ function openItem(id){
 function goLanding(){S.view='landing';document.body.dataset.view='landing';S.unlocked=false;document.body.classList.remove('unlocked');pushHist();renderLanding();renderTopbar()}
 
 /* ===== TOPBAR / LOCK ===== */
-// nav button group (left/right/up/down)
+// nav button group (left/right/up/down + parent up)
 function navGroupHtml(){
   return `<div class="nav-group">
     <button class="btn ic" title="Previous sibling" onclick="navSibling(-1)"><i class="fa-solid fa-arrow-left"></i></button>
     <button class="btn ic" title="Next sibling" onclick="navSibling(1)"><i class="fa-solid fa-arrow-right"></i></button>
-    <button class="btn ic" title="Parent (up)" onclick="navVert(-1)"><i class="fa-solid fa-arrow-up"></i></button>
-    <button class="btn ic" title="First child (down)" onclick="navVert(1)"><i class="fa-solid fa-arrow-down"></i></button>
+    <button class="btn ic" title="Up (previous in DFS)" onclick="navVert(-1)"><i class="fa-solid fa-arrow-up"></i></button>
+    <button class="btn ic" title="Down (next in DFS)" onclick="navVert(1)"><i class="fa-solid fa-arrow-down"></i></button>
+    <button class="btn ic" title="Parent up (one generation)" onclick="navParentUp()"><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
   </div>`;
 }
 function renderTopbar(){
@@ -487,7 +506,7 @@ function renderTopbar(){
     <button class="btn" onclick="loadBtn()" title="Sync from sheet"><i class="fa-solid fa-rotate"></i><span> Sync</span></button>
     <button class="btn pri" onclick="backupSheet()"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>`;
   }else if(!S.unlocked){
-    // VIEW MODE - has nav, style, fullscreen, collapse, expand, import, back, edit
+    // VIEW MODE - has nav, style, fullscreen, collapse, expand, import, back, edit, download
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span><span class="spacer"></span>
     ${navGroupHtml()}
     <div class="sep"></div>
@@ -497,6 +516,7 @@ function renderTopbar(){
     <button class="btn ic" title="Fullscreen" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
     <button class="btn ic" title="Fit to screen" onclick="fit()"><i class="fa-solid fa-crosshairs"></i></button>
     <div class="sep"></div>
+    <button class="btn ic" title="Download PNG / PDF / Vector SVG" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>
     <button class="btn" onclick="openImport('current')" title="Import file"><i class="fa-solid fa-file-import"></i><span> Import</span></button>
     <button class="btn" onclick="goLanding()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>
     <button class="btn pri" onclick="askPw(unlockNow)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>`;
@@ -517,6 +537,9 @@ function renderTopbar(){
     <button class="btn ic" id="bI" onclick="fmt('italic')"><i class="fa-solid fa-italic"></i></button>
     <button class="btn ic" id="bU" onclick="fmt('underline')"><i class="fa-solid fa-underline"></i></button>
     <div class="sep"></div>
+    <button class="btn ic" title="Box narrower" onclick="wDelta(-20)"><i class="fa-solid fa-arrows-left-right" style="transform:scaleX(.7)"></i></button>
+    <button class="btn ic" title="Box wider" onclick="wDelta(20)"><i class="fa-solid fa-arrows-left-right"></i></button>
+    <div class="sep"></div>
     ${PALETTE.map(c=>`<span class="dot" style="background:${c}" onclick="setColor('${c}')"></span>`).join('')}
     <span class="dot reset" onclick="setColor(null)"></span>
     <div class="sep"></div>
@@ -527,7 +550,7 @@ function renderTopbar(){
     <button class="btn ic" title="Import file" onclick="openImport('current')"><i class="fa-solid fa-file-import"></i></button>
     <button class="btn ic" title="Sync from sheet" onclick="loadBtn()"><i class="fa-solid fa-rotate"></i></button>
     <button class="btn pri" onclick="backupSheet()"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>
-    <button class="btn ic" title="PNG" onclick="exportPNG()"><i class="fa-solid fa-download"></i></button>
+    <button class="btn ic" title="Download PNG / PDF / Vector SVG" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>
     <button class="btn ic" title="Fullscreen" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
     <button class="btn ic on" title="Lock" onclick="lock()"><i class="fa-solid fa-lock-open"></i></button>`;
   }
@@ -538,13 +561,34 @@ function toggleStyleMenu(e){
   const m=$('styleMenu');
   if(!m)return;
   m.classList.toggle('show');
+  // close download menu when opening style menu
+  $('dlMenu') && $('dlMenu').classList.remove('show');
 }
-// close style menu when clicking outside
+function toggleDownloadMenu(e){
+  if(e){e.stopPropagation();}
+  const m=$('dlMenu');
+  if(!m)return;
+  m.classList.toggle('show');
+  // close style menu when opening download menu
+  $('styleMenu') && $('styleMenu').classList.remove('show');
+}
+// close menus when clicking outside
 document.addEventListener('click',e=>{
-  const m=$('styleMenu');if(!m)return;
-  if(m.classList.contains('show')&&!m.contains(e.target)&&!e.target.closest('[onclick*="toggleStyleMenu"]')){
-    m.classList.remove('show');
+  const sm=$('styleMenu');const dm=$('dlMenu');
+  if(sm&&sm.classList.contains('show')&&!sm.contains(e.target)&&!e.target.closest('[onclick*="toggleStyleMenu"]')){
+    sm.classList.remove('show');
   }
+  if(dm&&dm.classList.contains('show')&&!dm.contains(e.target)&&!e.target.closest('[onclick*="toggleDownloadMenu"]')){
+    dm.classList.remove('show');
+  }
+});
+// Wire download menu buttons
+document.querySelectorAll('#dlMenu button').forEach(b=>b.onclick=()=>{
+  const fmt=b.dataset.fmt;
+  $('dlMenu').classList.remove('show');
+  if(fmt==='png')exportPNG();
+  else if(fmt==='pdf')exportPDF();
+  else if(fmt==='svg')exportSVG();
 });
 function setLayout(l){
   S.layout=l;
@@ -574,24 +618,36 @@ function navSibling(dir){
     S.selId=sibs[i+dir].id;renderMap();centerOn('h');
   }
 }
+// Build flat DFS list of all visible nodes (depth >= 1) - used for Up/Down navigation across ALL children
+function flatNodes(){
+  const out=[];
+  (function walk(n,d){
+    if(d>=1)out.push(n);
+    if(!n.collapsed)(n.children||[]).forEach(c=>walk(c,d+1));
+  })(S.map,0);
+  return out;
+}
 function navVert(dir){
-  if(!S.selId){
-    const sibs=vis(S.map);
-    if(sibs.length&&dir===1){S.selId=sibs[0].id;renderMap();centerOn('v');}
-    return;
-  }
-  const n=findN(S.selId);if(!n)return;
-  if(dir===1){
-    // down: go to first child (expand if collapsed)
-    let kids=n.children||[];
-    if(n.collapsed){n.collapsed=false;mutate();}
-    kids=vis(n);
-    if(kids.length){S.selId=kids[0].id;renderMap();centerOn('v');}
-  }else{
-    // up: go to parent
-    const p=findP(S.selId);
-    if(p){S.selId=p.id;renderMap();centerOn('v');}
-  }
+  // Up/Down moves through ALL visible nodes in DFS order (works for all children, not just parent)
+  const flat=flatNodes();
+  if(!flat.length)return;
+  if(!S.selId){S.selId=flat[0].id;renderMap();centerOn('v');return;}
+  let idx=flat.findIndex(n=>n.id===S.selId);
+  if(idx<0){S.selId=flat[0].id;renderMap();centerOn('v');return;}
+  // dir=1 (down): next in DFS (which is first child if has children, else next sibling, else climb up)
+  // dir=-1 (up): previous in DFS
+  let newIdx=idx+dir;
+  if(newIdx<0)newIdx=0;
+  if(newIdx>=flat.length)newIdx=flat.length-1;
+  if(newIdx===idx)return;
+  S.selId=flat[newIdx].id;renderMap();centerOn('v');
+}
+function navParentUp(){
+  // Explicit "go to parent" button — only moves UP one generation (not DFS)
+  if(!S.selId){toast('Select a node first','err');return;}
+  const p=findP(S.selId);
+  if(!p){toast('Already at top','err');return;}
+  S.selId=p.id;renderMap();centerOn('both');
 }
 function centerOn(mode){
   const n=S.selId&&findN(S.selId);
@@ -668,43 +724,52 @@ window.addEventListener('popstate',e=>{
 /* ===== LAYOUTS ===== */
 function layoutTimeline(){
   segs=[];boxes=[];
-  const R=S.map,rm=measure(R.text,fsOf(R,0),430);
+  // Compute subtree's max depth below a node (for dynamic main-branch gap)
+  function maxDepth(n){
+    const kids=vis(n);if(!kids.length)return 0;
+    return 1+Math.max(...kids.map(maxDepth));
+  }
+  const R=S.map,rm=measureNode(R,0);
   R._d=0;R._x=0;R._y=0;R._w=rm.w;R._h=rm.h;R._lines=rm.lines;R._col='#f5b301';boxes.push(R);
-  let cx=R._w/2+180;
+  let cx=R._w/2+160;
   vis(R).forEach((b,i)=>{
-    const bm=measure(b.text,fsOf(b,1),320);const bx=cx+bm.w/2;
+    const bm=measureNode(b,1);const bx=cx+bm.w/2;
     b._d=1;b._x=bx;b._y=0;b._w=bm.w;b._h=bm.h;b._lines=bm.lines;
     b._col=(b.style&&b.style.color)||PALETTE[i%PALETTE.length];boxes.push(b);
     const prev=i>0?vis(R)[i-1]:null;
     if(prev)segs.push({x1:prev._x+prev._w/2+8,y1:0,x2:bx-bm.w/2-8,y2:0,c:'rgba(255,255,255,.35)',w:3});
-    const dir=i%2===0?1:-1;let y=dir*(bm.h/2+110),colRight=bx+bm.w/2,last2=null;
+    // 10% reduced child gaps (from 110→99 vertical first-child, 70→63 sibling, 170→153 horizontal)
+    const dir=i%2===0?1:-1;let y=dir*(bm.h/2+99),colRight=bx+bm.w/2,last2=null;
     (function place(n,d){
       const kids=vis(n);if(!kids.length)return;
-      const msx=d===1?bx:(n._x-n._w/2+50);let lastY=null;
+      const msx=d===1?bx:(n._x-n._w/2+45);let lastY=null;
       kids.forEach(k=>{
-        const m=measure(k.text,fsOf(k,d+1),maxWOf(d+1));
-        const left=d===1?bx+170:msx+140;
+        const m=measureNode(k,d+1);
+        const left=d===1?bx+153:msx+126;
         k._d=d+1;k._w=m.w;k._h=m.h;k._lines=m.lines;k._x=left+m.w/2;k._y=y+dir*m.h/2;
         k._col=(k.style&&k.style.color)||n._col;boxes.push(k);
         segs.push({x1:d===1?bx:msx,y1:k._y,x2:left,y2:k._y,c:k._col,w:1.4});
-        colRight=Math.max(colRight,k._x+m.w/2);y+=dir*(m.h+70);lastY=k._y;
+        colRight=Math.max(colRight,k._x+m.w/2);y+=dir*(m.h+63);lastY=k._y;
         if(d===1)last2=k._y;
         place(k,d+1);
       });
       if(d===1)segs.push({x1:bx,y1:dir*(bm.h/2+8),x2:bx,y2:last2,c:n._col,w:2});
       else segs.push({x1:msx,y1:n._y+dir*n._h/2,x2:msx,y2:lastY,c:n._col,w:1.4});
     })(b,1);
-    cx=colRight+200;
+    // Dynamic main-branch gap: base 150 + 25px per level of subtree depth
+    const dep=maxDepth(b);
+    cx=colRight+150+dep*25;
   });
 }
-function layoutTree(){ /* north → south, tidy tree, STRAIGHT lines (no curves) */
+function layoutTree(){ /* north → south, tidy tree, orthogonal (90°) lines */
   segs=[];boxes=[];
-  const HG=80;   // horizontal gap between adjacent subtrees
-  const VG=180;  // vertical gap between depths
+  // 10% reduced gaps (HG 80→72, VG 180→162)
+  const HG=72;   // horizontal gap between adjacent subtrees
+  const VG=162;  // vertical gap between depths
 
   // First pass (post-order): compute subtree width
   function computeWidth(n,d){
-    const m=measure(n.text,fsOf(n,d),maxWOf(d));
+    const m=measureNode(n,d);
     n._d=d;n._w=m.w;n._h=m.h;n._lines=m.lines;
     n._col=d===0?'#f5b301':(n.style&&n.style.color)||PALETTE[d%9];
     const kids=vis(n);
@@ -736,137 +801,9 @@ function layoutTree(){ /* north → south, tidy tree, STRAIGHT lines (no curves)
   }
   assign(S.map,0,0,0);
 }
-function layoutFishbone(){
-  // Exquisite Ishikawa-style fishbone:
-  //  - Deep red horizontal spine with sharp pointed tail at right end
-  //  - Angled V-shape branches alternating above/below the spine
-  //  - Sibling labels at the END of each angled branch
-  //  - Children stacked along the branch direction (off the main branch line)
-  //  - At right end: red question mark with glow + Bengali "সমস্যা তদন্ত" label
-  //  - No fish head icon
-  segs=[];boxes=[];
-  const R=S.map;
-  // Root box is hidden (rendered at 0x0, just to mark layout). We show its title at the right end instead.
-  R._d=0;R._x=0;R._y=0;R._w=0;R._h=0;R._lines=[];R._col='#d32020';boxes.push(R);
-
-  const SPINE_COLOR='#d32020';        // deep red
-  const BRANCH_COLOR='rgba(255,255,255,.55)';  // light gray for angled branches
-  const ANGLE_DEG=40;
-  const ANGLE=ANGLE_DEG*Math.PI/180;
-  const cos=Math.cos(ANGLE), sin=Math.sin(ANGLE);
-  const BRANCH_LEN=170;     // length of main angled branch from spine to sibling
-  const COL_GAP=320;         // horizontal distance between sibling anchors on spine
-
-  const sibs=vis(R);
-  if(sibs.length===0){S._spineEndX=240;return;}
-
-  // Position siblings: anchors go left-to-right on the spine
-  // Each sibling is at the END of an angled branch going UP-LEFT (above) or DOWN-LEFT (below)
-  // Branches lean LEFT (toward the spine tail) — sibling boxes sit to the upper/lower-left of their anchors
-
-  // Compute column widths to prevent overlap (siblings + their stacked children need horizontal room)
-  // For each sibling, compute total length needed for: sibling box + stack of all its children + grandchildren
-  const colWidths=sibs.map(sib=>{
-    let maxW=measure(sib.text,fsOf(sib,1),280).w;
-    // Children stack horizontally along the branch direction
-    let stackW=0;
-    vis(sib).forEach(k=>{
-      const km=measure(k.text,fsOf(k,2),220);
-      stackW+=km.w+60;
-      // Grandchildren stack further
-      let gcW=0;
-      vis(k).forEach(gc=>{
-        const cm=measure(gc.text,fsOf(gc,3),200);
-        gcW+=cm.w+50;
-      });
-      stackW=Math.max(stackW, km.w+30+gcW);
-    });
-    // Project stack onto horizontal axis (branch is angled at 40°, so horizontal projection = stack * cos)
-    // Use BRANCH_LEN + stack length projected
-    const horizSpace = (170 /* BRANCH_LEN */ + stackW) * cos + 100 /* padding */;
-    return Math.max(maxW, horizSpace);
-  });
-
-  // Place siblings on the spine
-  let anchorX=120;
-  const sibAnchors=[];
-  sibs.forEach((sib,i)=>{
-    const dir=(i%2===0)?-1:1;   // -1 = above spine, +1 = below spine
-    const sm=measure(sib.text,fsOf(sib,1),280);
-    // Anchor point on the spine
-    const anchorY=0;
-    // Sibling position: at end of angled branch going UP-LEFT (above) or DOWN-LEFT (below)
-    const sibX=anchorX - cos*BRANCH_LEN;
-    const sibY=anchorY + dir*sin*BRANCH_LEN;
-    sib._d=1;sib._x=sibX;sib._y=sibY;sib._w=sm.w;sib._h=sm.h;sib._lines=sm.lines;
-    sib._col=(sib.style&&sib.style.color)||PALETTE[i%PALETTE.length];
-    sib._anchorX=anchorX;
-    sib._dir=dir;
-    boxes.push(sib);
-    sibAnchors.push({x:anchorX,y:anchorY,sib});
-    // Angled branch line from spine to sibling (light gray)
-    segs.push({x1:anchorX,y1:anchorY,x2:sibX,y2:sibY,c:BRANCH_COLOR,w:2.2});
-
-    // Branch direction (normalized): from spine toward sibling, going LEFT
-    const branchDX=-cos, branchDY=dir*sin;
-    // Perpendicular direction (rotated 90° CCW from branch direction)
-    const perpDX=-branchDY, perpDY=branchDX;
-
-    // Place children: stack along branch direction further OUTWARD, alternating perpendicular offset
-    const kids=vis(sib);
-    // Measure all kids to compute total stack length needed
-    const kidMs=kids.map(k=>measure(k.text,fsOf(k,2),220));
-    const kidStackLen=kidMs.reduce((s,m)=>s+m.w+50,0);  // total horizontal stack length along branch
-    kids.forEach((k,j)=>{
-      const km=kidMs[j];
-      // Connect child to a point on the main branch (distribute along it)
-      const t=(j+1)/(kids.length+1);  // 0..1 along branch
-      const branchPointX=anchorX + branchDX*BRANCH_LEN*t;
-      const branchPointY=0 + branchDY*BRANCH_LEN*t;
-      // Child sits further along branch direction + perpendicular offset
-      // Use cumulative stack to ensure no overlap among children of the same sibling
-      const stackOffset=km.w/2 + 50;  // start offset
-      let prevW=0;
-      for(let p=0;p<j;p++)prevW+=kidMs[p].w+60;
-      const alongDist=BRANCH_LEN + 80 + prevW + km.w/2;
-      const perpOff=((j%2)===0?1:-1)*42;  // alternate above/below branch line
-      const kx=anchorX + branchDX*alongDist + perpDX*perpOff;
-      const ky=0 + branchDY*alongDist + perpDY*perpOff;
-      k._d=2;k._x=kx;k._y=ky;k._w=km.w;k._h=km.h;k._lines=km.lines;
-      k._col=(k.style&&k.style.color)||sib._col;
-      boxes.push(k);
-      // Sub-branch line from a point on the main branch to the child
-      segs.push({x1:branchPointX,y1:branchPointY,x2:kx,y2:ky,c:k._col,w:1.4});
-
-      // Grandchildren (depth 3): continue further outward with smaller perpendicular offset
-      let gcAlong=alongDist + km.w/2 + 30;
-      vis(k).forEach((gc,gi)=>{
-        const cm=measure(gc.text,fsOf(gc,3),200);
-        const gPerp=perpOff + ((gi%2)===0?1:-1)*30;
-        const gx=anchorX + branchDX*gcAlong + perpDX*gPerp;
-        const gy=0 + branchDY*gcAlong + perpDY*gPerp;
-        gc._d=3;gc._x=gx;gc._y=gy;gc._w=cm.w;gc._h=cm.h;gc._lines=cm.lines;
-        gc._col=(gc.style&&gc.style.color)||k._col;
-        boxes.push(gc);
-        segs.push({x1:kx,y1:ky,x2:gx,y2:gy,c:gc._col,w:1.2});
-        gcAlong += cm.w + 50;
-      });
-    });
-
-    anchorX += Math.max(COL_GAP, colWidths[i]+40);
-  });
-
-  // Spine: deep red horizontal line, extending past the last anchor to make room for the problem header
-  const lastAnchor=sibAnchors[sibAnchors.length-1].x;
-  const spineStart=20;
-  const spineEnd=lastAnchor + 240;  // room for question mark + Bengali label
-  S._spineEndX=spineEnd;
-  // Draw spine (deep red, thick). The actual pointed tail triangle is rendered as an HTML element in renderMap.
-  segs.push({x1:spineStart,y1:0,x2:spineEnd-12,y2:0,c:SPINE_COLOR,w:4});
-}
 function renderMap(){
   if(!S.map)return;
-  if(S.layout==='timeline')layoutTimeline();else if(S.layout==='tree')layoutTree();else layoutFishbone();
+  if(S.layout==='timeline')layoutTimeline();else layoutTree();
   // Render segments. New flag 'o' = orthogonal (90° right-angle) line; 'v' = curve; default = straight line.
   $('linesSvg').innerHTML=segs.map(s=>{
     if(s.o){
@@ -896,28 +833,22 @@ function renderMap(){
     if(badge)badge.onclick=e=>{e.stopPropagation();n.collapsed=!n.collapsed;mutate()};
     const txt=el.querySelector('.txt');
     // In view mode, clicking a node SELECTS it (so nav buttons work). In edit mode it also selects.
-    el.onclick=e=>{if(e.target.classList.contains('cbadge'))return;S.selId=n.id;renderMap()};
+    // Only re-render if selection actually changed — otherwise dblclick won't fire.
+    el.onclick=e=>{if(e.target.classList.contains('cbadge'))return;if(S.selId!==n.id){S.selId=n.id;renderMap()}};
+    // Double-click to edit (works in edit mode after password unlock)
     txt.ondblclick=e=>{e.stopPropagation();if(S.unlocked)startEdit(txt,n)};
+    // Mobile double-tap detection (browsers don't reliably fire dblclick on touch)
+    let lastTap=0;
+    el.addEventListener('touchend',ev=>{
+      if(ev.target.classList.contains('cbadge'))return;
+      const now=Date.now();
+      if(now-lastTap<320){ev.preventDefault();ev.stopPropagation();if(S.unlocked)startEdit(txt,n);lastTap=0;}
+      else lastTap=now;
+    },{passive:false});
     const hd=el.querySelector('.handle');
     if(hd)hd.addEventListener('pointerdown',e=>startDrag(e,n.id));
     wrap.appendChild(el);
   });
-  // ===== Fishbone only: render the spine-end header (red question mark + Bengali "সমস্যা তদন্ত" label + pointed tail) =====
-  if(S.layout==='fishbone' && typeof S._spineEndX==='number'){
-    // Sharp pointed tail (CSS triangle) at spine end
-    const tail=document.createElement('div');
-    tail.className='spine-tail';
-    tail.style.left=(S._spineEndX-14)+'px';  // tip at S._spineEndX
-    tail.style.top='0px';
-    wrap.appendChild(tail);
-    // Bengali label + red question mark with glow
-    const head=document.createElement('div');
-    head.className='spine-head';
-    head.style.left=(S._spineEndX+12)+'px';
-    head.style.top='0px';
-    head.innerHTML=`<div class="spine-label">সমস্যা তদন্ত</div><div class="spine-q">?</div>`;
-    wrap.appendChild(head);
-  }
   applyT();syncBtns();
 }
 function lum(hex){const n=parseInt(hex.slice(1),16);return(0.299*(n>>16)+0.587*((n>>8)&255)+0.114*(n&255))/255}
@@ -931,12 +862,6 @@ function zoomBy(f){const w=$('wrap').clientWidth/2,h=$('wrap').clientHeight/2;co
 function fit(){if(!boxes.length)return;const w=$('wrap').clientWidth,h=$('wrap').clientHeight;
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
   boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2)});
-  // Fishbone: include the spine-end header (question mark + Bengali label + tail) in the fit bounds
-  if(S.layout==='fishbone' && typeof S._spineEndX==='number'){
-    x2=Math.max(x2, S._spineEndX+200);  // +200 for question mark width + label width
-    y2=Math.max(y2, 60);  // question mark height below
-    y1=Math.min(y1, -50);  // Bengali label above
-  }
   S.zoom=Math.max(.15,Math.min(1.6,Math.min(w/(x2-x1+160),h/(y2-y1+160))));
   S.px=w/2-(x1+x2)/2*S.zoom;S.py=h/2-(y1+y2)/2*S.zoom;applyT()}
 
@@ -1008,6 +933,10 @@ function delSel(){if(!S.selId||S.selId===S.map.id)return toast('Root delete ক�
 function fmt(f){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};n.style[f]=!n.style[f];mutate()}
 function fsDelta(d){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};
   n.style.fontSize=Math.max(9,Math.min(30,(n.style.fontSize||fsOf(n,n._d||0))+d));mutate()}
+// Adjust box width (min 80, max 600)
+function wDelta(d){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};
+  const cur=n.style.width?(+n.style.width):(maxWOf(n._d||1));
+  n.style.width=Math.max(80,Math.min(600,cur+d));mutate()}
 function setColor(c){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};
   if(c)n.style.color=c;else delete n.style.color;mutate()}
 function collapseAll(v){(function w(n){if((n.children||[]).length)n.collapsed=v;(n.children||[]).forEach(w)})(S.map);S.map.collapsed=false;mutate()}
@@ -1151,11 +1080,223 @@ function fallbackAIParse(prompt){
 }
 
 /* ===== EXPORT ===== */
+// Before any export, expand all nodes so the export contains the full map.
+function _expandAllForExport(){
+  (function w(n){if((n.children||[]).length)n.collapsed=false;(n.children||[]).forEach(w)})(S.map);
+  S.map.collapsed=false;
+  renderMap();
+}
+function _loadScript(src){
+  return new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.onload=()=>res();
+    s.onerror=()=>rej(new Error('Failed to load '+src));
+    s.src=src;
+    document.head.appendChild(s);
+  });
+}
+// PNG export - high resolution for TV/large screens (scale 3 = 3x pixels)
 function exportPNG(){
-  const go=()=>html2canvas($('wrap'),{backgroundColor:'#0b0f19',scale:2}).then(c=>{
-    const a=document.createElement('a');a.download='mindmap.png';a.href=c.toDataURL();a.click();toast('🖼 PNG exported','ok')});
+  _expandAllForExport();
+  toast('Generating PNG (high-res)...');
+  const go=()=>html2canvas($('wrap'),{backgroundColor:'#0b0f19',scale:3,useCORS:true,logging:false}).then(c=>{
+    const a=document.createElement('a');a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.png';a.href=c.toDataURL('image/png');a.click();toast('PNG exported','ok');
+  }).catch(e=>toast('PNG failed: '+e.message,'err'));
   if(window.html2canvas)go();
-  else{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onload=go;document.head.appendChild(s)}
+  else _loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js').then(go).catch(e=>toast('Library failed: '+e.message,'err'));
+}
+// Build a standalone SVG (vector) that contains all boxes + lines + text.
+// Vector quality => infinite zoom, perfect for TV / large screens.
+function exportSVG(){
+  _expandAllForExport();
+  toast('Generating Vector SVG...');
+  // Compute bounds
+  let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
+  boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2);});
+  // Add padding
+  const PAD=80;
+  x1-=PAD;y1-=PAD;x2+=PAD;y2+=PAD;
+  const w=x2-x1,h=y2-y1;
+  // Build SVG content
+  let svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x1} ${y1} ${w} ${h}" width="${w}" height="${h}" style="background:#0b0f19;font-family:Inter,sans-serif">`;
+  // Style defs
+  svg+=`<defs><style>
+    .nd-bg{fill:#161b26;stroke:rgba(255,255,255,.14);stroke-width:1;rx:10;ry:10}
+    .nd-text{fill:#eef1f6;font-size:13px;dominant-baseline:middle}
+    .nd-root{fill:#f5b301;stroke:none}
+    .seg{fill:none;stroke-linecap:round;stroke-linejoin:round}
+  </style></defs>`;
+  // Render segments
+  segs.forEach(s=>{
+    if(s.o){
+      const my=(s.y1+s.y2)/2;
+      svg+=`<path class="seg" stroke="${s.c}" stroke-width="${s.w}" d="M ${s.x1} ${s.y1} L ${s.x1} ${my} L ${s.x2} ${my} L ${s.x2} ${s.y2}"/>`;
+    }else if(s.v){
+      svg+=`<path class="seg" stroke="${s.c}" stroke-width="${s.w}" d="M ${s.x1} ${s.y1} C ${s.x1} ${(s.y1+s.y2)/2}, ${s.x2} ${(s.y1+s.y2)/2}, ${s.x2} ${s.y2}"/>`;
+    }else{
+      svg+=`<line class="seg" stroke="${s.c}" stroke-width="${s.w}" x1="${s.x1}" y1="${s.y1}" x2="${s.x2}" y2="${s.y2}"/>`;
+    }
+  });
+  // Render nodes (each as <g> with rect + text)
+  boxes.forEach(n=>{
+    if(n._d===0)return;
+    const fs=fsOf(n,n._d)||13;
+    const st=n.style||{};
+    let bg='#161b26', strokeColor='rgba(255,255,255,.14)', textColor='#eef1f6';
+    if(n._d>0 && st.color){bg=st.color;strokeColor=st.color;textColor=lum(st.color)>.6?'#141000':'#fff';}
+    svg+=`<g transform="translate(${n._x-n._w/2} ${n._y-n._h/2})">`;
+    svg+=`<rect class="nd-bg" x="0" y="0" width="${n._w}" height="${n._h}" rx="10" ry="10" fill="${bg}" stroke="${strokeColor}"/>`;
+    // Text lines
+    const lh=fs*1.35;
+    const startY=fs+(n._h-(n._lines.length*lh))/2;
+    n._lines.forEach((line,i)=>{
+      const ty=startY+i*lh;
+      const weight=(st.bold||(n._d===0))?'bold':'normal';
+      const fontStyle=st.italic?'italic':'normal';
+      const textDecoration=st.underline?'underline':'none';
+      svg+=`<text x="11" y="${ty}" font-size="${fs}" font-weight="${weight}" font-style="${fontStyle}" text-decoration="${textDecoration}" fill="${textColor}">${line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</text>`;
+    });
+    // Child badge (collapse indicator)
+    if((n.children||[]).length){
+      const count=n.children.length;
+      const bx=n._w-4, by=n._h/2;
+      svg+=`<circle cx="${bx}" cy="${by}" r="11" fill="#1e2636" stroke="#f5b301" stroke-width="1.5"/>`;
+      svg+=`<text x="${bx}" y="${by+4}" font-size="11" font-weight="700" text-anchor="middle" fill="#f5b301">${count}</text>`;
+    }
+    svg+=`</g>`;
+  });
+  svg+=`</svg>`;
+  // Download
+  const blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.svg';
+  a.href=url;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+  toast('Vector SVG exported','ok');
+}
+// PDF export - embeds the vector SVG into a PDF for crisp text on TV.
+// Uses pdf-lib (vector embedding) — text stays sharp at any zoom.
+function exportPDF(){
+  _expandAllForExport();
+  toast('Generating PDF (vector)...');
+  Promise.resolve()
+    .then(()=>{
+      if(window.PDFLib && window.PDFLib.PDFDocument)return;
+      return _loadScript('https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js');
+    })
+    .then(()=>{
+      if(!window.PDFLib || !window.PDFLib.PDFDocument){throw new Error('pdf-lib not loaded');}
+      return buildPDFVector();
+    })
+    .catch(e=>toast('PDF failed: '+e.message,'err'));
+}
+async function buildPDFVector(){
+  // Compute bounds
+  let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
+  boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2);});
+  const PAD=80;
+  x1-=PAD;y1-=PAD;x2+=PAD;y2+=PAD;
+  const w=x2-x1,h=y2-y1;
+  // Generate SVG (reuse buildSVGString for consistency)
+  const svgString=buildSVGString(x1,y1,w,h);
+  // Embed SVG into PDF as vector
+  const {PDFDocument,rgb}=window.PDFLib;
+  const doc=await PDFDocument.create();
+  // Use A4 if portrait fits, else landscape - choose based on aspect ratio
+  const aspect=w/h;
+  const isLandscape=aspect>1.4;
+  // 1600x900 / 900x1600 (high res canvas size for vector embedding)
+  const pdfW=isLandscape?1600:Math.round(1600/Math.max(0.5,aspect));
+  const pdfH=isLandscape?Math.round(1600/aspect):1600;
+  const page=doc.addPage([pdfW,pdfH]);
+  // pdf-lib supports embedding SVG via SVG-to-PDF (since 1.17)
+  if(doc.embedSvg){
+    const svgImg=await doc.embedSvg(svgString);
+    page.drawImage(svgImg,{x:0,y:0,width:pdfW,height:pdfH});
+  }else{
+    // Fallback: embed as a high-res raster (still pretty good quality)
+    const pngDataUrl=await new Promise((res,rej)=>{
+      const img=new Image();
+      img.onload=()=>{
+        const canvas=document.createElement('canvas');
+        canvas.width=pdfW*2;canvas.height=pdfH*2;
+        const ctx=canvas.getContext('2d');
+        ctx.fillStyle='#0b0f19';ctx.fillRect(0,0,canvas.width,canvas.height);
+        // Scale SVG to fit
+        const blob=new Blob([svgString],{type:'image/svg+xml;charset=utf-8'});
+        const url=URL.createObjectURL(blob);
+        const img2=new Image();
+        img2.onload=()=>{
+          ctx.drawImage(img2,0,0,canvas.width,canvas.height);
+          URL.revokeObjectURL(url);
+          res(canvas.toDataURL('image/png'));
+        };
+        img2.onerror=()=>rej(new Error('SVG rasterize failed'));
+        img2.src=url;
+      };
+      img.onerror=()=>rej(new Error('image load failed'));
+      // Trigger onload
+      img.src='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(svgString)));
+    });
+    const pngImg=await doc.embedPng(pngDataUrl);
+    page.drawImage(pngImg,{x:0,y:0,width:pdfW,height:pdfH});
+  }
+  // Add small footer with topic name
+  const topicName=S.topic?S.topic.name:'Mind Map';
+  page.drawText(topicName.replace(/[^\x20-\x7E]/g,''),{x:24,y:pdfH-24,size:10,color:rgb(0.6,0.65,0.72)});
+  const bytes=await doc.save();
+  const blob=new Blob([bytes],{type:'application/pdf'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.pdf';
+  a.href=url;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+  toast('PDF exported (vector quality)','ok');
+}
+// Helper to build a SVG string (shared by exportSVG and exportPDF)
+function buildSVGString(x1,y1,w,h){
+  let svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x1} ${y1} ${w} ${h}" width="${w}" height="${h}" style="background:#0b0f19;font-family:Inter,Helvetica,Arial,sans-serif">`;
+  svg+=`<rect x="${x1}" y="${y1}" width="${w}" height="${h}" fill="#0b0f19"/>`;
+  // Segments
+  segs.forEach(s=>{
+    if(s.o){
+      const my=(s.y1+s.y2)/2;
+      svg+=`<path fill="none" stroke="${s.c}" stroke-width="${s.w}" stroke-linecap="round" stroke-linejoin="round" d="M ${s.x1} ${s.y1} L ${s.x1} ${my} L ${s.x2} ${my} L ${s.x2} ${s.y2}"/>`;
+    }else if(s.v){
+      svg+=`<path fill="none" stroke="${s.c}" stroke-width="${s.w}" stroke-linecap="round" d="M ${s.x1} ${s.y1} C ${s.x1} ${(s.y1+s.y2)/2}, ${s.x2} ${(s.y1+s.y2)/2}, ${s.x2} ${s.y2}"/>`;
+    }else{
+      svg+=`<line stroke="${s.c}" stroke-width="${s.w}" stroke-linecap="round" x1="${s.x1}" y1="${s.y1}" x2="${s.x2}" y2="${s.y2}"/>`;
+    }
+  });
+  // Nodes
+  boxes.forEach(n=>{
+    if(n._d===0)return;
+    const fs=fsOf(n,n._d)||13;
+    const st=n.style||{};
+    let bg='#161b26', strokeColor='rgba(255,255,255,.14)', textColor='#eef1f6';
+    if(n._d>0 && st.color){bg=st.color;strokeColor=st.color;textColor=lum(st.color)>.6?'#141000':'#fff';}
+    svg+=`<g transform="translate(${n._x-n._w/2} ${n._y-n._h/2})">`;
+    svg+=`<rect x="0" y="0" width="${n._w}" height="${n._h}" rx="10" ry="10" fill="${bg}" stroke="${strokeColor}" stroke-width="1"/>`;
+    const lh=fs*1.35;
+    const startY=fs+(n._h-(n._lines.length*lh))/2;
+    n._lines.forEach((line,i)=>{
+      const ty=startY+i*lh;
+      const weight=(st.bold||(n._d===0))?'bold':'normal';
+      const fontStyle=st.italic?'italic':'normal';
+      const textDecoration=st.underline?'underline':'none';
+      svg+=`<text x="11" y="${ty}" font-size="${fs}" font-weight="${weight}" font-style="${fontStyle}" text-decoration="${textDecoration}" fill="${textColor}" font-family="Inter,Helvetica,Arial,sans-serif">${line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</text>`;
+    });
+    if((n.children||[]).length){
+      const count=n.children.length;
+      const bx=n._w-4, by=n._h/2;
+      svg+=`<circle cx="${bx}" cy="${by}" r="11" fill="#1e2636" stroke="#f5b301" stroke-width="1.5"/>`;
+      svg+=`<text x="${bx}" y="${by+4}" font-size="11" font-weight="700" text-anchor="middle" fill="#f5b301">${count}</text>`;
+    }
+    svg+=`</g>`;
+  });
+  svg+=`</svg>`;
+  return svg;
 }
 
 /* ===== LAYOUT SWITCH / KEYS ===== */
