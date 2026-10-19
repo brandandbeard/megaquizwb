@@ -28,6 +28,7 @@ body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx)
 .dot.on{border-color:#fff}
 .dot.reset{background:transparent;border:1.5px dashed var(--tx2)}
 #fsz{min-width:24px;text-align:center;font:600 .72rem 'Space Grotesk';color:var(--tx2)}
+#gapz{min-width:32px;text-align:center;font:600 .72rem 'Space Grotesk';color:var(--tx2);padding:0 2px;cursor:default}
 #main{flex:1;position:relative;overflow:hidden}
 #landing{position:absolute;inset:0;overflow-y:auto;padding:1.2rem}
 .crumb{display:flex;gap:.4rem;flex-wrap:wrap;font-size:.85rem;color:var(--tx2);margin-bottom:1.2rem}
@@ -108,6 +109,7 @@ body.fs .btn.ic{width:24px;height:24px;font-size:.65rem}
 body.fs .ttl{font-size:.7rem;max-width:18vw}
 body.fs .dot{width:12px;height:12px}
 body.fs #fsz{font-size:.6rem;min-width:18px}
+body.fs #gapz{font-size:.6rem;min-width:24px}
 body.fs .sep{height:12px}
 body.fs #main{flex:1}
 body.fs #landing{padding:.8rem}
@@ -223,7 +225,7 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 /* ===== CONFIG ===== */
 const CONFIG={SCRIPT_URL:'',PASSWORD:'mindmap0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
 const PALETTE=['#4f69e8','#f29f7c','#4caa70','#2566df','#6178eb','#ff6384','#ffce54','#4bc0c0','#9966ff'];
-const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,delTarget:null,impMode:'new'};
+const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,delTarget:null,impMode:'new',gap:1};
 let segs=[],boxes=[];
 const $=id=>document.getElementById(id);
 const uid=()=>'n'+Math.random().toString(36).slice(2,9);
@@ -481,6 +483,8 @@ function openItem(id){
   if(x.type!=='topic'){S.nav.push(id);pushHist();renderLanding();renderTopbar();return}
   if(!x.data)x.data=blankMap();
   S.topic=x;S.map=x.data;S.selId=null;S.unlocked=false;document.body.classList.remove('unlocked');
+  // Load per-topic gap multiplier (defaults to 1.0 if not set)
+  S.gap=(typeof x.gap==='number')?x.gap:1;
   S.history=[clone(S.map)];S.hi=0;S.view='editor';document.body.dataset.view='editor';
   pushHist();renderTopbar();renderMap();setTimeout(fit,60);
 }
@@ -506,17 +510,20 @@ function renderTopbar(){
     <button class="btn" onclick="loadBtn()" title="Sync from sheet"><i class="fa-solid fa-rotate"></i><span> Sync</span></button>
     <button class="btn pri" onclick="backupSheet()"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>`;
   }else if(!S.unlocked){
-    // VIEW MODE - has nav, style, fullscreen, collapse, expand, import, back, edit, download
+    // VIEW MODE - has nav, style, gap, fullscreen, collapse, expand, import, back, edit, download
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span><span class="spacer"></span>
     ${navGroupHtml()}
     <div class="sep"></div>
     <button class="btn ic" title="Layout style" onclick="toggleStyleMenu(event)"><i class="fa-solid fa-palette"></i></button>
+    <button class="btn ic" title="Smaller gap between nodes" onclick="gapDelta(-0.1)"><i class="fa-solid fa-down-left-and-up-right-to-center"></i></button>
+    <span id="gapz" title="Current gap multiplier (click + / − to adjust)">${(S.gap||1).toFixed(1)}x</span>
+    <button class="btn ic" title="Larger gap between nodes" onclick="gapDelta(0.1)"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
     <button class="btn ic" title="Collapse all" onclick="collapseAll(true)"><i class="fa-solid fa-folder-closed"></i></button>
     <button class="btn ic" title="Expand all" onclick="collapseAll(false)"><i class="fa-solid fa-folder-open"></i></button>
     <button class="btn ic" title="Fullscreen" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
     <button class="btn ic" title="Fit to screen" onclick="fit()"><i class="fa-solid fa-crosshairs"></i></button>
     <div class="sep"></div>
-    <button class="btn ic" title="Download PNG / PDF / Vector SVG" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>
+    <button class="btn ic" title="Download PNG / PDF / Vector HTML" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>
     <button class="btn" onclick="openImport('current')" title="Import file"><i class="fa-solid fa-file-import"></i><span> Import</span></button>
     <button class="btn" onclick="goLanding()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>
     <button class="btn pri" onclick="askPw(unlockNow)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>`;
@@ -539,6 +546,10 @@ function renderTopbar(){
     <div class="sep"></div>
     <button class="btn ic" title="Box narrower" onclick="wDelta(-20)"><i class="fa-solid fa-arrows-left-right" style="transform:scaleX(.7)"></i></button>
     <button class="btn ic" title="Box wider" onclick="wDelta(20)"><i class="fa-solid fa-arrows-left-right"></i></button>
+    <div class="sep"></div>
+    <button class="btn ic" title="Smaller gap between nodes" onclick="gapDelta(-0.1)"><i class="fa-solid fa-down-left-and-up-right-to-center"></i></button>
+    <span id="gapz" title="Current gap multiplier (click + / − to adjust)">1.0x</span>
+    <button class="btn ic" title="Larger gap between nodes" onclick="gapDelta(0.1)"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
     <div class="sep"></div>
     ${PALETTE.map(c=>`<span class="dot" style="background:${c}" onclick="setColor('${c}')"></span>`).join('')}
     <span class="dot reset" onclick="setColor(null)"></span>
@@ -724,6 +735,8 @@ window.addEventListener('popstate',e=>{
 /* ===== LAYOUTS ===== */
 function layoutTimeline(){
   segs=[];boxes=[];
+  // S.gap: global multiplier for all gaps/distances between sibling/child nodes (0.5..2.5, default 1)
+  const G=S.gap||1;
   // Compute subtree's max depth below a node (for dynamic main-branch gap)
   function maxDepth(n){
     const kids=vis(n);if(!kids.length)return 0;
@@ -731,41 +744,43 @@ function layoutTimeline(){
   }
   const R=S.map,rm=measureNode(R,0);
   R._d=0;R._x=0;R._y=0;R._w=rm.w;R._h=rm.h;R._lines=rm.lines;R._col='#f5b301';boxes.push(R);
-  let cx=R._w/2+160;
+  let cx=R._w/2+160*G;
   vis(R).forEach((b,i)=>{
     const bm=measureNode(b,1);const bx=cx+bm.w/2;
     b._d=1;b._x=bx;b._y=0;b._w=bm.w;b._h=bm.h;b._lines=bm.lines;
     b._col=(b.style&&b.style.color)||PALETTE[i%PALETTE.length];boxes.push(b);
     const prev=i>0?vis(R)[i-1]:null;
     if(prev)segs.push({x1:prev._x+prev._w/2+8,y1:0,x2:bx-bm.w/2-8,y2:0,c:'rgba(255,255,255,.35)',w:3});
-    // 10% reduced child gaps (from 110→99 vertical first-child, 70→63 sibling, 170→153 horizontal)
-    const dir=i%2===0?1:-1;let y=dir*(bm.h/2+99),colRight=bx+bm.w/2,last2=null;
+    // Gaps multiplied by S.gap: vertical first-child 99, child sibling 63, horizontal column 153/126
+    const dir=i%2===0?1:-1;let y=dir*(bm.h/2+99*G),colRight=bx+bm.w/2,last2=null;
     (function place(n,d){
       const kids=vis(n);if(!kids.length)return;
-      const msx=d===1?bx:(n._x-n._w/2+45);let lastY=null;
+      const msx=d===1?bx:(n._x-n._w/2+45*G);let lastY=null;
       kids.forEach(k=>{
         const m=measureNode(k,d+1);
-        const left=d===1?bx+153:msx+126;
+        const left=d===1?bx+153*G:msx+126*G;
         k._d=d+1;k._w=m.w;k._h=m.h;k._lines=m.lines;k._x=left+m.w/2;k._y=y+dir*m.h/2;
         k._col=(k.style&&k.style.color)||n._col;boxes.push(k);
         segs.push({x1:d===1?bx:msx,y1:k._y,x2:left,y2:k._y,c:k._col,w:1.4});
-        colRight=Math.max(colRight,k._x+m.w/2);y+=dir*(m.h+63);lastY=k._y;
+        colRight=Math.max(colRight,k._x+m.w/2);y+=dir*(m.h+63*G);lastY=k._y;
         if(d===1)last2=k._y;
         place(k,d+1);
       });
       if(d===1)segs.push({x1:bx,y1:dir*(bm.h/2+8),x2:bx,y2:last2,c:n._col,w:2});
       else segs.push({x1:msx,y1:n._y+dir*n._h/2,x2:msx,y2:lastY,c:n._col,w:1.4});
     })(b,1);
-    // Dynamic main-branch gap: base 150 + 25px per level of subtree depth
+    // Dynamic main-branch gap (multiplied by S.gap): base 150 + 25px per level of subtree depth
     const dep=maxDepth(b);
-    cx=colRight+150+dep*25;
+    cx=colRight+(150+dep*25)*G;
   });
 }
 function layoutTree(){ /* north → south, tidy tree, orthogonal (90°) lines */
   segs=[];boxes=[];
-  // 10% reduced gaps (HG 80→72, VG 180→162)
-  const HG=72;   // horizontal gap between adjacent subtrees
-  const VG=162;  // vertical gap between depths
+  // S.gap multiplier applies to all gaps
+  const G=S.gap||1;
+  // Gaps multiplied by S.gap: HG 72, VG 162
+  const HG=72*G;   // horizontal gap between adjacent subtrees
+  const VG=162*G;  // vertical gap between depths
 
   // First pass (post-order): compute subtree width
   function computeWidth(n,d){
@@ -937,6 +952,16 @@ function fsDelta(d){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style
 function wDelta(d){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};
   const cur=n.style.width?(+n.style.width):(maxWOf(n._d||1));
   n.style.width=Math.max(80,Math.min(600,cur+d));mutate()}
+// Adjust gap multiplier between siblings/children (min 0.5, max 2.5, step 0.1)
+// Applies to both Timeline and Tree layouts. Persisted in S.gap (not in node, but in topic data via mutate).
+function gapDelta(d){
+  S.gap=Math.max(0.5,Math.min(2.5,Math.round((S.gap+d)*10)/10));
+  if(S.topic){S.topic.gap=S.gap;}  // persist with topic
+  saveLocal();
+  renderMap();
+  // Update display
+  const g=$('gapz');if(g)g.textContent=S.gap.toFixed(1)+'x';
+}
 function setColor(c){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};
   if(c)n.style.color=c;else delete n.style.color;mutate()}
 function collapseAll(v){(function w(n){if((n.children||[]).length)n.collapsed=v;(n.children||[]).forEach(w)})(S.map);S.map.collapsed=false;mutate()}
