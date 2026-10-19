@@ -203,8 +203,8 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 <!-- download dropdown -->
 <div id="dlMenu">
   <button data-fmt="png"><i class="fa-solid fa-image"></i> PNG image</button>
-  <button data-fmt="pdf"><i class="fa-solid fa-file-pdf"></i> PDF (vector)</button>
-  <button data-fmt="svg"><i class="fa-solid fa-bezier-curve"></i> Vector SVG</button>
+  <button data-fmt="pdf"><i class="fa-solid fa-file-pdf"></i> PDF (high-res)</button>
+  <button data-fmt="svg"><i class="fa-solid fa-code"></i> Vector HTML (zoomable)</button>
 </div>
 
 <div id="toast"><i class="fa-solid fa-circle-check"></i><span id="tmsg"></span></div>
@@ -221,7 +221,7 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 
 <script>
 /* ===== CONFIG ===== */
-const CONFIG={SCRIPT_URL:'https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/exec',PASSWORD:'mindmap0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
+const CONFIG={SCRIPT_URL:'',PASSWORD:'mindmap0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
 const PALETTE=['#4f69e8','#f29f7c','#4caa70','#2566df','#6178eb','#ff6384','#ffce54','#4bc0c0','#9966ff'];
 const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,delTarget:null,impMode:'new'};
 let segs=[],boxes=[];
@@ -1095,183 +1095,35 @@ function _loadScript(src){
     document.head.appendChild(s);
   });
 }
-// PNG export - high resolution for TV/large screens (scale 3 = 3x pixels)
-function exportPNG(){
-  _expandAllForExport();
-  toast('Generating PNG (high-res)...');
-  const go=()=>html2canvas($('wrap'),{backgroundColor:'#0b0f19',scale:3,useCORS:true,logging:false}).then(c=>{
-    const a=document.createElement('a');a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.png';a.href=c.toDataURL('image/png');a.click();toast('PNG exported','ok');
-  }).catch(e=>toast('PNG failed: '+e.message,'err'));
-  if(window.html2canvas)go();
-  else _loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js').then(go).catch(e=>toast('Library failed: '+e.message,'err'));
-}
-// Build a standalone SVG (vector) that contains all boxes + lines + text.
-// Vector quality => infinite zoom, perfect for TV / large screens.
-function exportSVG(){
-  _expandAllForExport();
-  toast('Generating Vector SVG...');
-  // Compute bounds
-  let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
-  boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2);});
-  // Add padding
-  const PAD=80;
-  x1-=PAD;y1-=PAD;x2+=PAD;y2+=PAD;
-  const w=x2-x1,h=y2-y1;
-  // Build SVG content
-  let svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x1} ${y1} ${w} ${h}" width="${w}" height="${h}" style="background:#0b0f19;font-family:Inter,sans-serif">`;
-  // Style defs
-  svg+=`<defs><style>
-    .nd-bg{fill:#161b26;stroke:rgba(255,255,255,.14);stroke-width:1;rx:10;ry:10}
-    .nd-text{fill:#eef1f6;font-size:13px;dominant-baseline:middle}
-    .nd-root{fill:#f5b301;stroke:none}
-    .seg{fill:none;stroke-linecap:round;stroke-linejoin:round}
-  </style></defs>`;
-  // Render segments
-  segs.forEach(s=>{
-    if(s.o){
-      const my=(s.y1+s.y2)/2;
-      svg+=`<path class="seg" stroke="${s.c}" stroke-width="${s.w}" d="M ${s.x1} ${s.y1} L ${s.x1} ${my} L ${s.x2} ${my} L ${s.x2} ${s.y2}"/>`;
-    }else if(s.v){
-      svg+=`<path class="seg" stroke="${s.c}" stroke-width="${s.w}" d="M ${s.x1} ${s.y1} C ${s.x1} ${(s.y1+s.y2)/2}, ${s.x2} ${(s.y1+s.y2)/2}, ${s.x2} ${s.y2}"/>`;
-    }else{
-      svg+=`<line class="seg" stroke="${s.c}" stroke-width="${s.w}" x1="${s.x1}" y1="${s.y1}" x2="${s.x2}" y2="${s.y2}"/>`;
-    }
-  });
-  // Render nodes (each as <g> with rect + text)
-  boxes.forEach(n=>{
-    if(n._d===0)return;
-    const fs=fsOf(n,n._d)||13;
-    const st=n.style||{};
-    let bg='#161b26', strokeColor='rgba(255,255,255,.14)', textColor='#eef1f6';
-    if(n._d>0 && st.color){bg=st.color;strokeColor=st.color;textColor=lum(st.color)>.6?'#141000':'#fff';}
-    svg+=`<g transform="translate(${n._x-n._w/2} ${n._y-n._h/2})">`;
-    svg+=`<rect class="nd-bg" x="0" y="0" width="${n._w}" height="${n._h}" rx="10" ry="10" fill="${bg}" stroke="${strokeColor}"/>`;
-    // Text lines
-    const lh=fs*1.35;
-    const startY=fs+(n._h-(n._lines.length*lh))/2;
-    n._lines.forEach((line,i)=>{
-      const ty=startY+i*lh;
-      const weight=(st.bold||(n._d===0))?'bold':'normal';
-      const fontStyle=st.italic?'italic':'normal';
-      const textDecoration=st.underline?'underline':'none';
-      svg+=`<text x="11" y="${ty}" font-size="${fs}" font-weight="${weight}" font-style="${fontStyle}" text-decoration="${textDecoration}" fill="${textColor}">${line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</text>`;
-    });
-    // Child badge (collapse indicator)
-    if((n.children||[]).length){
-      const count=n.children.length;
-      const bx=n._w-4, by=n._h/2;
-      svg+=`<circle cx="${bx}" cy="${by}" r="11" fill="#1e2636" stroke="#f5b301" stroke-width="1.5"/>`;
-      svg+=`<text x="${bx}" y="${by+4}" font-size="11" font-weight="700" text-anchor="middle" fill="#f5b301">${count}</text>`;
-    }
-    svg+=`</g>`;
-  });
-  svg+=`</svg>`;
-  // Download
-  const blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.svg';
-  a.href=url;a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),2000);
-  toast('Vector SVG exported','ok');
-}
-// PDF export - embeds the vector SVG into a PDF for crisp text on TV.
-// Uses pdf-lib (vector embedding) — text stays sharp at any zoom.
-function exportPDF(){
-  _expandAllForExport();
-  toast('Generating PDF (vector)...');
-  Promise.resolve()
-    .then(()=>{
-      if(window.PDFLib && window.PDFLib.PDFDocument)return;
-      return _loadScript('https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js');
-    })
-    .then(()=>{
-      if(!window.PDFLib || !window.PDFLib.PDFDocument){throw new Error('pdf-lib not loaded');}
-      return buildPDFVector();
-    })
-    .catch(e=>toast('PDF failed: '+e.message,'err'));
-}
-async function buildPDFVector(){
-  // Compute bounds
+// Compute bounding box of all visible boxes (excludes hidden root)
+function _computeBounds(){
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
   boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2);});
   const PAD=80;
-  x1-=PAD;y1-=PAD;x2+=PAD;y2+=PAD;
-  const w=x2-x1,h=y2-y1;
-  // Generate SVG (reuse buildSVGString for consistency)
-  const svgString=buildSVGString(x1,y1,w,h);
-  // Embed SVG into PDF as vector
-  const {PDFDocument,rgb}=window.PDFLib;
-  const doc=await PDFDocument.create();
-  // Use A4 if portrait fits, else landscape - choose based on aspect ratio
-  const aspect=w/h;
-  const isLandscape=aspect>1.4;
-  // 1600x900 / 900x1600 (high res canvas size for vector embedding)
-  const pdfW=isLandscape?1600:Math.round(1600/Math.max(0.5,aspect));
-  const pdfH=isLandscape?Math.round(1600/aspect):1600;
-  const page=doc.addPage([pdfW,pdfH]);
-  // pdf-lib supports embedding SVG via SVG-to-PDF (since 1.17)
-  if(doc.embedSvg){
-    const svgImg=await doc.embedSvg(svgString);
-    page.drawImage(svgImg,{x:0,y:0,width:pdfW,height:pdfH});
-  }else{
-    // Fallback: embed as a high-res raster (still pretty good quality)
-    const pngDataUrl=await new Promise((res,rej)=>{
-      const img=new Image();
-      img.onload=()=>{
-        const canvas=document.createElement('canvas');
-        canvas.width=pdfW*2;canvas.height=pdfH*2;
-        const ctx=canvas.getContext('2d');
-        ctx.fillStyle='#0b0f19';ctx.fillRect(0,0,canvas.width,canvas.height);
-        // Scale SVG to fit
-        const blob=new Blob([svgString],{type:'image/svg+xml;charset=utf-8'});
-        const url=URL.createObjectURL(blob);
-        const img2=new Image();
-        img2.onload=()=>{
-          ctx.drawImage(img2,0,0,canvas.width,canvas.height);
-          URL.revokeObjectURL(url);
-          res(canvas.toDataURL('image/png'));
-        };
-        img2.onerror=()=>rej(new Error('SVG rasterize failed'));
-        img2.src=url;
-      };
-      img.onerror=()=>rej(new Error('image load failed'));
-      // Trigger onload
-      img.src='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(svgString)));
-    });
-    const pngImg=await doc.embedPng(pngDataUrl);
-    page.drawImage(pngImg,{x:0,y:0,width:pdfW,height:pdfH});
-  }
-  // Add small footer with topic name
-  const topicName=S.topic?S.topic.name:'Mind Map';
-  page.drawText(topicName.replace(/[^\x20-\x7E]/g,''),{x:24,y:pdfH-24,size:10,color:rgb(0.6,0.65,0.72)});
-  const bytes=await doc.save();
-  const blob=new Blob([bytes],{type:'application/pdf'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.pdf';
-  a.href=url;a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),2000);
-  toast('PDF exported (vector quality)','ok');
+  return {x1:x1-PAD,y1:y1-PAD,x2:x2+PAD,y2:y2+PAD,w:(x2-x1)+2*PAD,h:(y2-y1)+2*PAD};
 }
-// Helper to build a SVG string (shared by exportSVG and exportPDF)
+// Build a standalone SVG string containing all boxes + lines + text.
+// This is the source of truth for PNG, SVG and HTML export.
 function buildSVGString(x1,y1,w,h){
-  let svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x1} ${y1} ${w} ${h}" width="${w}" height="${h}" style="background:#0b0f19;font-family:Inter,Helvetica,Arial,sans-serif">`;
+  let svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x1} ${y1} ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet" style="background:#0b0f19;font-family:Inter,Helvetica,Arial,sans-serif">`;
   svg+=`<rect x="${x1}" y="${y1}" width="${w}" height="${h}" fill="#0b0f19"/>`;
-  // Segments
+  // Segments (lines connecting nodes)
   segs.forEach(s=>{
     if(s.o){
+      // Orthogonal (90° right-angle) line
       const my=(s.y1+s.y2)/2;
       svg+=`<path fill="none" stroke="${s.c}" stroke-width="${s.w}" stroke-linecap="round" stroke-linejoin="round" d="M ${s.x1} ${s.y1} L ${s.x1} ${my} L ${s.x2} ${my} L ${s.x2} ${s.y2}"/>`;
     }else if(s.v){
+      // Curved line (cubic bezier)
       svg+=`<path fill="none" stroke="${s.c}" stroke-width="${s.w}" stroke-linecap="round" d="M ${s.x1} ${s.y1} C ${s.x1} ${(s.y1+s.y2)/2}, ${s.x2} ${(s.y1+s.y2)/2}, ${s.x2} ${s.y2}"/>`;
     }else{
+      // Straight line
       svg+=`<line stroke="${s.c}" stroke-width="${s.w}" stroke-linecap="round" x1="${s.x1}" y1="${s.y1}" x2="${s.x2}" y2="${s.y2}"/>`;
     }
   });
   // Nodes
   boxes.forEach(n=>{
-    if(n._d===0)return;
+    if(n._d===0)return; // hide root (topic name) box
     const fs=fsOf(n,n._d)||13;
     const st=n.style||{};
     let bg='#161b26', strokeColor='rgba(255,255,255,.14)', textColor='#eef1f6';
@@ -1297,6 +1149,167 @@ function buildSVGString(x1,y1,w,h){
   });
   svg+=`</svg>`;
   return svg;
+}
+// Rasterize our SVG string to a PNG data URL at given pixel scale.
+// This guarantees the lines + boxes + text all render (unlike html2canvas which misses SVG).
+function _rasterizeSVG(svgString,w,h,pixelRatio){
+  return new Promise((res,rej)=>{
+    const blob=new Blob([svgString],{type:'image/svg+xml;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const img=new Image();
+    img.onload=()=>{
+      try{
+        const canvas=document.createElement('canvas');
+        canvas.width=Math.max(2,Math.round(w*pixelRatio));
+        canvas.height=Math.max(2,Math.round(h*pixelRatio));
+        const ctx=canvas.getContext('2d');
+        ctx.fillStyle='#0b0f19';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        URL.revokeObjectURL(url);
+        res(canvas);
+      }catch(e){URL.revokeObjectURL(url);rej(e);}
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('SVG rasterize failed (CORS/taint)'));};
+    img.src=url;
+  });
+}
+// PNG export - rasterize our SVG directly (NOT html2canvas which misses the SVG lines).
+// Uses high pixelRatio (3) so the PNG stays sharp on TV / large screens.
+function exportPNG(){
+  _expandAllForExport();
+  toast('Generating PNG (high-res)...');
+  try{
+    const b=_computeBounds();
+    const svg=buildSVGString(b.x1,b.y1,b.w,b.h);
+    _rasterizeSVG(svg,b.w,b.h,3).then(canvas=>{
+      canvas.toBlob(blob=>{
+        if(!blob){toast('PNG failed: blob creation failed','err');return;}
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');
+        a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.png';
+        a.href=url;a.click();
+        setTimeout(()=>URL.revokeObjectURL(url),2000);
+        toast('PNG exported','ok');
+      },'image/png');
+    }).catch(e=>toast('PNG failed: '+e.message,'err'));
+  }catch(e){toast('PNG failed: '+e.message,'err');}
+}
+// Vector export as standalone HTML file (mobile doesn't open .svg natively).
+// The HTML contains the SVG inline, plus minimal CSS so it scales to any screen.
+// Open in any browser (mobile or desktop) — zoom in/out keeps text sharp.
+function exportSVG(){
+  _expandAllForExport();
+  toast('Generating Vector HTML...');
+  try{
+    const b=_computeBounds();
+    const svg=buildSVGString(b.x1,b.y1,b.w,b.h);
+    const topicName=(S.topic?S.topic.name:'Mind Map');
+    const safeName=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_');
+    const html=`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>${topicName.replace(/</g,'&lt;')} — Mind Map</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0b0f19;color:#e8ecf4;font-family:Inter,system-ui,sans-serif;overflow:hidden}
+#wrap{position:fixed;inset:0;overflow:auto;-webkit-overflow-scrolling:touch;cursor:grab;background:radial-gradient(900px 500px at 50% 40%,rgba(245,179,1,.04),transparent 60%)}
+#wrap:active{cursor:grabbing}
+#title{position:fixed;top:8px;left:50%;transform:translateX(-50%);background:rgba(21,26,37,.92);backdrop-filter:blur(10px);border:1px solid #2d3748;border-radius:10px;padding:8px 16px;font-size:13px;color:#94a3b8;z-index:10;max-width:90vw;text-align:center}
+#hint{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(21,26,37,.92);backdrop-filter:blur(10px);border:1px solid #2d3748;border-radius:10px;padding:6px 12px;font-size:11px;color:#94a3b8;z-index:10}
+#zoomc{position:fixed;right:10px;bottom:40px;display:flex;flex-direction:column;gap:2px;background:rgba(21,26,37,.92);border:1px solid #2d3748;border-radius:10px;padding:4px;z-index:10}
+#zoomc button{width:36px;height:36px;border:none;border-radius:7px;background:transparent;color:#94a3b8;cursor:pointer;font-size:18px;font-weight:700}
+#zoomc button:hover{background:#1e2636;color:#fff}
+#zi{font:600 11px Inter,sans-serif;color:#94a3b8;text-align:center;padding:2px}
+svg{display:block;transform-origin:0 0;max-width:none}
+</style>
+</head>
+<body>
+<div id="title">${topicName.replace(/</g,'&lt;')}</div>
+<div id="wrap"><div id="world">${svg}</div></div>
+<div id="hint">Scroll = pan • Pinch / Ctrl+Wheel = zoom</div>
+<div id="zoomc">
+<button onclick="zoomBy(1.25)">+</button>
+<div id="zi">100%</div>
+<button onclick="zoomBy(0.8)">−</button>
+<button onclick="fit()">⌖</button>
+</div>
+<script>
+let zoom=1,px=0,py=0;const wrap=document.getElementById('wrap'),world=document.getElementById('world'),zi=document.getElementById('zi');
+const svgEl=world.querySelector('svg');
+const vb=svgEl.getAttribute('viewBox').split(' ').map(Number);const[vx,vy,vw,vh]=vb;
+function applyT(){world.style.transform='translate('+px+'px,'+py+'px) scale('+zoom+')';zi.textContent=Math.round(zoom*100)+'%';}
+function fit(){const ww=wrap.clientWidth,wh=wrap.clientHeight;zoom=Math.min(ww/vw,wh/vh);px=(ww-vw*zoom)/2-vx*zoom;py=(wh-vh*zoom)/2-vy*zoom;applyT();}
+function zoomBy(f){const ww=wrap.clientWidth/2,wh=wrap.clientHeight/2;const nz=Math.max(.15,Math.min(8,zoom*f));px=ww-(ww-px)*(nz/zoom);py=wh-(wh-py)*(nz/zoom);zoom=nz;applyT();}
+let pan=null;wrap.addEventListener('pointerdown',e=>{if(e.target.closest('svg')&&!e.target.closest('text')&&!e.target.closest('rect'))return;pan={x:e.clientX-px,y:e.clientY-py}});
+window.addEventListener('pointermove',e=>{if(!pan)return;px=e.clientX-pan.x;py=e.clientY-pan.y;applyT()});
+window.addEventListener('pointerup',()=>pan=null);
+wrap.addEventListener('wheel',e=>{e.preventDefault();zoomBy(e.deltaY>0?.85:1.18)},{passive:false});
+let pinch=null;wrap.addEventListener('touchstart',e=>{if(e.touches.length===2){const t=e.touches;pinch={dist:Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY),zoom,cx:(t[0].clientX+t[1].clientX)/2,cy:(t[0].clientY+t[1].clientY)/2};pan=null}},{passive:false});
+wrap.addEventListener('touchmove',e=>{if(!pinch||e.touches.length!==2)return;e.preventDefault();const t=e.touches;let r=Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY)/pinch.dist;r=Math.max(.92,Math.min(1.08,r));let nz=Math.max(.2,Math.min(8,pinch.zoom*r));const cx=pinch.cx,cy=pinch.cy;px=cx-(cx-px)*(nz/zoom);py=cy-(cy-py)*(nz/zoom);zoom=nz;applyT();pinch.zoom=nz},{passive:false});
+wrap.addEventListener('touchend',e=>{if(e.touches.length<2)pinch=null});
+window.addEventListener('load',setTimeout.bind(null,fit,100));
+setTimeout(fit,200);
+<\/script>
+</body>
+</html>`;
+    const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.download=safeName+'_mindmap.html';
+    a.href=url;a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+    toast('Vector HTML exported','ok');
+  }catch(e){toast('Vector failed: '+e.message,'err');}
+}
+// PDF export - rasterize SVG at very high resolution (4x) and embed as PNG into PDF.
+// At 4x the text/lines are very crisp; PDF stays zoomable without obvious pixelation on TV.
+function exportPDF(){
+  _expandAllForExport();
+  toast('Generating PDF (high-res)...');
+  Promise.resolve()
+    .then(()=>{
+      if(window.PDFLib && window.PDFLib.PDFDocument)return;
+      return _loadScript('https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js');
+    })
+    .then(()=>{
+      if(!window.PDFLib || !window.PDFLib.PDFDocument){throw new Error('pdf-lib not loaded');}
+      return buildPDFFromSVG();
+    })
+    .catch(e=>toast('PDF failed: '+e.message,'err'));
+}
+async function buildPDFFromSVG(){
+  const b=_computeBounds();
+  const svg=buildSVGString(b.x1,b.y1,b.w,b.h);
+  // Rasterize at 4x for crisp text
+  const canvas=await _rasterizeSVG(svg,b.w,b.h,4);
+  const dataUrl=canvas.toDataURL('image/png');
+  const {PDFDocument,rgb}=window.PDFLib;
+  const doc=await PDFDocument.create();
+  // Choose page size based on aspect ratio (use 200 DPI scaled)
+  const aspect=b.w/b.h;
+  const isLandscape=aspect>1.4;
+  const baseSize=1600;
+  const pdfW=isLandscape?baseSize:Math.round(baseSize/Math.max(0.5,aspect));
+  const pdfH=isLandscape?Math.round(baseSize/aspect):baseSize;
+  const page=doc.addPage([pdfW,pdfH]);
+  // Fill background dark to match theme
+  page.drawRectangle({x:0,y:0,width:pdfW,height:pdfH,color:rgb(0.043,0.06,0.098)});
+  const pngImg=await doc.embedPng(dataUrl);
+  page.drawImage(pngImg,{x:0,y:0,width:pdfW,height:pdfH});
+  // Footer with topic name (ascii only to avoid font issues)
+  const topicName=(S.topic?S.topic.name:'Mind Map').replace(/[^\x20-\x7E]/g,'').slice(0,60);
+  if(topicName)page.drawText(topicName,{x:24,y:pdfH-24,size:11,color:rgb(0.58,0.64,0.72)});
+  const bytes=await doc.save();
+  const blob=new Blob([bytes],{type:'application/pdf'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.pdf';
+  a.href=url;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+  toast('PDF exported (4x high-res)','ok');
 }
 
 /* ===== LAYOUT SWITCH / KEYS ===== */
