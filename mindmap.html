@@ -167,14 +167,15 @@ footer{flex-shrink:0;border-top:1px solid var(--bd);background:var(--sf);padding
 
 <script>
 /* ===== CONFIG ===== */
-const CONFIG={SCRIPT_URL:'',PASSWORD:'mindmap0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7'};
+const CONFIG={SCRIPT_URL:'',PASSWORD:'mindmap0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
 const PALETTE=['#4f69e8','#f29f7c','#4caa70','#2566df','#6178eb','#ff6384','#ffce54','#4bc0c0','#9966ff'];
 const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,delTarget:null,impMode:'new'};
 let segs=[],boxes=[];
 const $=id=>document.getElementById(id);
 const uid=()=>'n'+Math.random().toString(36).slice(2,9);
 const clone=o=>JSON.parse(JSON.stringify(o));
-const vis=n=>(n.children||[]).filter(c=>!c.collapsed);
+// FIXED: if a node is collapsed, hide its CHILDREN (not the node itself)
+const vis=n=>n.collapsed?[]:(n.children||[]);
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 function toast(m,t){const e=$('toast');$('tmsg').textContent=m;e.className='show '+(t||'');setTimeout(()=>e.className='',2800)}
 function openM(id){$(id).classList.add('show')}function closeM(id){$(id).classList.remove('show')}
@@ -264,18 +265,20 @@ function norm(o,d){const n={id:uid(),text:String(o.text||o.title||o.name||o.TEXT
 function parseJSON(t){let o=JSON.parse(t);if(o.mindMap)o=o.mindMap;if(o.data)o=o.data;
   if(Array.isArray(o))o={text:'Imported',children:o};return norm(o,0)}
 function parseMD(t){const lines=t.split(/\r?\n/);const root={id:uid(),text:'Imported',children:[],style:{color:'#f5b301',bold:true}};
-  const stack=[{d:-1,n:root}];
+  const stack=[{d:-1,n:root}];let lastHeadingDepth=-1;
   lines.forEach(l=>{
     const h=l.match(/^(#{1,6})\s+(.+)/);const b=l.match(/^(\s*)(?:[-*+]|\d+\.)\s+(.+)/);
     let d=null,text=null;
-    if(h){d=h[1].length-1;text=h[2]}else if(b){d=Math.floor(b[1].replace(/\t/g,'  ').length/2)+ (h?0:0);text=b[2];d=Math.floor(b[1].replace(/\t/g,'  ').length/2)}
+    if(h){d=h[1].length-1;text=h[2];lastHeadingDepth=d}
+    else if(b){const ind=Math.floor(b[1].replace(/\t/g,'  ').length/2);d=(lastHeadingDepth<0?0:lastHeadingDepth+1)+ind;text=b[2]}
     if(text===null)return;text=text.trim();if(!text)return;
     if(d===null)d=0;
     const n={id:uid(),text,children:[],style:{}};
     while(stack.length>1&&stack[stack.length-1].d>=d)stack.pop();
     stack[stack.length-1].n.children.push(n);stack.push({d,n});
   });
-  if(root.children.length===1&&!root.text)return root.children[0];
+  // If there's a single top-level (# H1) child, promote it to root
+  if(root.children.length===1&&root.text==='Imported'){const c=root.children[0];c.style={color:'#f5b301',bold:true};return c}
   return root}
 function parseTXT(t){return parseMD(t.split(/\r?\n/).map(l=>/^\s/.test(l)?l:'- '+l.trim()).join('\n'))}
 function parseOPML(t){const d=new DOMParser().parseFromString(t,'text/xml');
@@ -333,12 +336,36 @@ function doImport(){
     try{
       const tree=parseFile(f.name,ev.target.result);
       const title=$('impTitle').value.trim()||tree.text||f.name.replace(/\.[^.]+$/,'');
-      if(S.impMode==='current'){S.map=tree;S.map.text=S.map.text||title;mutate();closeM('impModal');toast('📥 Imported into current map','ok');return}
-      if(S.nav.length!==2){toast('Subject level এ যাও (Class → Subject)','err');return}
-      const subj=items().find(()=>true)?null:null;
-      const s=curSubject();if(!s){toast('Subject পাওয়া যায়নি','err');return}
-      s.children.push({id:uid(),name:title,type:'topic',data:tree});
-      saveLocal();renderLanding();closeM('impModal');toast('📥 Topic "'+title+'" imported','ok');
+      // 'current' mode = replace the map of the topic we're inside (editor only)
+      if(S.impMode==='current'){
+        if(S.view!=='editor'||!S.topic){toast('Open a topic first','err');return}
+        S.map=tree;S.map.text=S.map.text||title;S.topic.data=S.map;
+        S.history=[clone(S.map)];S.hi=0;
+        mutate();closeM('impModal');toast('Imported into current map','ok');return;
+      }
+      // 'new' mode = add as a new topic. Auto-create class/subject path based on current page.
+      if(S.view==='editor'){
+        S.map=tree;S.map.text=S.map.text||title;S.topic.data=S.map;
+        S.history=[clone(S.map)];S.hi=0;
+        mutate();closeM('impModal');toast('Imported into current map','ok');return;
+      }
+      const topicNode={id:uid(),name:title,type:'topic',data:tree};
+      const it=items();
+      if(S.nav.length===0){
+        // Home -> auto-create "Imported" class + "General" subject + topic
+        const cls={id:uid(),name:'Imported',type:'class',children:[
+          {id:uid(),name:'General',type:'subject',children:[topicNode]}
+        ]};
+        S.curriculum.push(cls);
+      }else if(S.nav.length===1){
+        // Inside a class -> auto-create "General" subject + topic
+        const subj={id:uid(),name:'General',type:'subject',children:[topicNode]};
+        it.push(subj);
+      }else if(S.nav.length===2){
+        // Inside a subject -> add topic directly
+        it.push(topicNode);
+      }
+      saveLocal();renderLanding();closeM('impModal');toast('Topic "'+title+'" imported','ok');
     }catch(e){toast('Import failed: '+e.message,'err')}
   };
   rd.readAsText(f);
@@ -351,7 +378,7 @@ function renderLanding(){
   const it=items();
   const names=[{n:'Home',i:-1}];let cur=S.curriculum;
   S.nav.forEach((id,k)=>{cur=cur.find(x=>x.id===id);names.push({n:cur?cur.name:'?',i:k});if(cur&&k<S.nav.length-1)cur=cur.children||[]});
-  $('crumb').innerHTML=names.map((p,k)=>k===names.length-1?`<span class="cur">${esc(p.n)}</span>`:`<span onclick="S.nav=S.nav.slice(0,${p.i+1});renderLanding()">${esc(p.n)}</span><span style="cursor:default">/</span>`).join('');
+  $('crumb').innerHTML=names.map((p,k)=>k===names.length-1?`<span class="cur">${esc(p.n)}</span>`:`<span onclick="navTo(${p.i+1})">${esc(p.n)}</span><span style="cursor:default">/</span>`).join('');
   const acts=(type,id)=>`<div class="cacts">
     <button title="Rename" onclick="event.stopPropagation();editName('${type}','${id}')"><i class="fa-solid fa-pen"></i></button>
     <button class="del" title="Delete" onclick="event.stopPropagation();askDelete('${type}','${id}')"><i class="fa-solid fa-trash"></i></button></div>`;
@@ -384,23 +411,27 @@ function delOk(){
 }
 function openItem(id){
   const x=items().find(i=>i.id===id);if(!x)return;
-  if(x.type!=='topic'){S.nav.push(id);renderLanding();return}
+  if(x.type!=='topic'){S.nav.push(id);pushHist();renderLanding();renderTopbar();return}
   if(!x.data)x.data=blankMap();
   S.topic=x;S.map=x.data;S.selId=null;S.unlocked=false;document.body.classList.remove('unlocked');
   S.history=[clone(S.map)];S.hi=0;S.view='editor';document.body.dataset.view='editor';
-  renderTopbar();renderMap();setTimeout(fit,60);
+  pushHist();renderTopbar();renderMap();setTimeout(fit,60);
 }
-function goLanding(){S.view='landing';document.body.dataset.view='landing';S.unlocked=false;document.body.classList.remove('unlocked');renderLanding();renderTopbar()}
+function goLanding(){S.view='landing';document.body.dataset.view='landing';S.unlocked=false;document.body.classList.remove('unlocked');pushHist();renderLanding();renderTopbar()}
 
 /* ===== TOPBAR / LOCK ===== */
 function renderTopbar(){
   const ed=S.view==='editor';
-  let h=`<a class="logo" href="javascript:void(0)" onclick="${ed?'goLanding()':'S.nav=[];renderLanding()'}"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><b>MEGA&nbsp;<span>QUIZ</span></b></a>`;
+  let h=`<a class="logo" href="${CONFIG.MINDMAP_URL}" target="_top" rel="noopener"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><b>MEGA&nbsp;<span>QUIZ</span></b></a>`;
   if(!ed){
-    h+=`<button class="btn" onclick="loadBtn()"><i class="fa-solid fa-cloud-arrow-down"></i><span> Load</span></button>
+    if(S.nav.length>0)h+=`<button class="btn" onclick="navBack()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>`;
+    h+=`<button class="btn" onclick="openImport('new')" title="Import file"><i class="fa-solid fa-file-import"></i><span> Import</span></button>
+    <button class="btn" onclick="loadBtn()" title="Sync from sheet"><i class="fa-solid fa-rotate"></i><span> Sync</span></button>
     <button class="btn pri" onclick="backupSheet()"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>`;
   }else if(!S.unlocked){
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span><span class="spacer"></span>
+    <button class="btn" onclick="openImport('current')" title="Import file"><i class="fa-solid fa-file-import"></i><span> Import</span></button>
+    <button class="btn" onclick="goLanding()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>
     <button class="btn pri" onclick="askPw(unlockNow)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>`;
   }else{
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span>
@@ -424,7 +455,7 @@ function renderTopbar(){
     <button class="btn ic" title="Expand all" onclick="collapseAll(false)"><i class="fa-solid fa-folder-open"></i></button>
     <button class="btn ic" title="AI" onclick="openM('aiModal')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
     <button class="btn ic" title="Import file" onclick="openImport('current')"><i class="fa-solid fa-file-import"></i></button>
-    <button class="btn ic" title="Load from sheet" onclick="loadBtn()"><i class="fa-solid fa-cloud-arrow-down"></i></button>
+    <button class="btn ic" title="Sync from sheet" onclick="loadBtn()"><i class="fa-solid fa-rotate"></i></button>
     <button class="btn pri" onclick="backupSheet()"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>
     <button class="btn ic" title="PNG" onclick="exportPNG()"><i class="fa-solid fa-download"></i></button>
     <button class="btn ic" title="Fullscreen" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
@@ -440,40 +471,67 @@ function unlockNow(){S.unlocked=true;document.body.classList.add('unlocked');ren
 function lock(){S.unlocked=false;document.body.classList.remove('unlocked');renderTopbar();renderMap();toast('🔒 Locked','ok')}
 function fscreen(){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen()}
 
+/* ===== NAV / HISTORY (browser back support) ===== */
+function pushHist(){
+  try{history.pushState({nav:S.nav.slice(),view:S.view,tid:(S.view==='editor'&&S.topic)?S.topic.id:null},'')}catch(e){}
+}
+function navBack(){
+  if(S.view==='editor'){goLanding();return}
+  if(S.nav.length>0){S.nav.pop();pushHist();renderLanding();renderTopbar()}
+}
+function navTo(depth){
+  S.nav=S.nav.slice(0,depth);pushHist();renderLanding();renderTopbar();
+}
+window.addEventListener('popstate',e=>{
+  const st=e.state;if(!st)return;
+  S.nav=st.nav||[];
+  if(st.view==='editor'&&st.tid){
+    const find=(arr)=>{for(const it of arr){if(it.id===st.tid&&it.type==='topic')return it;if(it.children){const f=find(it.children);if(f)return f}}return null};
+    const t=find(S.curriculum);
+    if(t){
+      S.topic=t;S.map=t.data||blankMap();S.selId=null;S.unlocked=false;document.body.classList.remove('unlocked');
+      S.history=[clone(S.map)];S.hi=0;S.view='editor';document.body.dataset.view='editor';
+      renderTopbar();renderMap();setTimeout(fit,60);return;
+    }
+  }
+  S.view='landing';S.unlocked=false;document.body.classList.remove('unlocked');document.body.dataset.view='landing';
+  renderLanding();renderTopbar();
+});
+
 /* ===== LAYOUTS ===== */
 function layoutTimeline(){
   segs=[];boxes=[];
   const R=S.map,rm=measure(R.text,fsOf(R,0),430);
   R._d=0;R._x=0;R._y=0;R._w=rm.w;R._h=rm.h;R._lines=rm.lines;R._col='#f5b301';boxes.push(R);
-  let cx=R._w/2+90;
+  let cx=R._w/2+130;
   vis(R).forEach((b,i)=>{
     const bm=measure(b.text,fsOf(b,1),320);const bx=cx+bm.w/2;
     b._d=1;b._x=bx;b._y=0;b._w=bm.w;b._h=bm.h;b._lines=bm.lines;
     b._col=(b.style&&b.style.color)||PALETTE[i%PALETTE.length];boxes.push(b);
     const prev=i>0?vis(R)[i-1]:null;
-    segs.push({x1:prev?prev._x+prev._w/2+4:R._w/2+4,y1:0,x2:bx-bm.w/2-4,y2:0,c:'rgba(255,255,255,.35)',w:3});
-    const dir=i%2===0?1:-1;let y=dir*(bm.h/2+46),colRight=bx+bm.w/2,last2=null;
+    if(prev)segs.push({x1:prev._x+prev._w/2+4,y1:0,x2:bx-bm.w/2-4,y2:0,c:'rgba(255,255,255,.35)',w:3});
+    const dir=i%2===0?1:-1;let y=dir*(bm.h/2+80),colRight=bx+bm.w/2,last2=null;
     (function place(n,d){
       const kids=vis(n);if(!kids.length)return;
       const msx=d===1?bx:(n._x-n._w/2+40);let lastY=null;
       kids.forEach(k=>{
         const m=measure(k.text,fsOf(k,d+1),maxWOf(d+1));
-        const left=d===1?bx+90:msx+60;
+        const left=d===1?bx+140:msx+110;
         k._d=d+1;k._w=m.w;k._h=m.h;k._lines=m.lines;k._x=left+m.w/2;k._y=y+dir*m.h/2;
         k._col=(k.style&&k.style.color)||n._col;boxes.push(k);
         segs.push({x1:d===1?bx:msx,y1:k._y,x2:left,y2:k._y,c:k._col,w:1.4});
-        colRight=Math.max(colRight,k._x+m.w/2);y+=dir*(m.h+20);lastY=k._y;
+        colRight=Math.max(colRight,k._x+m.w/2);y+=dir*(m.h+45);lastY=k._y;
         if(d===1)last2=k._y;
         place(k,d+1);
       });
       if(d===1)segs.push({x1:bx,y1:dir*(bm.h/2+6),x2:bx,y2:last2,c:n._col,w:2});
       else segs.push({x1:msx,y1:n._y+dir*n._h/2,x2:msx,y2:lastY,c:n._col,w:1.4});
     })(b,1);
-    cx=colRight+100;
+    cx=colRight+160;
   });
 }
 function layoutTree(){ /* north → south */
-  segs=[];boxes=[];let slot=0;const HG=260,VG=150;
+  segs=[];boxes=[];let slot=0;const HG=340,VG=200;
   (function w(n,d){
     const m=measure(n.text,fsOf(n,d),maxWOf(d));
     n._d=d;n._w=m.w;n._h=m.h;n._lines=m.lines;
@@ -482,14 +540,14 @@ function layoutTree(){ /* north → south */
     n._x=n._slot*HG;n._y=d*VG;
     n._col=d===0?'#f5b301':(n.style&&n.style.color)||PALETTE[d%9];
     boxes.push(n);
-    kids.forEach(k=>segs.push({v:1,x1:n._x,y1:n._y+n._h/2,x2:k._x,y2:k._y-k._h/2,c:k._col,w:1.5}));
+    if(d>0)kids.forEach(k=>segs.push({v:1,x1:n._x,y1:n._y+n._h/2,x2:k._x,y2:k._y-k._h/2,c:k._col,w:1.5}));
   })(S.map,0);
 }
 function layoutFishbone(){
   segs=[];boxes=[];
   const R=S.map,rm=measure(R.text,fsOf(R,0),430);
   R._d=0;R._x=0;R._y=0;R._w=rm.w;R._h=rm.h;R._lines=rm.lines;R._col='#f5b301';boxes.push(R);
-  const GAP=640,DX=220,DY=250;let ax=R._w/2+170;
+  const GAP=780,DX=270,DY=320;let ax=R._w/2+200;
   const bs=vis(R);
   bs.forEach((b,i)=>{
     const dir=i%2===0?1:-1;
@@ -510,7 +568,7 @@ function layoutFishbone(){
       vis(lf).forEach(gc=>{
         const cm=measure(gc.text,fsOf(gc,3),220);
         gc._d=3;gc._w=cm.w;gc._h=cm.h;gc._lines=cm.lines;gc._x=lf._x;
-        cy+=dir*(prev._h/2+16+cm.h/2);gc._y=cy;gc._col=(gc.style&&gc.style.color)||lf._col;boxes.push(gc);
+        cy+=dir*(prev._h/2+28+cm.h/2);gc._y=cy;gc._col=(gc.style&&gc.style.color)||lf._col;boxes.push(gc);
         segs.push({x1:lf._x,y1:prev._y+dir*prev._h/2,x2:lf._x,y2:gc._y-dir*cm.h/2,c:gc._col,w:1.2});
         prev=gc;
       });
@@ -527,6 +585,7 @@ function renderMap(){
     :`<line x1="${s.x1}" y1="${s.y1}" x2="${s.x2}" y2="${s.y2}" stroke="${s.c}" stroke-width="${s.w}"/>`).join('');
   const wrap=$('nodes');wrap.innerHTML='';
   boxes.forEach(n=>{
+    if(n._d===0)return; // hide root (topic name) box - shown only in topbar
     const el=document.createElement('div');
     el.className='nd'+(n._d===0?' root':'')+(S.selId===n.id?' sel':'');
     el.dataset.id=n.id;el.style.left=n._x+'px';el.style.top=n._y+'px';el.style.width=n._w+'px';
@@ -559,7 +618,7 @@ function zoomBy(f){const w=$('wrap').clientWidth/2,h=$('wrap').clientHeight/2;co
   S.px=w-(w-S.px)*(nz/S.zoom);S.py=h-(h-S.py)*(nz/S.zoom);S.zoom=nz;applyT()}
 function fit(){if(!boxes.length)return;const w=$('wrap').clientWidth,h=$('wrap').clientHeight;
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
-  boxes.forEach(b=>{x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2)});
+  boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2)});
   S.zoom=Math.max(.15,Math.min(1.6,Math.min(w/(x2-x1+160),h/(y2-y1+160))));
   S.px=w/2-(x1+x2)/2*S.zoom;S.py=h/2-(y1+y2)/2*S.zoom;applyT()}
 
@@ -706,6 +765,7 @@ window.addEventListener('keydown',e=>{
   const live=await loadLive();
   if(live){saveLocal();toast('☑ Live data loaded from Sheet','ok')}
   else if(!loadLocal())S.curriculum=demoCurriculum();
+  try{history.replaceState({nav:[],view:'landing',tid:null},'')}catch(e){}
   renderLanding();renderTopbar();
 })();
 </script>
