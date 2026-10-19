@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Mind Maps — Mega Quiz</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -53,7 +53,7 @@ body[data-view="editor"] footer{display:none}
 #wrap:active{cursor:grabbing}
 #world{position:absolute;left:0;top:0;transform-origin:0 0}
 #linesSvg{position:absolute;left:0;top:0;width:10px;height:10px;overflow:visible}
-#linesSvg path,#linesSvg line{fill:none;stroke-linecap:round}
+#linesSvg path,#linesSvg line{fill:none;stroke-linecap:round;stroke-linejoin:round}
 .nd{position:absolute;transform:translate(-50%,-50%);background:var(--nd);border:1px solid rgba(255,255,255,.14);border-radius:10px;display:flex;align-items:stretch;color:#eef1f6;font-size:13px;line-height:1.4;cursor:pointer;user-select:none;box-shadow:0 4px 14px rgba(0,0,0,.4)}
 .nd:hover{border-color:rgba(255,255,255,.4);z-index:5}
 .nd.sel{outline:2px solid var(--ac);outline-offset:2px;z-index:6}
@@ -98,6 +98,48 @@ footer{flex-shrink:0;border-top:1px solid var(--bd);background:var(--sf);padding
 .f-row a:hover{color:#fff}
 .f-bottom{text-align:center;border-top:1px solid var(--bd);margin-top:.3rem;padding-top:.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:760px){.btn span{display:none}.ttl{max-width:24vw}}
+
+/* ===== Fullscreen mode (smaller topbar) ===== */
+body.fs #topbar{height:34px;padding:0 .35rem;gap:.2rem}
+body.fs .logo img{width:18px;height:18px;border-radius:5px}
+body.fs .logo b{font-size:.7rem}
+body.fs .btn{padding:.2rem .4rem;font-size:.7rem}
+body.fs .btn.ic{width:24px;height:24px;font-size:.65rem}
+body.fs .ttl{font-size:.7rem;max-width:18vw}
+body.fs .dot{width:12px;height:12px}
+body.fs #fsz{font-size:.6rem;min-width:18px}
+body.fs .sep{height:12px}
+body.fs #main{flex:1}
+body.fs #landing{padding:.8rem}
+
+/* ===== Style dropdown menu (replaces bottom #laybar) ===== */
+#styleMenu{position:fixed;top:50px;right:8px;display:none;flex-direction:column;gap:2px;background:rgba(21,26,37,.96);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:10px;padding:5px;z-index:200;min-width:140px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+#styleMenu.show{display:flex}
+#styleMenu button{border:none;background:transparent;color:var(--tx2);font:600 .82rem Inter;padding:.55rem .9rem;border-radius:7px;cursor:pointer;display:flex;gap:.45rem;align-items:center;white-space:nowrap;text-align:left}
+#styleMenu button:hover{background:var(--sf2);color:#fff}
+#styleMenu button.on{background:var(--ac);color:#111}
+body.fs #styleMenu{top:34px}
+
+/* Hide old bottom #laybar - it's replaced by Style button + dropdown */
+#laybar{display:none!important}
+
+/* ===== AI modal: push Generate to far right ===== */
+.mact.ai-end{justify-content:space-between}
+.mact.ai-end .btn{flex:0 0 auto;padding:.7rem 1.3rem}
+.mact.ai-end .btn.pri{margin-left:auto}
+
+/* Navigation hint */
+.nav-group{display:inline-flex;gap:1px;background:rgba(21,26,37,.6);border:1px solid var(--bd);border-radius:8px;padding:2px;flex-shrink:0}
+.nav-group .btn.ic{width:28px;height:28px;border:none;background:transparent}
+.nav-group .btn.ic:hover{background:var(--sf2);color:var(--ac)}
+body.fs .nav-group .btn.ic{width:22px;height:22px}
+
+/* ===== Fishbone spine-end header (problem investigation) ===== */
+.spine-head{position:absolute;z-index:6;pointer-events:none;transform:translate(0,-50%);text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.spine-label{font:700 16px 'Hind Siliguri',Inter,sans-serif;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.6),0 0 12px rgba(211,32,32,.35);white-space:nowrap;letter-spacing:.3px}
+.spine-q{font:900 46px 'Space Grotesk',Inter,sans-serif;color:#d32020;line-height:1;margin-top:4px;text-shadow:0 0 16px rgba(211,32,32,.75),0 0 32px rgba(211,32,32,.45);animation:spineGlow 2.4s ease-in-out infinite alternate}
+@keyframes spineGlow{from{text-shadow:0 0 14px rgba(211,32,32,.6),0 0 26px rgba(211,32,32,.35)}to{text-shadow:0 0 22px rgba(255,80,80,.95),0 0 44px rgba(211,32,32,.6)}}
+.spine-tail{position:absolute;z-index:5;pointer-events:none;transform:translate(0,-50%);width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:14px solid #d32020;filter:drop-shadow(0 0 6px rgba(211,32,32,.5))}
 </style>
 </head>
 <body data-view="landing">
@@ -150,8 +192,15 @@ footer{flex-shrink:0;border-top:1px solid var(--bd);background:var(--sf);padding
 <div class="mbg" id="aiModal"><div class="modal">
   <h2><i class="fa-solid fa-wand-magic-sparkles"></i> AI Mind Map</h2>
   <textarea class="in" id="aiPrompt" placeholder="e.g. Timeline of Indian Freedom Struggle 1885-1947 with periods and dated events"></textarea>
-  <div class="mact"><button class="btn" onclick="closeM('aiModal')">Cancel</button><button class="btn pri" onclick="runAI()"><i class="fa-solid fa-bolt"></i> Generate</button></div>
+  <div class="mact ai-end"><button class="btn" onclick="closeM('aiModal')">Cancel</button><button class="btn pri" onclick="runAI()"><i class="fa-solid fa-bolt"></i> Generate</button></div>
 </div></div>
+
+<!-- style dropdown (replaces bottom #laybar) -->
+<div id="styleMenu">
+  <button data-l="timeline" class="on"><i class="fa-solid fa-timeline"></i> Timeline</button>
+  <button data-l="tree"><i class="fa-solid fa-sitemap"></i> Tree</button>
+  <button data-l="fishbone"><i class="fa-solid fa-fish"></i> Fishbone</button>
+</div>
 
 <div id="toast"><i class="fa-solid fa-circle-check"></i><span id="tmsg"></span></div>
 
@@ -167,7 +216,7 @@ footer{flex-shrink:0;border-top:1px solid var(--bd);background:var(--sf);padding
 
 <script>
 /* ===== CONFIG ===== */
-const CONFIG={SCRIPT_URL:'https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/exec',PASSWORD:'mindmap0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
+const CONFIG={SCRIPT_URL:'',PASSWORD:'mindmap0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
 const PALETTE=['#4f69e8','#f29f7c','#4caa70','#2566df','#6178eb','#ff6384','#ffce54','#4bc0c0','#9966ff'];
 const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,delTarget:null,impMode:'new'};
 let segs=[],boxes=[];
@@ -420,6 +469,15 @@ function openItem(id){
 function goLanding(){S.view='landing';document.body.dataset.view='landing';S.unlocked=false;document.body.classList.remove('unlocked');pushHist();renderLanding();renderTopbar()}
 
 /* ===== TOPBAR / LOCK ===== */
+// nav button group (left/right/up/down)
+function navGroupHtml(){
+  return `<div class="nav-group">
+    <button class="btn ic" title="Previous sibling" onclick="navSibling(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="btn ic" title="Next sibling" onclick="navSibling(1)"><i class="fa-solid fa-arrow-right"></i></button>
+    <button class="btn ic" title="Parent (up)" onclick="navVert(-1)"><i class="fa-solid fa-arrow-up"></i></button>
+    <button class="btn ic" title="First child (down)" onclick="navVert(1)"><i class="fa-solid fa-arrow-down"></i></button>
+  </div>`;
+}
 function renderTopbar(){
   const ed=S.view==='editor';
   let h=`<a class="logo" href="${CONFIG.MINDMAP_URL}" target="_top" rel="noopener"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><b>MEGA&nbsp;<span>QUIZ</span></b></a>`;
@@ -429,12 +487,23 @@ function renderTopbar(){
     <button class="btn" onclick="loadBtn()" title="Sync from sheet"><i class="fa-solid fa-rotate"></i><span> Sync</span></button>
     <button class="btn pri" onclick="backupSheet()"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>`;
   }else if(!S.unlocked){
+    // VIEW MODE - has nav, style, fullscreen, collapse, expand, import, back, edit
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span><span class="spacer"></span>
+    ${navGroupHtml()}
+    <div class="sep"></div>
+    <button class="btn ic" title="Layout style" onclick="toggleStyleMenu(event)"><i class="fa-solid fa-palette"></i></button>
+    <button class="btn ic" title="Collapse all" onclick="collapseAll(true)"><i class="fa-solid fa-folder-closed"></i></button>
+    <button class="btn ic" title="Expand all" onclick="collapseAll(false)"><i class="fa-solid fa-folder-open"></i></button>
+    <button class="btn ic" title="Fullscreen" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
+    <button class="btn ic" title="Fit to screen" onclick="fit()"><i class="fa-solid fa-crosshairs"></i></button>
+    <div class="sep"></div>
     <button class="btn" onclick="openImport('current')" title="Import file"><i class="fa-solid fa-file-import"></i><span> Import</span></button>
     <button class="btn" onclick="goLanding()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>
     <button class="btn pri" onclick="askPw(unlockNow)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>`;
   }else{
+    // EDIT MODE - has nav, full editing controls
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span>
+    ${navGroupHtml()}
     <button class="btn" onclick="goLanding()"><i class="fa-solid fa-arrow-left"></i></button>
     <button class="btn" onclick="undo()"><i class="fa-solid fa-rotate-left"></i></button>
     <button class="btn" onclick="redo()"><i class="fa-solid fa-rotate-right"></i></button>
@@ -451,6 +520,7 @@ function renderTopbar(){
     ${PALETTE.map(c=>`<span class="dot" style="background:${c}" onclick="setColor('${c}')"></span>`).join('')}
     <span class="dot reset" onclick="setColor(null)"></span>
     <div class="sep"></div>
+    <button class="btn ic" title="Layout style" onclick="toggleStyleMenu(event)"><i class="fa-solid fa-palette"></i></button>
     <button class="btn ic" title="Collapse all" onclick="collapseAll(true)"><i class="fa-solid fa-folder-closed"></i></button>
     <button class="btn ic" title="Expand all" onclick="collapseAll(false)"><i class="fa-solid fa-folder-open"></i></button>
     <button class="btn ic" title="AI" onclick="openM('aiModal')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
@@ -463,13 +533,110 @@ function renderTopbar(){
   }
   $('topbar').innerHTML=h;
 }
+function toggleStyleMenu(e){
+  if(e){e.stopPropagation();}
+  const m=$('styleMenu');
+  if(!m)return;
+  m.classList.toggle('show');
+}
+// close style menu when clicking outside
+document.addEventListener('click',e=>{
+  const m=$('styleMenu');if(!m)return;
+  if(m.classList.contains('show')&&!m.contains(e.target)&&!e.target.closest('[onclick*="toggleStyleMenu"]')){
+    m.classList.remove('show');
+  }
+});
+function setLayout(l){
+  S.layout=l;
+  document.querySelectorAll('#styleMenu button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+  if(S.view==='editor'){renderMap();setTimeout(fit,40);}
+}
+document.querySelectorAll('#styleMenu button').forEach(b=>b.onclick=()=>{setLayout(b.dataset.l);$('styleMenu').classList.remove('show')});
+
+/* ===== NAVIGATION (left/right/up/down) ===== */
+function navSibling(dir){
+  if(!S.selId){
+    // pick first node at depth 1 (sibling of root)
+    const sibs=vis(S.map);
+    if(sibs.length){S.selId=sibs[0].id;renderMap();centerOn('h');}
+    return;
+  }
+  const p=findP(S.selId);
+  if(!p){ // at root level: navigate among root's children
+    const sibs=S.map.children||[];
+    const i=sibs.findIndex(c=>c.id===S.selId);
+    if(i>=0&&i+dir>=0&&i+dir<sibs.length){S.selId=sibs[i+dir].id;renderMap();centerOn('h');}
+    return;
+  }
+  const sibs=p.children||[];
+  const i=sibs.findIndex(c=>c.id===S.selId);
+  if(i>=0&&i+dir>=0&&i+dir<sibs.length){
+    S.selId=sibs[i+dir].id;renderMap();centerOn('h');
+  }
+}
+function navVert(dir){
+  if(!S.selId){
+    const sibs=vis(S.map);
+    if(sibs.length&&dir===1){S.selId=sibs[0].id;renderMap();centerOn('v');}
+    return;
+  }
+  const n=findN(S.selId);if(!n)return;
+  if(dir===1){
+    // down: go to first child (expand if collapsed)
+    let kids=n.children||[];
+    if(n.collapsed){n.collapsed=false;mutate();}
+    kids=vis(n);
+    if(kids.length){S.selId=kids[0].id;renderMap();centerOn('v');}
+  }else{
+    // up: go to parent
+    const p=findP(S.selId);
+    if(p){S.selId=p.id;renderMap();centerOn('v');}
+  }
+}
+function centerOn(mode){
+  const n=S.selId&&findN(S.selId);
+  if(!n||typeof n._x==='undefined')return;
+  const w=$('wrap').clientWidth,h=$('wrap').clientHeight;
+  if(mode==='h'){S.px=w/2-n._x*S.zoom;}
+  if(mode==='v'){S.py=h/2-n._y*S.zoom;}
+  if(mode==='both'){S.px=w/2-n._x*S.zoom;S.py=h/2-n._y*S.zoom;}
+  applyT();
+}
 function askPw(cb){S.pwThen=cb;$('pwIn').value='';openM('pwModal');setTimeout(()=>$('pwIn').focus(),80)}
 function pwOk(){if($('pwIn').value===CONFIG.PASSWORD){const f=S.pwThen;S.pwThen=null;closeM('pwModal');if(f)f()}else toast('Wrong password','err')}
 $('pwIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();pwOk()}});
 $('delIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();delOk()}});
 function unlockNow(){S.unlocked=true;document.body.classList.add('unlocked');renderTopbar();renderMap();toast('🔓 Edit mode on','ok')}
 function lock(){S.unlocked=false;document.body.classList.remove('unlocked');renderTopbar();renderMap();toast('🔒 Locked','ok')}
-function fscreen(){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen()}
+function fscreen(){
+  if(!document.fullscreenElement){
+    const el=document.documentElement;
+    const req=el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen||el.msRequestFullscreen;
+    if(req){
+      Promise.resolve(req.call(el)).then(()=>{
+        document.body.classList.add('fs');
+        // Lock orientation to landscape on mobile (if supported)
+        if(screen.orientation&&screen.orientation.lock){
+          screen.orientation.lock('landscape').catch(()=>{});
+        }
+      }).catch(err=>{toast('Fullscreen failed: '+err.message,'err');});
+    }
+  }else{
+    const ex=document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen||document.msExitFullscreen;
+    if(ex)Promise.resolve(ex.call(document)).then(()=>{
+      document.body.classList.remove('fs');
+      if(screen.orientation&&screen.orientation.unlock){screen.orientation.unlock().catch(()=>{});}
+    });
+  }
+}
+document.addEventListener('fullscreenchange',()=>{
+  if(!document.fullscreenElement)document.body.classList.remove('fs');
+  else document.body.classList.add('fs');
+});
+document.addEventListener('webkitfullscreenchange',()=>{
+  if(!document.webkitFullscreenElement)document.body.classList.remove('fs');
+  else document.body.classList.add('fs');
+});
 
 /* ===== NAV / HISTORY (browser back support) ===== */
 function pushHist(){
@@ -503,86 +670,214 @@ function layoutTimeline(){
   segs=[];boxes=[];
   const R=S.map,rm=measure(R.text,fsOf(R,0),430);
   R._d=0;R._x=0;R._y=0;R._w=rm.w;R._h=rm.h;R._lines=rm.lines;R._col='#f5b301';boxes.push(R);
-  let cx=R._w/2+130;
+  let cx=R._w/2+180;
   vis(R).forEach((b,i)=>{
     const bm=measure(b.text,fsOf(b,1),320);const bx=cx+bm.w/2;
     b._d=1;b._x=bx;b._y=0;b._w=bm.w;b._h=bm.h;b._lines=bm.lines;
     b._col=(b.style&&b.style.color)||PALETTE[i%PALETTE.length];boxes.push(b);
     const prev=i>0?vis(R)[i-1]:null;
-    if(prev)segs.push({x1:prev._x+prev._w/2+4,y1:0,x2:bx-bm.w/2-4,y2:0,c:'rgba(255,255,255,.35)',w:3});
-    const dir=i%2===0?1:-1;let y=dir*(bm.h/2+80),colRight=bx+bm.w/2,last2=null;
+    if(prev)segs.push({x1:prev._x+prev._w/2+8,y1:0,x2:bx-bm.w/2-8,y2:0,c:'rgba(255,255,255,.35)',w:3});
+    const dir=i%2===0?1:-1;let y=dir*(bm.h/2+110),colRight=bx+bm.w/2,last2=null;
     (function place(n,d){
       const kids=vis(n);if(!kids.length)return;
-      const msx=d===1?bx:(n._x-n._w/2+40);let lastY=null;
+      const msx=d===1?bx:(n._x-n._w/2+50);let lastY=null;
       kids.forEach(k=>{
         const m=measure(k.text,fsOf(k,d+1),maxWOf(d+1));
-        const left=d===1?bx+140:msx+110;
+        const left=d===1?bx+170:msx+140;
         k._d=d+1;k._w=m.w;k._h=m.h;k._lines=m.lines;k._x=left+m.w/2;k._y=y+dir*m.h/2;
         k._col=(k.style&&k.style.color)||n._col;boxes.push(k);
         segs.push({x1:d===1?bx:msx,y1:k._y,x2:left,y2:k._y,c:k._col,w:1.4});
-        colRight=Math.max(colRight,k._x+m.w/2);y+=dir*(m.h+45);lastY=k._y;
+        colRight=Math.max(colRight,k._x+m.w/2);y+=dir*(m.h+70);lastY=k._y;
         if(d===1)last2=k._y;
         place(k,d+1);
       });
-      if(d===1)segs.push({x1:bx,y1:dir*(bm.h/2+6),x2:bx,y2:last2,c:n._col,w:2});
+      if(d===1)segs.push({x1:bx,y1:dir*(bm.h/2+8),x2:bx,y2:last2,c:n._col,w:2});
       else segs.push({x1:msx,y1:n._y+dir*n._h/2,x2:msx,y2:lastY,c:n._col,w:1.4});
     })(b,1);
-    cx=colRight+160;
+    cx=colRight+200;
   });
 }
-function layoutTree(){ /* north → south */
-  segs=[];boxes=[];let slot=0;const HG=340,VG=200;
-  (function w(n,d){
+function layoutTree(){ /* north → south, tidy tree, STRAIGHT lines (no curves) */
+  segs=[];boxes=[];
+  const HG=80;   // horizontal gap between adjacent subtrees
+  const VG=180;  // vertical gap between depths
+
+  // First pass (post-order): compute subtree width
+  function computeWidth(n,d){
     const m=measure(n.text,fsOf(n,d),maxWOf(d));
     n._d=d;n._w=m.w;n._h=m.h;n._lines=m.lines;
-    const kids=vis(n);kids.forEach(k=>w(k,d+1));
-    n._slot=kids.length?(kids[0]._slot+kids[kids.length-1]._slot)/2:slot++;
-    n._x=n._slot*HG;n._y=d*VG;
     n._col=d===0?'#f5b301':(n.style&&n.style.color)||PALETTE[d%9];
+    const kids=vis(n);
+    if(kids.length===0){n._sw=m.w;return m.w;}
+    let total=0;
+    kids.forEach((k,i)=>{total+=computeWidth(k,d+1);if(i<kids.length-1)total+=HG;});
+    n._sw=Math.max(m.w,total);
+    return n._sw;
+  }
+  computeWidth(S.map,0);
+
+  // Second pass (pre-order): assign x by center, y by depth
+  function assign(n,d,xCenter,y){
+    n._x=xCenter;n._y=y;
     boxes.push(n);
-    if(d>0)kids.forEach(k=>segs.push({v:1,x1:n._x,y1:n._y+n._h/2,x2:k._x,y2:k._y-k._h/2,c:k._col,w:1.5}));
-  })(S.map,0);
+    const kids=vis(n);
+    if(kids.length===0)return;
+    // Compute total width of children row
+    let totalKids=0;
+    kids.forEach((k,i)=>{totalKids+=k._sw;if(i<kids.length-1)totalKids+=HG;});
+    let cursor=xCenter-totalKids/2;
+    kids.forEach(k=>{
+      const kc=cursor+k._sw/2;
+      // ORTHOGONAL (90° right-angle) line: parent bottom -> down to midY -> horizontal to child x -> down to child top
+      segs.push({o:1,x1:xCenter,y1:n._y+n._h/2,x2:kc,y2:y+VG-k._h/2,c:k._col,w:1.5});
+      assign(k,d+1,kc,y+VG);
+      cursor+=k._sw+HG;
+    });
+  }
+  assign(S.map,0,0,0);
 }
 function layoutFishbone(){
+  // Exquisite Ishikawa-style fishbone:
+  //  - Deep red horizontal spine with sharp pointed tail at right end
+  //  - Angled V-shape branches alternating above/below the spine
+  //  - Sibling labels at the END of each angled branch
+  //  - Children stacked along the branch direction (off the main branch line)
+  //  - At right end: red question mark with glow + Bengali "সমস্যা তদন্ত" label
+  //  - No fish head icon
   segs=[];boxes=[];
-  const R=S.map,rm=measure(R.text,fsOf(R,0),430);
-  R._d=0;R._x=0;R._y=0;R._w=rm.w;R._h=rm.h;R._lines=rm.lines;R._col='#f5b301';boxes.push(R);
-  const GAP=780,DX=270,DY=320;let ax=R._w/2+200;
-  const bs=vis(R);
-  bs.forEach((b,i)=>{
-    const dir=i%2===0?1:-1;
-    const bm=measure(b.text,fsOf(b,1),300);
-    const Bx=ax+DX,By=dir*DY;
-    b._d=1;b._x=Bx;b._y=By;b._w=bm.w;b._h=bm.h;b._lines=bm.lines;
-    b._col=(b.style&&b.style.color)||PALETTE[i%PALETTE.length];boxes.push(b);
-    segs.push({x1:ax,y1:0,x2:Bx,y2:By,c:b._col,w:2.2});
-    const leaves=vis(b),k=leaves.length;
-    leaves.forEach((lf,j)=>{
-      const lm=measure(lf.text,fsOf(lf,2),240);
-      const f=k===1?0.62:0.3+0.6*(j/(k-1));
-      const Px=ax+DX*f,Py=By*f;
-      lf._d=2;lf._w=lm.w;lf._h=lm.h;lf._lines=lm.lines;
-      lf._x=Px-50-lm.w/2;lf._y=Py;lf._col=(lf.style&&lf.style.color)||b._col;boxes.push(lf);
-      segs.push({x1:Px-50,y1:Py,x2:Px,y2:Py,c:lf._col,w:1.4});
-      let cy=lf._y,prev=lf;
-      vis(lf).forEach(gc=>{
-        const cm=measure(gc.text,fsOf(gc,3),220);
-        gc._d=3;gc._w=cm.w;gc._h=cm.h;gc._lines=cm.lines;gc._x=lf._x;
-        cy+=dir*(prev._h/2+28+cm.h/2);gc._y=cy;gc._col=(gc.style&&gc.style.color)||lf._col;boxes.push(gc);
-        segs.push({x1:lf._x,y1:prev._y+dir*prev._h/2,x2:lf._x,y2:gc._y-dir*cm.h/2,c:gc._col,w:1.2});
-        prev=gc;
+  const R=S.map;
+  // Root box is hidden (rendered at 0x0, just to mark layout). We show its title at the right end instead.
+  R._d=0;R._x=0;R._y=0;R._w=0;R._h=0;R._lines=[];R._col='#d32020';boxes.push(R);
+
+  const SPINE_COLOR='#d32020';        // deep red
+  const BRANCH_COLOR='rgba(255,255,255,.55)';  // light gray for angled branches
+  const ANGLE_DEG=40;
+  const ANGLE=ANGLE_DEG*Math.PI/180;
+  const cos=Math.cos(ANGLE), sin=Math.sin(ANGLE);
+  const BRANCH_LEN=170;     // length of main angled branch from spine to sibling
+  const COL_GAP=320;         // horizontal distance between sibling anchors on spine
+
+  const sibs=vis(R);
+  if(sibs.length===0){S._spineEndX=240;return;}
+
+  // Position siblings: anchors go left-to-right on the spine
+  // Each sibling is at the END of an angled branch going UP-LEFT (above) or DOWN-LEFT (below)
+  // Branches lean LEFT (toward the spine tail) — sibling boxes sit to the upper/lower-left of their anchors
+
+  // Compute column widths to prevent overlap (siblings + their stacked children need horizontal room)
+  // For each sibling, compute total length needed for: sibling box + stack of all its children + grandchildren
+  const colWidths=sibs.map(sib=>{
+    let maxW=measure(sib.text,fsOf(sib,1),280).w;
+    // Children stack horizontally along the branch direction
+    let stackW=0;
+    vis(sib).forEach(k=>{
+      const km=measure(k.text,fsOf(k,2),220);
+      stackW+=km.w+60;
+      // Grandchildren stack further
+      let gcW=0;
+      vis(k).forEach(gc=>{
+        const cm=measure(gc.text,fsOf(gc,3),200);
+        gcW+=cm.w+50;
+      });
+      stackW=Math.max(stackW, km.w+30+gcW);
+    });
+    // Project stack onto horizontal axis (branch is angled at 40°, so horizontal projection = stack * cos)
+    // Use BRANCH_LEN + stack length projected
+    const horizSpace = (170 /* BRANCH_LEN */ + stackW) * cos + 100 /* padding */;
+    return Math.max(maxW, horizSpace);
+  });
+
+  // Place siblings on the spine
+  let anchorX=120;
+  const sibAnchors=[];
+  sibs.forEach((sib,i)=>{
+    const dir=(i%2===0)?-1:1;   // -1 = above spine, +1 = below spine
+    const sm=measure(sib.text,fsOf(sib,1),280);
+    // Anchor point on the spine
+    const anchorY=0;
+    // Sibling position: at end of angled branch going UP-LEFT (above) or DOWN-LEFT (below)
+    const sibX=anchorX - cos*BRANCH_LEN;
+    const sibY=anchorY + dir*sin*BRANCH_LEN;
+    sib._d=1;sib._x=sibX;sib._y=sibY;sib._w=sm.w;sib._h=sm.h;sib._lines=sm.lines;
+    sib._col=(sib.style&&sib.style.color)||PALETTE[i%PALETTE.length];
+    sib._anchorX=anchorX;
+    sib._dir=dir;
+    boxes.push(sib);
+    sibAnchors.push({x:anchorX,y:anchorY,sib});
+    // Angled branch line from spine to sibling (light gray)
+    segs.push({x1:anchorX,y1:anchorY,x2:sibX,y2:sibY,c:BRANCH_COLOR,w:2.2});
+
+    // Branch direction (normalized): from spine toward sibling, going LEFT
+    const branchDX=-cos, branchDY=dir*sin;
+    // Perpendicular direction (rotated 90° CCW from branch direction)
+    const perpDX=-branchDY, perpDY=branchDX;
+
+    // Place children: stack along branch direction further OUTWARD, alternating perpendicular offset
+    const kids=vis(sib);
+    // Measure all kids to compute total stack length needed
+    const kidMs=kids.map(k=>measure(k.text,fsOf(k,2),220));
+    const kidStackLen=kidMs.reduce((s,m)=>s+m.w+50,0);  // total horizontal stack length along branch
+    kids.forEach((k,j)=>{
+      const km=kidMs[j];
+      // Connect child to a point on the main branch (distribute along it)
+      const t=(j+1)/(kids.length+1);  // 0..1 along branch
+      const branchPointX=anchorX + branchDX*BRANCH_LEN*t;
+      const branchPointY=0 + branchDY*BRANCH_LEN*t;
+      // Child sits further along branch direction + perpendicular offset
+      // Use cumulative stack to ensure no overlap among children of the same sibling
+      const stackOffset=km.w/2 + 50;  // start offset
+      let prevW=0;
+      for(let p=0;p<j;p++)prevW+=kidMs[p].w+60;
+      const alongDist=BRANCH_LEN + 80 + prevW + km.w/2;
+      const perpOff=((j%2)===0?1:-1)*42;  // alternate above/below branch line
+      const kx=anchorX + branchDX*alongDist + perpDX*perpOff;
+      const ky=0 + branchDY*alongDist + perpDY*perpOff;
+      k._d=2;k._x=kx;k._y=ky;k._w=km.w;k._h=km.h;k._lines=km.lines;
+      k._col=(k.style&&k.style.color)||sib._col;
+      boxes.push(k);
+      // Sub-branch line from a point on the main branch to the child
+      segs.push({x1:branchPointX,y1:branchPointY,x2:kx,y2:ky,c:k._col,w:1.4});
+
+      // Grandchildren (depth 3): continue further outward with smaller perpendicular offset
+      let gcAlong=alongDist + km.w/2 + 30;
+      vis(k).forEach((gc,gi)=>{
+        const cm=measure(gc.text,fsOf(gc,3),200);
+        const gPerp=perpOff + ((gi%2)===0?1:-1)*30;
+        const gx=anchorX + branchDX*gcAlong + perpDX*gPerp;
+        const gy=0 + branchDY*gcAlong + perpDY*gPerp;
+        gc._d=3;gc._x=gx;gc._y=gy;gc._w=cm.w;gc._h=cm.h;gc._lines=cm.lines;
+        gc._col=(gc.style&&gc.style.color)||k._col;
+        boxes.push(gc);
+        segs.push({x1:kx,y1:ky,x2:gx,y2:gy,c:gc._col,w:1.2});
+        gcAlong += cm.w + 50;
       });
     });
-    ax+=GAP;
+
+    anchorX += Math.max(COL_GAP, colWidths[i]+40);
   });
-  if(bs.length)segs.unshift({x1:R._w/2+4,y1:0,x2:ax-GAP+DX+70,y2:0,c:'rgba(255,255,255,.4)',w:3});
+
+  // Spine: deep red horizontal line, extending past the last anchor to make room for the problem header
+  const lastAnchor=sibAnchors[sibAnchors.length-1].x;
+  const spineStart=20;
+  const spineEnd=lastAnchor + 240;  // room for question mark + Bengali label
+  S._spineEndX=spineEnd;
+  // Draw spine (deep red, thick). The actual pointed tail triangle is rendered as an HTML element in renderMap.
+  segs.push({x1:spineStart,y1:0,x2:spineEnd-12,y2:0,c:SPINE_COLOR,w:4});
 }
 function renderMap(){
   if(!S.map)return;
   if(S.layout==='timeline')layoutTimeline();else if(S.layout==='tree')layoutTree();else layoutFishbone();
-  $('linesSvg').innerHTML=segs.map(s=>s.v
-    ?`<path d="M ${s.x1} ${s.y1} C ${s.x1} ${(s.y1+s.y2)/2}, ${s.x2} ${(s.y1+s.y2)/2}, ${s.x2} ${s.y2}" stroke="${s.c}" stroke-width="${s.w}"/>`
-    :`<line x1="${s.x1}" y1="${s.y1}" x2="${s.x2}" y2="${s.y2}" stroke="${s.c}" stroke-width="${s.w}"/>`).join('');
+  // Render segments. New flag 'o' = orthogonal (90° right-angle) line; 'v' = curve; default = straight line.
+  $('linesSvg').innerHTML=segs.map(s=>{
+    if(s.o){
+      const my=(s.y1+s.y2)/2;
+      return `<path d="M ${s.x1} ${s.y1} L ${s.x1} ${my} L ${s.x2} ${my} L ${s.x2} ${s.y2}" stroke="${s.c}" stroke-width="${s.w}"/>`;
+    }
+    if(s.v){
+      return `<path d="M ${s.x1} ${s.y1} C ${s.x1} ${(s.y1+s.y2)/2}, ${s.x2} ${(s.y1+s.y2)/2}, ${s.x2} ${s.y2}" stroke="${s.c}" stroke-width="${s.w}"/>`;
+    }
+    return `<line x1="${s.x1}" y1="${s.y1}" x2="${s.x2}" y2="${s.y2}" stroke="${s.c}" stroke-width="${s.w}"/>`;
+  }).join('');
   const wrap=$('nodes');wrap.innerHTML='';
   boxes.forEach(n=>{
     if(n._d===0)return; // hide root (topic name) box - shown only in topbar
@@ -600,12 +895,29 @@ function renderMap(){
     const badge=el.querySelector('.cbadge');
     if(badge)badge.onclick=e=>{e.stopPropagation();n.collapsed=!n.collapsed;mutate()};
     const txt=el.querySelector('.txt');
-    el.onclick=e=>{if(e.target.classList.contains('cbadge'))return;if(S.unlocked){S.selId=n.id;renderMap()}};
+    // In view mode, clicking a node SELECTS it (so nav buttons work). In edit mode it also selects.
+    el.onclick=e=>{if(e.target.classList.contains('cbadge'))return;S.selId=n.id;renderMap()};
     txt.ondblclick=e=>{e.stopPropagation();if(S.unlocked)startEdit(txt,n)};
     const hd=el.querySelector('.handle');
     if(hd)hd.addEventListener('pointerdown',e=>startDrag(e,n.id));
     wrap.appendChild(el);
   });
+  // ===== Fishbone only: render the spine-end header (red question mark + Bengali "সমস্যা তদন্ত" label + pointed tail) =====
+  if(S.layout==='fishbone' && typeof S._spineEndX==='number'){
+    // Sharp pointed tail (CSS triangle) at spine end
+    const tail=document.createElement('div');
+    tail.className='spine-tail';
+    tail.style.left=(S._spineEndX-14)+'px';  // tip at S._spineEndX
+    tail.style.top='0px';
+    wrap.appendChild(tail);
+    // Bengali label + red question mark with glow
+    const head=document.createElement('div');
+    head.className='spine-head';
+    head.style.left=(S._spineEndX+12)+'px';
+    head.style.top='0px';
+    head.innerHTML=`<div class="spine-label">সমস্যা তদন্ত</div><div class="spine-q">?</div>`;
+    wrap.appendChild(head);
+  }
   applyT();syncBtns();
 }
 function lum(hex){const n=parseInt(hex.slice(1),16);return(0.299*(n>>16)+0.587*((n>>8)&255)+0.114*(n&255))/255}
@@ -619,6 +931,12 @@ function zoomBy(f){const w=$('wrap').clientWidth/2,h=$('wrap').clientHeight/2;co
 function fit(){if(!boxes.length)return;const w=$('wrap').clientWidth,h=$('wrap').clientHeight;
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
   boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2)});
+  // Fishbone: include the spine-end header (question mark + Bengali label + tail) in the fit bounds
+  if(S.layout==='fishbone' && typeof S._spineEndX==='number'){
+    x2=Math.max(x2, S._spineEndX+200);  // +200 for question mark width + label width
+    y2=Math.max(y2, 60);  // question mark height below
+    y1=Math.min(y1, -50);  // Bengali label above
+  }
   S.zoom=Math.max(.15,Math.min(1.6,Math.min(w/(x2-x1+160),h/(y2-y1+160))));
   S.px=w/2-(x1+x2)/2*S.zoom;S.py=h/2-(y1+y2)/2*S.zoom;applyT()}
 
@@ -628,6 +946,50 @@ $('wrap').addEventListener('pointerdown',e=>{if(e.target.closest('.nd'))return;p
 window.addEventListener('pointermove',e=>{if(!pan)return;S.px=e.clientX-pan.x;S.py=e.clientY-pan.y;applyT()});
 window.addEventListener('pointerup',()=>pan=null);
 $('wrap').addEventListener('wheel',e=>{e.preventDefault();zoomBy(e.deltaY>0?.9:1.1)},{passive:false});
+
+/* ===== PINCH ZOOM (mobile) - smooth, clamped per-move ===== */
+let pinch=null;
+$('wrap').addEventListener('touchstart',e=>{
+  if(e.touches.length===2){
+    const t=e.touches;
+    pinch={
+      dist:Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY),
+      zoom:S.zoom,
+      cx:(t[0].clientX+t[1].clientX)/2,
+      cy:(t[0].clientY+t[1].clientY)/2,
+    };
+    pan=null; // disable single-finger pan during pinch
+  }else if(e.touches.length===1&&!e.target.closest('.nd')){
+    pan={x:e.touches[0].clientX-S.px,y:e.touches[0].clientY-S.py};
+  }
+},{passive:false});
+$('wrap').addEventListener('touchmove',e=>{
+  if(!pinch||e.touches.length!==2)return;
+  e.preventDefault();
+  const t=e.touches;
+  const newDist=Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+  // Compute ratio relative to the *initial* gesture distance
+  let ratio=newDist/pinch.dist;
+  // Clamp per-move ratio for smoothness (max 8% change per move)
+  ratio=Math.max(.92,Math.min(1.08,ratio));
+  let newZoom=pinch.zoom*ratio;
+  // Clamp overall zoom range
+  newZoom=Math.max(.2,Math.min(3,newZoom));
+  // Zoom around pinch center
+  const cx=pinch.cx,cy=pinch.cy;
+  S.px=cx-(cx-S.px)*(newZoom/S.zoom);
+  S.py=cy-(cy-S.py)*(newZoom/S.zoom);
+  S.zoom=newZoom;
+  applyT();
+  // Update base for next move so each move only changes by ~8%
+  pinch.zoom=newZoom;
+  pinch.dist=newDist;
+},{passive:false});
+$('wrap').addEventListener('touchend',e=>{
+  if(e.touches.length<2)pinch=null;
+  if(e.touches.length===0)pan=null;
+});
+$('wrap').addEventListener('touchcancel',()=>{pinch=null;pan=null;});
 
 /* ===== NODE OPS ===== */
 function findN(id,n=S.map){if(n.id===id)return n;for(const c of n.children||[]){const f=findN(id,c);if(f)return f}return null}
@@ -727,14 +1089,65 @@ function balance(s){
 async function runAI(){
   const p=$('aiPrompt').value.trim();if(!p)return toast('Prompt লেখো','err');
   closeM('aiModal');toast('✨ AI thinking...');
-  try{
-    const r=await fetch(CONFIG.AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({system:'Return ONLY valid JSON, no markdown. Format: {"id":"root","text":"Title","children":[{"id":"a","text":"short branch","children":[{"id":"a1","text":"short leaf","children":[]}]}]}. Max 6 branches, 5 leaves each, 3 levels, text under 50 chars, include years when relevant.',user:p})});
-    const j=await r.json();
-    const obj=repairJSON(j.text||'');
-    S.map=norm(obj,0);S.topic.data=S.map;S.selId=null;
-    S.history=[clone(S.map)];S.hi=0;renderMap();fit();toast('✅ AI map ready','ok');
-  }catch(e){toast('AI failed: '+e.message,'err')}
+  // Try the configured AI endpoint first
+  let aiFailed=false,aiErr='';
+  if(CONFIG.AI_URL){
+    try{
+      const r=await fetch(CONFIG.AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({system:'Return ONLY valid JSON, no markdown. Format: {"id":"root","text":"Title","children":[{"id":"a","text":"short branch","children":[{"id":"a1","text":"short leaf","children":[]}]}]}. Max 6 branches, 5 leaves each, 3 levels, text under 50 chars, include years when relevant.',user:p})});
+      if(!r.ok)throw new Error('Server '+r.status);
+      const ct=r.headers.get('content-type')||'';
+      if(!ct.includes('application/json')){
+        // server returned HTML (likely a 404 / not configured)
+        const txt=await r.text();
+        throw new Error('AI endpoint not configured (got '+(ct||'HTML')+')');
+      }
+      const j=await r.json();
+      const obj=repairJSON(j.text||'');
+      S.map=norm(obj,0);S.topic.data=S.map;S.selId=null;
+      S.history=[clone(S.map)];S.hi=0;renderMap();fit();toast('✅ AI map ready','ok');
+      return;
+    }catch(e){aiFailed=true;aiErr=e.message;}
+  }else{
+    aiFailed=true;aiErr='AI_URL not set';
+  }
+  if(aiFailed){
+    // Fallback: build a basic mindmap template from the prompt so user has something to work with
+    const fb=fallbackAIParse(p);
+    S.map=fb;S.topic.data=S.map;S.selId=null;
+    S.history=[clone(S.map)];S.hi=0;renderMap();fit();
+    toast('AI unavailable ('+aiErr+'). Created template — Edit করে কাস্টমাইজ করো.','err');
+  }
+}
+function fallbackAIParse(prompt){
+  // Extract a title (up to first separator or end)
+  let title=prompt.split(/[.,:;|\n]/)[0].trim()||'Mind Map';
+  if(title.length>50)title=title.slice(0,50);
+  // Try to split into branches by common delimiters
+  const parts=prompt.split(/[,;]|\s-\s|\||\n/).map(s=>s.trim()).filter(s=>s.length>1);
+  const branches=[];
+  if(parts.length>1){
+    parts.slice(1,7).forEach((part,i)=>{
+      const bt=part.split(/[:|-]/)[0].trim().slice(0,40)||('Section '+(i+1));
+      const branch={id:uid(),text:bt,children:[],style:{color:PALETTE[i%PALETTE.length]}};
+      // try to extract sub-items
+      const subParts=part.split(/[-–,]/).slice(1).map(s=>s.trim()).filter(s=>s.length>1);
+      if(subParts.length>0){
+        subParts.slice(0,4).forEach(sp=>branch.children.push({id:uid(),text:sp.slice(0,50),children:[],style:{}}));
+      }else{
+        branch.children.push({id:uid(),text:'Detail '+(i+1),children:[],style:{}});
+      }
+      branches.push(branch);
+    });
+  }else{
+    // Generic 4-branch template
+    ['Background','Key Points','Analysis','Conclusion'].forEach((b,i)=>{
+      const branch={id:uid(),text:b,children:[],style:{color:PALETTE[i%PALETTE.length]}};
+      ['Point 1','Point 2','Point 3'].forEach(p2=>branch.children.push({id:uid(),text:p2,children:[],style:{}}));
+      branches.push(branch);
+    });
+  }
+  return{id:uid(),text:title,children:branches,style:{color:'#f5b301',bold:true}};
 }
 
 /* ===== EXPORT ===== */
