@@ -142,6 +142,31 @@ body.fs #dlMenu{top:34px}
 .nav-group .btn.ic{width:28px;height:28px;border:none;background:transparent}
 .nav-group .btn.ic:hover{background:var(--sf2);color:var(--ac)}
 body.fs .nav-group .btn.ic{width:22px;height:22px}
+
+/* ===== Left-side nav column (up/down/left/right) — mirrors #zoomc on the right ===== */
+#navc{position:absolute;left:12px;bottom:12px;display:flex;flex-direction:column;gap:2px;background:rgba(21,26,37,.92);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:10px;padding:4px;z-index:50}
+#navc button{width:34px;height:34px;border:none;border-radius:7px;background:transparent;color:var(--tx2);cursor:pointer;font-size:.8rem}
+#navc button:hover{background:var(--sf2);color:#fff}
+#navc button:active{background:var(--ac);color:#111}
+#navc .navsep{height:1px;background:var(--bd);margin:3px 4px}
+#navc .pv{font-size:.7rem}
+
+/* ===== Cloud sync status pill ===== */
+.cloud{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .6rem;border-radius:99px;border:1px solid var(--bd);background:var(--sf);font:600 .7rem Inter;color:var(--tx2);white-space:nowrap;flex-shrink:0;cursor:default}
+.cloud.saving{color:#94a3b8;border-color:var(--bd)}
+.cloud.ok{color:#7ee2a8;border-color:rgba(16,185,129,.5)}
+.cloud.fail{color:#ff9a9e;border-color:rgba(239,68,68,.5);cursor:pointer}
+.cloud i{font-size:.65rem}
+
+/* ===== Trash / Settings modal lists ===== */
+.tlist{max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:.5rem;margin:.4rem 0 .2rem}
+.titem{display:flex;align-items:center;gap:.6rem;background:var(--sf2);border:1px solid var(--bd);border-radius:9px;padding:.6rem .7rem;font-size:.82rem}
+.titem .ti-info{flex:1;min-width:0}
+.titem .ti-name{font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.titem .ti-path{font-size:.68rem;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.titem .ti-cnt{font-size:.68rem;color:var(--ac)}
+.titem .btn{padding:.35rem .7rem;font-size:.72rem}
+.tempty{font-size:.8rem;color:var(--tx2);text-align:center;padding:1rem 0}
 </style>
 </head>
 <body data-view="landing">
@@ -161,6 +186,15 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
       <div id="zi">100%</div>
       <button onclick="zoomBy(0.8)"><i class="fa-solid fa-minus"></i></button>
       <button onclick="fit()"><i class="fa-solid fa-crosshairs"></i></button>
+    </div>
+    <!-- Left-side navigation column: up / down / left / right (+ parent up) -->
+    <div id="navc">
+      <button title="Up (uporer node)" onclick="navVert(-1)"><i class="fa-solid fa-arrow-up"></i></button>
+      <button title="Down (niche-r node)" onclick="navVert(1)"><i class="fa-solid fa-arrow-down"></i></button>
+      <button title="Previous sibling" onclick="navSibling(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+      <button title="Next sibling" onclick="navSibling(1)"><i class="fa-solid fa-arrow-right"></i></button>
+      <div class="navsep"></div>
+      <button class="pv" title="Parent e jao (up one generation)" onclick="navParentUp()"><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
     </div>
   </div>
 </div>
@@ -209,6 +243,22 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
   <button data-fmt="svg"><i class="fa-solid fa-code"></i> Vector HTML (zoomable)</button>
 </div>
 
+<!-- settings: script url -->
+<div class="mbg" id="setModal"><div class="modal">
+  <h2><i class="fa-solid fa-gear"></i> Google Sheet Settings</h2>
+  <p>Apps Script Web App URL (Google Sheet backup er jonno). Re-deploy korle URL bodle jay — tokhon ekhane notun URL boshaye <b>Test</b> koro. URL save thakbe ei browser e.</p>
+  <input class="in" id="setUrl" placeholder="https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/execF">
+  <div class="mact"><button class="btn" onclick="closeM('setModal')">Cancel</button><button class="btn" onclick="testScriptUrl()"><i class="fa-solid fa-plug"></i> Test</button><button class="btn pri" onclick="saveScriptUrl()">Save</button></div>
+</div></div>
+
+<!-- trash: restore deleted items -->
+<div class="mbg" id="trashModal"><div class="modal">
+  <h2><i class="fa-solid fa-trash-can" style="color:var(--ac)"></i> Trash — Deleted Items</h2>
+  <p>Delete kora sob topic/node ekhane safe thake (Google Sheet eo save thake). Jekono jinish restore korte paro — data kokhono permanently delete hoy na.</p>
+  <div class="tlist" id="trashList"></div>
+  <div class="mact"><button class="btn" onclick="closeM('trashModal')">Close</button><button class="btn pri" onclick="restoreAllGraves()"><i class="fa-solid fa-rotate-left"></i> Restore All</button></div>
+</div></div>
+
 <div id="toast"><i class="fa-solid fa-circle-check"></i><span id="tmsg"></span></div>
 
 <footer>
@@ -224,8 +274,12 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 <script>
 /* ===== CONFIG ===== */
 const CONFIG={SCRIPT_URL:'https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/exec',PASSWORD:'mindmap0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
+// Active script URL: user-configurable (Settings modal) — survives Apps Script re-deploy URL changes.
+const SURL_KEY='mq_mm_scripturl';
+function getScriptUrl(){try{const u=localStorage.getItem(SURL_KEY);if(u&&/^https:\/\/script\.google\.com\/macros\/s\//.test(u))return u}catch(e){}return CONFIG.SCRIPT_URL}
+const GRAVE_CLS='__DEL__',GRAVE_SEP='∥';  // tombstone marker: deleted rows are stored in the sheet with cls='__DEL__' (never removed from the sheet)
 const PALETTE=['#4f69e8','#f29f7c','#4caa70','#2566df','#6178eb','#ff6384','#ffce54','#4bc0c0','#9966ff'];
-const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,delTarget:null,impMode:'new',gap:1};
+const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,delTarget:null,impMode:'new',gap:1,graves:[],foreign:[],cloud:'idle'};
 let segs=[],boxes=[];
 const $=id=>document.getElementById(id);
 const uid=()=>'n'+Math.random().toString(36).slice(2,9);
@@ -271,14 +325,64 @@ function demoData(){const B=(t,c)=>({id:uid(),text:t,children:c||[]});
 }
 const demoCurriculum=()=>[{id:uid(),name:'Class 10',type:'class',children:[{id:uid(),name:'History',type:'subject',children:[{id:uid(),name:'Modern Indian History',type:'topic',data:demoData()}]}]}];
 
-/* ===== SHEET ===== */
+/* ===== SHEET (permanent storage engine) =====
+   Rules:
+   - Google Sheet = single source of truth. Page load → sheet first, local cache fallback.
+   - Every change → auto-backup (debounced) to the sheet, so clearing browser data never loses anything.
+   - Deleting anything only TOMBSTONES it (cls='__DEL__' rows). Rows are NEVER removed from the sheet,
+     so "data add hole r kokhono delete hobe na" — Trash theke jekono somoy restore kora jay.
+   - Open map never changes live (no polling); reload/refresh always shows the latest sheet data. */
+function loadGraves(){try{const r=localStorage.getItem(CONFIG.LS+'__graves');if(r){S.graves=JSON.parse(r)||[];return}}catch(e){}S.graves=[]}
+function saveGraves(){try{localStorage.setItem(CONFIG.LS+'__graves',JSON.stringify(S.graves))}catch(e){}}
+function loadForeign(){try{const r=localStorage.getItem(CONFIG.LS+'__foreign');if(r){S.foreign=JSON.parse(r)||[];return}}catch(e){}S.foreign=[]}
+function saveForeign(){try{localStorage.setItem(CONFIG.LS+'__foreign',JSON.stringify(S.foreign))}catch(e){}}
+const graveKey=g=>g.cls+'|'+g.sub+'|'+g.top+'|'+g.id;
+function gravePath(g){const i=String(g.sub).indexOf(GRAVE_SEP);return i<0?{cls:g.sub,sub:''}:{cls:g.sub.slice(0,i),sub:g.sub.slice(i+1)}}
+// Convert a node subtree into tombstone rows (keeps original class/subject/topic path for restore)
+function tombstoneTree(cls,sub,top,n,parent){
+  const rows=[{cls:GRAVE_CLS,sub:cls+GRAVE_SEP+sub,top:top,id:n.id,parent:parent||'',text:n.text||'',
+    color:n.style&&n.style.color||'',size:n.style&&n.style.fontSize||'',
+    bold:n.style&&n.style.bold?'1':'',und:n.style&&n.style.underline?'1':'',ita:n.style&&n.style.italic?'1':''}];
+  (n.children||[]).forEach(k=>rows.push(...tombstoneTree(cls,sub,top,k,n.id)));
+  return rows;
+}
+function addGraves(rows){
+  if(!rows.length)return;
+  const have=new Set(S.graves.map(graveKey));let ch=false;
+  rows.forEach(r=>{const k=graveKey(r);if(!have.has(k)){S.graves.push(r);have.add(k);ch=true}});
+  if(ch)saveGraves();
+}
+function tombstoneItem(item,path){ // tombstone a deleted curriculum item (class/subject/topic) with its ancestor names
+  const rows=[];
+  if(item.type==='topic'){const c=path[0]||'',s=path[1]||'';if(item.data)rows.push(...tombstoneTree(c,s,item.name,item.data,''))}
+  else if(item.type==='subject'){const c=path[0]||'';(item.children||[]).forEach(t=>{if(t.data)rows.push(...tombstoneTree(c,item.name,t.name,t.data,''))})}
+  else{(item.children||[]).forEach(sub=>(sub.children||[]).forEach(t=>{if(t.data)rows.push(...tombstoneTree(item.name,sub.name,t.name,t.data,''))}))}
+  addGraves(rows);
+}
+function appTopicKeys(){const ks=new Set();S.curriculum.forEach(c=>(c.children||[]).forEach(s=>(s.children||[]).forEach(t=>ks.add(c.name+'|'+s.name+'|'+t.name))));return ks}
+function graveTopicKeys(){const ks=new Set();S.graves.forEach(g=>{const p=gravePath(g);ks.add(p.cls+'|'+p.sub+'|'+g.top)});return ks}
+function collectAppIds(){const ids=new Set();
+  const w=n=>{ids.add(n.id);(n.children||[]).forEach(w)};
+  S.curriculum.forEach(c=>(c.children||[]).forEach(s=>(s.children||[]).forEach(t=>{if(t.data)w(t.data)})));
+  return ids}
+
 async function loadLive(){
-  if(!CONFIG.SCRIPT_URL)return false;
+  const url=getScriptUrl();if(!url)return{ok:false,reason:'nourl'};
   try{
-    const r=await fetch(CONFIG.SCRIPT_URL+'?action=getAll');const j=await r.json();
-    if(!j.success||!j.rows||!j.rows.length)return false;
+    const r=await fetch(url+'?action=getAll');const j=await r.json();
+    if(!j.success)return{ok:false,reason:'api'};
+    const all=j.rows||[];
+    // 1) Tombstone rows (deleted data) → merge into graves so they survive anywhere
+    const gRows=all.filter(x=>x.cls===GRAVE_CLS);
+    if(gRows.length)addGraves(gRows);
+    // 2) Graves whose ids are live again (restored on another device) → drop those graves
+    const liveIds=new Set(all.filter(x=>x.cls!==GRAVE_CLS).map(x=>x.id));
+    if(liveIds.size&&S.graves.length){const before=S.graves.length;S.graves=S.graves.filter(g=>!liveIds.has(g.id));if(S.graves.length!==before)saveGraves()}
+    // 3) Build curriculum from live rows only
+    const rows=all.filter(x=>x.cls!==GRAVE_CLS);
+    if(!rows.length)return{ok:false,reason:'empty'};
     const topics=new Map(),order=[];
-    j.rows.forEach(r=>{const k=r.cls+'|'+r.sub+'|'+r.top;
+    rows.forEach(r=>{const k=r.cls+'|'+r.sub+'|'+r.top;
       if(!topics.has(k)){topics.set(k,{cls:r.cls,sub:r.sub,top:r.top,nodes:[]});order.push(k)}
       topics.get(k).nodes.push(r)});
     const cur=[];const cM=new Map(),sM=new Map();
@@ -286,8 +390,9 @@ async function loadLive(){
       let c=cM.get(t.cls);if(!c){c={id:uid(),name:t.cls,type:'class',children:[]};cM.set(t.cls,c);cur.push(c)}
       const sk=t.cls+'|'+t.sub;let s=sM.get(sk);if(!s){s={id:uid(),name:t.sub,type:'subject',children:[]};sM.set(sk,s);c.children.push(s)}
       s.children.push({id:uid(),name:t.top,type:'topic',data:treeFromRows(t.nodes)})});
-    S.curriculum=cur;return true;
-  }catch(e){return false}
+    S.curriculum=cur;S.nav=[];S.foreign=[];saveForeign(); // sheet content fully adopted; old breadcrumb ids are stale
+    return{ok:true,count:rows.length};
+  }catch(e){return{ok:false,reason:'network'}}
 }
 function treeFromRows(nodes){
   const byId=new Map(),made=[];
@@ -311,19 +416,183 @@ function flattenRows(){
   })));
   return rows;
 }
-async function backupSheet(){
-  if(!CONFIG.SCRIPT_URL){toast('CONFIG.SCRIPT_URL সেট করো','err');return}
-  toast('☁ Sheet এ backup হচ্ছে...');
-  try{
-    const r=await fetch(CONFIG.SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'backup',rows:flattenRows()})});
-    const j=await r.json();
-    if(j.success)toast('✅ Sheet এ save হয়েছে ('+j.count+' rows)','ok');else toast('Save failed: '+j.error,'err');
-  }catch(e){toast('Network error: '+e.message,'err')}
+/* --- backup engine: live rows + tombstones + protected foreign rows --- */
+let abTimer=null,retryTimer=null;
+function setCloud(st){
+  S.cloud=st;const p=$('cloudPill');if(!p)return;
+  const cfg={idle:['fa-cloud','Cloud backup',''],saving:['fa-cloud-arrow-up fa-spin','Saving…',''],ok:['fa-circle-check','Saved','ok'],fail:['fa-triangle-exclamation','Offline — retry','fail']}[st]||['fa-cloud','',''];
+  p.className='cloud '+(st==='ok'?'ok':st==='fail'?'fail':'saving');
+  p.innerHTML='<i class="fa-solid '+cfg[0]+'"></i><span>'+cfg[1]+'</span>';
+  p.onclick=(st==='fail')?()=>backupSheet(true):null;
 }
-async function loadBtn(){toast('⬇ Sheet থেকে load হচ্ছে...');const ok=await loadLive();
-  if(ok){saveLocal();renderLanding();toast('☑ Live data loaded','ok')}else toast('Sheet এ data নেই বা URL ভুল','err')}
+function scheduleAutoBackup(){
+  S.dirty=true;
+  if(!getScriptUrl())return;
+  if(abTimer)clearTimeout(abTimer);
+  abTimer=setTimeout(()=>{abTimer=null;backupSheet(false)},2500);
+}
+function scheduleRetry(){if(retryTimer)clearTimeout(retryTimer);retryTimer=setTimeout(()=>{retryTimer=null;if(S.cloud==='fail')backupSheet(false)},20000)}
+async function backupSheet(manual){
+  const url=getScriptUrl();
+  if(!url){if(manual)toast('Settings e Script URL set koro','err');return}
+  const live=flattenRows();
+  if(!live.length&&!S.graves.length&&!S.foreign.length){
+    // NEVER wipe the sheet with an empty backup
+    if(manual)toast('Kono data nei — backup skip korlam (Sheet safe)','err');
+    setCloud('idle');return;
+  }
+  setCloud('saving');
+  try{
+    // Foreign-row protection: fetch current sheet rows and KEEP rows this app doesn't know
+    // (manual sheet edits / pre-fix deletions), so a full rewrite can never destroy them.
+    const foreign=S.foreign.slice();
+    try{
+      const gr=await fetch(url+'?action=getAll');const gj=await gr.json();
+      if(gj.success){
+        const sheetRows=(gj.rows||[]).filter(x=>x.cls!==GRAVE_CLS);
+        const appIds=collectAppIds(),aKeys=appTopicKeys(),gKeys=graveTopicKeys();
+        const known=new Set(foreign.map(f=>f.cls+'|'+f.sub+'|'+f.top+'|'+f.id));
+        sheetRows.forEach(r=>{
+          const k=r.cls+'|'+r.sub+'|'+r.top;
+          if(aKeys.has(k)||gKeys.has(k))return; // live topic / intentionally deleted (tombstoned)
+          if(appIds.has(r.id))return;           // rename artifact (same node ids still exist in app)
+          const fk=k+'|'+r.id;
+          if(!known.has(fk)){known.add(fk);foreign.push(r)}
+        });
+      }
+    }catch(e){/* best-effort protection */}
+    S.foreign=foreign;saveForeign();
+    const payload=live.concat(S.graves,S.foreign);
+    const r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'backup',rows:payload})});
+    const j=await r.json();
+    if(j.success){S.dirty=false;setCloud('ok');if(manual)toast('✅ Sheet e save hoyeche ('+j.count+' rows)','ok')}
+    else{setCloud('fail');scheduleRetry();if(manual)toast('Save failed: '+(j.error||'unknown'),'err')}
+  }catch(e){setCloud('fail');scheduleRetry();if(manual)toast('Network error: '+e.message,'err')}
+}
+// Best-effort flush when the tab is closed / hidden
+function flushBackupBeacon(){
+  if(!abTimer&&!S.dirty)return;
+  if(abTimer){clearTimeout(abTimer);abTimer=null}
+  const url=getScriptUrl();if(!url||!S.dirty)return;
+  const live=flattenRows();
+  if(!live.length&&!S.graves.length&&!S.foreign.length)return;
+  const body=JSON.stringify({action:'backup',rows:live.concat(S.graves,S.foreign)});
+  try{
+    if(navigator.sendBeacon&&navigator.sendBeacon(url,new Blob([body],{type:'text/plain;charset=utf-8'})))return;
+    fetch(url,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body});
+  }catch(e){}
+}
+window.addEventListener('pagehide',flushBackupBeacon);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushBackupBeacon()});
+async function loadBtn(){
+  // If there are unsaved local edits, push them to the sheet FIRST so sync can never drop them
+  if(S.dirty){await backupSheet(false);if(S.dirty){toast('Offline edit ache — internet thik kore abar try koro','err');return}}
+  // remember the open topic's name-path (container ids are regenerated on every sheet load)
+  let oldPath=null;
+  if(S.view==='editor'&&S.topic){
+    const findPath=(arr,acc)=>{for(const it of arr){const next=acc.concat(it.name);
+      if(it.id===S.topic.id&&it.type==='topic')return next;
+      if(it.children){const f=findPath(it.children,next);if(f)return f}}return null};
+    oldPath=findPath(S.curriculum,[]);
+  }
+  toast('⬇ Sheet theke load hocche...');
+  const res=await loadLive();
+  if(res.ok){
+    saveLocal();
+    if(oldPath){
+      // Re-bind the OPEN map to the freshly loaded curriculum by name-path
+      // (previously sync orphaned the open map — edits after sync were silently lost)
+      const cls=S.curriculum.find(c=>c.name===oldPath[0]);
+      const sub=cls&&cls.children.find(s=>s.name===oldPath[1]);
+      const t=sub&&sub.children.find(x=>x.name===oldPath[2]&&x.type==='topic');
+      if(t){S.topic=t;S.map=t.data||blankMap();S.selId=null;S.history=[clone(S.map)];S.hi=0;
+        S.gap=(typeof t.gap==='number')?t.gap:1;renderTopbar();renderMap();setTimeout(fit,60);
+        toast('☑ Open map updated from Sheet','ok')}
+      else{goLanding();toast('Ei map Sheet e ar nei (Trash e thakbe)','err')}
+    }else{renderLanding();renderTopbar();toast('☑ Live data loaded from Sheet','ok')}
+  }else{
+    const msg={network:'Network error — internet / URL check koro',empty:'Sheet e live data nei (deleted gulo Trash e safe ache)',api:'Script error — Apps Script check koro',nourl:'Settings e Script URL set koro'}[res.reason]||'Load failed';
+    toast('❌ '+msg,'err');
+  }
+}
 function saveLocal(){try{localStorage.setItem(CONFIG.LS,JSON.stringify(S.curriculum))}catch(e){}}
 function loadLocal(){try{const r=localStorage.getItem(CONFIG.LS);if(r){S.curriculum=JSON.parse(r);return true}}catch(e){}return false}
+function curPathNames(){const out=[];let it=S.curriculum;
+  for(const id of S.nav){const f=it.find(x=>x.id===id);if(!f)break;out.push(f.name);it=f.children||[]}
+  return out}
+
+/* --- Trash / Restore --- */
+let TRASH_GROUPS=[];
+function openTrash(){renderTrashList();openM('trashModal')}
+function buildTrashGroups(){
+  TRASH_GROUPS=[];
+  const map=new Map();
+  S.graves.forEach(g=>{const p=gravePath(g);const k=p.cls+'|'+p.sub+'|'+g.top;
+    if(!map.has(k))map.set(k,{cls:p.cls,sub:p.sub,top:g.top,rows:[]});
+    map.get(k).rows.push(g)});
+  TRASH_GROUPS=[...map.values()];
+}
+function renderTrashList(){
+  buildTrashGroups();
+  const el=$('trashList');
+  if(!TRASH_GROUPS.length){el.innerHTML='<div class="tempty">Trash khali — kichu delete kora nei ✨</div>';return}
+  el.innerHTML=TRASH_GROUPS.map((g,i)=>{
+    const rootRow=g.rows.find(r=>!r.parent);
+    const name=rootRow?rootRow.text:g.top;
+    return `<div class="titem"><div class="ti-info"><div class="ti-name">${esc(name)}</div><div class="ti-path">${esc(g.cls)} / ${esc(g.sub)} / ${esc(g.top)}</div></div><span class="ti-cnt">${g.rows.length} nodes</span><button class="btn" onclick="restoreGroup(${i})"><i class="fa-solid fa-rotate-left"></i> Restore</button></div>`;
+  }).join('');
+}
+function restoreGroupByIdx(g){
+  const rows=g.rows.slice();
+  // find or create the class/subject path
+  let c=S.curriculum.find(x=>x.type==='class'&&x.name===g.cls);
+  if(!c){c={id:uid(),name:g.cls,type:'class',children:[]};S.curriculum.push(c)}
+  let s=c.children.find(x=>x.type==='subject'&&x.name===g.sub);
+  if(!s){s={id:uid(),name:g.sub,type:'subject',children:[]};c.children.push(s)}
+  let t=s.children.find(x=>x.type==='topic'&&x.name===g.top);
+  const tree=treeFromRows(rows);
+  const rootRow=rows.find(r=>!r.parent);
+  if(!t){t={id:uid(),name:g.top,type:'topic',data:tree};s.children.push(t)}
+  else if(rootRow){ // whole topic was deleted before → merge its branches into the existing root
+    (t.data.children=t.data.children||[]);tree.children.forEach(k=>t.data.children.push(k));
+  }else{ // node-level delete → re-attach subtree under its old parent (or topic root)
+    const pN=rows[0].parent?findN(rows[0].parent,t.data):null;
+    if(pN){pN.children=pN.children||[];pN.children.push(tree);pN.collapsed=false}
+    else{(t.data.children=t.data.children||[]).push(tree)}
+  }
+  // remove restored graves
+  S.graves=S.graves.filter(gr=>{const p=gravePath(gr);return(p.cls+'|'+p.sub+'|'+gr.top)!==(g.cls+'|'+g.sub+'|'+g.top)});
+}
+function restoreGroup(i){const g=TRASH_GROUPS[i];if(!g)return;
+  restoreGroupByIdx(g);saveGraves();saveLocal();renderLanding();closeM('trashModal');
+  toast('♻ Restored: '+g.top,'ok');scheduleAutoBackup();
+}
+function restoreAllGraves(){
+  buildTrashGroups();
+  if(!TRASH_GROUPS.length){toast('Trash khali','ok');return}
+  TRASH_GROUPS.slice().forEach(restoreGroupByIdx);
+  saveGraves();saveLocal();renderLanding();closeM('trashModal');
+  toast('♻ Sob deleted data restore holo','ok');scheduleAutoBackup();
+}
+
+/* --- Settings: script URL --- */
+function openSettings(){$('setUrl').value=localStorage.getItem(SURL_KEY)||getScriptUrl();openM('setModal')}
+function saveScriptUrl(){
+  const u=$('setUrl').value.trim();
+  if(u&&!/^https:\/\/script\.google\.com\/macros\/s\//.test(u)){toast('Invalid Apps Script URL','err');return}
+  try{if(u)localStorage.setItem(SURL_KEY,u);else localStorage.removeItem(SURL_KEY)}catch(e){}
+  closeM('setModal');toast(u?'✅ Script URL saved':'Default URL restored','ok');renderTopbar();
+}
+async function testScriptUrl(){
+  const u=$('setUrl').value.trim();
+  if(!/^https:\/\/script\.google\.com\/macros\/s\//.test(u)){toast('Invalid Apps Script URL','err');return}
+  toast('🔌 Testing connection...');
+  try{
+    const r=await fetch(u+'?action=getAll');const j=await r.json();
+    if(j.success)toast('✅ Connected! '+(j.rows?j.rows.length:0)+' rows pale','ok');
+    else toast('❌ Script replied error — deployment check koro','err');
+  }catch(e){toast('❌ Connection failed: '+e.message,'err')}
+}
 
 /* ===== FILE IMPORT PARSERS ===== */
 function norm(o,d){const n={id:uid(),text:String(o.text||o.title||o.name||o.TEXT||o.label||'').replace(/\s+/g,' ').trim()||'Node',children:[],style:{}};
@@ -434,7 +703,7 @@ function doImport(){
         // Inside a subject -> add topic directly
         it.push(topicNode);
       }
-      saveLocal();renderLanding();closeM('impModal');toast('Topic "'+title+'" imported','ok');
+      saveLocal();renderLanding();closeM('impModal');toast('Topic "'+title+'" imported','ok');scheduleAutoBackup();
     }catch(e){toast('Import failed: '+e.message,'err')}
   };
   rd.readAsText(f);
@@ -446,7 +715,7 @@ function items(){let it=S.curriculum;for(const id of S.nav){const f=it.find(x=>x
 function renderLanding(){
   const it=items();
   const names=[{n:'Home',i:-1}];let cur=S.curriculum;
-  S.nav.forEach((id,k)=>{cur=cur.find(x=>x.id===id);names.push({n:cur?cur.name:'?',i:k});if(cur&&k<S.nav.length-1)cur=cur.children||[]});
+  S.nav.forEach((id,k)=>{if(!cur)return;cur=cur.find(x=>x.id===id);names.push({n:cur?cur.name:'?',i:k});if(cur&&k<S.nav.length-1)cur=cur.children||[]});
   $('crumb').innerHTML=names.map((p,k)=>k===names.length-1?`<span class="cur">${esc(p.n)}</span>`:`<span onclick="navTo(${p.i+1})">${esc(p.n)}</span><span style="cursor:default">/</span>`).join('');
   const acts=(type,id)=>`<div class="cacts">
     <button title="Rename" onclick="event.stopPropagation();editName('${type}','${id}')"><i class="fa-solid fa-pen"></i></button>
@@ -464,18 +733,22 @@ function addLevel(){
   const d=S.nav.length;const name=prompt(d===0?'Class name:':d===1?'Subject name:':'Topic name:');if(!name)return;
   const it=items();
   it.push(d===0?{id:uid(),name,type:'class',children:[]}:d===1?{id:uid(),name,type:'subject',children:[]}:{id:uid(),name,type:'topic',data:blankMap()});
-  saveLocal();renderLanding();
+  saveLocal();renderLanding();scheduleAutoBackup();
 }
 function editName(type,id){
   const x=items().find(i=>i.id===id);if(!x)return;
   const n=prompt('New name:',x.name);if(!n||!n.trim())return;
-  x.name=n.trim();saveLocal();renderLanding();toast('✎ Renamed','ok');
+  x.name=n.trim();saveLocal();renderLanding();toast('✎ Renamed','ok');scheduleAutoBackup();
 }
 function askDelete(type,id){S.delTarget={type,id};askPw(()=>{closeM('pwModal');$('delIn').value='';openM('delModal');setTimeout(()=>$('delIn').focus(),80)})}
 function delOk(){
   if($('delIn').value.trim().toLowerCase()!=='delete'){toast('Type "delete" exactly','err');return}
   const {type,id}=S.delTarget||{};const arr=items();const i=arr.findIndex(x=>x.id===id);
-  if(i>=0){arr.splice(i,1);saveLocal();renderLanding();toast('🗑 Deleted','ok')}
+  if(i>=0){
+    // TOMBSTONE first — deleted data is preserved in Trash + Google Sheet, never destroyed
+    tombstoneItem(arr[i],curPathNames());
+    arr.splice(i,1);saveLocal();renderLanding();toast('🗑 Deleted — Trash e safe ache (restore kora jabe)','ok');scheduleAutoBackup();
+  }
   closeM('delModal');S.delTarget=null;
 }
 function openItem(id){
@@ -491,28 +764,22 @@ function openItem(id){
 function goLanding(){S.view='landing';document.body.dataset.view='landing';S.unlocked=false;document.body.classList.remove('unlocked');pushHist();renderLanding();renderTopbar()}
 
 /* ===== TOPBAR / LOCK ===== */
-// nav button group (left/right/up/down + parent up)
-function navGroupHtml(){
-  return `<div class="nav-group">
-    <button class="btn ic" title="Previous sibling" onclick="navSibling(-1)"><i class="fa-solid fa-arrow-left"></i></button>
-    <button class="btn ic" title="Next sibling" onclick="navSibling(1)"><i class="fa-solid fa-arrow-right"></i></button>
-    <button class="btn ic" title="Up (previous in DFS)" onclick="navVert(-1)"><i class="fa-solid fa-arrow-up"></i></button>
-    <button class="btn ic" title="Down (next in DFS)" onclick="navVert(1)"><i class="fa-solid fa-arrow-down"></i></button>
-    <button class="btn ic" title="Parent up (one generation)" onclick="navParentUp()"><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
-  </div>`;
-}
+// (nav buttons moved to a fixed left-side column #navc — see HTML)
 function renderTopbar(){
   const ed=S.view==='editor';
   let h=`<a class="logo" href="${CONFIG.MINDMAP_URL}" target="_top" rel="noopener"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><b>MEGA&nbsp;<span>QUIZ</span></b></a>`;
   if(!ed){
     if(S.nav.length>0)h+=`<button class="btn" onclick="navBack()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>`;
     h+=`<button class="btn" onclick="openImport('new')" title="Import file"><i class="fa-solid fa-file-import"></i><span> Import</span></button>
-    <button class="btn" onclick="loadBtn()" title="Sync from sheet"><i class="fa-solid fa-rotate"></i><span> Sync</span></button>
-    <button class="btn pri" onclick="backupSheet()"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>`;
+    <button class="btn" onclick="loadBtn()" title="Sheet theke notun data load (reload = latest)"><i class="fa-solid fa-rotate"></i><span> Sync</span></button>
+    <button class="btn" onclick="backupSheet(true)" title="Sheet e full backup"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>
+    <span class="cloud" id="cloudPill"><i class="fa-solid fa-cloud"></i><span>Cloud backup</span></span>
+    <span class="spacer"></span>
+    <button class="btn ic" onclick="openTrash()" title="Trash — deleted data restore koro (data kokhono hariye jay na)"><i class="fa-solid fa-trash-can"></i></button>
+    <button class="btn ic" onclick="openSettings()" title="Google Sheet Script URL settings"><i class="fa-solid fa-gear"></i></button>`;
   }else if(!S.unlocked){
-    // VIEW MODE - has nav, style, gap, fullscreen, collapse, expand, import, back, edit, download
+    // VIEW MODE - has style, gap, fullscreen, collapse, expand, import, back, edit, download
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span><span class="spacer"></span>
-    ${navGroupHtml()}
     <div class="sep"></div>
     <button class="btn ic" title="Layout style" onclick="toggleStyleMenu(event)"><i class="fa-solid fa-palette"></i></button>
     <button class="btn ic" title="Smaller gap between nodes" onclick="gapDelta(-0.1)"><i class="fa-solid fa-down-left-and-up-right-to-center"></i></button>
@@ -528,9 +795,8 @@ function renderTopbar(){
     <button class="btn" onclick="goLanding()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>
     <button class="btn pri" onclick="askPw(unlockNow)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>`;
   }else{
-    // EDIT MODE - has nav, full editing controls
+    // EDIT MODE - full editing controls
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span>
-    ${navGroupHtml()}
     <button class="btn" onclick="goLanding()"><i class="fa-solid fa-arrow-left"></i></button>
     <button class="btn" onclick="undo()"><i class="fa-solid fa-rotate-left"></i></button>
     <button class="btn" onclick="redo()"><i class="fa-solid fa-rotate-right"></i></button>
@@ -560,12 +826,13 @@ function renderTopbar(){
     <button class="btn ic" title="AI" onclick="openM('aiModal')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
     <button class="btn ic" title="Import file" onclick="openImport('current')"><i class="fa-solid fa-file-import"></i></button>
     <button class="btn ic" title="Sync from sheet" onclick="loadBtn()"><i class="fa-solid fa-rotate"></i></button>
-    <button class="btn pri" onclick="backupSheet()"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>
+    <button class="btn pri" onclick="backupSheet(true)" title="Sheet e full backup"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>
     <button class="btn ic" title="Download PNG / PDF / Vector SVG" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>
     <button class="btn ic" title="Fullscreen" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
+    <span class="cloud" id="cloudPill"><i class="fa-solid fa-cloud"></i><span>Cloud backup</span></span>
     <button class="btn ic on" title="Lock" onclick="lock()"><i class="fa-solid fa-lock-open"></i></button>`;
   }
-  $('topbar').innerHTML=h;
+  $('topbar').innerHTML=h;setCloud(S.cloud);
 }
 function toggleStyleMenu(e){
   if(e){e.stopPropagation();}
@@ -608,25 +875,34 @@ function setLayout(l){
 }
 document.querySelectorAll('#styleMenu button').forEach(b=>b.onclick=()=>{setLayout(b.dataset.l);$('styleMenu').classList.remove('show')});
 
-/* ===== NAVIGATION (left/right/up/down) ===== */
+/* ===== NAVIGATION (left/right/up/down) =====
+   Timeline layout: even-index branches grow DOWN, odd-index grow UP (mirror sections).
+   Upper-section nodes are the mirror image of lower ones — so sibling direction,
+   insert position and drag zones are flipped for them, otherwise everything feels ULTA.
+   Up/Down uses SPATIAL navigation (visually above/below), which is correct in both sections. */
+function isUpperNode(n){return S.layout==='timeline'&&n&&n._dir===-1}
+function flipForUpper(n){return !!isUpperNode(n)&&(n._d||1)>=2} // depth-1 branches sit ON the axis (horizontal) — no flip
 function navSibling(dir){
   if(!S.selId){
     // pick first node at depth 1 (sibling of root)
     const sibs=vis(S.map);
-    if(sibs.length){S.selId=sibs[0].id;renderMap();centerOn('h');}
+    if(sibs.length){S.selId=sibs[0].id;renderMap();centerOn('both');}
     return;
   }
+  const me=findN(S.selId);
   const p=findP(S.selId);
   if(!p){ // at root level: navigate among root's children
     const sibs=S.map.children||[];
     const i=sibs.findIndex(c=>c.id===S.selId);
-    if(i>=0&&i+dir>=0&&i+dir<sibs.length){S.selId=sibs[i+dir].id;renderMap();centerOn('h');}
+    if(i>=0&&i+dir>=0&&i+dir<sibs.length){S.selId=sibs[i+dir].id;renderMap();centerOn('both');}
     return;
   }
   const sibs=p.children||[];
   const i=sibs.findIndex(c=>c.id===S.selId);
-  if(i>=0&&i+dir>=0&&i+dir<sibs.length){
-    S.selId=sibs[i+dir].id;renderMap();centerOn('h');
+  // Upper section: array order runs axis→outward (visually bottom→top), so flip left/right
+  const eff=flipForUpper(me)?-dir:dir;
+  if(i>=0&&i+eff>=0&&i+eff<sibs.length){
+    S.selId=sibs[i+eff].id;renderMap();centerOn('both');
   }
 }
 // Build flat DFS list of all visible nodes (depth >= 1) - used for Up/Down navigation across ALL children
@@ -639,19 +915,33 @@ function flatNodes(){
   return out;
 }
 function navVert(dir){
-  // Up/Down moves through ALL visible nodes in DFS order (works for all children, not just parent)
   const flat=flatNodes();
   if(!flat.length)return;
-  if(!S.selId){S.selId=flat[0].id;renderMap();centerOn('v');return;}
+  const cur=S.selId?findN(S.selId):null;
+  if(S.layout==='timeline'&&cur&&typeof cur._y!=='undefined'){
+    // SPATIAL Up/Down: move to the node that is visually above/below the selection.
+    // Works identically for the upper AND lower sections (no more inverted arrows).
+    const EPS=12;
+    let best=null,bestScore=1e18;
+    flat.forEach(n=>{
+      if(n.id===cur.id)return;
+      const dy=(n._y-cur._y)*dir;           // positive = lies in the direction we move
+      if(dy<EPS)return;
+      const score=dy+Math.abs(n._x-cur._x)*0.6; // prefer own column, then near columns
+      if(score<bestScore){bestScore=score;best=n}
+    });
+    if(best){S.selId=best.id;renderMap();centerOn('both')}
+    return;
+  }
+  // Tree layout (and fallback): DFS order — down = next node, up = previous
+  if(!cur){S.selId=flat[0].id;renderMap();centerOn('both');return;}
   let idx=flat.findIndex(n=>n.id===S.selId);
-  if(idx<0){S.selId=flat[0].id;renderMap();centerOn('v');return;}
-  // dir=1 (down): next in DFS (which is first child if has children, else next sibling, else climb up)
-  // dir=-1 (up): previous in DFS
+  if(idx<0){S.selId=flat[0].id;renderMap();centerOn('both');return;}
   let newIdx=idx+dir;
   if(newIdx<0)newIdx=0;
   if(newIdx>=flat.length)newIdx=flat.length-1;
   if(newIdx===idx)return;
-  S.selId=flat[newIdx].id;renderMap();centerOn('v');
+  S.selId=flat[newIdx].id;renderMap();centerOn('both');
 }
 function navParentUp(){
   // Explicit "go to parent" button — only moves UP one generation (not DFS)
@@ -753,13 +1043,14 @@ function layoutTimeline(){
     if(prev)segs.push({x1:prev._x+prev._w/2+8,y1:0,x2:bx-bm.w/2-8,y2:0,c:'rgba(255,255,255,.35)',w:3});
     // Gaps multiplied by S.gap: vertical first-child 99, child sibling 63, horizontal column 153/126
     const dir=i%2===0?1:-1;let y=dir*(bm.h/2+99*G),colRight=bx+bm.w/2,last2=null;
+    b._dir=dir; // remember branch orientation for nav/insert mirroring
     (function place(n,d){
       const kids=vis(n);if(!kids.length)return;
       const msx=d===1?bx:(n._x-n._w/2+45*G);let lastY=null;
       kids.forEach(k=>{
         const m=measureNode(k,d+1);
         const left=d===1?bx+153*G:msx+126*G;
-        k._d=d+1;k._w=m.w;k._h=m.h;k._lines=m.lines;k._x=left+m.w/2;k._y=y+dir*m.h/2;
+        k._d=d+1;k._w=m.w;k._h=m.h;k._lines=m.lines;k._x=left+m.w/2;k._y=y+dir*m.h/2;k._dir=dir;
         k._col=(k.style&&k.style.color)||n._col;boxes.push(k);
         segs.push({x1:d===1?bx:msx,y1:k._y,x2:left,y2:k._y,c:k._col,w:1.4});
         colRight=Math.max(colRight,k._x+m.w/2);y+=dir*(m.h+63*G);lastY=k._y;
@@ -936,15 +1227,26 @@ function findN(id,n=S.map){if(n.id===id)return n;for(const c of n.children||[]){
 function findP(id,n=S.map){for(const c of n.children||[]){if(c.id===id)return n;const f=findP(id,c);if(f)return f}return null}
 function isDesc(a,id){for(const c of a.children||[]){if(c.id===id||isDesc(c,id))return true}return false}
 function mutate(){S.history=S.history.slice(0,S.hi+1);S.history.push(clone(S.map));S.hi++;if(S.history.length>60){S.history.shift();S.hi--}
-  S.topic.data=S.map;saveLocal();renderMap()}
-function undo(){if(S.hi>0){S.hi--;S.map=clone(S.history[S.hi]);S.topic.data=S.map;saveLocal();renderMap();toast('↶ Undone','ok')}}
-function redo(){if(S.hi<S.history.length-1){S.hi++;S.map=clone(S.history[S.hi]);S.topic.data=S.map;saveLocal();renderMap();toast('↷ Redone','ok')}}
+  S.topic.data=S.map;saveLocal();renderMap();scheduleAutoBackup()}
+function undo(){if(S.hi>0){S.hi--;S.map=clone(S.history[S.hi]);S.topic.data=S.map;saveLocal();renderMap();toast('↶ Undone','ok');scheduleAutoBackup()}}
+function redo(){if(S.hi<S.history.length-1){S.hi++;S.map=clone(S.history[S.hi]);S.topic.data=S.map;saveLocal();renderMap();toast('↷ Redone','ok');scheduleAutoBackup()}}
 function addChild(){const p=S.selId?findN(S.selId):S.map;if(!p)return;
-  p.children=p.children||[];const c={id:uid(),text:'New node',children:[]};p.children.push(c);p.collapsed=false;S.selId=c.id;mutate();editSoon(c.id)}
+  p.children=p.children||[];const c={id:uid(),text:'New node',children:[]};p.children.push(c);p.collapsed=false;S.selId=c.id;mutate();centerOn('both');editSoon(c.id)}
 function addSibling(){if(!S.selId||S.selId===S.map.id)return addChild();const p=findP(S.selId);if(!p)return;
-  const s={id:uid(),text:'New node',children:[]};p.children.splice(p.children.findIndex(c=>c.id===S.selId)+1,0,s);S.selId=s.id;mutate();editSoon(s.id)}
-function delSel(){if(!S.selId||S.selId===S.map.id)return toast('Root delete করা যাবে না','err');
-  const p=findP(S.selId);if(!p)return;p.children=p.children.filter(c=>c.id!==S.selId);S.selId=p.id;mutate();toast('🗑 Node deleted','ok')}
+  const me=findN(S.selId);
+  const s={id:uid(),text:'New node',children:[]};
+  const idx=p.children.findIndex(c=>c.id===S.selId);
+  // Mirror rule: in the upper timeline section insert BEFORE so the new sibling appears
+  // directly BELOW the selected node on screen (same feel as the lower section)
+  p.children.splice(flipForUpper(me)?idx:idx+1,0,s);S.selId=s.id;mutate();centerOn('both');editSoon(s.id)}
+function delSel(){if(!S.selId||S.selId===S.map.id)return toast('Root delete kora jabe na','err');
+  const p=findP(S.selId);if(!p)return;
+  const n=findN(S.selId);if(n){
+    // TOMBSTONE the deleted subtree with its topic path (restorable from Trash)
+    const pn=curPathNames();
+    addGraves(tombstoneTree(pn[0]||'',pn[1]||'',S.topic?S.topic.name:'',n,p.id));
+  }
+  p.children=p.children.filter(c=>c.id!==S.selId);S.selId=p.id;mutate();toast('🗑 Node deleted — Trash e safe (restore kora jabe)','ok')}
 function fmt(f){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};n.style[f]=!n.style[f];mutate()}
 function fsDelta(d){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};
   n.style.fontSize=Math.max(9,Math.min(30,(n.style.fontSize||fsOf(n,n._d||0))+d));mutate()}
@@ -1009,7 +1311,10 @@ function moveNode(id,tid,zone){
   const op=findP(id);if(!op)return;
   op.children=op.children.filter(c=>c.id!==id);
   if(zone==='child'){t.children=t.children||[];t.children.push(n);t.collapsed=false}
-  else{const tp=findP(tid);const a=tp.children;const i=a.findIndex(c=>c.id===tid);a.splice(zone==='before'?i:i+1,0,n)}
+  else{const tp=findP(tid);const a=tp.children;const i=a.findIndex(c=>c.id===tid);
+    // Mirror drop zones for the upper timeline section (visually above = array-after there)
+    const z=flipForUpper(t)?(zone==='before'?'after':'before'):zone;
+    a.splice(z==='before'?i:i+1,0,n)}
   mutate();toast('↔ Node moved','ok');
 }
 
@@ -1059,7 +1364,7 @@ async function runAI(){
       const j=await r.json();
       const obj=repairJSON(j.text||'');
       S.map=norm(obj,0);S.topic.data=S.map;S.selId=null;
-      S.history=[clone(S.map)];S.hi=0;renderMap();fit();toast('✅ AI map ready','ok');
+      S.history=[clone(S.map)];S.hi=0;renderMap();fit();scheduleAutoBackup();toast('✅ AI map ready','ok');
       return;
     }catch(e){aiFailed=true;aiErr=e.message;}
   }else{
@@ -1120,18 +1425,59 @@ function _loadScript(src){
     document.head.appendChild(s);
   });
 }
-// Compute bounding box of all visible boxes (excludes hidden root)
+// Compute bounding box of all visible boxes (excludes hidden root).
+// Extra space is reserved at the top (brand header) and bottom (brand footer).
+const EXPORT_HEADER=116,EXPORT_FOOTER=44;
 function _computeBounds(){
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
   boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2);});
   const PAD=80;
-  return {x1:x1-PAD,y1:y1-PAD,x2:x2+PAD,y2:y2+PAD,w:(x2-x1)+2*PAD,h:(y2-y1)+2*PAD};
+  return {x1:x1-PAD,y1:y1-PAD-EXPORT_HEADER,x2:x2+PAD,y2:y2+PAD+EXPORT_FOOTER,w:(x2-x1)+2*PAD,h:(y2-y1)+2*PAD+EXPORT_HEADER+EXPORT_FOOTER};
 }
-// Build a standalone SVG string containing all boxes + lines + text.
+// Same-origin app icon → dataURL (embedded into exported SVG/PNG/PDF). Fallback: procedural black-hole badge.
+let _iconDataUrl=null,_iconPromise=null;
+function getIconDataURL(){
+  if(_iconDataUrl)return Promise.resolve(_iconDataUrl);
+  if(_iconPromise)return _iconPromise;
+  _iconPromise=new Promise(res=>{
+    try{
+      const img=new Image();
+      img.onload=()=>{try{const c=document.createElement('canvas');c.width=img.width;c.height=img.height;c.getContext('2d').drawImage(img,0,0);_iconDataUrl=c.toDataURL('image/png')}catch(e){}res(_iconDataUrl)};
+      img.onerror=()=>res(null);
+      img.src='icon-192.png';
+    }catch(e){res(null)}
+  });
+  return _iconPromise;
+}
+// Brand header: MegaQuiz icon + "MEGAQUIZMINDMAP" wordmark (first & last letters BIG, middle small —
+// same style as the main page logo) + topic title + divider.
+function _brandHeader(x1,y1,w,iconData){
+  let s='';
+  if(iconData){
+    s+=`<image x="${x1+26}" y="${y1+20}" width="52" height="52" preserveAspectRatio="xMidYMid slice" href="${iconData}"/>`;
+  }else{
+    const cx=x1+52,cy=y1+46;
+    s+=`<rect x="${x1+26}" y="${y1+20}" width="52" height="52" rx="13" fill="#10131c" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>`;
+    s+=`<circle cx="${cx}" cy="${cy}" r="13" fill="#05060a" stroke="#ff8f2b" stroke-width="5"/>`;
+    s+=`<ellipse cx="${cx}" cy="${cy}" rx="22" ry="7" fill="none" stroke="#ffc46b" stroke-width="2.5" transform="rotate(-16 ${cx} ${cy})" opacity=".9"/>`;
+  }
+  const tx=x1+94,ty=y1+52;
+  s+=`<text x="${tx}" y="${ty}" font-family="Arial,Helvetica,sans-serif"><tspan font-size="37" font-weight="800" fill="#f5b301">M</tspan><tspan font-size="20" font-weight="700" fill="#e8ecf4" letter-spacing="1.2">EGAQUIZMINDMA</tspan><tspan font-size="37" font-weight="800" fill="#f5b301">P</tspan></text>`;
+  s+=`<text x="${tx}" y="${ty+22}" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#64748b" letter-spacing="2.5">MEGA QUIZ • By Arif Hussain</text>`;
+  const topic=S.topic?String(S.topic.name):'';
+  if(topic)s+=`<text x="${x1+w/2}" y="${y1+EXPORT_HEADER-12}" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700" fill="#ffffff">${esc(topic)}</text>`;
+  s+=`<line x1="${x1}" y1="${y1+EXPORT_HEADER}" x2="${x1+w}" y2="${y1+EXPORT_HEADER}" stroke="rgba(245,179,1,.35)" stroke-width="1.5"/>`;
+  return s;
+}
+function _brandFooter(x1,y2,w){
+  return `<text x="${x1+w/2}" y="${y2-16}" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="13" fill="#64748b" letter-spacing="1">megaquizwb.vercel.app/mindmap</text>`;
+}
+// Build a standalone SVG string containing brand header + all boxes + lines + text + brand footer.
 // This is the source of truth for PNG, SVG and HTML export.
-function buildSVGString(x1,y1,w,h){
-  let svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x1} ${y1} ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet" style="background:#0b0f19;font-family:Inter,Helvetica,Arial,sans-serif">`;
+function buildSVGString(x1,y1,w,h,iconData){
+  let svg=`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${x1} ${y1} ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet" style="background:#0b0f19;font-family:Inter,Helvetica,Arial,sans-serif">`;
   svg+=`<rect x="${x1}" y="${y1}" width="${w}" height="${h}" fill="#0b0f19"/>`;
+  svg+=_brandHeader(x1,y1,w,iconData);
   // Segments (lines connecting nodes)
   segs.forEach(s=>{
     if(s.o){
@@ -1172,6 +1518,7 @@ function buildSVGString(x1,y1,w,h){
     }
     svg+=`</g>`;
   });
+  svg+=_brandFooter(x1,y1+h,w);
   svg+=`</svg>`;
   return svg;
 }
@@ -1201,34 +1548,35 @@ function _rasterizeSVG(svgString,w,h,pixelRatio){
 }
 // PNG export - rasterize our SVG directly (NOT html2canvas which misses the SVG lines).
 // Uses high pixelRatio (3) so the PNG stays sharp on TV / large screens.
-function exportPNG(){
+async function exportPNG(){
   _expandAllForExport();
   toast('Generating PNG (high-res)...');
   try{
+    const icon=await getIconDataURL();
     const b=_computeBounds();
-    const svg=buildSVGString(b.x1,b.y1,b.w,b.h);
-    _rasterizeSVG(svg,b.w,b.h,3).then(canvas=>{
-      canvas.toBlob(blob=>{
-        if(!blob){toast('PNG failed: blob creation failed','err');return;}
-        const url=URL.createObjectURL(blob);
-        const a=document.createElement('a');
-        a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.png';
-        a.href=url;a.click();
-        setTimeout(()=>URL.revokeObjectURL(url),2000);
-        toast('PNG exported','ok');
-      },'image/png');
-    }).catch(e=>toast('PNG failed: '+e.message,'err'));
+    const svg=buildSVGString(b.x1,b.y1,b.w,b.h,icon);
+    const canvas=await _rasterizeSVG(svg,b.w,b.h,3);
+    canvas.toBlob(blob=>{
+      if(!blob){toast('PNG failed: blob creation failed','err');return;}
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.png';
+      a.href=url;a.click();
+      setTimeout(()=>URL.revokeObjectURL(url),2000);
+      toast('PNG exported','ok');
+    },'image/png');
   }catch(e){toast('PNG failed: '+e.message,'err');}
 }
 // Vector export as standalone HTML file (mobile doesn't open .svg natively).
 // The HTML contains the SVG inline, plus minimal CSS so it scales to any screen.
 // Open in any browser (mobile or desktop) — zoom in/out keeps text sharp.
-function exportSVG(){
+async function exportSVG(){
   _expandAllForExport();
   toast('Generating Vector HTML...');
   try{
+    const icon=await getIconDataURL();
     const b=_computeBounds();
-    const svg=buildSVGString(b.x1,b.y1,b.w,b.h);
+    const svg=buildSVGString(b.x1,b.y1,b.w,b.h,icon);
     const topicName=(S.topic?S.topic.name:'Mind Map');
     const safeName=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_');
     const html=`<!DOCTYPE html>
@@ -1306,8 +1654,9 @@ function exportPDF(){
     .catch(e=>toast('PDF failed: '+e.message,'err'));
 }
 async function buildPDFFromSVG(){
+  const icon=await getIconDataURL();
   const b=_computeBounds();
-  const svg=buildSVGString(b.x1,b.y1,b.w,b.h);
+  const svg=buildSVGString(b.x1,b.y1,b.w,b.h,icon);
   // Rasterize at 4x for crisp text
   const canvas=await _rasterizeSVG(svg,b.w,b.h,4);
   const dataUrl=canvas.toDataURL('image/png');
@@ -1324,9 +1673,7 @@ async function buildPDFFromSVG(){
   page.drawRectangle({x:0,y:0,width:pdfW,height:pdfH,color:rgb(0.043,0.06,0.098)});
   const pngImg=await doc.embedPng(dataUrl);
   page.drawImage(pngImg,{x:0,y:0,width:pdfW,height:pdfH});
-  // Footer with topic name (ascii only to avoid font issues)
-  const topicName=(S.topic?S.topic.name:'Mind Map').replace(/[^\x20-\x7E]/g,'').slice(0,60);
-  if(topicName)page.drawText(topicName,{x:24,y:pdfH-24,size:11,color:rgb(0.58,0.64,0.72)});
+  // Topic name + branding are already inside the embedded image (brand header/footer)
   const bytes=await doc.save();
   const blob=new Blob([bytes],{type:'application/pdf'});
   const url=URL.createObjectURL(blob);
@@ -1352,14 +1699,29 @@ window.addEventListener('keydown',e=>{
   else if(e.key==='F2'){if(S.selId)editSoon(S.selId)}
 });
 
-/* ===== INIT ===== */
+/* ===== INIT =====
+   Load order: Google Sheet (source of truth) → local cache → demo.
+   The open map NEVER live-updates (no polling). Reload/refresh always shows the latest sheet data. */
 (async function(){
-  const live=await loadLive();
-  if(live){saveLocal();toast('☑ Live data loaded from Sheet','ok')}
-  else if(!loadLocal())S.curriculum=demoCurriculum();
+  loadGraves();loadForeign();
+  const res=await loadLive();
+  if(res.ok){saveLocal();setCloud('idle');toast('☑ Sheet theke data load holo ('+res.count+' rows)','ok')}
+  else if(loadLocal()){
+    setCloud('idle');
+    toast('📴 Sheet theke anha jayni — local backup dekhacche','err');
+    // Background retry: sheet pale hole landing grid auto-update hobe (open map touch hoy na)
+    setTimeout(async()=>{if(S.view==='landing'&&!S.dirty){const r2=await loadLive();if(r2.ok){saveLocal();renderLanding();setCloud('ok');toast('☑ Sheet theke update load holo (retry)','ok')}}},15000);
+  }
+  else{S.curriculum=demoCurriculum();toast('Demo data — nijer map banao, change korlei auto Sheet e save hobe','ok')}
   try{history.replaceState({nav:[],view:'landing',tid:null},'')}catch(e){}
   renderLanding();renderTopbar();
 })();
+// Internet fire ele landing refresh (open map kakhono live-change hoy na)
+window.addEventListener('online',async()=>{
+  if(S.view!=='landing'||S.dirty)return;
+  const r=await loadLive();
+  if(r.ok){saveLocal();renderLanding();setCloud('ok');toast('☑ Online — Sheet theke update load holo','ok')}
+});
 </script>
 </body>
 </html>
