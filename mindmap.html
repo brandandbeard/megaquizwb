@@ -243,11 +243,13 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
   <button data-fmt="svg"><i class="fa-solid fa-code"></i> Vector HTML (zoomable)</button>
 </div>
 
-<!-- settings: script url -->
+<!-- settings: script url + publish link -->
 <div class="mbg" id="setModal"><div class="modal">
   <h2><i class="fa-solid fa-gear"></i> Google Sheet Settings</h2>
-  <p>Apps Script Web App URL (Google Sheet backup er jonno). Re-deploy korle URL bodle jay — tokhon ekhane notun URL boshaye <b>Test</b> koro. URL save thakbe ei browser e.</p>
-  <input class="in" id="setUrl" placeholder="https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/execF">
+  <p><b>1) Apps Script URL</b> (backup + load er jonno). Re-deploy korle URL bodle jay — tokhon ekhane notun URL boshaye <b>Test</b> koro. Save thakbe ei browser e.</p>
+  <input class="in" id="setUrl" placeholder="https://script.google.com/macros/s/....../exec">
+  <p style="margin-top:.5rem"><b>2) Publish link (TSV)</b> — optional safety mirror. Apps Script kaj na korle ei link theke data load hobe (reload korlei latest data ashbe). Sheet e notun link nite hole: File → Share → Publish to web → TSV.</p>
+  <input class="in" id="setTsv" placeholder="https://docs.google.com/spreadsheets/d/e/....../pub?output=tsv">
   <div class="mact"><button class="btn" onclick="closeM('setModal')">Cancel</button><button class="btn" onclick="testScriptUrl()"><i class="fa-solid fa-plug"></i> Test</button><button class="btn pri" onclick="saveScriptUrl()">Save</button></div>
 </div></div>
 
@@ -273,10 +275,14 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 
 <script>
 /* ===== CONFIG ===== */
-const CONFIG={SCRIPT_URL:'https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/exec',PASSWORD:'mindmap0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
+const CONFIG={SCRIPT_URL:'https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/exec',TSV_URL:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQ7k5BSCdOKc27LOEAmSgSe0aBcMNhnK45hSPIlH2RBsh4Jo50Wx3NbGcO-vsEni9eTPIMVuUQHdVT/pub?output=tsv',PASSWORD:'mindmap0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
 // Active script URL: user-configurable (Settings modal) — survives Apps Script re-deploy URL changes.
 const SURL_KEY='mq_mm_scripturl';
 function getScriptUrl(){try{const u=localStorage.getItem(SURL_KEY);if(u&&/^https:\/\/script\.google\.com\/macros\/s\//.test(u))return u}catch(e){}return CONFIG.SCRIPT_URL}
+// Published TSV mirror link (File → Share → Publish to web → TSV). Read-only safety net:
+// Apps Script down/quota/broken-deploy holei ei link theke data load hobe — load kokhono block hobe na.
+const TSV_KEY='mq_mm_tsvurl';
+function getTsvUrl(){try{const u=localStorage.getItem(TSV_KEY);if(u&&/^https:\/\/docs\.google\.com\/spreadsheets\/d\/e\//.test(u))return u}catch(e){}return CONFIG.TSV_URL}
 const GRAVE_CLS='__DEL__',GRAVE_SEP='∥';  // tombstone marker: deleted rows are stored in the sheet with cls='__DEL__' (never removed from the sheet)
 const PALETTE=['#4f69e8','#f29f7c','#4caa70','#2566df','#6178eb','#ff6384','#ffce54','#4bc0c0','#9966ff'];
 const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,delTarget:null,impMode:'new',gap:1,graves:[],foreign:[],cloud:'idle'};
@@ -366,33 +372,74 @@ function collectAppIds(){const ids=new Set();
   S.curriculum.forEach(c=>(c.children||[]).forEach(s=>(s.children||[]).forEach(t=>{if(t.data)w(t.data)})));
   return ids}
 
+// Adopt raw rows (from Apps Script OR the TSV mirror) into the app: merge tombstones,
+// clean stale graves, rebuild the curriculum. Shared by both load paths.
+function adoptRows(all){
+  // 1) Tombstone rows (deleted data) → merge into graves so they survive anywhere
+  const gRows=all.filter(x=>x.cls===GRAVE_CLS);
+  if(gRows.length)addGraves(gRows);
+  // 2) Graves whose ids are live again (restored on another device) → drop those graves
+  const liveIds=new Set(all.filter(x=>x.cls!==GRAVE_CLS).map(x=>x.id));
+  if(liveIds.size&&S.graves.length){const before=S.graves.length;S.graves=S.graves.filter(g=>!liveIds.has(g.id));if(S.graves.length!==before)saveGraves()}
+  // 3) Build curriculum from live rows only
+  const rows=all.filter(x=>x.cls!==GRAVE_CLS);
+  if(!rows.length)return{ok:false,reason:'empty'};
+  const topics=new Map(),order=[];
+  rows.forEach(r=>{const k=r.cls+'|'+r.sub+'|'+r.top;
+    if(!topics.has(k)){topics.set(k,{cls:r.cls,sub:r.sub,top:r.top,nodes:[]});order.push(k)}
+    topics.get(k).nodes.push(r)});
+  const cur=[];const cM=new Map(),sM=new Map();
+  order.forEach(k=>{const t=topics.get(k);
+    let c=cM.get(t.cls);if(!c){c={id:uid(),name:t.cls,type:'class',children:[]};cM.set(t.cls,c);cur.push(c)}
+    const sk=t.cls+'|'+t.sub;let s=sM.get(sk);if(!s){s={id:uid(),name:t.sub,type:'subject',children:[]};sM.set(sk,s);c.children.push(s)}
+    s.children.push({id:uid(),name:t.top,type:'topic',data:treeFromRows(t.nodes)})});
+  S.curriculum=cur;S.nav=[];S.foreign=[];saveForeign(); // sheet content fully adopted; old breadcrumb ids are stale
+  return{ok:true,count:rows.length};
+}
+// Parse the published TSV (Class / Subject / Topic / NodeID / ParentID / Text / Color / Size /
+// Bold / Underline / Italic) into the same row shape the Apps Script returns. Quote-aware.
+function parseTSVRows(txt){
+  txt=String(txt||'');if(!txt)return[];
+  const recs=[];let cur='',inQ=false;
+  for(let i=0;i<txt.length;i++){const ch=txt[i];
+    if(inQ){if(ch==='"'){if(txt[i+1]==='"'){cur+='"';i++}else inQ=false}else cur+=ch}
+    else if(ch==='"')inQ=true;
+    else if(ch==='\n'){recs.push(cur);cur=''}
+    else if(ch!=='\r')cur+=ch;}
+  if(cur)recs.push(cur);
+  if(!recs.length)return[];
+  const head=recs[0].split('\t').map(h=>h.trim().toLowerCase());
+  const ix=n=>head.indexOf(n);
+  const iC=ix('class'),iS=ix('subject'),iT=ix('topic'),iId=ix('nodeid'),iP=ix('parentid'),iT2=ix('text'),iCol=ix('color'),iSz=ix('size'),iB=ix('bold'),iU=ix('underline'),iI=ix('italic');
+  if(iId<0||iT2<0)return[];
+  const out=[];
+  for(let i=1;i<recs.length;i++){const c=recs[i].split('\t');
+    const g=k=>(k>=0&&k<c.length)?String(c[k]).trim():'';
+    const id=g(iId);if(!id)continue;
+    out.push({cls:g(iC),sub:g(iS),top:g(iT),id,parent:g(iP),text:g(iT2),color:g(iCol),size:g(iSz),bold:g(iB),und:g(iU),ita:g(iI)});}
+  return out;
+}
 async function loadLive(){
-  const url=getScriptUrl();if(!url)return{ok:false,reason:'nourl'};
-  try{
-    const r=await fetch(url+'?action=getAll');const j=await r.json();
-    if(!j.success)return{ok:false,reason:'api'};
-    const all=j.rows||[];
-    // 1) Tombstone rows (deleted data) → merge into graves so they survive anywhere
-    const gRows=all.filter(x=>x.cls===GRAVE_CLS);
-    if(gRows.length)addGraves(gRows);
-    // 2) Graves whose ids are live again (restored on another device) → drop those graves
-    const liveIds=new Set(all.filter(x=>x.cls!==GRAVE_CLS).map(x=>x.id));
-    if(liveIds.size&&S.graves.length){const before=S.graves.length;S.graves=S.graves.filter(g=>!liveIds.has(g.id));if(S.graves.length!==before)saveGraves()}
-    // 3) Build curriculum from live rows only
-    const rows=all.filter(x=>x.cls!==GRAVE_CLS);
-    if(!rows.length)return{ok:false,reason:'empty'};
-    const topics=new Map(),order=[];
-    rows.forEach(r=>{const k=r.cls+'|'+r.sub+'|'+r.top;
-      if(!topics.has(k)){topics.set(k,{cls:r.cls,sub:r.sub,top:r.top,nodes:[]});order.push(k)}
-      topics.get(k).nodes.push(r)});
-    const cur=[];const cM=new Map(),sM=new Map();
-    order.forEach(k=>{const t=topics.get(k);
-      let c=cM.get(t.cls);if(!c){c={id:uid(),name:t.cls,type:'class',children:[]};cM.set(t.cls,c);cur.push(c)}
-      const sk=t.cls+'|'+t.sub;let s=sM.get(sk);if(!s){s={id:uid(),name:t.sub,type:'subject',children:[]};sM.set(sk,s);c.children.push(s)}
-      s.children.push({id:uid(),name:t.top,type:'topic',data:treeFromRows(t.nodes)})});
-    S.curriculum=cur;S.nav=[];S.foreign=[];saveForeign(); // sheet content fully adopted; old breadcrumb ids are stale
-    return{ok:true,count:rows.length};
-  }catch(e){return{ok:false,reason:'network'}}
+  const url=getScriptUrl();
+  if(url){
+    try{
+      const r=await fetch(url+'?action=getAll');const j=await r.json();
+      if(j.success)return adoptRows(j.rows||[]);
+    }catch(e){/* Apps Script unreachable → TSV mirror try korbo */}
+  }
+  // FALLBACK: published TSV link (read-only mirror of the same sheet).
+  // Apps Script down / quota over / deploy break — jekono karon ei data load block hobe na.
+  const tsv=getTsvUrl();
+  if(tsv){
+    try{
+      const r2=await fetch(tsv,{cache:'no-store'});
+      if(r2.ok){
+        const rows=parseTSVRows(await r2.text());
+        if(rows.length)return adoptRows(rows);
+      }
+    }catch(e){}
+  }
+  return{ok:false,reason:(url||tsv)?'network':'nourl'};
 }
 function treeFromRows(nodes){
   const byId=new Map(),made=[];
@@ -576,22 +623,38 @@ function restoreAllGraves(){
 }
 
 /* --- Settings: script URL --- */
-function openSettings(){$('setUrl').value=localStorage.getItem(SURL_KEY)||getScriptUrl();openM('setModal')}
+function openSettings(){$('setUrl').value=localStorage.getItem(SURL_KEY)||getScriptUrl();$('setTsv').value=localStorage.getItem(TSV_KEY)||getTsvUrl();openM('setModal')}
 function saveScriptUrl(){
   const u=$('setUrl').value.trim();
   if(u&&!/^https:\/\/script\.google\.com\/macros\/s\//.test(u)){toast('Invalid Apps Script URL','err');return}
-  try{if(u)localStorage.setItem(SURL_KEY,u);else localStorage.removeItem(SURL_KEY)}catch(e){}
-  closeM('setModal');toast(u?'✅ Script URL saved':'Default URL restored','ok');renderTopbar();
+  const t=$('setTsv').value.trim();
+  if(t&&!/^https:\/\/docs\.google\.com\/spreadsheets\/d\/e\/.+\/pub/.test(t)){toast('Invalid Publish link (TSV)','err');return}
+  try{if(u)localStorage.setItem(SURL_KEY,u);else localStorage.removeItem(SURL_KEY);
+      if(t)localStorage.setItem(TSV_KEY,t);else localStorage.removeItem(TSV_KEY)}catch(e){}
+  closeM('setModal');toast('✅ Settings saved','ok');renderTopbar();
 }
 async function testScriptUrl(){
   const u=$('setUrl').value.trim();
-  if(!/^https:\/\/script\.google\.com\/macros\/s\//.test(u)){toast('Invalid Apps Script URL','err');return}
+  const t=$('setTsv').value.trim();
+  if(!u&&!t){toast('Kono URL nei','err');return}
   toast('🔌 Testing connection...');
-  try{
-    const r=await fetch(u+'?action=getAll');const j=await r.json();
-    if(j.success)toast('✅ Connected! '+(j.rows?j.rows.length:0)+' rows pale','ok');
-    else toast('❌ Script replied error — deployment check koro','err');
-  }catch(e){toast('❌ Connection failed: '+e.message,'err')}
+  if(u){
+    if(!/^https:\/\/script\.google\.com\/macros\/s\//.test(u)){toast('Invalid Apps Script URL','err')}
+    else try{
+      const r=await fetch(u+'?action=getAll');const j=await r.json();
+      if(j.success)toast('✅ Apps Script OK — '+(j.rows?j.rows.length:0)+' rows pale','ok');
+      else toast('❌ Script replied error — deployment check koro','err');
+    }catch(e){toast('❌ Apps Script failed: '+e.message,'err')}
+  }
+  if(t){
+    if(!/^https:\/\/docs\.google\.com\/spreadsheets\/d\/e\//.test(t)){toast('Invalid Publish link (TSV)','err')}
+    else try{
+      const r2=await fetch(t,{cache:'no-store'});const txt=await r2.text();
+      const rows=parseTSVRows(txt);
+      if(rows.length)toast('✅ Publish link OK — '+rows.length+' rows pale','ok');
+      else toast('⚠ Publish link e data nei / format wrong','err');
+    }catch(e){toast('⚠ Publish link failed: '+e.message,'err')}
+  }
 }
 
 /* ===== FILE IMPORT PARSERS ===== */
