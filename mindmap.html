@@ -285,7 +285,7 @@ const TSV_KEY='mq_mm_tsvurl';
 function getTsvUrl(){try{const u=localStorage.getItem(TSV_KEY);if(u&&/^https:\/\/docs\.google\.com\/spreadsheets\/d\/e\//.test(u))return u}catch(e){}return CONFIG.TSV_URL}
 const GRAVE_CLS='__DEL__',GRAVE_SEP='∥';  // tombstone marker: deleted rows are stored in the sheet with cls='__DEL__' (never removed from the sheet)
 const PALETTE=['#4f69e8','#f29f7c','#4caa70','#2566df','#6178eb','#ff6384','#ffce54','#4bc0c0','#9966ff'];
-const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,delTarget:null,impMode:'new',gap:1,graves:[],foreign:[],cloud:'idle'};
+const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,delTarget:null,impMode:'new',gap:1,graves:[],foreign:[],cloud:'idle',synced:false};
 let segs=[],boxes=[];
 const $=id=>document.getElementById(id);
 const uid=()=>'n'+Math.random().toString(36).slice(2,9);
@@ -366,7 +366,6 @@ function tombstoneItem(item,path){ // tombstone a deleted curriculum item (class
   addGraves(rows);
 }
 function appTopicKeys(){const ks=new Set();S.curriculum.forEach(c=>(c.children||[]).forEach(s=>(s.children||[]).forEach(t=>ks.add(c.name+'|'+s.name+'|'+t.name))));return ks}
-function graveTopicKeys(){const ks=new Set();S.graves.forEach(g=>{const p=gravePath(g);ks.add(p.cls+'|'+p.sub+'|'+g.top)});return ks}
 function collectAppIds(){const ids=new Set();
   const w=n=>{ids.add(n.id);(n.children||[]).forEach(w)};
   S.curriculum.forEach(c=>(c.children||[]).forEach(s=>(s.children||[]).forEach(t=>{if(t.data)w(t.data)})));
@@ -381,8 +380,9 @@ function adoptRows(all){
   // 2) Graves whose ids are live again (restored on another device) → drop those graves
   const liveIds=new Set(all.filter(x=>x.cls!==GRAVE_CLS).map(x=>x.id));
   if(liveIds.size&&S.graves.length){const before=S.graves.length;S.graves=S.graves.filter(g=>!liveIds.has(g.id));if(S.graves.length!==before)saveGraves()}
-  // 3) Build curriculum from live rows only
-  const rows=all.filter(x=>x.cls!==GRAVE_CLS);
+  // 3) Build curriculum from live rows only — DEDUPED by id (foreign/live overlap would duplicate nodes)
+  const seen=new Set();const rows=[];
+  all.filter(x=>x.cls!==GRAVE_CLS).forEach(r=>{if(r&&r.id&&!seen.has(r.id)){seen.add(r.id);rows.push(r)}});
   if(!rows.length)return{ok:false,reason:'empty'};
   const topics=new Map(),order=[];
   rows.forEach(r=>{const k=r.cls+'|'+r.sub+'|'+r.top;
@@ -394,6 +394,7 @@ function adoptRows(all){
     const sk=t.cls+'|'+t.sub;let s=sM.get(sk);if(!s){s={id:uid(),name:t.sub,type:'subject',children:[]};sM.set(sk,s);c.children.push(s)}
     s.children.push({id:uid(),name:t.top,type:'topic',data:treeFromRows(t.nodes)})});
   S.curriculum=cur;S.nav=[];S.foreign=[];saveForeign(); // sheet content fully adopted; old breadcrumb ids are stale
+  S.synced=true; // this device now knows the sheet state → safe to auto-backup
   return{ok:true,count:rows.length};
 }
 // Parse the published TSV (Class / Subject / Topic / NodeID / ParentID / Text / Color / Size /
@@ -419,12 +420,24 @@ function parseTSVRows(txt){
     out.push({cls:g(iC),sub:g(iS),top:g(iT),id,parent:g(iP),text:g(iT2),color:g(iCol),size:g(iSz),bold:g(iB),und:g(iU),ita:g(iI)});}
   return out;
 }
+// SAFETY NET — self-heal: sheet + TSV dutoi empty hole Trash (graves) theke sob data
+// auto-restore hoy. "Sheet e live data nei (deleted gulo Trash e ache)" ar kokhono
+// dead-end hobe na — data tray-back ashbe ar Sheet e abar backup o hobe.
+function selfHealFromTrash(){
+  buildTrashGroups();
+  if(!TRASH_GROUPS.length)return{ok:false,reason:'empty'};
+  TRASH_GROUPS.slice().forEach(restoreGroupByIdx);
+  S.graves=[];saveGraves();S.nav=[];S.foreign=[];saveForeign();
+  saveLocal();S.synced=true; // device now holds the recovered data → safe to auto-backup
+  scheduleAutoBackup();      // push the restored data back to the Sheet immediately
+  return{ok:true,count:TRASH_GROUPS.length,restored:true};
+}
 async function loadLive(){
   const url=getScriptUrl();
   if(url){
     try{
       const r=await fetch(url+'?action=getAll');const j=await r.json();
-      if(j.success)return adoptRows(j.rows||[]);
+      if(j.success){const res=adoptRows(j.rows||[]);if(res.ok)return res}
     }catch(e){/* Apps Script unreachable → TSV mirror try korbo */}
   }
   // FALLBACK: published TSV link (read-only mirror of the same sheet).
@@ -435,11 +448,12 @@ async function loadLive(){
       const r2=await fetch(tsv,{cache:'no-store'});
       if(r2.ok){
         const rows=parseTSVRows(await r2.text());
-        if(rows.length)return adoptRows(rows);
+        if(rows.length){const res=adoptRows(rows);if(res.ok)return res}
       }
     }catch(e){}
   }
-  return{ok:false,reason:(url||tsv)?'network':'nourl'};
+  // Sheet ar TSV dutoi empty → Trash theke auto-restore (self-heal)
+  return selfHealFromTrash();
 }
 function treeFromRows(nodes){
   const byId=new Map(),made=[];
@@ -488,33 +502,49 @@ async function backupSheet(manual){
     if(manual)toast('Kono data nei — backup skip korlam (Sheet safe)','err');
     setCloud('idle');return;
   }
+  // AUTO-backup only after this device adopted sheet data at least once this session.
+  // (Empty/demo-state device er auto-backup Sheet muche dite pare — tai blocked.)
+  if(!manual&&!S.synced){setCloud('idle');return}
   setCloud('saving');
   try{
-    // Foreign-row protection: fetch current sheet rows and KEEP rows this app doesn't know
-    // (manual sheet edits / pre-fix deletions), so a full rewrite can never destroy them.
+    // Foreign-row protection (MANDATORY): age Sheet er current rows fetch korte hobe.
+    // Pre-check FAIL korle backup ABORT — blind overwrite kokhono na, noile ekta device er
+    // empty state Sheet er sob data muche dito (ei bug-ei ekbar Sheet muchechilo).
     const foreign=S.foreign.slice();
-    try{
-      const gr=await fetch(url+'?action=getAll');const gj=await gr.json();
-      if(gj.success){
-        const sheetRows=(gj.rows||[]).filter(x=>x.cls!==GRAVE_CLS);
-        const appIds=collectAppIds(),aKeys=appTopicKeys(),gKeys=graveTopicKeys();
-        const known=new Set(foreign.map(f=>f.cls+'|'+f.sub+'|'+f.top+'|'+f.id));
-        sheetRows.forEach(r=>{
-          const k=r.cls+'|'+r.sub+'|'+r.top;
-          if(aKeys.has(k)||gKeys.has(k))return; // live topic / intentionally deleted (tombstoned)
-          if(appIds.has(r.id))return;           // rename artifact (same node ids still exist in app)
-          const fk=k+'|'+r.id;
-          if(!known.has(fk)){known.add(fk);foreign.push(r)}
-        });
-      }
-    }catch(e){/* best-effort protection */}
+    const gr=await fetch(url+'?action=getAll');const gj=await gr.json();
+    if(!gj||!gj.success)throw new Error('Sheet pre-check fail (getAll)');
+    const sheetRows=(gj.rows||[]).filter(x=>x.cls!==GRAVE_CLS);
+    const appIds=collectAppIds(),aKeys=appTopicKeys(),gIds=new Set(S.graves.map(g=>g.id));
+    const known=new Set(foreign.map(f=>f.cls+'|'+f.sub+'|'+f.top+'|'+f.id));
+    let unknown=0;
+    sheetRows.forEach(r=>{
+      const k=r.cls+'|'+r.sub+'|'+r.top;
+      if(aKeys.has(k))return;        // app has this topic live → normal rewrite OK
+      if(gIds.has(r.id))return;      // this EXACT node was intentionally deleted (tombstoned)
+      if(appIds.has(r.id))return;    // rename artifact (same node ids exist in app)
+      const fk=k+'|'+r.id;
+      if(!known.has(fk)){known.add(fk);foreign.push(r);unknown++}
+    });
     S.foreign=foreign;saveForeign();
-    const payload=live.concat(S.graves,S.foreign);
+    // SAFETY LOCK: device e kono live map nei, kintu Sheet e emon data ache ja ei device
+    // chene na → backup ABORT (noile Sheet muche jeto). Age Sync korte hobe.
+    if(!live.length&&unknown>0){
+      setCloud('idle');
+      if(manual)toast('⚠ Device e map nei kintu Sheet e ache! Age "Sync" chapo. Backup cancel — Sheet safe.','err');
+      return;
+    }
+    // dedupe by id: live > graves > foreign (live version always wins)
+    const seen=new Set(),payload=[];
+    live.concat(S.graves,foreign).forEach(r=>{if(r&&r.id&&!seen.has(r.id)){seen.add(r.id);payload.push(r)}});
     const r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'backup',rows:payload})});
     const j=await r.json();
     if(j.success){S.dirty=false;setCloud('ok');if(manual)toast('✅ Sheet e save hoyeche ('+j.count+' rows)','ok')}
     else{setCloud('fail');scheduleRetry();if(manual)toast('Save failed: '+(j.error||'unknown'),'err')}
-  }catch(e){setCloud('fail');scheduleRetry();if(manual)toast('Network error: '+e.message,'err')}
+  }catch(e){
+    // pre-check / network fail → Sheet ER OPOR LIKHA NA — retry later, data safe
+    setCloud('fail');scheduleRetry();
+    if(manual)toast('Backup abort: '+e.message+' — kichu muche jay ni, pore retry hobe','err');
+  }
 }
 // Best-effort flush when the tab is closed / hidden
 function flushBackupBeacon(){
@@ -522,8 +552,12 @@ function flushBackupBeacon(){
   if(abTimer){clearTimeout(abTimer);abTimer=null}
   const url=getScriptUrl();if(!url||!S.dirty)return;
   const live=flattenRows();
-  if(!live.length&&!S.graves.length&&!S.foreign.length)return;
-  const body=JSON.stringify({action:'backup',rows:live.concat(S.graves,S.foreign)});
+  // Beacon e protection-fetch dewa jay na — tai SHUDHU synced device (ja Sheet state jane)
+  // ar non-empty live data thakle beacon pathay. Noile tab-close e Sheet muche jete pare.
+  if(!S.synced||!live.length)return;
+  const seen=new Set(),rows=[];
+  live.concat(S.graves,S.foreign).forEach(r=>{if(r&&r.id&&!seen.has(r.id)){seen.add(r.id);rows.push(r)}});
+  const body=JSON.stringify({action:'backup',rows});
   try{
     if(navigator.sendBeacon&&navigator.sendBeacon(url,new Blob([body],{type:'text/plain;charset=utf-8'})))return;
     fetch(url,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body});
@@ -556,9 +590,9 @@ async function loadBtn(){
         S.gap=(typeof t.gap==='number')?t.gap:1;renderTopbar();renderMap();setTimeout(fit,60);
         toast('☑ Open map updated from Sheet','ok')}
       else{goLanding();toast('Ei map Sheet e ar nei (Trash e thakbe)','err')}
-    }else{renderLanding();renderTopbar();toast('☑ Live data loaded from Sheet','ok')}
+    }else{renderLanding();renderTopbar();toast(res.restored?'♻ Trash theke auto-restore holo + Sheet e backup hocche':'☑ Live data loaded from Sheet','ok')}
   }else{
-    const msg={network:'Network error — internet / URL check koro',empty:'Sheet e live data nei (deleted gulo Trash e safe ache)',api:'Script error — Apps Script check koro',nourl:'Settings e Script URL set koro'}[res.reason]||'Load failed';
+    const msg={network:'Network error — internet / URL check koro',empty:'Sheet ar Trash dutoi khali — kichu nei',api:'Script error — Apps Script check koro',nourl:'Settings e Script URL set koro'}[res.reason]||'Load failed';
     toast('❌ '+msg,'err');
   }
 }
@@ -1768,7 +1802,7 @@ window.addEventListener('keydown',e=>{
 (async function(){
   loadGraves();loadForeign();
   const res=await loadLive();
-  if(res.ok){saveLocal();setCloud('idle');toast('☑ Sheet theke data load holo ('+res.count+' rows)','ok')}
+  if(res.ok){saveLocal();setCloud('idle');toast(res.restored?'♻ Sheet khali pawa gechilo — Trash theke '+res.count+' ta map auto-restore holo':'☑ Sheet theke data load holo ('+res.count+' rows)','ok')}
   else if(loadLocal()){
     setCloud('idle');
     toast('📴 Sheet theke anha jayni — local backup dekhacche','err');
