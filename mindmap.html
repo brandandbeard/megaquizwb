@@ -49,7 +49,6 @@ body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx)
 #editor{position:absolute;inset:0;display:none}
 body[data-view="editor"] #editor{display:block}
 body[data-view="editor"] #landing{display:none}
-body[data-view="editor"] footer{display:none}
 #wrap{position:absolute;inset:0;overflow:hidden;cursor:grab;touch-action:none;background:radial-gradient(900px 500px at 50% 40%,rgba(245,179,1,.04),transparent 60%)}
 #wrap:active{cursor:grabbing}
 #world{position:absolute;left:0;top:0;transform-origin:0 0}
@@ -70,13 +69,20 @@ body.unlocked .nd .handle{display:flex}
 .dz-before{box-shadow:0 -4px 0 0 var(--ok)!important}
 .dz-after{box-shadow:0 4px 0 0 var(--ok)!important}
 .dz-child{outline:2.5px solid var(--ac)!important}
-#laybar{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:2px;background:rgba(21,26,37,.92);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:10px;padding:4px;z-index:50}
-#laybar button{border:none;background:transparent;color:var(--tx2);font:600 .78rem Inter;padding:.45rem .8rem;border-radius:7px;cursor:pointer;display:flex;gap:.35rem;align-items:center}
-#laybar button.on{background:var(--ac);color:#111}
-#zoomc{position:absolute;right:12px;bottom:12px;display:flex;flex-direction:column;gap:2px;background:rgba(21,26,37,.92);border:1px solid var(--bd);border-radius:10px;padding:4px;z-index:50}
-#zoomc button{width:34px;height:34px;border:none;border-radius:7px;background:transparent;color:var(--tx2);cursor:pointer}
-#zoomc button:hover{background:var(--sf2);color:#fff}
-#zi{font:600 .65rem 'Space Grotesk';color:var(--tx2);text-align:center;padding:2px}
+/* ===== Unified bottom control dock (one place for ALL viewer controls — nothing scattered) ===== */
+#dock{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:2px;background:rgba(21,26,37,.94);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:12px;padding:4px;z-index:50;max-width:calc(100vw - 130px);overflow-x:auto;scrollbar-width:none}
+#dock::-webkit-scrollbar{display:none}
+#dock button{width:40px;height:40px;flex-shrink:0;border:none;border-radius:9px;background:transparent;color:#c7d0de;cursor:pointer;font-size:.95rem}
+#dock button:hover{background:var(--sf2);color:#fff}
+#dock button:active{background:var(--ac);color:#111}
+#dock .dsep{width:1px;height:22px;background:var(--bd);margin:0 3px;flex-shrink:0}
+#zi{font:600 .68rem 'Space Grotesk';color:var(--tx2);text-align:center;min-width:44px;flex-shrink:0}
+body.fs #dock button{width:32px;height:32px;font-size:.8rem}
+body.fs #zi{font-size:.58rem;min-width:36px}
+/* ===== Tiny permanent branding badge (bottom-left corner, always visible, locked) ===== */
+#brand{position:fixed;left:10px;bottom:10px;z-index:40;display:flex;align-items:center;gap:5px;pointer-events:none;user-select:none;opacity:.62;font:600 10px Inter,sans-serif;color:#5b6577;letter-spacing:.4px;white-space:nowrap}
+#brand img{width:14px;height:14px;border-radius:4px;opacity:.9}
+#brand b{color:#6b7689;font-weight:700}
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:500;padding:1rem}
 .mbg.show{display:flex}
 .modal{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:1.6rem;width:100%;max-width:440px}
@@ -91,14 +97,7 @@ textarea.in{min-height:110px;resize:vertical}
 #toast{position:fixed;bottom:64px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(21,26,37,.96);border:1px solid var(--bd);border-radius:10px;padding:.7rem 1.2rem;font:500 .85rem Inter;display:flex;gap:.5rem;align-items:center;z-index:600;opacity:0;pointer-events:none;transition:.25s;max-width:90vw}
 #toast.show{opacity:1;transform:translateX(-50%)}
 #toast.ok{border-color:var(--ok);color:#7ee2a8}#toast.err{border-color:var(--err);color:#ff9a9e}
-footer{flex-shrink:0;border-top:1px solid var(--bd);background:var(--sf);padding:.4rem .9rem .3rem;font-size:.7rem;color:var(--tx2)}
-.f-row{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;justify-content:center}
-.f-row img{width:16px;height:16px;border-radius:4px;vertical-align:-3px}
-.f-row a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem}
-.f-row a svg{width:12px;height:12px}
-.f-row a:hover{color:#fff}
-.f-bottom{text-align:center;border-top:1px solid var(--bd);margin-top:.3rem;padding-top:.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:760px){.btn span{display:none}.ttl{max-width:24vw}}
+@media(max-width:760px){.btn span{display:none}.ttl{max-width:26vw}#brand span{display:none}}
 
 /* ===== Fullscreen mode (smaller topbar) ===== */
 body.fs #topbar{height:34px;padding:0 .35rem;gap:.2rem}
@@ -114,23 +113,12 @@ body.fs .sep{height:12px}
 body.fs #main{flex:1}
 body.fs #landing{padding:.8rem}
 
-/* ===== Style dropdown menu (replaces bottom #laybar) ===== */
-#styleMenu{position:fixed;top:50px;right:8px;display:none;flex-direction:column;gap:2px;background:rgba(21,26,37,.96);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:10px;padding:5px;z-index:200;min-width:140px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
-#styleMenu.show{display:flex}
-#styleMenu button{border:none;background:transparent;color:var(--tx2);font:600 .82rem Inter;padding:.55rem .9rem;border-radius:7px;cursor:pointer;display:flex;gap:.45rem;align-items:center;white-space:nowrap;text-align:left}
-#styleMenu button:hover{background:var(--sf2);color:#fff}
-#styleMenu button.on{background:var(--ac);color:#111}
-body.fs #styleMenu{top:34px}
-
-/* Download dropdown */
-#dlMenu{position:fixed;top:50px;right:8px;display:none;flex-direction:column;gap:2px;background:rgba(21,26,37,.96);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:10px;padding:5px;z-index:201;min-width:180px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+/* Download dropdown (opens under the topbar Download button) */
+#dlMenu{position:fixed;top:50px;right:8px;display:none;flex-direction:column;gap:2px;background:rgba(21,26,37,.96);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:10px;padding:5px;z-index:201;min-width:190px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
 #dlMenu.show{display:flex}
-#dlMenu button{border:none;background:transparent;color:var(--tx2);font:600 .82rem Inter;padding:.55rem .9rem;border-radius:7px;cursor:pointer;display:flex;gap:.45rem;align-items:center;white-space:nowrap;text-align:left}
+#dlMenu button{border:none;background:transparent;color:var(--tx2);font:600 .82rem Inter;padding:.6rem .95rem;border-radius:7px;cursor:pointer;display:flex;gap:.45rem;align-items:center;white-space:nowrap;text-align:left}
 #dlMenu button:hover{background:var(--sf2);color:#fff}
 body.fs #dlMenu{top:34px}
-
-/* Hide old bottom #laybar - it's replaced by Style button + dropdown */
-#laybar{display:none!important}
 
 /* ===== AI modal: push Generate to far right ===== */
 .mact.ai-end{justify-content:space-between}
@@ -143,8 +131,8 @@ body.fs #dlMenu{top:34px}
 .nav-group .btn.ic:hover{background:var(--sf2);color:var(--ac)}
 body.fs .nav-group .btn.ic{width:22px;height:22px}
 
-/* ===== Left-side nav column (up/down/left/right) — mirrors #zoomc on the right ===== */
-#navc{position:absolute;left:12px;bottom:12px;display:flex;flex-direction:column;gap:2px;background:rgba(21,26,37,.92);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:10px;padding:4px;z-index:50}
+/* ===== Left-side nav column (up/down/left/right) — sits above the branding badge ===== */
+#navc{position:absolute;left:12px;bottom:40px;display:flex;flex-direction:column;gap:2px;background:rgba(21,26,37,.92);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:10px;padding:4px;z-index:50}
 #navc button{width:34px;height:34px;border:none;border-radius:7px;background:transparent;color:var(--tx2);cursor:pointer;font-size:.8rem}
 #navc button:hover{background:var(--sf2);color:#fff}
 #navc button:active{background:var(--ac);color:#111}
@@ -177,15 +165,15 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
   <div id="landing"><div class="crumb" id="crumb"></div><div class="grid" id="grid"></div></div>
   <div id="editor">
     <div id="wrap"><div id="world"><svg id="linesSvg"></svg><div id="nodes"></div></div></div>
-    <div id="laybar">
-      <button data-l="timeline" class="on"><i class="fa-solid fa-timeline"></i> Timeline</button>
-      <button data-l="tree"><i class="fa-solid fa-sitemap"></i> Tree</button>
-    </div>
-    <div id="zoomc">
-      <button onclick="zoomBy(1.25)"><i class="fa-solid fa-plus"></i></button>
+    <!-- Unified bottom control dock: fit / zoom / collapse-all / style — one place, nothing scattered -->
+    <div id="dock">
+      <button title="Fit to screen (puro map ek screen e)" onclick="fit()"><i class="fa-solid fa-crosshairs"></i></button>
+      <button title="Zoom out" onclick="zoomBy(0.8)"><i class="fa-solid fa-minus"></i></button>
       <div id="zi">100%</div>
-      <button onclick="zoomBy(0.8)"><i class="fa-solid fa-minus"></i></button>
-      <button onclick="fit()"><i class="fa-solid fa-crosshairs"></i></button>
+      <button title="Zoom in" onclick="zoomBy(1.25)"><i class="fa-solid fa-plus"></i></button>
+      <div class="dsep"></div>
+      <button id="colBtn" title="Collapse all" onclick="collapseToggle()"><i class="fa-solid fa-folder-closed"></i></button>
+      <button id="styBtn" title="Switch style (Timeline / Tree)" onclick="toggleLayout()"><i class="fa-solid fa-timeline"></i></button>
     </div>
     <!-- Left-side navigation column: up / down / left / right (+ parent up) -->
     <div id="navc">
@@ -199,10 +187,10 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
   </div>
 </div>
 
-<!-- password -->
+<!-- password (editor unlock + admin unlock) -->
 <div class="mbg" id="pwModal"><div class="modal">
-  <h2><i class="fa-solid fa-lock"></i> Password</h2>
-  <input class="in" type="password" id="pwIn" placeholder="Password">
+  <h2><i class="fa-solid fa-lock"></i> <span id="pwTtl">Editor password</span></h2>
+  <input class="in" type="password" id="pwIn" placeholder="Password" autocomplete="off">
   <div class="mact"><button class="btn" onclick="closeM('pwModal')">Cancel</button><button class="btn pri" onclick="pwOk()">OK</button></div>
 </div></div>
 
@@ -229,12 +217,6 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
   <textarea class="in" id="aiPrompt" placeholder="e.g. Timeline of Indian Freedom Struggle 1885-1947 with periods and dated events"></textarea>
   <div class="mact ai-end"><button class="btn" onclick="closeM('aiModal')">Cancel</button><button class="btn pri" onclick="runAI()"><i class="fa-solid fa-bolt"></i> Generate</button></div>
 </div></div>
-
-<!-- style dropdown (replaces bottom #laybar) -->
-<div id="styleMenu">
-  <button data-l="timeline" class="on"><i class="fa-solid fa-timeline"></i> Timeline</button>
-  <button data-l="tree"><i class="fa-solid fa-sitemap"></i> Tree</button>
-</div>
 
 <!-- download dropdown -->
 <div id="dlMenu">
@@ -263,19 +245,12 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 
 <div id="toast"><i class="fa-solid fa-circle-check"></i><span id="tmsg"></span></div>
 
-<footer>
-  <div class="f-row">
-    <span><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""> <b>Mega Quiz</b> — পরীক্ষার প্রস্তুতির জন্য স্মার্ট কুইজ প্ল্যাটফর্ম।</span>
-    <a href="mailto:arifbeldanga@gmail.com"><svg viewBox="0 0 24 24" fill="#EA4335"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>email</a>
-    <a href="https://t.me/beldanga1" target="_blank"><svg viewBox="0 0 24 24" fill="#229ED9"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>@beldanga1</a>
-    <a href="https://instagram.com/arifhussain.x" target="_blank"><svg viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>@arifhussain.x</a>
-  </div>
-  <div class="f-bottom">© 2025 Mega Quiz — By Arif Hussain • 🦥 Thank You • ❤️ All Rights Reserved</div>
-</footer>
+<!-- Tiny permanent branding — bottom-left corner, locked, low-contrast -->
+<div id="brand"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><span><b>Mega Quiz</b><span class="bx"> • Mind Map</span></span></div>
 
 <script>
 /* ===== CONFIG ===== */
-const CONFIG={SCRIPT_URL:'https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/exec',TSV_URL:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQ7k5BSCdOKc27LOEAmSgSe0aBcMNhnK45hSPIlH2RBsh4Jo50Wx3NbGcO-vsEni9eTPIMVuUQHdVT/pub?output=tsv',PASSWORD:'mindmap0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
+const CONFIG={SCRIPT_URL:'https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/exec',TSV_URL:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQ7k5BSCdOKc27LOEAmSgSe0aBcMNhnK45hSPIlH2RBsh4Jo50Wx3NbGcO-vsEni9eTPIMVuUQHdVT/pub?output=tsv',PASSWORD:'mindmap0',ADMIN_PW:'Megaquiz0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
 // Active script URL: user-configurable (Settings modal) — survives Apps Script re-deploy URL changes.
 const SURL_KEY='mq_mm_scripturl';
 function getScriptUrl(){try{const u=localStorage.getItem(SURL_KEY);if(u&&/^https:\/\/script\.google\.com\/macros\/s\//.test(u))return u}catch(e){}return CONFIG.SCRIPT_URL}
@@ -285,7 +260,7 @@ const TSV_KEY='mq_mm_tsvurl';
 function getTsvUrl(){try{const u=localStorage.getItem(TSV_KEY);if(u&&/^https:\/\/docs\.google\.com\/spreadsheets\/d\/e\//.test(u))return u}catch(e){}return CONFIG.TSV_URL}
 const GRAVE_CLS='__DEL__',GRAVE_SEP='∥';  // tombstone marker: deleted rows are stored in the sheet with cls='__DEL__' (never removed from the sheet)
 const PALETTE=['#4f69e8','#f29f7c','#4caa70','#2566df','#6178eb','#ff6384','#ffce54','#4bc0c0','#9966ff'];
-const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,delTarget:null,impMode:'new',gap:1,graves:[],foreign:[],cloud:'idle',synced:false};
+const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,pwMode:'editor',delTarget:null,impMode:'new',gap:1,graves:[],foreign:[],cloud:'idle',synced:false};
 let segs=[],boxes=[];
 const $=id=>document.getElementById(id);
 const uid=()=>'n'+Math.random().toString(36).slice(2,9);
@@ -656,8 +631,11 @@ function restoreAllGraves(){
   toast('♻ Sob deleted data restore holo','ok');scheduleAutoBackup();
 }
 
-/* --- Settings: script URL --- */
-function openSettings(){$('setUrl').value=localStorage.getItem(SURL_KEY)||getScriptUrl();$('setTsv').value=localStorage.getItem(TSV_KEY)||getTsvUrl();openM('setModal')}
+/* --- Settings: script URL (ADMIN ONLY — Google Sheet links are sensitive) --- */
+function openSettings(){
+  //eta alada password chhara kono editor access korte parbe na (Admin password = CONFIG.ADMIN_PW)
+  askPw(()=>{$('setUrl').value=localStorage.getItem(SURL_KEY)||getScriptUrl();$('setTsv').value=localStorage.getItem(TSV_KEY)||getTsvUrl();openM('setModal')},'admin');
+}
 function saveScriptUrl(){
   const u=$('setUrl').value.trim();
   if(u&&!/^https:\/\/script\.google\.com\/macros\/s\//.test(u)){toast('Invalid Apps Script URL','err');return}
@@ -811,19 +789,22 @@ function curSubject(){let it=S.curriculum;for(const id of S.nav){const f=it.find
 function items(){let it=S.curriculum;for(const id of S.nav){const f=it.find(x=>x.id===id);if(f)it=f.children||[]}return it}
 function renderLanding(){
   const it=items();
+  const can=S.unlocked; // editor features (add / rename / delete / import) shudhu unlock korlei dekha jabe
   const names=[{n:'Home',i:-1}];let cur=S.curriculum;
   S.nav.forEach((id,k)=>{if(!cur)return;cur=cur.find(x=>x.id===id);names.push({n:cur?cur.name:'?',i:k});if(cur&&k<S.nav.length-1)cur=cur.children||[]});
   $('crumb').innerHTML=names.map((p,k)=>k===names.length-1?`<span class="cur">${esc(p.n)}</span>`:`<span onclick="navTo(${p.i+1})">${esc(p.n)}</span><span style="cursor:default">/</span>`).join('');
-  const acts=(type,id)=>`<div class="cacts">
+  const acts=(type,id)=>can?`<div class="cacts">
     <button title="Rename" onclick="event.stopPropagation();editName('${type}','${id}')"><i class="fa-solid fa-pen"></i></button>
-    <button class="del" title="Delete" onclick="event.stopPropagation();askDelete('${type}','${id}')"><i class="fa-solid fa-trash"></i></button></div>`;
+    <button class="del" title="Delete" onclick="event.stopPropagation();askDelete('${type}','${id}')"><i class="fa-solid fa-trash"></i></button></div>`:'';
   let html=it.map(x=>`<div class="card" onclick="openItem('${x.id}')">
     <span class="tag">${x.type==='class'?'📚 CLASS':x.type==='subject'?'📖 SUBJECT':'🧠 TOPIC'}</span>
     ${acts(x.type,x.id)}
     <h3>${esc(x.name)}</h3>
     <p>${x.type==='topic'?(x.data?'Mind map ready':'Empty — click to create'):(x.children||[]).length+' items'}</p></div>`).join('');
-  html+=`<div class="card add" onclick="addLevel()"><h3>+ Add ${S.nav.length===0?'Class':S.nav.length===1?'Subject':'Topic'}</h3></div>`;
-  if(S.nav.length===2)html+=`<div class="card add" onclick="openImport('new')"><h3><i class="fa-solid fa-file-import"></i> Import Topic</h3><p>.svg .md .txt .json .opml .mm</p></div>`;
+  if(can){
+    html+=`<div class="card add" onclick="addLevel()"><h3>+ Add ${S.nav.length===0?'Class':S.nav.length===1?'Subject':'Topic'}</h3></div>`;
+    if(S.nav.length===2)html+=`<div class="card add" onclick="openImport('new')"><h3><i class="fa-solid fa-file-import"></i> Import Topic</h3><p>.svg .md .txt .json .opml .mm</p></div>`;
+  }
   $('grid').innerHTML=html;
 }
 function addLevel(){
@@ -852,107 +833,92 @@ function openItem(id){
   const x=items().find(i=>i.id===id);if(!x)return;
   if(x.type!=='topic'){S.nav.push(id);pushHist();renderLanding();renderTopbar();return}
   if(!x.data)x.data=blankMap();
-  S.topic=x;S.map=x.data;S.selId=null;S.unlocked=false;document.body.classList.remove('unlocked');
+  S.topic=x;S.map=x.data;S.selId=null; // NOTE: S.unlocked persists — editor stays unlocked across maps until Lock pressed
   // Load per-topic gap multiplier (defaults to 1.0 if not set)
   S.gap=(typeof x.gap==='number')?x.gap:1;
   S.history=[clone(S.map)];S.hi=0;S.view='editor';document.body.dataset.view='editor';
+  if(S.unlocked)document.body.classList.add('unlocked');else document.body.classList.remove('unlocked');
   pushHist();renderTopbar();renderMap();setTimeout(fit,60);
 }
-function goLanding(){S.view='landing';document.body.dataset.view='landing';S.unlocked=false;document.body.classList.remove('unlocked');pushHist();renderLanding();renderTopbar()}
+function goLanding(){S.view='landing';document.body.dataset.view='landing';S.selId=null; // unlock persists (editor features stay visible on landing)
+  pushHist();renderLanding();renderTopbar()}
 
-/* ===== TOPBAR / LOCK ===== */
-// (nav buttons moved to a fixed left-side column #navc — see HTML)
+/* ===== TOPBAR / LOCK =====
+   Permission model:
+   - Viewer (no password): dekha + zoom + fit + collapse/expand + style + download + fullscreen + Sync
+   - Editor  (password "mindmap0"): + Import / Backup / Trash-Restore / Add-Rename-Delete / node edit / AI
+   - Admin   (password "Megaquiz0"): Google Sheet Settings (gear) — alada password, sob editor pay na */
 function renderTopbar(){
   const ed=S.view==='editor';
   let h=`<a class="logo" href="${CONFIG.MINDMAP_URL}" target="_top" rel="noopener"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><b>MEGA&nbsp;<span>QUIZ</span></b></a>`;
-  if(!ed){
+  if(!ed){ // ---- LANDING ----
     if(S.nav.length>0)h+=`<button class="btn" onclick="navBack()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>`;
-    h+=`<button class="btn" onclick="openImport('new')" title="Import file"><i class="fa-solid fa-file-import"></i><span> Import</span></button>
-    <button class="btn" onclick="loadBtn()" title="Sheet theke notun data load (reload = latest)"><i class="fa-solid fa-rotate"></i><span> Sync</span></button>
-    <button class="btn" onclick="backupSheet(true)" title="Sheet e full backup"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>
-    <span class="cloud" id="cloudPill"><i class="fa-solid fa-cloud"></i><span>Cloud backup</span></span>
-    <span class="spacer"></span>
-    <button class="btn ic" onclick="openTrash()" title="Trash — deleted data restore koro (data kokhono hariye jay na)"><i class="fa-solid fa-trash-can"></i></button>
-    <button class="btn ic" onclick="openSettings()" title="Google Sheet Script URL settings"><i class="fa-solid fa-gear"></i></button>`;
-  }else if(!S.unlocked){
-    // VIEW MODE - has style, gap, fullscreen, collapse, expand, import, back, edit, download
+    h+=`<button class="btn" onclick="loadBtn()" title="Sheet theke notun data load (reload = latest)"><i class="fa-solid fa-rotate"></i><span> Sync</span></button>`;
+    if(S.unlocked){ // editor-only controls
+      h+=`<button class="btn" onclick="openImport('new')" title="Import file theke notun topic"><i class="fa-solid fa-file-import"></i><span> Import</span></button>
+      <button class="btn" onclick="backupSheet(true)" title="Sheet e full backup"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>
+      <span class="cloud" id="cloudPill"><i class="fa-solid fa-cloud"></i><span>Cloud backup</span></span>`;
+    }
+    h+=`<span class="spacer"></span>`;
+    if(S.unlocked){ // editor-only: trash restore + admin settings (gear)
+      h+=`<button class="btn ic" onclick="openTrash()" title="Trash — deleted data restore koro (data kokhono hariye jay na)"><i class="fa-solid fa-trash-can"></i></button>
+      <button class="btn ic" onclick="openSettings()" title="Google Sheet Settings (admin only — alada password lage)"><i class="fa-solid fa-gear"></i></button>`;
+    }
+    h+=`<button class="btn ic" onclick="fscreen()" title="Fullscreen (TV er jonno)"><i class="fa-solid fa-expand"></i></button>
+    ${S.unlocked
+      ?`<button class="btn pri" onclick="lock()" title="Editor mode off koro"><i class="fa-solid fa-lock-open"></i><span> Lock</span></button>`
+      :`<button class="btn pri" onclick="askPw(unlockNow)" title="Edit korte chaile password din (editor)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>`}`;
+  }else if(!S.unlocked){ // ---- EDITOR · VIEW MODE (viewer-friendly: kom button, sob kaj) ----
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span><span class="spacer"></span>
-    <div class="sep"></div>
-    <button class="btn ic" title="Layout style" onclick="toggleStyleMenu(event)"><i class="fa-solid fa-palette"></i></button>
-    <button class="btn ic" title="Smaller gap between nodes" onclick="gapDelta(-0.1)"><i class="fa-solid fa-down-left-and-up-right-to-center"></i></button>
-    <span id="gapz" title="Current gap multiplier (click + / − to adjust)">${(S.gap||1).toFixed(1)}x</span>
-    <button class="btn ic" title="Larger gap between nodes" onclick="gapDelta(0.1)"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
-    <button class="btn ic" title="Collapse all" onclick="collapseAll(true)"><i class="fa-solid fa-folder-closed"></i></button>
-    <button class="btn ic" title="Expand all" onclick="collapseAll(false)"><i class="fa-solid fa-folder-open"></i></button>
-    <button class="btn ic" title="Fullscreen" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
-    <button class="btn ic" title="Fit to screen" onclick="fit()"><i class="fa-solid fa-crosshairs"></i></button>
-    <div class="sep"></div>
     <button class="btn ic" title="Download PNG / PDF / Vector HTML" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>
-    <button class="btn" onclick="openImport('current')" title="Import file"><i class="fa-solid fa-file-import"></i><span> Import</span></button>
-    <button class="btn" onclick="goLanding()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>
-    <button class="btn pri" onclick="askPw(unlockNow)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>`;
-  }else{
-    // EDIT MODE - full editing controls
+    <button class="btn ic" title="Fullscreen (TV er jonno)" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
+    <button class="btn pri" onclick="askPw(unlockNow)" title="Edit korte chaile password din (editor)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>
+    <button class="btn" onclick="goLanding()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>`;
+  }else{ // ---- EDITOR · EDIT MODE (full controls, password unlock er por) ----
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span>
-    <button class="btn" onclick="goLanding()"><i class="fa-solid fa-arrow-left"></i></button>
-    <button class="btn" onclick="undo()"><i class="fa-solid fa-rotate-left"></i></button>
-    <button class="btn" onclick="redo()"><i class="fa-solid fa-rotate-right"></i></button>
+    <button class="btn" onclick="goLanding()" title="Back"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="btn" onclick="undo()" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="btn" onclick="redo()" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
     <div class="sep"></div>
-    <button class="btn" onclick="addChild()"><i class="fa-solid fa-plus"></i><span> Child</span></button>
-    <button class="btn" onclick="addSibling()"><i class="fa-solid fa-grip-lines"></i><span> Sibling</span></button>
-    <button class="btn" onclick="delSel()"><i class="fa-solid fa-trash"></i><span> Delete</span></button>
+    <button class="btn" onclick="addChild()" title="Notun child node"><i class="fa-solid fa-plus"></i><span> Child</span></button>
+    <button class="btn" onclick="addSibling()" title="Notun sibling node"><i class="fa-solid fa-grip-lines"></i><span> Sibling</span></button>
+    <button class="btn" onclick="delSel()" title="Node delete (Trash e safe thakbe)"><i class="fa-solid fa-trash"></i><span> Delete</span></button>
     <div class="sep"></div>
-    <button class="btn ic" onclick="fsDelta(-1)">A−</button><span id="fsz">14</span><button class="btn ic" onclick="fsDelta(1)">A+</button>
-    <button class="btn ic" id="bB" onclick="fmt('bold')"><i class="fa-solid fa-bold"></i></button>
-    <button class="btn ic" id="bI" onclick="fmt('italic')"><i class="fa-solid fa-italic"></i></button>
-    <button class="btn ic" id="bU" onclick="fmt('underline')"><i class="fa-solid fa-underline"></i></button>
+    <button class="btn ic" onclick="fsDelta(-1)" title="Text choto">A−</button><span id="fsz">14</span><button class="btn ic" onclick="fsDelta(1)" title="Text boro">A+</button>
+    <button class="btn ic" id="bB" onclick="fmt('bold')" title="Bold"><i class="fa-solid fa-bold"></i></button>
+    <button class="btn ic" id="bI" onclick="fmt('italic')" title="Italic"><i class="fa-solid fa-italic"></i></button>
+    <button class="btn ic" id="bU" onclick="fmt('underline')" title="Underline"><i class="fa-solid fa-underline"></i></button>
     <div class="sep"></div>
     <button class="btn ic" title="Box narrower" onclick="wDelta(-20)"><i class="fa-solid fa-arrows-left-right" style="transform:scaleX(.7)"></i></button>
     <button class="btn ic" title="Box wider" onclick="wDelta(20)"><i class="fa-solid fa-arrows-left-right"></i></button>
     <div class="sep"></div>
     <button class="btn ic" title="Smaller gap between nodes" onclick="gapDelta(-0.1)"><i class="fa-solid fa-down-left-and-up-right-to-center"></i></button>
-    <span id="gapz" title="Current gap multiplier (click + / − to adjust)">1.0x</span>
+    <span id="gapz" title="Current gap multiplier">${(S.gap||1).toFixed(1)}x</span>
     <button class="btn ic" title="Larger gap between nodes" onclick="gapDelta(0.1)"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
     <div class="sep"></div>
     ${PALETTE.map(c=>`<span class="dot" style="background:${c}" onclick="setColor('${c}')"></span>`).join('')}
     <span class="dot reset" onclick="setColor(null)"></span>
     <div class="sep"></div>
-    <button class="btn ic" title="Layout style" onclick="toggleStyleMenu(event)"><i class="fa-solid fa-palette"></i></button>
-    <button class="btn ic" title="Collapse all" onclick="collapseAll(true)"><i class="fa-solid fa-folder-closed"></i></button>
-    <button class="btn ic" title="Expand all" onclick="collapseAll(false)"><i class="fa-solid fa-folder-open"></i></button>
-    <button class="btn ic" title="AI" onclick="openM('aiModal')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+    <button class="btn ic" title="AI mind map banao" onclick="openM('aiModal')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
     <button class="btn ic" title="Import file" onclick="openImport('current')"><i class="fa-solid fa-file-import"></i></button>
     <button class="btn ic" title="Sync from sheet" onclick="loadBtn()"><i class="fa-solid fa-rotate"></i></button>
     <button class="btn pri" onclick="backupSheet(true)" title="Sheet e full backup"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>
-    <button class="btn ic" title="Download PNG / PDF / Vector SVG" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>
-    <button class="btn ic" title="Fullscreen" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
     <span class="cloud" id="cloudPill"><i class="fa-solid fa-cloud"></i><span>Cloud backup</span></span>
-    <button class="btn ic on" title="Lock" onclick="lock()"><i class="fa-solid fa-lock-open"></i></button>`;
+    <button class="btn ic" title="Download PNG / PDF / Vector HTML" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>
+    <button class="btn ic" title="Fullscreen" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
+    <button class="btn ic on" title="Lock (editor mode off)" onclick="lock()"><i class="fa-solid fa-lock-open"></i></button>`;
   }
   $('topbar').innerHTML=h;setCloud(S.cloud);
-}
-function toggleStyleMenu(e){
-  if(e){e.stopPropagation();}
-  const m=$('styleMenu');
-  if(!m)return;
-  m.classList.toggle('show');
-  // close download menu when opening style menu
-  $('dlMenu') && $('dlMenu').classList.remove('show');
 }
 function toggleDownloadMenu(e){
   if(e){e.stopPropagation();}
   const m=$('dlMenu');
   if(!m)return;
   m.classList.toggle('show');
-  // close style menu when opening download menu
-  $('styleMenu') && $('styleMenu').classList.remove('show');
 }
 // close menus when clicking outside
 document.addEventListener('click',e=>{
-  const sm=$('styleMenu');const dm=$('dlMenu');
-  if(sm&&sm.classList.contains('show')&&!sm.contains(e.target)&&!e.target.closest('[onclick*="toggleStyleMenu"]')){
-    sm.classList.remove('show');
-  }
+  const dm=$('dlMenu');
   if(dm&&dm.classList.contains('show')&&!dm.contains(e.target)&&!e.target.closest('[onclick*="toggleDownloadMenu"]')){
     dm.classList.remove('show');
   }
@@ -967,10 +933,11 @@ document.querySelectorAll('#dlMenu button').forEach(b=>b.onclick=()=>{
 });
 function setLayout(l){
   S.layout=l;
-  document.querySelectorAll('#styleMenu button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+  const sb=$('styBtn');if(sb)sb.innerHTML=`<i class="fa-solid fa-${l==='timeline'?'timeline':'sitemap'}"></i>`;
   if(S.view==='editor'){renderMap();setTimeout(fit,40);}
 }
-document.querySelectorAll('#styleMenu button').forEach(b=>b.onclick=()=>{setLayout(b.dataset.l);$('styleMenu').classList.remove('show')});
+// One-tap style toggle: Timeline ⇄ Tree (10-year-old friendly — no dropdown needed)
+function toggleLayout(){setLayout(S.layout==='timeline'?'tree':'timeline');toast(S.layout==='timeline'?'⏱ Timeline style':'🌳 Tree style','ok')}
 
 /* ===== NAVIGATION (left/right/up/down) =====
    Timeline layout: even-index branches grow DOWN, odd-index grow UP (mirror sections).
@@ -1056,12 +1023,23 @@ function centerOn(mode){
   if(mode==='both'){S.px=w/2-n._x*S.zoom;S.py=h/2-n._y*S.zoom;}
   applyT();
 }
-function askPw(cb){S.pwThen=cb;$('pwIn').value='';openM('pwModal');setTimeout(()=>$('pwIn').focus(),80)}
-function pwOk(){if($('pwIn').value===CONFIG.PASSWORD){const f=S.pwThen;S.pwThen=null;closeM('pwModal');if(f)f()}else toast('Wrong password','err')}
+function askPw(cb,mode){S.pwThen=cb;S.pwMode=mode||'editor';
+  const admin=S.pwMode==='admin';
+  $('pwTtl').textContent=admin?'Admin password (Sheet Settings)':'Editor password';
+  $('pwIn').placeholder=admin?'Admin password':'Editor password';
+  $('pwIn').value='';openM('pwModal');setTimeout(()=>$('pwIn').focus(),80)}
+function pwOk(){
+  const want=S.pwMode==='admin'?CONFIG.ADMIN_PW:CONFIG.PASSWORD;
+  if($('pwIn').value===want){const f=S.pwThen;S.pwThen=null;closeM('pwModal');if(f)f()}
+  else toast(S.pwMode==='admin'?'Wrong admin password':'Wrong password','err')}
 $('pwIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();pwOk()}});
 $('delIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();delOk()}});
-function unlockNow(){S.unlocked=true;document.body.classList.add('unlocked');renderTopbar();renderMap();toast('🔓 Edit mode on','ok')}
-function lock(){S.unlocked=false;document.body.classList.remove('unlocked');renderTopbar();renderMap();toast('🔒 Locked','ok')}
+function unlockNow(){S.unlocked=true;document.body.classList.add('unlocked');renderTopbar();
+  if(S.view==='editor'){renderMap()}else{renderLanding()}
+  toast('🔓 Editor mode on — sob editor feature dekha jacche','ok')}
+function lock(){S.unlocked=false;document.body.classList.remove('unlocked');renderTopbar();
+  if(S.view==='editor'){renderMap()}else{renderLanding()}
+  toast('🔒 Locked — ekhon shudhu dekha jabe','ok')}
 function fscreen(){
   if(!document.fullscreenElement){
     const el=document.documentElement;
@@ -1110,12 +1088,13 @@ window.addEventListener('popstate',e=>{
     const find=(arr)=>{for(const it of arr){if(it.id===st.tid&&it.type==='topic')return it;if(it.children){const f=find(it.children);if(f)return f}}return null};
     const t=find(S.curriculum);
     if(t){
-      S.topic=t;S.map=t.data||blankMap();S.selId=null;S.unlocked=false;document.body.classList.remove('unlocked');
+      S.topic=t;S.map=t.data||blankMap();S.selId=null; // unlock state persists
       S.history=[clone(S.map)];S.hi=0;S.view='editor';document.body.dataset.view='editor';
+      if(S.unlocked)document.body.classList.add('unlocked');else document.body.classList.remove('unlocked');
       renderTopbar();renderMap();setTimeout(fit,60);return;
     }
   }
-  S.view='landing';S.unlocked=false;document.body.classList.remove('unlocked');document.body.dataset.view='landing';
+  S.view='landing';document.body.dataset.view='landing'; // unlock state persists
   renderLanding();renderTopbar();
 });
 
@@ -1252,6 +1231,11 @@ function renderMap(){
     if(hd)hd.addEventListener('pointerdown',e=>startDrag(e,n.id));
     wrap.appendChild(el);
   });
+  // keep dock toggle icons in sync with map state
+  const cb=$('colBtn');if(cb&&S.map){const anyOpen=anyOpenBranch();
+    cb.innerHTML=`<i class="fa-solid fa-${anyOpen?'folder-closed':'folder-open'}"></i>`;
+    cb.title=anyOpen?'Collapse all (sob band koro)':'Expand all (sob khulo)';}
+  const sb=$('styBtn');if(sb)sb.innerHTML=`<i class="fa-solid fa-${S.layout==='timeline'?'timeline':'sitemap'}"></i>`;
   applyT();syncBtns();
 }
 function lum(hex){const n=parseInt(hex.slice(1),16);return(0.299*(n>>16)+0.587*((n>>8)&255)+0.114*(n&255))/255}
@@ -1265,7 +1249,7 @@ function zoomBy(f){const w=$('wrap').clientWidth/2,h=$('wrap').clientHeight/2;co
 function fit(){if(!boxes.length)return;const w=$('wrap').clientWidth,h=$('wrap').clientHeight;
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
   boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2)});
-  S.zoom=Math.max(.15,Math.min(1.6,Math.min(w/(x2-x1+160),h/(y2-y1+160))));
+  S.zoom=Math.max(.15,Math.min(2.4,Math.min(w/(x2-x1+160),h/(y2-y1+160))));
   S.px=w/2-(x1+x2)/2*S.zoom;S.py=h/2-(y1+y2)/2*S.zoom;applyT()}
 
 /* ===== PAN/ZOOM ===== */
@@ -1364,6 +1348,15 @@ function gapDelta(d){
 function setColor(c){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};
   if(c)n.style.color=c;else delete n.style.color;mutate()}
 function collapseAll(v){(function w(n){if((n.children||[]).length)n.collapsed=v;(n.children||[]).forEach(w)})(S.map);S.map.collapsed=false;mutate()}
+// Single-button Collapse ⇄ Expand ALL (dock) — icon shows what happens on tap
+// NOTE: root kokhono collapse hoy na (S.map.collapsed always false) — tai check ROOT ER CHILDREN theke
+function hasOpenBranch(n){return !n.collapsed&&((n.children||[]).length>0)}
+function anyOpenBranch(){return (S.map.children||[]).some(hasOpenBranch)}
+function collapseToggle(){
+  const anyOpen=anyOpenBranch();
+  collapseAll(anyOpen); // jodi kono branch khola thake → sob band; sob band thakle → sob khul
+  toast(anyOpen?'📁 Sob collapse holo':'🔎 Sob expand holo','ok');
+}
 function editSoon(id){setTimeout(()=>{const el=document.querySelector(`.nd[data-id="${id}"] .txt`);if(el)startEdit(el,findN(id))},60)}
 function startEdit(el,n){const old=n.text;el.contentEditable='true';el.focus();document.execCommand('selectAll',false,null);
   const done=()=>{el.contentEditable='false';const t=el.innerText.replace(/\s*\n\s*/g,' ').trim();
@@ -1551,7 +1544,7 @@ function getIconDataURL(){
 function _brandHeader(x1,y1,w,iconData){
   let s='';
   if(iconData){
-    s+=`<image x="${x1+26}" y="${y1+20}" width="52" height="52" preserveAspectRatio="xMidYMid slice" href="${iconData}"/>`;
+    s+=`<image x="${x1+26}" y="${y1+20}" width="52" height="52" preserveAspectRatio="xMidYMid slice" xlink:href="${iconData}" href="${iconData}"/>`;
   }else{
     const cx=x1+52,cy=y1+46;
     s+=`<rect x="${x1+26}" y="${y1+20}" width="52" height="52" rx="13" fill="#10131c" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>`;
@@ -1619,7 +1612,7 @@ function buildSVGString(x1,y1,w,h,iconData){
   svg+=`</svg>`;
   return svg;
 }
-// Rasterize our SVG string to a PNG data URL at given pixel scale.
+// Rasterize our SVG string to a PNG canvas at given pixel scale.
 // This guarantees the lines + boxes + text all render (unlike html2canvas which misses SVG).
 function _rasterizeSVG(svgString,w,h,pixelRatio){
   return new Promise((res,rej)=>{
@@ -1639,29 +1632,78 @@ function _rasterizeSVG(svgString,w,h,pixelRatio){
         res(canvas);
       }catch(e){URL.revokeObjectURL(url);rej(e);}
     };
-    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('SVG rasterize failed (CORS/taint)'));};
+    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('SVG rasterize failed'));};
     img.src=url;
   });
 }
-// PNG export - rasterize our SVG directly (NOT html2canvas which misses the SVG lines).
-// Uses high pixelRatio (3) so the PNG stays sharp on TV / large screens.
+
+/* ===== EXPORT SAFETY ENGINE (kono device e export jate kokhono na fete) =====
+   - Mobile browsers (iOS Safari) e canvas er limit ache (~16.7M pixels, side max 4096-8192).
+   - 60" 4K TV ba boro map e 3x/4x raster canvas limit charie jay → toBlob null dey / crash.
+   - _safeRatio: device-safe ratio calc kore; retry ladder ratio komiye abar try kore.
+   - Download: blob → dataURL fallback; anchor body-te append kore click (Firefox compatible). */
+function _safeRatio(w,h,want){
+  const MAX_SIDE=8192,MAX_AREA=16.7e6; // iOS Safari canvas memory limit ~16.7M px
+  const r=Math.min(want,MAX_SIDE/Math.max(1,w),MAX_SIDE/Math.max(1,h),Math.sqrt(MAX_AREA/Math.max(1,w*h)));
+  return Math.max(.4,r);
+}
+function _testBlob(canvas){return new Promise(res=>{try{canvas.toBlob(b=>res(!!b&&b.size>0),'image/png')}catch(e){res(false)}})}
+// Try rasterizing at a ladder of pixel ratios until the canvas + blob succeed.
+async function _rasterizeSafe(svg,w,h,want){
+  const first=_safeRatio(w,h,want);
+  const ladder=[first,first*.66,first*.45,1,.6].map(r=>Math.max(.4,r));
+  const seen=new Set();
+  for(const r of ladder){
+    const key=Math.round(r*1000);if(seen.has(key))continue;seen.add(key);
+    try{
+      const canvas=await _rasterizeSVG(svg,w,h,r);
+      if(await _testBlob(canvas))return{canvas,ratio:r};
+    }catch(e){/* next ratio try korbo */}
+  }
+  throw new Error('device canvas limit — map khub boro, choto section alada export koro');
+}
+function _downloadBlob(blob,name,okMsg){
+  try{
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=name;a.rel='noopener';a.style.display='none';
+    document.body.appendChild(a);a.click();
+    setTimeout(()=>{try{a.remove();URL.revokeObjectURL(url)}catch(e){}},6000);
+    toast(okMsg,'ok');
+  }catch(e){toast('Download failed: '+e.message,'err')}
+}
+function _downloadCanvas(canvas,name,mime,label){
+  const ok=label+' export holo ✅';
+  try{
+    if(canvas.toBlob){
+      canvas.toBlob(blob=>{
+        if(blob&&blob.size>0)_downloadBlob(blob,name,ok);
+        else{try{_downloadBlobURL(canvas.toDataURL(mime),name,ok)}catch(e){toast(label+' failed: device limit','err')}}
+      },mime);
+    }else{
+      const du=canvas.toDataURL(mime);_downloadBlobURL(du,name,ok);
+    }
+  }catch(e){
+    try{const du=canvas.toDataURL(mime);_downloadBlobURL(du,name,ok)}
+    catch(e2){toast(label+' failed: '+e2.message,'err')}
+  }
+}
+// dataURL/blob-URL download (toBlob fail hole ei fallback)
+function _downloadBlobURL(href,name,okMsg){
+  const a=document.createElement('a');a.href=href;a.download=name;a.rel='noopener';a.style.display='none';
+  document.body.appendChild(a);a.click();setTimeout(()=>{try{a.remove()}catch(e){}},4000);
+  toast(okMsg,'ok');
+}
+// PNG export — device-safe ratio + retry ladder, so mobile / 4K TV teo kokhono fete na.
 async function exportPNG(){
   _expandAllForExport();
-  toast('Generating PNG (high-res)...');
+  toast('📸 PNG banacche (high-res)...');
   try{
     const icon=await getIconDataURL();
     const b=_computeBounds();
     const svg=buildSVGString(b.x1,b.y1,b.w,b.h,icon);
-    const canvas=await _rasterizeSVG(svg,b.w,b.h,3);
-    canvas.toBlob(blob=>{
-      if(!blob){toast('PNG failed: blob creation failed','err');return;}
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement('a');
-      a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.png';
-      a.href=url;a.click();
-      setTimeout(()=>URL.revokeObjectURL(url),2000);
-      toast('PNG exported','ok');
-    },'image/png');
+    const {canvas}=await _rasterizeSafe(svg,b.w,b.h,3); // wants 3x, auto-adjusts to device limit
+    _downloadCanvas(canvas,(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.png','image/png','PNG');
   }catch(e){toast('PNG failed: '+e.message,'err');}
 }
 // Vector export as standalone HTML file (mobile doesn't open .svg natively).
@@ -1726,64 +1768,55 @@ setTimeout(fit,200);
 </body>
 </html>`;
     const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.download=safeName+'_mindmap.html';
-    a.href=url;a.click();
-    setTimeout(()=>URL.revokeObjectURL(url),2000);
-    toast('Vector HTML exported','ok');
+    _downloadBlob(blob,safeName+'_mindmap.html','Vector HTML export holo ✅ (mobile/TV sob jaygay cholbe)');
   }catch(e){toast('Vector failed: '+e.message,'err');}
 }
-// PDF export - rasterize SVG at very high resolution (4x) and embed as PNG into PDF.
-// At 4x the text/lines are very crisp; PDF stays zoomable without obvious pixelation on TV.
+// PDF export — pdf-lib (jsDelivr first, unpkg fallback — ekta CDN down holei kaj korbe),
+// device-safe raster ratio (mobile/TV te canvas limit charie jay na), JPEG embed (choto file,
+// boro map o embed hote pare). Kokhono fete na.
 function exportPDF(){
   _expandAllForExport();
-  toast('Generating PDF (high-res)...');
-  Promise.resolve()
-    .then(()=>{
-      if(window.PDFLib && window.PDFLib.PDFDocument)return;
-      return _loadScript('https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js');
-    })
-    .then(()=>{
-      if(!window.PDFLib || !window.PDFLib.PDFDocument){throw new Error('pdf-lib not loaded');}
-      return buildPDFFromSVG();
-    })
-    .catch(e=>toast('PDF failed: '+e.message,'err'));
+  toast('📄 PDF banacche (high-res)...');
+  const CDNS=['https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js','https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js'];
+  (async()=>{
+    try{
+      if(!(window.PDFLib&&window.PDFLib.PDFDocument)){
+        let loaded=false;
+        for(const c of CDNS){
+          try{await _loadScript(c);if(window.PDFLib&&window.PDFLib.PDFDocument){loaded=true;break}}catch(e){/* next CDN */}
+        }
+        if(!loaded)throw new Error('pdf-lib load hoy nai — internet check koro');
+      }
+      await buildPDFFromSVG();
+    }catch(e){toast('PDF failed: '+e.message,'err')}
+  })();
 }
 async function buildPDFFromSVG(){
   const icon=await getIconDataURL();
   const b=_computeBounds();
   const svg=buildSVGString(b.x1,b.y1,b.w,b.h,icon);
-  // Rasterize at 4x for crisp text
-  const canvas=await _rasterizeSVG(svg,b.w,b.h,4);
-  const dataUrl=canvas.toDataURL('image/png');
+  // Device-safe raster (wants 3x, auto-lowers on mobile limits)
+  const {canvas}=await _rasterizeSafe(svg,b.w,b.h,3);
+  // JPEG first (small + embeds reliably); PNG fallback
+  let dataUrl=null,embed=null;
+  try{dataUrl=canvas.toDataURL('image/jpeg',.95);embed='jpg'}catch(e){}
+  if(!dataUrl){try{dataUrl=canvas.toDataURL('image/png');embed='png'}catch(e){}}
+  if(!dataUrl)throw new Error('image encode fail — device canvas limit');
   const {PDFDocument,rgb}=window.PDFLib;
   const doc=await PDFDocument.create();
-  // Choose page size based on aspect ratio (use 200 DPI scaled)
-  const aspect=b.w/b.h;
-  const isLandscape=aspect>1.4;
-  const baseSize=1600;
-  const pdfW=isLandscape?baseSize:Math.round(baseSize/Math.max(0.5,aspect));
-  const pdfH=isLandscape?Math.round(baseSize/aspect):baseSize;
-  const page=doc.addPage([pdfW,pdfH]);
-  // Fill background dark to match theme
-  page.drawRectangle({x:0,y:0,width:pdfW,height:pdfH,color:rgb(0.043,0.06,0.098)});
-  const pngImg=await doc.embedPng(dataUrl);
-  page.drawImage(pngImg,{x:0,y:0,width:pdfW,height:pdfH});
+  // Page size = exact map aspect (1px = 1pt) — TV/print e puro map frame-fill dekhabe
+  const page=doc.addPage([Math.round(b.w),Math.round(b.h)]);
+  page.drawRectangle({x:0,y:0,width:page.getWidth(),height:page.getHeight(),color:rgb(0.043,0.06,0.098)});
+  const img=embed==='jpg'?await doc.embedJpg(dataUrl):await doc.embedPng(dataUrl);
+  page.drawImage(img,{x:0,y:0,width:page.getWidth(),height:page.getHeight()});
   // Topic name + branding are already inside the embedded image (brand header/footer)
   const bytes=await doc.save();
-  const blob=new Blob([bytes],{type:'application/pdf'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.download=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.pdf';
-  a.href=url;a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),2000);
-  toast('PDF exported (4x high-res)','ok');
+  _downloadBlob(new Blob([bytes],{type:'application/pdf'}),
+    (S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.pdf',
+    'PDF export holo ✅ (high-res, 4K TV-ready)');
 }
 
 /* ===== LAYOUT SWITCH / KEYS ===== */
-document.querySelectorAll('#laybar button').forEach(b=>b.onclick=()=>{
-  S.layout=b.dataset.l;document.querySelectorAll('#laybar button').forEach(x=>x.classList.toggle('on',x===b));renderMap();setTimeout(fit,40)});
 window.addEventListener('keydown',e=>{
   if(S.view!=='editor'||e.target.isContentEditable||e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
   if(!S.unlocked)return;
