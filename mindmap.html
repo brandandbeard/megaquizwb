@@ -69,16 +69,16 @@ body.unlocked .nd .handle{display:flex}
 .dz-before{box-shadow:0 -4px 0 0 var(--ok)!important}
 .dz-after{box-shadow:0 4px 0 0 var(--ok)!important}
 .dz-child{outline:2.5px solid var(--ac)!important}
-/* ===== Unified bottom control dock (one place for ALL viewer controls — nothing scattered) ===== */
-#dock{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:2px;background:rgba(21,26,37,.94);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:12px;padding:4px;z-index:50;max-width:calc(100vw - 130px);overflow-x:auto;scrollbar-width:none}
-#dock::-webkit-scrollbar{display:none}
-#dock button{width:40px;height:40px;flex-shrink:0;border:none;border-radius:9px;background:transparent;color:#c7d0de;cursor:pointer;font-size:.95rem}
-#dock button:hover{background:var(--sf2);color:#fff}
-#dock button:active{background:var(--ac);color:#111}
-#dock .dsep{width:1px;height:22px;background:var(--bd);margin:0 3px;flex-shrink:0}
-#zi{font:600 .68rem 'Space Grotesk';color:var(--tx2);text-align:center;min-width:44px;flex-shrink:0}
-body.fs #dock button{width:32px;height:32px;font-size:.8rem}
-body.fs #zi{font-size:.58rem;min-width:36px}
+/* ===== Zoom controls: vertical column, right corner (ager moto) — collapse/style topbar-e, content block hoy na ===== */
+#zoomc{position:absolute;right:12px;bottom:12px;display:flex;flex-direction:column;gap:2px;background:rgba(21,26,37,.92);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:10px;padding:4px;z-index:50}
+#zoomc button{width:34px;height:34px;border:none;border-radius:7px;background:transparent;color:var(--tx2);cursor:pointer;font-size:.9rem}
+#zoomc button:hover{background:var(--sf2);color:#fff}
+#zoomc button:active{background:var(--ac);color:#111}
+#zoomc #zi{font:600 .66rem 'Space Grotesk';color:var(--tx2);text-align:center;padding:2px 0;min-width:40px}
+body.fs #zoomc button{width:28px;height:28px;font-size:.78rem}
+body.fs #zoomc #zi{font-size:.56rem;min-width:32px}
+/* Downloaded HTML copy (viewer): branding bad + editor UI locked */
+body.vw #brand{display:none!important}
 /* ===== Tiny permanent branding badge (bottom-left corner, always visible, locked) ===== */
 #brand{position:fixed;left:10px;bottom:10px;z-index:40;display:flex;align-items:center;gap:5px;pointer-events:none;user-select:none;opacity:.62;font:600 10px Inter,sans-serif;color:#5b6577;letter-spacing:.4px;white-space:nowrap}
 #brand img{width:14px;height:14px;border-radius:4px;opacity:.9}
@@ -165,15 +165,12 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
   <div id="landing"><div class="crumb" id="crumb"></div><div class="grid" id="grid"></div></div>
   <div id="editor">
     <div id="wrap"><div id="world"><svg id="linesSvg"></svg><div id="nodes"></div></div></div>
-    <!-- Unified bottom control dock: fit / zoom / collapse-all / style — one place, nothing scattered -->
-    <div id="dock">
-      <button title="Fit to screen (puro map ek screen e)" onclick="fit()"><i class="fa-solid fa-crosshairs"></i></button>
-      <button title="Zoom out" onclick="zoomBy(0.8)"><i class="fa-solid fa-minus"></i></button>
-      <div id="zi">100%</div>
+    <!-- Zoom controls: vertical column, right corner (ager moto) — collapse/style topbar-e -->
+    <div id="zoomc">
       <button title="Zoom in" onclick="zoomBy(1.25)"><i class="fa-solid fa-plus"></i></button>
-      <div class="dsep"></div>
-      <button id="colBtn" title="Collapse all" onclick="collapseToggle()"><i class="fa-solid fa-folder-closed"></i></button>
-      <button id="styBtn" title="Switch style (Timeline / Tree)" onclick="toggleLayout()"><i class="fa-solid fa-timeline"></i></button>
+      <div id="zi">100%</div>
+      <button title="Zoom out" onclick="zoomBy(0.8)"><i class="fa-solid fa-minus"></i></button>
+      <button title="Fit to screen (puro map ek screen e)" onclick="fit()"><i class="fa-solid fa-crosshairs"></i></button>
     </div>
     <!-- Left-side navigation column: up / down / left / right (+ parent up) -->
     <div id="navc">
@@ -222,7 +219,7 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 <div id="dlMenu">
   <button data-fmt="png"><i class="fa-solid fa-image"></i> PNG image</button>
   <button data-fmt="pdf"><i class="fa-solid fa-file-pdf"></i> PDF (high-res)</button>
-  <button data-fmt="svg"><i class="fa-solid fa-code"></i> Vector HTML (zoomable)</button>
+  <button data-fmt="svg"><i class="fa-solid fa-code"></i> HTML</button>
 </div>
 
 <!-- settings: script url + publish link -->
@@ -248,9 +245,10 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 <!-- Tiny permanent branding — bottom-left corner, locked, low-contrast -->
 <div id="brand"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><span><b>Mega Quiz</b><span class="bx"> • Mind Map</span></span></div>
 
+<!--@@MQ_SNAPSHOT@@-->
 <script>
 /* ===== CONFIG ===== */
-const CONFIG={SCRIPT_URL:'https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/exec',TSV_URL:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQ7k5BSCdOKc27LOEAmSgSe0aBcMNhnK45hSPIlH2RBsh4Jo50Wx3NbGcO-vsEni9eTPIMVuUQHdVT/pub?output=tsv',PASSWORD:'mindmap0',ADMIN_PW:'Megaquiz0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
+const CONFIG={VIEWER:false,SCRIPT_URL:'https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/exec',TSV_URL:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQ7k5BSCdOKc27LOEAmSgSe0aBcMNhnK45hSPIlH2RBsh4Jo50Wx3NbGcO-vsEni9eTPIMVuUQHdVT/pub?output=tsv',PASSWORD:'mindmap0',ADMIN_PW:'Megaquiz0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
 // Active script URL: user-configurable (Settings modal) — survives Apps Script re-deploy URL changes.
 const SURL_KEY='mq_mm_scripturl';
 function getScriptUrl(){try{const u=localStorage.getItem(SURL_KEY);if(u&&/^https:\/\/script\.google\.com\/macros\/s\//.test(u))return u}catch(e){}return CONFIG.SCRIPT_URL}
@@ -850,10 +848,11 @@ function goLanding(){S.view='landing';document.body.dataset.view='landing';S.sel
    - Admin   (password "Megaquiz0"): Google Sheet Settings (gear) — alada password, sob editor pay na */
 function renderTopbar(){
   const ed=S.view==='editor';
+  const vw=!!CONFIG.VIEWER; // downloaded HTML copy: edit/back/download/sync sob bad — pure viewer
   let h=`<a class="logo" href="${CONFIG.MINDMAP_URL}" target="_top" rel="noopener"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><b>MEGA&nbsp;<span>QUIZ</span></b></a>`;
   if(!ed){ // ---- LANDING ----
     if(S.nav.length>0)h+=`<button class="btn" onclick="navBack()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>`;
-    h+=`<button class="btn" onclick="loadBtn()" title="Sheet theke notun data load (reload = latest)"><i class="fa-solid fa-rotate"></i><span> Sync</span></button>`;
+    if(!vw)h+=`<button class="btn" onclick="loadBtn()" title="Sheet theke notun data load (reload = latest)"><i class="fa-solid fa-rotate"></i><span> Sync</span></button>`;
     if(S.unlocked){ // editor-only controls
       h+=`<button class="btn" onclick="openImport('new')" title="Import file theke notun topic"><i class="fa-solid fa-file-import"></i><span> Import</span></button>
       <button class="btn" onclick="backupSheet(true)" title="Sheet e full backup"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>
@@ -864,16 +863,18 @@ function renderTopbar(){
       h+=`<button class="btn ic" onclick="openTrash()" title="Trash — deleted data restore koro (data kokhono hariye jay na)"><i class="fa-solid fa-trash-can"></i></button>
       <button class="btn ic" onclick="openSettings()" title="Google Sheet Settings (admin only — alada password lage)"><i class="fa-solid fa-gear"></i></button>`;
     }
-    h+=`<button class="btn ic" onclick="fscreen()" title="Fullscreen (TV er jonno)"><i class="fa-solid fa-expand"></i></button>
-    ${S.unlocked
+    h+=`<button class="btn ic" onclick="fscreen()" title="Fullscreen (TV er jonno)"><i class="fa-solid fa-expand"></i></button>`;
+    if(!vw)h+=`${S.unlocked
       ?`<button class="btn pri" onclick="lock()" title="Editor mode off koro"><i class="fa-solid fa-lock-open"></i><span> Lock</span></button>`
       :`<button class="btn pri" onclick="askPw(unlockNow)" title="Edit korte chaile password din (editor)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>`}`;
   }else if(!S.unlocked){ // ---- EDITOR · VIEW MODE (viewer-friendly: kom button, sob kaj) ----
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span><span class="spacer"></span>
-    <button class="btn ic" title="Download PNG / PDF / Vector HTML" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>
+    <button class="btn ic" id="colBtn" title="Collapse all / Expand all" onclick="collapseToggle()"><i class="fa-solid fa-folder-closed"></i></button>
+    <button class="btn ic" id="styBtn" title="Switch style (Timeline / Tree)" onclick="toggleLayout()"><i class="fa-solid fa-timeline"></i></button>
+    ${vw?'':`<button class="btn ic" title="Download PNG / PDF / HTML" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>`}
     <button class="btn ic" title="Fullscreen (TV er jonno)" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
-    <button class="btn pri" onclick="askPw(unlockNow)" title="Edit korte chaile password din (editor)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>
-    <button class="btn" onclick="goLanding()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>`;
+    ${vw?'':`<button class="btn pri" onclick="askPw(unlockNow)" title="Edit korte chaile password din (editor)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>
+    <button class="btn" onclick="goLanding()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>`}`;
   }else{ // ---- EDITOR · EDIT MODE (full controls, password unlock er por) ----
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span>
     <button class="btn" onclick="goLanding()" title="Back"><i class="fa-solid fa-arrow-left"></i></button>
@@ -904,7 +905,9 @@ function renderTopbar(){
     <button class="btn ic" title="Sync from sheet" onclick="loadBtn()"><i class="fa-solid fa-rotate"></i></button>
     <button class="btn pri" onclick="backupSheet(true)" title="Sheet e full backup"><i class="fa-solid fa-cloud-arrow-up"></i><span> Backup</span></button>
     <span class="cloud" id="cloudPill"><i class="fa-solid fa-cloud"></i><span>Cloud backup</span></span>
-    <button class="btn ic" title="Download PNG / PDF / Vector HTML" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>
+    <button class="btn ic" id="colBtn" title="Collapse all / Expand all" onclick="collapseToggle()"><i class="fa-solid fa-folder-closed"></i></button>
+    <button class="btn ic" id="styBtn" title="Switch style (Timeline / Tree)" onclick="toggleLayout()"><i class="fa-solid fa-timeline"></i></button>
+    <button class="btn ic" title="Download PNG / PDF / HTML" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>
     <button class="btn ic" title="Fullscreen" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
     <button class="btn ic on" title="Lock (editor mode off)" onclick="lock()"><i class="fa-solid fa-lock-open"></i></button>`;
   }
@@ -1244,12 +1247,21 @@ function syncBtns(){const n=S.selId&&findN(S.selId);const st=n&&n.style||{};
   const b=$('bB'),i=$('bI'),u=$('bU');
   if(b)b.classList.toggle('on',!!st.bold);if(i)i.classList.toggle('on',!!st.italic);if(u)u.classList.toggle('on',!!st.underline)}
 function applyT(){$('world').style.transform=`translate(${S.px}px,${S.py}px) scale(${S.zoom})`;$('zi').textContent=Math.round(S.zoom*100)+'%'}
-function zoomBy(f){const w=$('wrap').clientWidth/2,h=$('wrap').clientHeight/2;const nz=Math.max(.15,Math.min(4,S.zoom*f));
+// Minimum zoom lock (downloaded HTML copy): map jeno ekdom chuye jete na pare —
+// puro map ekbar screen-e fit hoy jay emon level er niche zoom-out lock.
+function vminZ(){if(!CONFIG.VIEWER||!boxes.length)return .15;
+  const w=$('wrap').clientWidth,h=$('wrap').clientHeight;let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
+  boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2)});
+  // EXACT fit-level lock: puro map ekbar screen-e jokhon fit hoy — THIK sei level ei minimum.
+  // (ager *.94 margin saray) — fit-er niche zoom-out kichuta-o lock.
+  return Math.max(.03,Math.min(w/(x2-x1+160),h/(y2-y1+160)))}
+function zoomBy(f){const w=$('wrap').clientWidth/2,h=$('wrap').clientHeight/2;const nz=Math.max(vminZ(),Math.min(CONFIG.VIEWER?6:4,S.zoom*f));
   S.px=w-(w-S.px)*(nz/S.zoom);S.py=h-(h-S.py)*(nz/S.zoom);S.zoom=nz;applyT()}
 function fit(){if(!boxes.length)return;const w=$('wrap').clientWidth,h=$('wrap').clientHeight;
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
   boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2)});
-  S.zoom=Math.max(.15,Math.min(2.4,Math.min(w/(x2-x1+160),h/(y2-y1+160))));
+  // Viewer copy te fit SOB SOMOY puro map dekhay (floor khub kom) — tahole lock ar fit eksathe match kore
+  S.zoom=Math.max(CONFIG.VIEWER?.03:.15,Math.min(2.4,Math.min(w/(x2-x1+160),h/(y2-y1+160))));
   S.px=w/2-(x1+x2)/2*S.zoom;S.py=h/2-(y1+y2)/2*S.zoom;applyT()}
 
 /* ===== PAN/ZOOM ===== */
@@ -1285,8 +1297,8 @@ $('wrap').addEventListener('touchmove',e=>{
   // Clamp per-move ratio for smoothness (max 8% change per move)
   ratio=Math.max(.92,Math.min(1.08,ratio));
   let newZoom=pinch.zoom*ratio;
-  // Clamp overall zoom range
-  newZoom=Math.max(.2,Math.min(3,newZoom));
+  // Clamp overall zoom range (viewer copy: min zoom lock + higher max for TV)
+  newZoom=Math.max(vminZ(),Math.min(CONFIG.VIEWER?5:3,newZoom));
   // Zoom around pinch center
   const cx=pinch.cx,cy=pinch.cy;
   S.px=cx-(cx-S.px)*(newZoom/S.zoom);
@@ -1552,7 +1564,8 @@ function _brandHeader(x1,y1,w,iconData){
     s+=`<ellipse cx="${cx}" cy="${cy}" rx="22" ry="7" fill="none" stroke="#ffc46b" stroke-width="2.5" transform="rotate(-16 ${cx} ${cy})" opacity=".9"/>`;
   }
   const tx=x1+94,ty=y1+52;
-  s+=`<text x="${tx}" y="${ty}" font-family="Arial,Helvetica,sans-serif"><tspan font-size="37" font-weight="800" fill="#f5b301">M</tspan><tspan font-size="20" font-weight="700" fill="#e8ecf4" letter-spacing="1.2">EGAQUIZMINDMA</tspan><tspan font-size="37" font-weight="800" fill="#f5b301">P</tspan></text>`;
+  // Wordmark: Mega (white) + quiz (yellow) + mindmap (white) — user spec
+  s+=`<text x="${tx}" y="${ty}" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800" letter-spacing=".5"><tspan fill="#ffffff">Mega</tspan><tspan fill="#f5b301">quiz</tspan><tspan fill="#ffffff">mindmap</tspan></text>`;
   s+=`<text x="${tx}" y="${ty+22}" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#64748b" letter-spacing="2.5">MEGA QUIZ • By Arif Hussain</text>`;
   const topic=S.topic?String(S.topic.name):'';
   if(topic)s+=`<text x="${x1+w/2}" y="${y1+EXPORT_HEADER-12}" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700" fill="#ffffff">${esc(topic)}</text>`;
@@ -1638,12 +1651,18 @@ function _rasterizeSVG(svgString,w,h,pixelRatio){
 }
 
 /* ===== EXPORT SAFETY ENGINE (kono device e export jate kokhono na fete) =====
-   - Mobile browsers (iOS Safari) e canvas er limit ache (~16.7M pixels, side max 4096-8192).
-   - 60" 4K TV ba boro map e 3x/4x raster canvas limit charie jay → toBlob null dey / crash.
+   - Mobile browsers (iOS Safari) e canvas er limit ache (~16.7M pixels).
+   - Desktop/Android Chrome onek boro canvas parse pare (16384 side, ~120M px) —
+     tai device-detect kore MAX limit bariye export ONEK beshi sharp hoy (TV/mobile zoom readable).
    - _safeRatio: device-safe ratio calc kore; retry ladder ratio komiye abar try kore.
    - Download: blob → dataURL fallback; anchor body-te append kore click (Firefox compatible). */
+function _isIOS(){return /iP(hone|ad|od)/.test(navigator.userAgent)||(/Mac/.test(navigator.platform||'')&&navigator.maxTouchPoints>1)}
+function _deviceLimits(){
+  // iOS conservative (16.7M px area) — beshi hole Safari silently fail kore.
+  return _isIOS()?{side:8192,area:16.7e6}:{side:16384,area:120e6};
+}
 function _safeRatio(w,h,want){
-  const MAX_SIDE=8192,MAX_AREA=16.7e6; // iOS Safari canvas memory limit ~16.7M px
+  const {side:MAX_SIDE,area:MAX_AREA}=_deviceLimits();
   const r=Math.min(want,MAX_SIDE/Math.max(1,w),MAX_SIDE/Math.max(1,h),Math.sqrt(MAX_AREA/Math.max(1,w*h)));
   return Math.max(.4,r);
 }
@@ -1702,74 +1721,45 @@ async function exportPNG(){
     const icon=await getIconDataURL();
     const b=_computeBounds();
     const svg=buildSVGString(b.x1,b.y1,b.w,b.h,icon);
-    const {canvas}=await _rasterizeSafe(svg,b.w,b.h,3); // wants 3x, auto-adjusts to device limit
+    const {canvas}=await _rasterizeSafe(svg,b.w,b.h,4); // wants 4x, auto-adjusts to device limit
     _downloadCanvas(canvas,(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.png','image/png','PNG');
   }catch(e){toast('PNG failed: '+e.message,'err');}
 }
-// Vector export as standalone HTML file (mobile doesn't open .svg natively).
-// The HTML contains the SVG inline, plus minimal CSS so it scales to any screen.
-// Open in any browser (mobile or desktop) — zoom in/out keeps text sharp.
+// ===== HTML export — LIVE PAGE ER EXACT CARBON COPY =====
+// Downloaded file = ei page tar thik ei copy (same CSS, same node rendering, same controls,
+// same look). Kintu: branding bad, Edit/Back/Download menu bad, Sync bad — pure viewer.
+// Puro curriculum + current topic snapshot hishebe embed hoy — internet chara o khule dekha jay.
+// Zoom minimum lock thake (map fit-er niche zoom-out kora jay na), max 4x zoom-in.
+function _cleanSourceForExport(){
+  const c=document.documentElement.cloneNode(true);
+  // Runtime-rendered DOM porishkar — boot abar notun kore sob render korbe
+  ['#topbar','#crumb','#grid','#nodes','#linesSvg','#trashList'].forEach(sel=>{const el=c.querySelector(sel);if(el)el.innerHTML=''});
+  const zi=c.querySelector('#zi');if(zi)zi.textContent='100%';
+  const w=c.querySelector('#world');if(w)w.removeAttribute('style');
+  const b=c.querySelector('body');
+  if(b){b.classList.remove('unlocked');b.dataset.view='landing';}
+  c.querySelectorAll('.mbg.show').forEach(el=>el.classList.remove('show'));
+  const dm=c.querySelector('#dlMenu');if(dm)dm.classList.remove('show');
+  const tst=c.querySelector('#toast');if(tst)tst.classList.remove('show');
+  return '<!DOCTYPE html>\n'+c.outerHTML;
+}
 async function exportSVG(){
   _expandAllForExport();
-  toast('Generating Vector HTML...');
+  toast('HTML copy banacche (live page er exact copy)...');
   try{
-    const icon=await getIconDataURL();
-    const b=_computeBounds();
-    const svg=buildSVGString(b.x1,b.y1,b.w,b.h,icon);
-    const topicName=(S.topic?S.topic.name:'Mind Map');
-    const safeName=(S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_');
-    const html=`<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>${topicName.replace(/</g,'&lt;')} — Mind Map</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;background:#0b0f19;color:#e8ecf4;font-family:Inter,system-ui,sans-serif;overflow:hidden}
-#wrap{position:fixed;inset:0;overflow:auto;-webkit-overflow-scrolling:touch;cursor:grab;background:radial-gradient(900px 500px at 50% 40%,rgba(245,179,1,.04),transparent 60%)}
-#wrap:active{cursor:grabbing}
-#title{position:fixed;top:8px;left:50%;transform:translateX(-50%);background:rgba(21,26,37,.92);backdrop-filter:blur(10px);border:1px solid #2d3748;border-radius:10px;padding:8px 16px;font-size:13px;color:#94a3b8;z-index:10;max-width:90vw;text-align:center}
-#hint{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(21,26,37,.92);backdrop-filter:blur(10px);border:1px solid #2d3748;border-radius:10px;padding:6px 12px;font-size:11px;color:#94a3b8;z-index:10}
-#zoomc{position:fixed;right:10px;bottom:40px;display:flex;flex-direction:column;gap:2px;background:rgba(21,26,37,.92);border:1px solid #2d3748;border-radius:10px;padding:4px;z-index:10}
-#zoomc button{width:36px;height:36px;border:none;border-radius:7px;background:transparent;color:#94a3b8;cursor:pointer;font-size:18px;font-weight:700}
-#zoomc button:hover{background:#1e2636;color:#fff}
-#zi{font:600 11px Inter,sans-serif;color:#94a3b8;text-align:center;padding:2px}
-svg{display:block;transform-origin:0 0;max-width:none}
-</style>
-</head>
-<body>
-<div id="title">${topicName.replace(/</g,'&lt;')}</div>
-<div id="wrap"><div id="world">${svg}</div></div>
-<div id="hint">Scroll = pan • Pinch / Ctrl+Wheel = zoom</div>
-<div id="zoomc">
-<button onclick="zoomBy(1.25)">+</button>
-<div id="zi">100%</div>
-<button onclick="zoomBy(0.8)">−</button>
-<button onclick="fit()">⌖</button>
-</div>
-<script>
-let zoom=1,px=0,py=0;const wrap=document.getElementById('wrap'),world=document.getElementById('world'),zi=document.getElementById('zi');
-const svgEl=world.querySelector('svg');
-const vb=svgEl.getAttribute('viewBox').split(' ').map(Number);const[vx,vy,vw,vh]=vb;
-function applyT(){world.style.transform='translate('+px+'px,'+py+'px) scale('+zoom+')';zi.textContent=Math.round(zoom*100)+'%';}
-function fit(){const ww=wrap.clientWidth,wh=wrap.clientHeight;zoom=Math.min(ww/vw,wh/vh);px=(ww-vw*zoom)/2-vx*zoom;py=(wh-vh*zoom)/2-vy*zoom;applyT();}
-function zoomBy(f){const ww=wrap.clientWidth/2,wh=wrap.clientHeight/2;const nz=Math.max(.15,Math.min(8,zoom*f));px=ww-(ww-px)*(nz/zoom);py=wh-(wh-py)*(nz/zoom);zoom=nz;applyT();}
-let pan=null;wrap.addEventListener('pointerdown',e=>{if(e.target.closest('svg')&&!e.target.closest('text')&&!e.target.closest('rect'))return;pan={x:e.clientX-px,y:e.clientY-py}});
-window.addEventListener('pointermove',e=>{if(!pan)return;px=e.clientX-pan.x;py=e.clientY-pan.y;applyT()});
-window.addEventListener('pointerup',()=>pan=null);
-wrap.addEventListener('wheel',e=>{e.preventDefault();zoomBy(e.deltaY>0?.85:1.18)},{passive:false});
-let pinch=null;wrap.addEventListener('touchstart',e=>{if(e.touches.length===2){const t=e.touches;pinch={dist:Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY),zoom,cx:(t[0].clientX+t[1].clientX)/2,cy:(t[0].clientY+t[1].clientY)/2};pan=null}},{passive:false});
-wrap.addEventListener('touchmove',e=>{if(!pinch||e.touches.length!==2)return;e.preventDefault();const t=e.touches;let r=Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY)/pinch.dist;r=Math.max(.92,Math.min(1.08,r));let nz=Math.max(.2,Math.min(8,pinch.zoom*r));const cx=pinch.cx,cy=pinch.cy;px=cx-(cx-px)*(nz/zoom);py=cy-(cy-py)*(nz/zoom);zoom=nz;applyT();pinch.zoom=nz},{passive:false});
-wrap.addEventListener('touchend',e=>{if(e.touches.length<2)pinch=null});
-window.addEventListener('load',setTimeout.bind(null,fit,100));
-setTimeout(fit,200);
-<\/script>
-</body>
-</html>`;
-    const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-    _downloadBlob(blob,safeName+'_mindmap.html','Vector HTML export holo ✅ (mobile/TV sob jaygay cholbe)');
-  }catch(e){toast('Vector failed: '+e.message,'err');}
+    const payload={curriculum:S.curriculum,topicId:(S.topic&&S.topic.id)||null,layout:S.layout||'timeline',topicName:(S.topic&&S.topic.name)||'Mind Map'};
+    // JSON theke sob '<' escape — script-closing sequence ba comment-marker er kono risk nei
+    const snap='<script>window.__MM_SNAPSHOT__='+JSON.stringify(payload).replace(/</g,'\\u003c')+';<\/script>';
+    let src=_cleanSourceForExport();
+    if(src.indexOf('VIEWER:false')<0)throw new Error('viewer marker pay nai');
+    if(src.indexOf('<!--@@MQ_SNAPSHOT@@-->')<0)throw new Error('snapshot marker pay nai');
+    const tt=/<title>[^]*?<\/title>/;if(tt.test(src))src=src.replace(tt,'<title>'+payload.topicName.replace(/</g,'&lt;')+' — Mind Map</title>');
+    src=src.replace('VIEWER:false','VIEWER:true');
+    src=src.replace('<!--@@MQ_SNAPSHOT@@-->',snap+'\n<!--@@MQ_SNAPSHOT@@-->');
+    const safeName=payload.topicName.replace(/[^\w-]+/g,'_');
+    const blob=new Blob([src],{type:'text/html;charset=utf-8'});
+    _downloadBlob(blob,safeName+'_mindmap.html','HTML export holo ✅ (live page er exact copy — edit/download chara)');
+  }catch(e){toast('HTML export failed: '+e.message,'err');}
 }
 // PDF export — pdf-lib (jsDelivr first, unpkg fallback — ekta CDN down holei kaj korbe),
 // device-safe raster ratio (mobile/TV te canvas limit charie jay na), JPEG embed (choto file,
@@ -1794,22 +1784,49 @@ function exportPDF(){
 async function buildPDFFromSVG(){
   const icon=await getIconDataURL();
   const b=_computeBounds();
+  const {PDFDocument,rgb}=window.PDFLib;
+  const doc=await PDFDocument.create();
+  // ---- PAGE 1: puro map er overview (1px = 1pt) ----
   const svg=buildSVGString(b.x1,b.y1,b.w,b.h,icon);
-  // Device-safe raster (wants 3x, auto-lowers on mobile limits)
   const {canvas}=await _rasterizeSafe(svg,b.w,b.h,3);
-  // JPEG first (small + embeds reliably); PNG fallback
   let dataUrl=null,embed=null;
   try{dataUrl=canvas.toDataURL('image/jpeg',.95);embed='jpg'}catch(e){}
   if(!dataUrl){try{dataUrl=canvas.toDataURL('image/png');embed='png'}catch(e){}}
   if(!dataUrl)throw new Error('image encode fail — device canvas limit');
-  const {PDFDocument,rgb}=window.PDFLib;
-  const doc=await PDFDocument.create();
-  // Page size = exact map aspect (1px = 1pt) — TV/print e puro map frame-fill dekhabe
   const page=doc.addPage([Math.round(b.w),Math.round(b.h)]);
   page.drawRectangle({x:0,y:0,width:page.getWidth(),height:page.getHeight(),color:rgb(0.043,0.06,0.098)});
   const img=embed==='jpg'?await doc.embedJpg(dataUrl):await doc.embedPng(dataUrl);
   page.drawImage(img,{x:0,y:0,width:page.getWidth(),height:page.getHeight()});
-  // Topic name + branding are already inside the embedded image (brand header/footer)
+  // ---- PAGE 2..N: READABLE SECTION PAGES ----
+  // Boro map e overview page e text dust hoye jay. Tai map ta beshi long hole
+  // uthape slice kore prottek section alada high-res page e boshai — mobile/TV e
+  // zoom korle text darun pora jay (user er "10x zoom" demand er solution).
+  const lim=_deviceLimits();
+  const want=3;
+  const targetW=Math.max(900,Math.min(lim.side/want,lim.area/(want*want*b.h)));
+  let n=Math.ceil(b.w/targetW);
+  n=Math.max(1,Math.min(n,12));
+  if(n>1){
+    const OVL=100; // slice overlap — konta baad hoy na
+    const sw=b.w/n;
+    for(let i=0;i<n;i++){
+      try{
+        const sx1=b.x1+i*sw-(i>0?OVL:0);
+        const sx2=(i===n-1)?(b.x1+b.w):(b.x1+(i+1)*sw+OVL);
+        const cw=sx2-sx1;
+        const ssvg=buildSVGString(sx1,b.y1,cw,b.h,icon);
+        const {canvas:sc}=await _rasterizeSafe(ssvg,cw,b.h,want);
+        let du=null,em=null;
+        try{du=sc.toDataURL('image/jpeg',.92);em='jpg'}catch(e){}
+        if(!du){try{du=sc.toDataURL('image/png');em='png'}catch(e){}}
+        if(!du)continue;
+        const pg=doc.addPage([Math.round(cw),Math.round(b.h)]);
+        pg.drawRectangle({x:0,y:0,width:pg.getWidth(),height:pg.getHeight(),color:rgb(0.043,0.06,0.098)});
+        const im=em==='jpg'?await doc.embedJpg(du):await doc.embedPng(du);
+        pg.drawImage(im,{x:0,y:0,width:pg.getWidth(),height:pg.getHeight()});
+      }catch(e){/* ekta slice fail korle baki gulo thakbe */}
+    }
+  }
   const bytes=await doc.save();
   _downloadBlob(new Blob([bytes],{type:'application/pdf'}),
     (S.topic?S.topic.name:'mindmap').replace(/[^\w-]+/g,'_')+'.pdf',
@@ -1829,10 +1846,45 @@ window.addEventListener('keydown',e=>{
   else if(e.key==='F2'){if(S.selId)editSoon(S.selId)}
 });
 
+/* ===== VIEWER BOOT (downloaded HTML copy) =====
+   Copy khular sathe sathe snapshot theke map open hoy — network/sheet kichu touch kore na.
+   Edit/Sync/Download/Back sob bad (renderTopbar VIEWER guard), branding lukano (body.vw),
+   zoom minimum lock (vminZ) — baki sob live page er motoi chole. */
+function viewerBoot(){
+  try{
+    const sn=window.__MM_SNAPSHOT__||{};
+    S.curriculum=Array.isArray(sn.curriculum)?sn.curriculum:[];
+    if(sn.layout)S.layout=sn.layout;
+    document.body.classList.add('vw');
+    // Topic + tar ancestor path khoji (openItem nav-level e kaj kore) —
+    // wantId match na pele first topic open hoy (kokhono blank dekhabe na)
+    let found=null;
+    (function walk(arr,acc){
+      for(const it of arr||[]){
+        if(it.type==='topic'&&(!sn.topicId||it.id===sn.topicId)){found={t:it,path:acc.slice()};return true}
+        if(it.children&&walk(it.children,acc.concat(it.id)))return true;
+      }
+      return false;
+    })(S.curriculum,[]);
+    if(found){S.nav=found.path;openItem(found.t.id)}
+    else{S.view='landing';document.body.dataset.view='landing';renderLanding()}
+  }catch(e){try{S.view='landing';document.body.dataset.view='landing';renderLanding()}catch(e2){}}
+}
+
+/* ===== SERVICE WORKER (offline support) =====
+   Repo root er sw.js — notesviewer er sathe EK-I worker (same name + same scope).
+   Duita page theke register korleo kono clash hoy na — browser same worker ke reuse kore
+   (registration idempotent). Tai alada mindmap-sw.js banar dorkar nei.
+   Downloaded HTML copy te (VIEWER/file://) registration chole na — viewer network use-i kore na. */
+if(!CONFIG.VIEWER&&('serviceWorker' in navigator)&&/^https?:$/.test(location.protocol)){
+  try{navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
+}
+
 /* ===== INIT =====
    Load order: Google Sheet (source of truth) → local cache → demo.
    The open map NEVER live-updates (no polling). Reload/refresh always shows the latest sheet data. */
 (async function(){
+  if(CONFIG.VIEWER){viewerBoot();return} // downloaded copy — no network, no sync, snapshot data only
   loadGraves();loadForeign();
   const res=await loadLive();
   if(res.ok){saveLocal();setCloud('idle');toast(res.restored?'♻ Sheet khali pawa gechilo — Trash theke '+res.count+' ta map auto-restore holo':'☑ Sheet theke data load holo ('+res.count+' rows)','ok')}
