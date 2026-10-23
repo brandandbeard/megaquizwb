@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn" data-theme="light">
+<html lang="bn" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -460,1281 +460,1778 @@ body { padding: 6px; }
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/mhchem.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
 <style id="tpx-theme-layer">
 /* =========================================================================
-   TPX · theme layer v2  —  "paper + line art"
-   ---------------------------------------------------------------------
-   Rules this layer follows:
-     · no colour washes / no coloured gradients on bars — surfaces stay paper
-       and the fandom shows up as line-art + a suit pattern in ONE CORNER;
-     · one accent colour per fandom, only on small things;
-     · artwork is original SVG line-art (anime / comic drawing), never a photo;
-     · the original stylesheet above still owns every position and layout.
+   TPX · theme layer 4 — "full-page poster light"
+   -------------------------------------------------------------------------
+   · Quiz page uses the theme photo as a FULL-PAGE background (subtle)
+   · No more header avatar/cover/banner (the "2 photos" are removed)
+   · Secondary image sits in the bottom-right corner (medium-small)
+   · Warning (lock) screen untouched — it keeps its own photo backdrop
    ========================================================================= */
 
-/* ---------- 0 · tokens (runtime values come from window.TPX) ---------- */
+/* ---------------------------------------------------------------- tokens */
+html{
+  --shell:#f2f4f8;
+  --paper:#ffffff;
+  --panel:#ffffff;
+  --ink:#111419;
+  --ink-2:#333a45;
+  --muted:#606a79;
+  --line:#e3e7ee;
+  --line-2:#dfe4ec;
+  --line-3:#c9d1dd;
+  --acc:#b3121b;
+  --acc-d:#7f0a11;
+  --acc-2:#1c2027;
+  --acc-3:#c9821f;
+  --on-acc:#ffffff;
+  --acc-soft:rgba(179,18,27,.08);
+  --acc-line:rgba(179,18,27,.30);
+  --acc-text:#8e0e15;
+  --photo:none;
+  --motif:none;
+  --motif-size:auto;
+  --r:18px;
+  --r-sm:12px;
+  --r-xs:10px;
+  --dur:.18s;
+  --shadow-1:0 1px 2px rgba(17,20,25,.05), 0 10px 26px -14px rgba(17,20,25,.22);
+  --shadow-2:0 18px 46px -22px rgba(17,20,25,.32);
+}
+
+html[data-theme="dark"]{
+  --shell:#0d0f14;
+  --paper:#161a21;
+  --panel:#161a21;
+  --ink:#e9edf3;
+  --ink-2:#cdd4df;
+  --muted:#98a2b2;
+  --line:#272d38;
+  --line-2:#2d3441;
+  --line-3:#3a4250;
+  --acc-soft:rgba(255,255,255,.07);
+  --shadow-1:0 1px 2px rgba(0,0,0,.4), 0 12px 30px -18px rgba(0,0,0,.8);
+  --shadow-2:0 24px 60px -30px rgba(0,0,0,.9);
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   QUIZ PAGE — FULL-PAGE PHOTO BACKGROUND (subtle, non-distracting)
+   Replaces the flat --body-gradient with the current theme photo
+   ═════════════════════════════════════════════════════════════════ */
+html,body{min-height:100%;}
+body{
+  color:var(--ink);
+  padding:16px;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.40) 0%, rgba(255,255,255,.52) 46%, rgba(255,255,255,.64) 100%) center / cover no-repeat fixed,
+    var(--photo) center 22% / cover no-repeat fixed,
+    var(--shell) !important;
+  background-attachment: fixed, fixed, scroll !important;
+}
+html[data-theme="dark"] body{
+  background:
+    linear-gradient(180deg, rgba(13,15,20,.70) 0%, rgba(13,15,20,.78) 46%, rgba(13,15,20,.86) 100%) center / cover no-repeat fixed,
+    var(--photo) center 22% / cover no-repeat fixed,
+    #0d0f14 !important;
+  background-attachment: fixed, fixed, scroll !important;
+}
+
+/* background off state — flips everything back to flat colours */
+body.tpx-bg-off{
+  background: var(--shell) !important;
+  background-attachment: scroll !important;
+}
+html[data-theme="dark"] body.tpx-bg-off{
+  background: #0d0f14 !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   CONTAINER — slightly translucent so the page photo peeks through
+   ═════════════════════════════════════════════════════════════════ */
+.container{
+  background: rgba(255,255,255,.91);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  box-shadow:var(--shadow-1);
+  backdrop-filter: blur(4px) saturate(1.02);
+  -webkit-backdrop-filter: blur(4px) saturate(1.02);
+}
+html[data-theme="dark"] .container{
+  background: rgba(22,26,33,.90);
+}
+body.tpx-bg-off .container{
+  background: var(--paper);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* kill the legacy header photo elements */
+.tpx-banner, .tpx-avatar, .tpx-cover{ display:none !important; }
+
+/* page wash (kept very light so photo stays subtle) */
+body::before{
+  content:""; position:fixed; inset:0; z-index:-3; pointer-events:none;
+  background:
+    radial-gradient(900px 320px at 50% -80px,var(--acc-soft),transparent 70%);
+  pointer-events:none;
+}
+
+/* ---------------------------------------------------------------- header */
+.main-header{
+  position:relative;
+  display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+  margin:-18px -18px 16px; padding:16px 20px; min-height:78px;
+  background:var(--paper);
+  color:var(--ink);
+  border-radius:var(--r) var(--r) 0 0;
+  border-bottom:1px solid var(--line);
+  overflow:hidden;
+}
+.main-header::before{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
+  background-image:var(--motif);
+  background-size:var(--motif-size);
+  background-position:right -30px top -50px;
+  opacity:.10;
+  -webkit-mask-image:linear-gradient(90deg,transparent 55%,#000 100%);
+  mask-image:linear-gradient(90deg,transparent 55%,#000 100%);
+}
+.main-header::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:3px;
+  background:linear-gradient(90deg,var(--acc),var(--acc-2) 45%,var(--acc-3));
+  opacity:.95;
+}
+.main-header > *{position:relative; z-index:1;}
+.main-header .tpx-ident{display:flex; align-items:center; gap:12px; min-width:0; flex:1 1 auto;}
+.main-title{font-size:clamp(18px,4.2vw,25px); font-weight:800; letter-spacing:-.01em; line-height:1.15; min-width:0;}
+.main-title small{
+  display:block; margin-top:3px; color:var(--muted); font-size:12px; font-weight:500;
+  white-space:normal; line-height:1.45; max-width:none; text-shadow:0 1px 0 rgba(255,255,255,.7);
+}
+.credit{
+  font-size:11.5px; color:var(--ink-2); background:rgba(255,255,255,.9);
+  border:1px solid var(--line); border-radius:999px; padding:5px 12px; font-weight:600;
+}
+html[data-theme="dark"] .credit{background:rgba(22,26,33,.9);}
+.main-header .flex-row{gap:6px !important; flex-wrap:wrap; justify-content:flex-end;}
+.main-header button{box-shadow:none;}
+
+/* ═════════════════════════════════════════════════════════════════
+   HEADER ICON BUTTONS — 🎲 and 🎨 (theme bg on/off)
+   ═════════════════════════════════════════════════════════════════ */
+.tpx-icon-btn{
+  width:34px; height:34px; padding:0; border-radius:50%;
+  background:var(--paper); border:1px solid var(--line-2);
+  color:var(--ink-2); font-size:16px; line-height:1; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center;
+  box-shadow:none; flex-shrink:0;
+  transition:background .15s ease, border-color .15s ease, transform .15s ease;
+}
+.tpx-icon-btn:hover{
+  background:var(--acc-soft); border-color:var(--acc-line);
+  transform:scale(1.06); box-shadow:none;
+}
+html[data-theme="dark"] .tpx-icon-btn{background:#232a35; border-color:var(--line-2); color:#e7ecf3;}
+
+/* ═════════════════════════════════════════════════════════════════
+   SECONDARY IMAGE — bottom-right corner (medium-small)
+   Only shown when the current theme provides one
+   ═════════════════════════════════════════════════════════════════ */
+.tpx-secondary{
+  position:fixed;
+  right:14px; bottom:14px;
+  width: clamp(84px, 8.6vw, 122px);
+  height: clamp(84px, 8.6vw, 122px);
+  border-radius:12px;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  z-index:40;
+  opacity:.82;
+  pointer-events:none;
+  box-shadow:0 8px 24px -10px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.12) inset;
+  transition:opacity .3s ease;
+}
+html[data-theme="dark"] .tpx-secondary{opacity:.75;}
+@media (max-width:640px){
+  .tpx-secondary{
+    width:clamp(70px, 18vw, 92px);
+    height:clamp(70px, 18vw, 92px);
+    right:8px; bottom:8px; border-radius:9px; opacity:.72;
+  }
+}
+body.tpx-bg-off .tpx-secondary{opacity:.55;}
+
+/* --------------------------------------------------------------- controls */
+.controls{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:10px 12px;
+  margin-bottom:14px;
+  box-shadow:none;
+}
+.controls-outer{gap:10px;}
+button{
+  border-radius:999px; font-weight:600; font-size:13px; padding:8px 16px;
+  background:var(--acc); color:var(--on-acc);
+  transition:background var(--dur) ease, box-shadow var(--dur) ease, transform .12s ease;
+}
+button:hover{background:var(--acc-d); box-shadow:0 6px 18px -8px var(--acc-line);}
+input,select,textarea{border:1px solid var(--line-3); border-radius:999px; background:var(--paper); color:var(--ink); font-size:13px; padding:8px 13px;}
+input:focus,select:focus,textarea:focus{border-color:var(--acc); box-shadow:0 0 0 3px var(--acc-soft);}
+.mode-selector{background:#eceff4; border:1px solid var(--line); padding:3px;}
+html[data-theme="dark"] .mode-selector{background:#11151b;}
+.mode-btn{background:transparent; color:var(--muted); font-weight:700;}
+.mode-btn:hover{background:transparent; box-shadow:none; color:var(--ink);}
+.mode-btn.active{background:var(--paper); color:var(--acc-text); box-shadow:0 1px 3px rgba(17,20,25,.12);}
+html[data-theme="dark"] .mode-btn.active{background:#232a35; color:#fff;}
+
+/* -------------------------------------------------------------- subjects */
+.chapter-panel{background:transparent; border:0; border-radius:0; padding:0; margin-top:10px;}
+.chapter-panel.open{margin-top:10px;}
+.subject-action-row{background:#f6f8fb; border:1px solid var(--line); border-radius:12px; padding:9px 10px;}
+html[data-theme="dark"] .subject-action-row{background:#12161c;}
+.subject-accordion{
+  border:1px solid var(--line); border-radius:14px; overflow:hidden;
+  margin-bottom:10px; background:var(--paper);
+  box-shadow:0 1px 2px rgba(17,20,25,.04);
+}
+.subject-accordion:last-child{margin-bottom:0;}
+.subject-header{
+  display:flex; justify-content:space-between; align-items:center;
+  min-height:54px; padding:12px 16px; box-shadow:inset 5px 0 0 0 var(--sub-edge,transparent);
+  font-weight:800; font-size:15px; letter-spacing:0;
+  color:#fff;
+  border-bottom:1px solid rgba(0,0,0,.06);
+  transition:filter var(--dur) ease;
+}
+.subject-header:hover{filter:brightness(1.06);}
+.subject-header .subj-txt{display:flex; align-items:center; gap:10px; min-width:0;}
+.subject-header span{text-shadow:0 1px 1px rgba(0,0,0,.10);}
+.subject-checkbox{
+  width:20px; height:20px; margin-right:10px; border-radius:6px;
+  border:2px solid var(--sub-box,rgba(255,255,255,.72)); background:var(--sub-box-bg,rgba(255,255,255,.16));
+  opacity:1;
+}
+.subject-checkbox:hover{border-color:#fff; background:rgba(255,255,255,.3);}
+.subject-checkbox.checked{background:#fff; border-color:#fff; opacity:1;}
+.subject-checkbox.checked::after{content:"✓"; color:var(--sub-check,#111); font-size:13px; font-weight:900; line-height:1;}
+.subject-arrow{color:inherit; opacity:.8; font-size:11px; text-shadow:none;}
+.subject-chapters{border-top:1px solid var(--line); background:var(--paper);}
+.subject-chapters-inner{padding:12px 14px; gap:8px; background:#fbfcfe;}
+html[data-theme="dark"] .subject-chapters-inner{background:#141920;}
+.chapter-item{
+  background:var(--paper); border:1px solid var(--line-2); border-radius:10px;
+  padding:8px 13px; font-size:13px; font-weight:600; color:var(--ink-2);
+}
+.chapter-item:hover{background:var(--acc-soft); border-color:var(--acc-line);}
+.chapter-item:has(input:checked){background:var(--acc-soft); border-color:var(--acc); color:var(--acc-text);}
+html[data-theme="dark"] .chapter-item:has(input:checked){color:#fff;}
+.chapter-item input{
+  appearance:none; -webkit-appearance:none; margin:0;
+  width:16px; height:16px; border-radius:5px; flex:0 0 16px;
+  border:1.5px solid var(--line-3); background:var(--paper);
+  display:inline-grid; place-items:center; cursor:pointer;
+  transition:background var(--dur) ease, border-color var(--dur) ease;
+}
+.chapter-item input:hover{border-color:var(--acc-line);}
+.chapter-item input:checked{background:var(--acc); border-color:var(--acc);}
+.chapter-item input:checked::after{content:"✓"; color:var(--on-acc); font-size:11px; font-weight:900; line-height:1;}
+.q-count{color:var(--muted); font-weight:700; font-size:11px;}
+.chapter-item:has(input:checked) .q-count{color:inherit; opacity:.8;}
+.status-msg{color:var(--ink-2);}
+
+/* ---------------------------------------------------------------- quiz */
+.quiz-panel{gap:16px;}
+.question-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-left:5px solid var(--acc);
+  border-radius:var(--r);
+  box-shadow:var(--shadow-1);
+  padding:22px 24px 20px;
+  padding-right:64px;
+  overflow:hidden;
+}
+.question-card::after{
+  content:""; position:absolute; right:-26px; top:-26px;
+  width:250px; height:250px; pointer-events:none;
+  background-image:var(--motif);
+  background-size:var(--motif-size);
+  background-position:right top;
+  opacity:.09;
+  z-index:0;
+}
+.question-card > *{position:relative; z-index:1;}
+.question-meta{gap:7px; margin-bottom:12px;}
+.pill{
+  border:1px solid var(--line-2); background:#f6f8fb; color:var(--ink-2);
+  font-size:11.5px; font-weight:700; padding:5px 11px;
+}
+html[data-theme="dark"] .pill{background:#1b212b;}
+.pill.difficulty-easy{background:#ecfaf2; border-color:#bfe8cf; color:#0d6b3d;}
+.pill.difficulty-medium{background:#fff6e8; border-color:#f4d9ac; color:#96520a;}
+.pill.difficulty-hard{background:#fdeceb; border-color:#f3c3bf; color:#a3201a;}
+html[data-theme="dark"] .pill.difficulty-easy{background:rgba(16,185,129,.14); border-color:rgba(16,185,129,.4); color:#6ee7b7;}
+html[data-theme="dark"] .pill.difficulty-medium{background:rgba(245,158,11,.14); border-color:rgba(245,158,11,.4); color:#fcd34d;}
+html[data-theme="dark"] .pill.difficulty-hard{background:rgba(239,68,68,.14); border-color:rgba(239,68,68,.4); color:#fca5a5;}
+.question-text{
+  font-size:clamp(17px,2.1vw,20px); line-height:1.72; font-weight:700;
+  color:var(--ink); margin:4px 0 16px; padding-right:24px;
+}
+.question-text u{text-decoration-color:var(--acc); text-underline-offset:4px;}
+.options{gap:10px; margin:14px 0 6px; grid-template-columns:repeat(2,minmax(0,1fr));}
+@media (max-width:760px){.options{grid-template-columns:1fr;}}
+.option{
+  min-height:54px; padding:12px 15px; gap:12px;
+  border:1.5px solid var(--line-2); border-radius:12px;
+  background:var(--paper); color:var(--ink);
+  font-size:15.5px; font-weight:600; line-height:1.5;
+  transition:border-color var(--dur) ease, background var(--dur) ease, box-shadow var(--dur) ease;
+}
+.option:hover{
+  background:var(--acc-soft); border-color:var(--acc-line);
+  box-shadow:0 4px 14px -10px rgba(17,20,25,.35); transform:none;
+}
+.key{
+  width:30px; height:30px; border-radius:9px;
+  background:#f1f4f9; color:var(--ink-2); font-weight:800; font-size:13px;
+}
+html[data-theme="dark"] .key{background:#232a35; color:#e7ecf3;}
+.option:hover .key{background:var(--paper); color:var(--acc-text); box-shadow:0 0 0 1px var(--acc-line) inset;}
+.option.selected-mock{background:var(--acc-soft); border-color:var(--acc); box-shadow:0 0 0 1px var(--acc) inset;}
+.option.selected-mock .key{background:var(--acc); color:var(--on-acc);}
+.option.correct-answer,
+.option.correct-answer:hover{background:#0e7a4a; border-color:#0e7a4a; color:#fff;}
+.option.correct-answer .key{background:rgba(255,255,255,.92); color:#0e7a4a;}
+.option.wrong-feedback,
+.option.wrong-feedback:hover{background:#bf3327; border-color:#bf3327; color:#fff;}
+.option.wrong-feedback .key{background:rgba(255,255,255,.92); color:#bf3327;}
+.option u{text-decoration-color:currentColor; text-underline-offset:3px;}
+.hide-options-btn{
+  top:16px; right:14px; width:34px; height:34px;
+  border:1px solid var(--line-2); color:var(--muted); opacity:.9; background:var(--paper);
+}
+.hide-options-btn:hover{opacity:1; background:var(--acc-soft); border-color:var(--acc-line); transform:none;}
+.hide-options-btn svg{width:16px; height:16px;}
+.info{
+  margin-top:14px; padding:14px 16px; border-radius:12px;
+  background:#f7f9fc; border:1px solid var(--line);
+  border-left:4px solid var(--acc-2);
+  font-size:14px; line-height:1.75; color:var(--ink-2);
+}
+html[data-theme="dark"] .info{background:#141a22;}
+.info.ai-generated{border-left-color:var(--acc-3);}
+.nav-buttons-large{gap:10px; margin-top:14px;}
+.nav-buttons-large button{background:var(--acc);}
+.nav-buttons-large #prevQ{background:#eef1f6; color:var(--ink-2);}
+.nav-buttons-large #prevQ:disabled{background:#f4f6fa; color:#9aa3b2; opacity:1;}
+.nav-buttons-large #prevQ:hover:not(:disabled){background:#e2e8f1;}
+html[data-theme="dark"] .nav-buttons-large #prevQ{background:#232a35; color:#e7ecf3;}
+
+/* ------------------------------------------------------------- sidebar */
+.sidebar{
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--r);
+  box-shadow:var(--shadow-1); padding:16px;
+}
+.score-board{font-size:16px; font-weight:800; color:var(--ink);}
+.score-breakdown{font-size:11.5px; color:var(--muted); font-weight:600;}
+.nav-grid{gap:6px; max-height:340px;}
+.q-num{
+  background:#f1f4f9; color:var(--ink-2); border:1px solid transparent; border-radius:8px;
+  font-weight:700; padding:7px 3px;
+}
+html[data-theme="dark"] .q-num{background:#1e242e; color:#c7d0dd;}
+.q-num:hover{background:#e7ecf4; border-color:var(--line-3);}
+.q-num.answered-correct{background:#0e7a4a; color:#fff;}
+.q-num.answered-wrong{background:#bf3327; color:#fff;}
+.q-num.attempted-mock{background:var(--acc); color:var(--on-acc);}
+.q-num.current{background:var(--acc); color:var(--on-acc); box-shadow:0 0 0 2px var(--paper), 0 0 0 4px var(--acc-line); animation:none;}
+.q-num.skipped{border:1px dashed var(--acc); color:var(--ink-2); background:transparent;}
+.note-toggle{background:#f6f8fb; border:1px solid var(--line); color:var(--ink-2);}
+html[data-theme="dark"] .note-toggle{background:#141a22;}
+#showResultsBtn,#submitMockBtn{background:var(--acc-2);}
+html[data-theme="dark"] #showResultsBtn,html[data-theme="dark"] #submitMockBtn{background:#2b3340;}
+
+/* --------------------------------------------------------------- media */
+.q-media{margin:8px 0 16px; display:flex; flex-direction:column; align-items:center; gap:6px;}
+.q-media-shell{
+  position:relative; padding:8px; border-radius:14px;
+  background:#f7f9fc; border:1px solid var(--line);
+  cursor:zoom-in; transition:border-color var(--dur) ease, box-shadow var(--dur) ease;
+}
+html[data-theme="dark"] .q-media-shell{background:#141a22;}
+.q-media-shell:hover{border-color:var(--acc-line); box-shadow:0 10px 26px -18px rgba(17,20,25,.5);}
+.q-media-shell img{display:block; max-width:100%; max-height:min(38vh,420px); border-radius:9px; object-fit:contain;}
+.q-media-cap{font-size:11.5px; color:var(--muted);}
+.q-media-zoom{
+  position:absolute; right:12px; bottom:12px; width:28px; height:28px; border-radius:8px;
+  display:grid; place-items:center; font-size:13px;
+  background:rgba(255,255,255,.92); color:#111; border:1px solid rgba(0,0,0,.08);
+  opacity:0; transition:opacity var(--dur) ease;
+}
+.q-media-shell:hover .q-media-zoom{opacity:1;}
+.q-media-fail{padding:18px; border-radius:12px; background:#fdf2f1; border:1px solid #f3c3bf; color:#8c2b22; font-size:13px; text-align:center;}
+.q-media-fail a{display:block; margin-top:6px; color:#8c2b22; font-weight:700;}
+
+/* ------------------------------------------------------------ lightbox */
+.tpx-lb{
+  position:fixed; inset:0; z-index:99998; display:none; align-items:center; justify-content:center;
+  padding:18px; background:rgba(10,12,16,.9);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+}
+.tpx-lb.open{display:flex; animation:tpxFade .16s ease-out;}
+@keyframes tpxFade{from{opacity:0}to{opacity:1}}
+.tpx-lb img{max-width:96vw; max-height:86vh; width:auto; height:auto; object-fit:contain; border-radius:8px; background:#fff; box-shadow:0 30px 80px -30px rgba(0,0,0,.9);}
+.tpx-lb .lb-close{position:absolute; top:14px; right:14px; width:42px; height:42px; display:grid; place-items:center; font-size:16px; padding:0; color:#fff; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); border-radius:50%;}
+.tpx-lb .lb-close:hover{background:rgba(255,255,255,.26); box-shadow:none;}
+
+/* --------------------------------------------------------------- gate */
+.warning-overlay{
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.58) 0%,rgba(255,255,255,.74) 38%,rgba(255,255,255,.9) 72%,rgba(255,255,255,.96) 100%),
+    radial-gradient(80% 55% at 50% 0%,var(--acc-soft),transparent 72%),
+    var(--photo) center 26% / cover no-repeat,
+    var(--shell);
+  animation:none;
+  padding:24px 16px 40px;
+  justify-content:center !important;
+  overflow:auto;
+}
+.warning-overlay::before,
+.warning-overlay::after{content:none;}
+.warning-overlay > *{position:relative; z-index:2;}
+html[data-theme="dark"] .warning-overlay{
+  background:
+    linear-gradient(180deg,rgba(13,15,20,.62) 0%,rgba(13,15,20,.8) 38%,rgba(13,15,20,.92) 72%,rgba(13,15,20,.96) 100%),
+    radial-gradient(80% 55% at 50% 0%,rgba(255,255,255,.05),transparent 72%),
+    var(--photo) center 26% / cover no-repeat,
+    var(--shell);
+}
+.siren-icon-wrapper{
+  position:relative; z-index:2; margin:8px 0 2px;
+  width:64px; height:64px; border-radius:50%;
+  display:grid; place-items:center;
+  background:var(--paper); border:1px solid var(--line);
+  box-shadow:var(--shadow-1);
+  animation:none;
+}
+.siren-emoji{font-size:30px; filter:saturate(.95); animation:none;}
+.warning-card{
+  position:relative; z-index:2;
+  background:rgba(255,255,255,.95);
+  border:1px solid var(--line);
+  border-top:4px solid var(--acc);
+  border-radius:16px;
+  padding:20px 20px 20px;
+  max-width:520px;
+  text-align:center;
+  box-shadow:var(--shadow-2);
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+}
+html[data-theme="dark"] .warning-card{background:rgba(22,26,33,.94);}
+.warning-label{
+  display:inline-block; background:var(--acc-soft); color:var(--acc-text);
+  border:1px solid var(--acc-line);
+  font-weight:800; font-size:12.5px; padding:5px 14px; border-radius:999px; margin-bottom:12px;
+}
+html[data-theme="dark"] .warning-label{color:#ffd8d8;}
+.warning-text{color:var(--ink); font-size:15px; font-weight:500; line-height:1.8;}
+.warning-text .highlight{color:var(--acc-text); font-weight:800;}
+html[data-theme="dark"] .warning-text .highlight{color:#ffb4b4;}
+.password-section{gap:9px; margin:16px auto 0; max-width:400px; padding:12px 0 0; border-top:1px solid var(--line);}
+.password-label{color:var(--muted); font-size:12.5px; font-weight:600;}
+.password-input-wrapper{gap:8px;}
+.password-input{
+  flex:1; min-width:150px; padding:13px 16px; font-size:16px;
+  border:1.5px solid var(--line-3); border-radius:12px; background:var(--paper); color:var(--ink);
+  letter-spacing:6px; text-align:center;
+}
+.password-input:focus{border-color:var(--acc); box-shadow:0 0 0 3px var(--acc-soft);}
+.submit-btn{background:var(--acc); color:var(--on-acc); padding:13px 22px; font-weight:700; border-radius:12px;}
+.error-msg{color:#bf3327; font-size:12.5px; min-height:16px; font-weight:600;}
+
+/* theme dice on the gate (icon only, no name) */
+@media (min-width:900px){
+  .warning-overlay{align-items:flex-start; padding:44px clamp(24px,8vw,150px) 44px;}
+}
+.tpx-gate-chip{
+  position:relative; z-index:2; margin-top:16px;
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(255,255,255,.9); border:1px solid var(--line);
+  border-radius:999px; padding:6px 8px 6px 12px;
+  font-size:12px; font-weight:700; color:var(--ink);
+  box-shadow:var(--shadow-1);
+}
+html[data-theme="dark"] .tpx-gate-chip{background:rgba(22,26,33,.9);}
+.tpx-gate-chip .sw{width:14px; height:14px; border-radius:50%; background:linear-gradient(135deg,var(--acc),var(--acc-3));}
+.tpx-gate-chip b{display:none !important;}
+.tpx-gate-chip button{padding:5px 12px; font-size:15px; border-radius:999px; background:var(--acc-soft); color:var(--acc-text); border:1px solid var(--acc-line);}
+html[data-theme="dark"] .tpx-gate-chip button{color:#ffd8d8;}
+.tpx-gate-chip button:hover{background:var(--acc); color:var(--on-acc); border-color:var(--acc);}
+
+/* -------------------------------------------------------------- results */
+.results-overlay{background:rgba(13,15,20,.55); backdrop-filter:blur(6px);}
+.results-card{background:var(--paper); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow-2);}
+.results-message{color:var(--ink);}
+.results-stats{gap:22px;}
+.stat-label{font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
+.percentage-bar{background:#eef1f6; height:9px;}
+html[data-theme="dark"] .percentage-bar{background:#232a35;}
+.percentage-fill{background:var(--acc);}
+.close-results-btn{background:var(--acc);}
+.results-chapters{border-top-color:var(--line);}
+
+/* --------------------------------------------------------------- footer */
+.footer-contact{
+  background:var(--paper); border:1px solid var(--line); border-radius:14px;
+  color:var(--ink-2); box-shadow:none;
+}
+.footer-contact a{color:var(--ink-2);}
+.footer-divider{color:var(--line-3);}
+.footer-link.upi-link span{color:var(--ink-2) !important;}
+
+/* ------------------------------------------------------- theme picker (hidden) */
+.tpx-pick{display:none !important;}
+.tpx-pick.open{display:none !important;}
+
+/* ---------------------------------------------------------------- polish */
+:where(button,a,input,.option,.chapter-item,.subject-header):focus-visible{
+  outline:2px solid var(--acc);
+  outline-offset:2px;
+}
+::selection{background:var(--acc-soft); color:inherit;}
+
+/* results card: theme score + tidy stats */
+.results-score-big{
+  background:none !important;
+  -webkit-background-clip:border-box !important; background-clip:border-box !important;
+  -webkit-text-fill-color:var(--acc); color:var(--acc);
+}
+.results-stats{display:flex; justify-content:center; gap:18px;}
+.stat{display:flex; flex-direction:column; align-items:center; gap:2px; min-width:66px;}
+.stat-number{font-size:23px; line-height:1.1;}
+.stat-label{display:block; font-size:11px; letter-spacing:0; text-transform:none; color:var(--muted); margin-top:1px;}
+.correct-stat .stat-number{color:#0e7a4a;}
+.wrong-stat .stat-number{color:#bf3327;}
+
+/* stronger signature motifs on the question card */
+html[data-tpx-motif="web"] .question-card::after{opacity:.16;}
+html[data-tpx-motif="laser"] .question-card::after{opacity:.14;}
+html[data-tpx-motif="web"] .main-header::before{opacity:.15;}
+html[data-tpx-motif="laser"] .main-header::before{opacity:.13;}
+@media (max-width:760px){
+  html[data-tpx-motif="web"] .question-card::after{opacity:.11;}
+  html[data-tpx-motif="laser"] .question-card::after{opacity:.10;}
+}
+
+/* these two carry an inline base colour in the app markup */
+#showScoreBtn,#showResultsBtn{background:var(--acc-2) !important; color:#fff !important;}
+#submitMockBtn{background:var(--acc) !important; color:var(--on-acc) !important;}
+
+/* dark repair — base sheet hard-codes a few slate/amber values in dark mode */
+html[data-theme="dark"]{
+  --card:#161a21;
+  --bg:#0d0f14;
+  --line:#272d38;
+  --primary:var(--acc);
+  --primary-dark:var(--acc-d);
+  --slate:#98a2b2;
+}
+html[data-theme="dark"] #quizSize,
+html[data-theme="dark"] #timeLimit{color:#e9edf3 !important; background:#141920 !important; border-color:var(--line-2) !important;}
+html[data-theme="dark"] .question-card,
+html[data-theme="dark"] .sidebar,
+html[data-theme="dark"] .results-card{background:var(--paper);}
+html[data-theme="dark"] .option{background:var(--paper); border-color:var(--line-2); color:var(--ink);}
+html[data-theme="dark"] .option:hover{background:var(--acc-soft); border-color:var(--acc-line);}
+html[data-theme="dark"] .option.selected-mock{background:var(--acc-soft); border-color:var(--acc);}
+html[data-theme="dark"] .option .key{background:#232a35; color:#e7ecf3;}
+html[data-theme="dark"] .info{background:#141a22; border:1px solid var(--line); border-left:4px solid var(--acc-2); color:var(--ink-2);}
+html[data-theme="dark"] .info.ai-generated{border-left-color:var(--acc-3);}
+html[data-theme="dark"] .pill{background:#1b212b; border-color:var(--line-2); color:var(--ink-2);}
+html[data-theme="dark"] .chapter-item{background:#141920; border-color:var(--line-2); color:var(--ink-2);}
+html[data-theme="dark"] .chapter-item:hover{background:var(--acc-soft); border-color:var(--acc-line);}
+html[data-theme="dark"] .timer-display{background:#1b212b; color:var(--ink);}
+html[data-theme="dark"] .hide-options-btn{background:var(--paper); border-color:var(--line-2); color:var(--muted);}
+html[data-theme="dark"] .footer-contact{background:var(--paper); border-color:var(--line);}
+html[data-theme="dark"] .note-toggle{background:#141a22; border-color:var(--line); color:var(--ink-2);}
+html[data-theme="dark"] .status-msg{color:var(--ink-2);}
+html[data-theme="dark"] .main-header{background:var(--paper);}
+html[data-theme="dark"] .controls{background:var(--paper); border-color:var(--line);}
+html[data-theme="dark"] .subject-accordion{background:var(--paper);}
+html[data-theme="dark"] .subject-chapters{background:var(--paper);}
+html[data-theme="dark"] .subject-chapters-inner{background:#12161c;}
+html[data-theme="dark"] .subject-action-row{background:#12161c; border-color:var(--line);}
+html[data-theme="dark"] .mode-selector{background:#11151b;}
+html[data-theme="dark"] .results-overlay{background:rgba(6,8,11,.7);}
+html[data-theme="dark"] .percentage-bar{background:#232a35;}
+html[data-theme="dark"] .q-num{background:#1e242e; color:#c7d0dd;}
+html[data-theme="dark"] .q-num:hover{background:#262e3a;}
+
+html[data-theme] .option{border-color:var(--line-2);}
+html[data-theme] .option:hover{border-color:var(--acc-line);}
+#prevQ:disabled{opacity:1 !important;}
+
+/* ------------------------------------------------------------ responsive */
+@media (max-width:1180px){
+  .main-title small{max-width:none;}
+}
+@media (max-width:820px){
+  body{padding:10px;}
+  .container{border-radius:16px;}
+  .main-header{margin:-16px -16px 12px; padding:12px 14px; gap:10px;}
+  .main-title{font-size:18px;}
+  .controls-outer{gap:8px;}
+  .quiz-panel{grid-template-columns:1fr;}
+  .chapter-panel{border:0; padding:0; background:transparent;}
+  .controls{border:0; padding:0; background:transparent;}
+  .controls-outer{background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:8px;}
+  .sidebar{position:static; order:2;}
+  .question-card{padding:16px 18px 16px 18px; padding-right:52px; border-radius:14px;}
+  .question-text{padding-right:8px; font-size:17px; line-height:1.7;}
+  .options{grid-template-columns:1fr;}
+  .option{font-size:15px; min-height:52px;}
+  .nav-grid{max-height:none;}
+  .warning-card{padding:16px 14px 6px;}
+  .warning-text{font-size:14px;}
+}
+@media (max-width:520px){
+  .credit{display:none;}
+  .main-header .flex-row{width:100%; justify-content:flex-start;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important; transition:none !important;}
+}
+</style>
+
+<style id="tpx-glass-layer">
+/* =========================================================================
+   TPX · GLASSMORPHISM LAYER — "readable frosted glass over character art"
+   -------------------------------------------------------------------------
+   What this layer does, in order:
+
+   1) Every content surface (container, header, question card, options,
+      sidebar, controls, accordions, results card) becomes frosted GLASS so
+      the full-page theme character/photo stays clearly visible behind them
+      — in BOTH light and dark mode.
+
+   2) Readability is protected: glass tints + backdrop blur are tuned so
+      quiz questions and options stay crisp even over busy posters.
+      · Light  : white glass  (~44–64% tint, blur 9–22px)
+      · Dark   : smoked glass (~50–70% tint, blur 9–22px)
+
+   3) Score board gets the "second layer": the theme's SECONDARY image is
+      rendered behind the score text (main layer = full-page photo,
+      second layer = score-board photo). Applied via --score-photo +
+      .tpx-score-photo from the theme engine.
+
+   4) Graceful degradation:
+      · body.tpx-bg-off        → flat opaque surfaces, blur off
+      · no backdrop-filter     → higher-opacity fallback surfaces
+      · prefers-reduced-motion → sheen/shimmer animations disabled
+   ========================================================================= */
+
+/* -------------------------------------------------------------- tokens */
 :root{
-  --tpx-r-xs: 10px;
-  --tpx-r-sm: 14px;
-  --tpx-r-md: 18px;
-  --tpx-r-lg: 22px;
-  --tpx-r-xl: 26px;
-  --tpx-ease: cubic-bezier(.2,.7,.3,1);
-  --ink: #14161a;
-  --paper: #ffffff;
-  --paper-2: #f4f5f7;
-  --line: #e5e6ea;
-  --accent: #4b5563;
-  --accent-ink: #ffffff;
-  --tpx-ink: #14161a;
-  --tpx-accent: #4b5563;
-  --tpx-line: #e5e6ea;
-  --tpx-muted: #6b7280;
-  --tpx-soft: rgba(17,24,39,.035);
-  --tpx-glow: rgba(75,85,99,.2);
-  --tpx-pat: none;
-  --tpx-pat-size: auto;
-  --tpx-pat-op: .18;
-  --tpx-art-url: none;
-  --tpx-art-2: none;
-  --tpx-art-main: none;
-  --tpx-art-light: none;
-  --tpx-shadow: 0 20px 50px -34px rgba(17,24,39,.55);
+  --glass-white: rgba(255,255,255,.52);
+  --glass-white-strong: rgba(255,255,255,.64);
+  --glass-white-soft: rgba(255,255,255,.44);
+  --glass-dark: rgba(14,17,25,.58);
+  --glass-dark-strong: rgba(14,17,25,.70);
+  --glass-dark-soft: rgba(14,17,25,.50);
+  --glass-border-w: rgba(255,255,255,.62);
+  --glass-border-d: rgba(148,163,184,.24);
+  --glass-blur-lg: 22px;
+  --glass-blur-md: 18px;
+  --glass-blur-sm: 12px;
+  --glass-sat: 1.35;
+  --glass-inset-w: inset 0 0 0 1px rgba(255,255,255,.34);
+  --glass-inset-d: inset 0 0 0 1px rgba(255,255,255,.07);
+  --glass-drop-w: 0 10px 34px -12px rgba(15,23,42,.28);
+  --glass-drop-d: 0 12px 38px -14px rgba(0,0,0,.65);
 }
 
-[data-theme] body{
-  font-family: "Hind Siliguri", "Segoe UI", "Noto Sans Bengali", system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  background: var(--paper-2);
+/* ----------------------------------------------------------- container */
+.container{
+  background: var(--glass-white);
+  border: 1px solid var(--glass-border-w);
+  box-shadow: var(--glass-drop-w), var(--glass-inset-w);
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
 }
-[data-theme="light"]{ color-scheme: light; }
-[data-theme="dark"]{ color-scheme: dark; }
-html{ background: var(--paper-2, #f4f5f7); }
-
-/* ---------- 1 · page: paper + a whisper of the suit pattern ---------- */
-.tpx-bg{
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image: var(--tpx-pat);
-  background-size: var(--tpx-pat-size);
-  opacity: calc(var(--tpx-pat-op) * .55);
-  -webkit-mask-image: radial-gradient(120% 90% at 100% 0%, #000 0 20%, transparent 72%);
-  mask-image: radial-gradient(120% 90% at 100% 0%, #000 0 20%, transparent 72%);
-}
-main.app{ position: relative; z-index: 1; }
-.footer-contact{ position: relative; z-index: 1; }
-
-/* ---------- 2 · shell ---------- */
-[data-theme] .container{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--tpx-r-xl);
-  box-shadow: var(--tpx-shadow);
+html[data-theme="dark"] .container{
+  background: var(--glass-dark);
+  border-color: var(--glass-border-d);
+  box-shadow: var(--glass-drop-d), var(--glass-inset-d);
 }
 
-/* ---------- 3 · header: white bar, art bleeding out of the right edge ---------- */
-[data-theme] .main-header{
+/* -------------------------------------------------------------- header */
+.main-header{
+  background: var(--glass-white-soft);
+  border-bottom: 1px solid rgba(255,255,255,.38);
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-sat));
+}
+html[data-theme="dark"] .main-header{
+  background: var(--glass-dark-soft);
+  border-bottom-color: rgba(148,163,184,.18);
+}
+.credit{
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.6);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+html[data-theme="dark"] .credit{
+  background: rgba(20,24,33,.6);
+  border-color: rgba(148,163,184,.24);
+}
+
+/* ----------------------------------------------------- theme tool btns */
+.tpx-icon-btn{
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.6);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+html[data-theme="dark"] .tpx-icon-btn{
+  background: rgba(26,31,42,.62);
+  border-color: rgba(148,163,184,.26);
+}
+
+/* ------------------------------------------------------------ controls */
+.controls{
+  background: var(--glass-white-soft);
+  border: 1px solid rgba(255,255,255,.42);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+}
+html[data-theme="dark"] .controls{
+  background: var(--glass-dark-soft);
+  border-color: rgba(148,163,184,.20);
+}
+.mode-selector{
+  background: rgba(148,163,184,.16);
+  border: 1px solid rgba(255,255,255,.34);
+}
+html[data-theme="dark"] .mode-selector{
+  background: rgba(10,13,20,.5);
+  border-color: rgba(148,163,184,.2);
+}
+.mode-btn.active{
+  background: rgba(255,255,255,.72);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+html[data-theme="dark"] .mode-btn.active{
+  background: rgba(38,46,62,.85);
+}
+.mode-btn{
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* ------------------------------------------------------- subject trees */
+.subject-action-row{
+  background: rgba(255,255,255,.4);
+  border: 1px solid rgba(255,255,255,.4);
+}
+html[data-theme="dark"] .subject-action-row{
+  background: rgba(12,15,22,.5);
+  border-color: rgba(148,163,184,.18);
+}
+.subject-accordion{
+  background: var(--glass-white-soft);
+  border: 1px solid rgba(255,255,255,.44);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  box-shadow: var(--glass-drop-w);
+}
+html[data-theme="dark"] .subject-accordion{
+  background: var(--glass-dark-soft);
+  border-color: rgba(148,163,184,.20);
+  box-shadow: var(--glass-drop-d);
+}
+.subject-chapters{ background: transparent; }
+.subject-chapters-inner{
+  background: rgba(255,255,255,.34);
+}
+html[data-theme="dark"] .subject-chapters-inner{
+  background: rgba(10,13,20,.42);
+}
+.chapter-item{
+  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(255,255,255,.55);
+}
+html[data-theme="dark"] .chapter-item{
+  background: rgba(24,29,40,.6);
+  border-color: rgba(148,163,184,.22);
+}
+
+/* -------------------------------------------------------- question card */
+.question-card{
+  background: var(--glass-white-strong);
+  border: 1px solid rgba(255,255,255,.55);
+  border-left: 5px solid var(--acc);
+  box-shadow: var(--glass-drop-w), var(--glass-inset-w);
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-sat));
+}
+html[data-theme="dark"] .question-card{
+  background: var(--glass-dark-strong);
+  border-color: rgba(148,163,184,.22);
+  border-left-color: var(--acc);
+  box-shadow: var(--glass-drop-d), var(--glass-inset-d);
+}
+/* soft top sheen so the glass reads as glass, never as flat plastic */
+.question-card::before{
+  content:"";
+  position:absolute; inset:0 0 auto 0; height:64px;
+  pointer-events:none; z-index:0;
+  background:linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,0));
+}
+html[data-theme="dark"] .question-card::before{
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+}
+
+/* ---------------------------------------------------------------- pills */
+.pill{
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+html[data-theme="dark"] .pill{
+  background: rgba(26,31,42,.6);
+  border-color: rgba(148,163,184,.24);
+}
+.pill.difficulty-easy{
+  background: rgba(16,185,129,.16);
+  border-color: rgba(16,185,129,.42);
+  color:#0d6b3d;
+}
+.pill.difficulty-medium{
+  background: rgba(245,158,11,.16);
+  border-color: rgba(245,158,11,.44);
+  color:#96520a;
+}
+.pill.difficulty-hard{
+  background: rgba(239,68,68,.16);
+  border-color: rgba(239,68,68,.44);
+  color:#a3201a;
+}
+html[data-theme="dark"] .pill.difficulty-easy{ color:#6ee7b7; }
+html[data-theme="dark"] .pill.difficulty-medium{ color:#fcd34d; }
+html[data-theme="dark"] .pill.difficulty-hard{ color:#fca5a5; }
+.timer-display{
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.5);
+}
+html[data-theme="dark"] .timer-display{
+  background: rgba(26,31,42,.6);
+  border-color: rgba(148,163,184,.24);
+}
+
+/* -------------------------------------------------------------- options */
+.option{
+  background: rgba(255,255,255,.55);
+  border: 1.5px solid rgba(255,255,255,.6);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  box-shadow: 0 4px 16px -10px rgba(15,23,42,.25);
+}
+html[data-theme="dark"] .option{
+  background: rgba(22,27,38,.58);
+  border-color: rgba(148,163,184,.24);
+  box-shadow: 0 4px 16px -10px rgba(0,0,0,.5);
+}
+/* diagonal glass sheen on hover (sits over the tint) */
+.option:hover{
+  background-color: rgba(255,255,255,.66);
+  background-image: linear-gradient(120deg, rgba(255,255,255,.34), rgba(255,255,255,0) 55%);
+}
+html[data-theme="dark"] .option:hover{
+  background-color: rgba(32,39,54,.68);
+  background-image: linear-gradient(120deg, rgba(255,255,255,.08), rgba(255,255,255,0) 55%);
+}
+.key{
+  background: rgba(255,255,255,.78);
+  color:#1a1e2b;
+  box-shadow: inset 0 0 0 1px rgba(15,23,42,.08);
+}
+html[data-theme="dark"] .key{
+  background: rgba(45,53,70,.85);
+  color:#e7ecf3;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
+}
+
+/* ---------------------------------------------------------- explanation */
+.info{
+  background: rgba(255,255,255,.46);
+  border: 1px solid rgba(255,255,255,.5);
+  border-left: 4px solid var(--acc-2);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+  backdrop-filter: blur(var(--glass-blur-sm));
+}
+html[data-theme="dark"] .info{
+  background: rgba(18,22,31,.55);
+  border-color: rgba(148,163,184,.2);
+}
+
+/* -------------------------------------------------------------- sidebar */
+.sidebar{
+  background: var(--glass-white);
+  border: 1px solid rgba(255,255,255,.55);
+  box-shadow: var(--glass-drop-w), var(--glass-inset-w);
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-sat));
+}
+html[data-theme="dark"] .sidebar{
+  background: var(--glass-dark);
+  border-color: rgba(148,163,184,.22);
+  box-shadow: var(--glass-drop-d), var(--glass-inset-d);
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   SCORE BOARD — the SECOND layer
+   main layer  : full-page theme photo on <body>
+   second layer: the theme's small/secondary image BEHIND the score text
+                 (set by the engine through --score-photo + .tpx-score-photo)
+   A glass veil keeps "Score: 0/200" perfectly readable on top.
+   ═════════════════════════════════════════════════════════════════════ */
+.score-board{
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  background: var(--paper);
-  color: var(--ink);
-  border-bottom: 2px solid var(--ink);
-  border-radius: var(--tpx-r-xl) var(--tpx-r-xl) 0 0;
-  padding: 15px 22px;
-  box-shadow: none;
+  border-radius: 14px;
+  padding: 14px 12px 12px;
+  background: var(--glass-white-strong);
+  border: 1px solid rgba(255,255,255,.55);
+  box-shadow: var(--glass-inset-w);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
 }
-[data-theme] .main-header::before{   /* suit pattern, only in the right corner */
-  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background-image: var(--tpx-pat);
-  background-size: var(--tpx-pat-size);
-  opacity: calc(var(--tpx-pat-op) * 1.6);
-  -webkit-mask-image: linear-gradient(90deg, transparent 34%, #000 100%);
-  mask-image: linear-gradient(90deg, transparent 34%, #000 100%);
+html[data-theme="dark"] .score-board{
+  background: var(--glass-dark-strong);
+  border-color: rgba(148,163,184,.22);
+  box-shadow: var(--glass-inset-d);
 }
-[data-theme] .main-header::after{    /* no art here — the buttons need that corner */
-  content: none;
+.score-board.tpx-score-photo::before{
+  content:"";
+  position:absolute; inset:0; z-index:0;
+  background-image: var(--score-photo, none);
+  background-size: cover;
+  background-position: center 22%;
+  background-repeat: no-repeat;
+  opacity:.9;
+  transform: scale(1.04);
 }
-[data-theme] .main-header > *{ position: relative; z-index: 1; }
-
-[data-theme] .main-title{
-  font-family: "Baloo Da 2", "Hind Siliguri", system-ui, sans-serif;
-  font-weight: 800;
-  letter-spacing: .1px;
-  color: var(--ink);
-  text-shadow: none;
+.score-board.tpx-score-photo::after{
+  content:"";
+  position:absolute; inset:0; z-index:1;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.74) 0%, rgba(255,255,255,.56) 52%, rgba(255,255,255,.68) 100%),
+    linear-gradient(105deg, transparent 42%, rgba(255,255,255,.20) 50%, transparent 58%),
+    linear-gradient(transparent, transparent);
+  background-size: auto, 260% 100%, auto;
+  animation: tpxScoreSheen 5.5s ease-in-out infinite;
 }
-[data-theme] .main-title small{
-  font-family: "Hind Siliguri", system-ui, sans-serif;
-  color: var(--tpx-muted);
-  font-weight: 500;
-  margin-top: 1px;
+html[data-theme="dark"] .score-board.tpx-score-photo::after{
+  background:
+    linear-gradient(180deg, rgba(9,12,18,.76) 0%, rgba(9,12,18,.58) 52%, rgba(9,12,18,.70) 100%),
+    linear-gradient(105deg, transparent 42%, rgba(255,255,255,.10) 50%, transparent 58%),
+    linear-gradient(transparent, transparent);
+  background-size: auto, 260% 100%, auto;
 }
-[data-theme] .credit{
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--tpx-muted);
-  font-weight: 600;
-  box-shadow: none;
+@keyframes tpxScoreSheen{
+  0%, 100% { background-position: 0 0, 130% 0, 0 0; }
+  50%      { background-position: 0 0, -30% 0, 0 0; }
 }
-[data-theme] .theme-toggle-btn{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  color: var(--ink);
-  box-shadow: none;
-  font-size: 15px;
-}
-[data-theme] .theme-toggle-btn:hover{
-  background: var(--tpx-soft);
-  border-color: var(--ink);
-  transform: none;
-}
-
-/* the "theme off" switch that sits at the very top */
-.tpx-theme-btn{
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 11px 6px 9px;
+.score-board > *{ position: relative; z-index: 2; }
+.score-breakdown{
+  display:inline-flex; flex-wrap:wrap; gap:4px 10px; align-items:center; justify-content:center;
+  background: rgba(127,142,166,.14);
+  border: 1px solid rgba(127,142,166,.22);
   border-radius: 999px;
+  padding: 3px 12px;
+}
+
+/* ------------------------------------------------------- question grid */
+.q-num{
+  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(255,255,255,.5);
+}
+html[data-theme="dark"] .q-num{
+  background: rgba(30,36,48,.62);
+  border-color: rgba(148,163,184,.18);
+}
+.q-num.current{
+  border-color: rgba(255,255,255,.65);
+}
+.nav-grid::-webkit-scrollbar{ width:8px; }
+.nav-grid::-webkit-scrollbar-track{ background: transparent; }
+.nav-grid::-webkit-scrollbar-thumb{
+  background: rgba(127,142,166,.4);
+  border-radius: 999px;
+}
+.note-toggle{
+  background: rgba(255,255,255,.45);
+  border: 1px solid rgba(255,255,255,.5);
+}
+html[data-theme="dark"] .note-toggle{
+  background: rgba(20,25,34,.55);
+  border-color: rgba(148,163,184,.2);
+}
+.status-msg{ text-shadow: 0 1px 0 rgba(255,255,255,.5); }
+html[data-theme="dark"] .status-msg{ text-shadow: 0 1px 0 rgba(0,0,0,.6); }
+
+/* -------------------------------------------------------------- results */
+.results-overlay{
+  background: rgba(8,10,15,.58);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+html[data-theme="dark"] .results-overlay{
+  background: rgba(4,6,10,.7);
+}
+.results-card{
+  background: var(--glass-white-strong);
+  border: 1px solid rgba(255,255,255,.6);
+  box-shadow: var(--glass-drop-w), var(--glass-inset-w);
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
+}
+html[data-theme="dark"] .results-card{
+  background: rgba(16,20,29,.82);
+  border-color: rgba(148,163,184,.22);
+  box-shadow: var(--glass-drop-d), var(--glass-inset-d);
+}
+
+/* --------------------------------------------------------------- footer */
+.footer-contact{
+  background: rgba(255,255,255,.42);
+  border: 1px solid rgba(255,255,255,.5);
+  color: var(--ink-2);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  box-shadow: var(--glass-drop-w);
+}
+html[data-theme="dark"] .footer-contact{
+  background: rgba(12,15,23,.6);
+  border-color: rgba(148,163,184,.18);
+  box-shadow: var(--glass-drop-d);
+}
+
+/* ------------------------------------- secondary corner image (2nd img) */
+.tpx-secondary{
+  border-radius: 14px;
+  opacity: .9;
+  box-shadow:
+    0 10px 30px -8px rgba(0,0,0,.5),
+    0 0 0 1px rgba(255,255,255,.30) inset,
+    0 0 0 4px rgba(255,255,255,.16);
+}
+html[data-theme="dark"] .tpx-secondary{
+  opacity:.82;
+  box-shadow:
+    0 10px 30px -8px rgba(0,0,0,.7),
+    0 0 0 1px rgba(255,255,255,.14) inset,
+    0 0 0 4px rgba(255,255,255,.08);
+}
+
+/* ============================== BG OFF ===============================
+   Theme background turned OFF (🎨/🚫 button) → all glass goes flat and
+   opaque again so text sits on a calm solid surface, no blur anywhere. */
+body.tpx-bg-off .container,
+body.tpx-bg-off .main-header,
+body.tpx-bg-off .controls,
+body.tpx-bg-off .question-card,
+body.tpx-bg-off .sidebar,
+body.tpx-bg-off .score-board,
+body.tpx-bg-off .subject-accordion,
+body.tpx-bg-off .results-card,
+body.tpx-bg-off .footer-contact,
+body.tpx-bg-off .note-toggle,
+body.tpx-bg-off .info{
   background: var(--paper) !important;
-  border: 1px solid var(--line) !important;
-  color: var(--ink) !important;
-  font-size: 12px !important; font-weight: 600;
-  box-shadow: none !important;
-  white-space: nowrap;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: var(--shadow-1) !important;
 }
-.tpx-theme-btn svg{ width: 15px; height: 15px; flex-shrink: 0; color: var(--accent); }
-.tpx-theme-btn span{ line-height: 1; }
-.tpx-theme-btn:hover{
-  border-color: var(--ink) !important;
-  background: var(--tpx-soft) !important;
-  transform: none !important;
+html[data-theme="dark"] body.tpx-bg-off .container,
+html[data-theme="dark"] body.tpx-bg-off .main-header,
+html[data-theme="dark"] body.tpx-bg-off .controls,
+html[data-theme="dark"] body.tpx-bg-off .question-card,
+html[data-theme="dark"] body.tpx-bg-off .sidebar,
+html[data-theme="dark"] body.tpx-bg-off .score-board,
+html[data-theme="dark"] body.tpx-bg-off .subject-accordion,
+html[data-theme="dark"] body.tpx-bg-off .results-card,
+html[data-theme="dark"] body.tpx-bg-off .footer-contact,
+html[data-theme="dark"] body.tpx-bg-off .note-toggle,
+html[data-theme="dark"] body.tpx-bg-off .info{
+  background: #161a21 !important;
 }
-.tpx-theme-btn.is-off{ color: var(--tpx-muted) !important; }
-.tpx-theme-btn.is-off svg{ color: var(--tpx-muted); opacity: .45; }
-.tpx-theme-btn.is-off span{ text-decoration: line-through; text-decoration-thickness: 1px; }
-
-/* ---------- 4 · buttons: flat ink, one accent, hairlines ---------- */
-[data-theme] button{
-  border-radius: 999px;
-  font-family: "Hind Siliguri", system-ui, sans-serif;
-  font-weight: 600;
-  letter-spacing: .1px;
-  background: var(--ink);
-  color: var(--paper);
-  box-shadow: none;
-  transition: background .16s var(--tpx-ease), color .16s var(--tpx-ease), transform .12s var(--tpx-ease), border-color .16s;
+body.tpx-bg-off .option{
+  background: var(--paper) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }
-[data-theme] button:hover{
-  background: var(--ink);
-  filter: none;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px -10px rgba(17,24,39,.7);
+html[data-theme="dark"] body.tpx-bg-off .option{
+  background: #1b212b !important;
 }
-[data-theme] button:active{ transform: translateY(0) scale(.99); }
-[data-theme] button:disabled{ opacity: .38; transform: none; box-shadow: none; }
-
-[data-theme] .controls{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--tpx-r-lg);
-  box-shadow: none;
-  padding: 11px 12px;
-}
-[data-theme] .mode-selector{
-  background: var(--paper-2);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 3px;
-  box-shadow: none;
-}
-[data-theme] .mode-btn{
-  background: transparent;
-  color: var(--tpx-muted);
-  box-shadow: none;
-  border-radius: 999px;
-}
-[data-theme] .mode-btn:hover{ background: transparent; color: var(--ink); transform: none; box-shadow: none; }
-[data-theme] .mode-btn.active{
-  background: var(--accent);
-  color: var(--accent-ink);
-  box-shadow: none;
+body.tpx-bg-off .question-card::before{ display:none !important; }
+body.tpx-bg-off .score-board.tpx-score-photo::before,
+body.tpx-bg-off .score-board.tpx-score-photo::after{ display:none !important; }
+body.tpx-bg-off .pill,
+body.tpx-bg-off .timer-display,
+body.tpx-bg-off .q-num,
+body.tpx-bg-off .chapter-item,
+body.tpx-bg-off .mode-selector{
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }
 
-[data-theme] input:not([type="checkbox"]):not([type="radio"]),
-[data-theme] select,
-[data-theme] textarea{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--ink);
-  font-weight: 600;
-  box-shadow: none;
+/* ==================== no backdrop-filter fallback ==================== */
+@supports not ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))){
+  .container{ background: rgba(255,255,255,.90); }
+  .main-header{ background: rgba(255,255,255,.88); }
+  .controls{ background: rgba(255,255,255,.84); }
+  .question-card{ background: rgba(255,255,255,.93); }
+  .option{ background: rgba(255,255,255,.88); }
+  .sidebar{ background: rgba(255,255,255,.90); }
+  .score-board{ background: rgba(255,255,255,.90); }
+  .subject-accordion{ background: rgba(255,255,255,.86); }
+  .results-card{ background: rgba(255,255,255,.96); }
+  .info{ background: rgba(255,255,255,.86); }
+  html[data-theme="dark"] .container{ background: rgba(20,24,33,.94); }
+  html[data-theme="dark"] .main-header{ background: rgba(20,24,33,.92); }
+  html[data-theme="dark"] .controls{ background: rgba(20,24,33,.90); }
+  html[data-theme="dark"] .question-card{ background: rgba(20,24,33,.95); }
+  html[data-theme="dark"] .option{ background: rgba(26,32,44,.94); }
+  html[data-theme="dark"] .sidebar{ background: rgba(20,24,33,.94); }
+  html[data-theme="dark"] .score-board{ background: rgba(20,24,33,.94); }
+  html[data-theme="dark"] .subject-accordion{ background: rgba(20,24,33,.92); }
+  html[data-theme="dark"] .results-card{ background: rgba(16,20,29,.96); }
+  html[data-theme="dark"] .info{ background: rgba(18,22,31,.92); }
 }
-[data-theme] input:not([type="checkbox"]):not([type="radio"]):focus,
-[data-theme] select:focus,
-[data-theme] textarea:focus{
-  border-color: var(--ink);
-  box-shadow: 0 0 0 3px var(--tpx-glow);
-}
-[data-theme="dark"] #quizSize,
-[data-theme="dark"] #timeLimit{ color: var(--tpx-ink) !important; }
 
-/* ---------- 5 · subject picker: paper bars, pattern in the corner ---------- */
-[data-theme] .chapter-panel{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--tpx-r-md);
-  box-shadow: none;
+/* ============================ responsive ============================ */
+@media (max-width: 960px){
+  .sidebar{
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+    backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  }
 }
-[data-theme] .subject-action-row{
-  background: var(--paper-2);
-  border: 1px solid var(--line);
-  border-radius: var(--tpx-r-sm);
+@media (max-width: 820px){
+  .controls-outer{
+    background: var(--glass-white-soft);
+    border: 1px solid rgba(255,255,255,.42);
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+    backdrop-filter: blur(var(--glass-blur-sm));
+  }
+  html[data-theme="dark"] .controls-outer{
+    background: var(--glass-dark-soft);
+    border-color: rgba(148,163,184,.2);
+  }
+  body.tpx-bg-off .controls-outer{
+    background: var(--paper) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  html[data-theme="dark"] body.tpx-bg-off .controls-outer{
+    background: #161a21 !important;
+  }
 }
-[data-theme] .subject-accordion{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--tpx-r-sm);
-  box-shadow: none;
-  overflow: hidden;
+/* lighter blur on small devices = smoother scrolling over big photos */
+@media (max-width: 760px){
+  .container,
+  .question-card,
+  .sidebar,
+  .main-header,
+  .results-card{
+    -webkit-backdrop-filter: blur(14px) saturate(1.25);
+    backdrop-filter: blur(14px) saturate(1.25);
+  }
+  .option{
+    -webkit-backdrop-filter: blur(9px);
+    backdrop-filter: blur(9px);
+  }
 }
-[data-theme] .subject-accordion.open{ box-shadow: 0 10px 30px -26px rgba(17,24,39,.6); }
+@media (max-width: 520px){
+  .score-board{ padding: 12px 10px 10px; }
+}
 
-/* every subject bar is paper with the fandom pattern in its right corner */
-[data-theme] .subject-header,
-[data-theme] .subject-header.gk,
-[data-theme] .subject-header.aptitude,
-[data-theme] .subject-header.reasoning,
-[data-theme] .subject-header.english,
-[data-theme] .subject-header.science_comp,
-[data-theme] .subject-header.current{
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  background: var(--paper);
-  background-image: none;
-  color: var(--ink);
-  border-radius: var(--tpx-r-sm);
-  padding: 12px 16px;
-  min-height: 50px;
-  font-family: "Baloo Da 2", "Hind Siliguri", system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: .1px;
-  text-shadow: none;
-  box-shadow: none;
+/* ========================= reduced motion =========================== */
+@media (prefers-reduced-motion: reduce){
+  .score-board.tpx-score-photo::after{ animation: none !important; }
+  .option, .question-card, .sidebar, .container, .score-board{
+    transition: none !important;
+  }
 }
-[data-theme] .subject-header::before{
-  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background-image: var(--tpx-pat);
-  background-size: var(--tpx-pat-size);
-  opacity: var(--tpx-pat-op);
-  -webkit-mask-image: linear-gradient(90deg, transparent 55%, #000 100%);
-  mask-image: linear-gradient(90deg, transparent 55%, #000 100%);
-}
-[data-theme] .subject-header > *{ position: relative; z-index: 1; }
-[data-theme] .subject-header::after{   /* a 3px subject edge — no wash */
-  content: ""; position: absolute; z-index: 1; pointer-events: none;
-  left: 0; top: 0; bottom: 0; width: 3px;
-  background: var(--tpx-sub, var(--accent));
-  border-radius: 3px 0 0 3px;
-}
-[data-theme] .subject-header.gk{ --tpx-sub: var(--tpx-s-gk); }
-[data-theme] .subject-header.aptitude{ --tpx-sub: var(--tpx-s-aptitude); }
-[data-theme] .subject-header.reasoning{ --tpx-sub: var(--tpx-s-reasoning); }
-[data-theme] .subject-header.english{ --tpx-sub: var(--tpx-s-english); }
-[data-theme] .subject-header.science_comp{ --tpx-sub: var(--tpx-s-science_comp); }
-[data-theme] .subject-header.current{ --tpx-sub: var(--tpx-s-current); }
-[data-theme] .subject-header:hover{ background: var(--paper); }
-[data-theme] .subject-header:hover::before{ opacity: calc(var(--tpx-pat-op) * 1.6); }
+</style>
 
-[data-theme] .subject-checkbox{
-  border-radius: 6px;
-  border: 1.5px solid var(--ink);
-  background: transparent;
-  box-shadow: none;
-  opacity: .55;
-}
-[data-theme] .subject-checkbox:hover{ opacity: 1; background: var(--tpx-soft); }
-[data-theme] .subject-checkbox.checked{
-  background: var(--tpx-sub, var(--accent));
-  border-color: var(--tpx-sub, var(--accent));
+<style id="tpx-gate-dark-layer">
+/* =========================================================================
+   TPX · GATE (LOCK / WARNING) LAYER — always-dark siren lock
+   -------------------------------------------------------------------------
+   · ONE single dark lock screen for BOTH light and dark app themes —
+     light mode এ আর আলাদা সাদা gate দেখাবে না, সবসময় এই dark সাইরেন lock।
+   · Restores the red-alert pulse + bouncing siren + red-bordered card.
+   · The current theme photo stays faintly visible behind the red veil
+     (the card itself is dark glass, so the character never distracts).
+   · "🎲 Random Theme" pill button: click → puro random character theme,
+     theme list / name kono rokom show kora hoy na.
+   · Works with the base sheet's keyframes: wholePageRedPulse, sirenBounce,
+     shake — they are reused, not duplicated.
+   ========================================================================= */
+
+/* ------------------------------------------------------------ overlay */
+.warning-overlay,
+html[data-theme="dark"] .warning-overlay{
+  justify-content: center !important;
+  padding: 24px 16px 44px;
+  overflow: auto;
+  background-color: rgba(0,0,0,.93);
+  background-image:
+    linear-gradient(180deg, rgba(8,0,0,.82) 0%, rgba(12,0,0,.72) 42%, rgba(5,0,0,.86) 100%),
+    var(--photo);
+  background-size: auto, cover;
+  background-position: center, center 26%;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: scroll, fixed;
+  animation: wholePageRedPulse 1.8s ease-in-out infinite;
+  transition: opacity .6s ease, visibility .6s ease;
   opacity: 1;
-  box-shadow: none;
+  visibility: visible;
+  font-family: 'Hind Siliguri', sans-serif;
 }
-[data-theme] .subject-checkbox.checked::after{ color: var(--accent-ink); font-weight: 800; }
-[data-theme] .subject-arrow{ color: var(--tpx-muted); }
-[data-theme] .subject-chapters{ border-top: 1px solid var(--line); }
-
-[data-theme] .chapter-item{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--ink);
-  box-shadow: none;
-  transition: border-color .13s var(--tpx-ease), background .13s var(--tpx-ease);
+/* gate photo stays even when the quiz bg is toggled off — lock has its own look */
+body.tpx-bg-off .warning-overlay{
+  background-image:
+    linear-gradient(180deg, rgba(8,0,0,.82) 0%, rgba(12,0,0,.72) 42%, rgba(5,0,0,.86) 100%),
+    var(--photo);
 }
-[data-theme] .chapter-item:hover{
-  background: var(--tpx-soft);
-  border-color: var(--ink);
-  transform: none;
-  box-shadow: none;
-}
-[data-theme] .chapter-item:has(input:checked){
-  border-color: var(--accent);
-  background: var(--paper);
-  box-shadow: inset 0 0 0 1px var(--accent);
-}
-[data-theme] .chapter-item input[type="checkbox"]{ accent-color: var(--accent); }
-[data-theme] .q-count{ color: var(--tpx-muted); font-weight: 600; }
-[data-theme] .status-msg{ font-weight: 600; }
-
-/* ---- the chapter reveal: 0fr → 1fr, no max-height guessing, 180ms ---- */
-[data-theme] .subject-chapters{
-  display: grid;
-  grid-template-rows: minmax(0, 0fr);
-  max-height: none;
-  height: auto;
-  overflow: hidden;
-  transition: grid-template-rows .19s var(--tpx-ease), border-color .19s;
-  border-top-color: transparent;
-  will-change: grid-template-rows;
-}
-[data-theme] .subject-chapters.open{
-  grid-template-rows: minmax(0, 1fr);
-  max-height: none;
-  border-top-color: var(--line);
-}
-[data-theme] .subject-chapters-inner{
-  min-height: 0;
-  overflow: hidden auto;
-  padding: 10px 14px;
-}
-[data-theme] .subject-arrow{ transition: transform .18s var(--tpx-ease); }
-
-/* ---------- 6 · the reading stage ---------- */
-[data-theme] .question-card{
-  position: relative;
-  isolation: isolate;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--ink);
-  border-radius: var(--tpx-r-md);
-  box-shadow: none;
-  transition: border-left-color .25s var(--tpx-ease);
-}
-[data-theme] .question-card::before{      /* the "spiderweb in the white area" */
-  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  border-radius: inherit;
-  background-image: var(--tpx-pat);
-  background-size: var(--tpx-pat-size);
-  opacity: calc(var(--tpx-pat-op) * .62);
-  -webkit-mask-image: radial-gradient(120% 90% at 100% 0%, #000 0 8%, transparent 62%);
-  mask-image: radial-gradient(120% 90% at 100% 0%, #000 0 8%, transparent 62%);
-}
-[data-theme] .question-card::after{       /* a faint poster in the empty right side */
-  content: ""; position: absolute; z-index: 0; pointer-events: none;
-  top: 58px; right: 10px;
-  width: 260px; height: 260px;
-  background-image: var(--tpx-art-url);
-  background-repeat: no-repeat; background-position: center; background-size: contain;
-  opacity: .15;
-  -webkit-mask-image: radial-gradient(circle at 55% 45%, #000 0 52%, transparent 84%);
-  mask-image: radial-gradient(circle at 55% 45%, #000 0 52%, transparent 84%);
-}
-[data-theme] .question-card > *:not(.hide-options-btn){ position: relative; z-index: 1; }
-[data-theme] .question-card.timer-warn{ border-left-color: var(--gold); }
-[data-theme] .question-card.timer-danger{ border-left-color: var(--red); animation: pulseBorder 1s ease-in-out infinite; }
-
-[data-theme] .pill{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  color: var(--tpx-muted);
-  font-weight: 600;
-  box-shadow: none;
-}
-[data-theme] .pill.difficulty-easy{ border-color: var(--line); color: #0f766e; }
-[data-theme] .pill.difficulty-medium{ border-color: var(--line); color: #b45309; }
-[data-theme] .pill.difficulty-hard{ border-color: var(--line); color: #b91c1c; }
-[data-theme="dark"] .pill.difficulty-easy{ color: #4ade80; }
-[data-theme="dark"] .pill.difficulty-medium{ color: #fbbf24; }
-[data-theme="dark"] .pill.difficulty-hard{ color: #f87171; }
-
-[data-theme] .timer-display{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  color: var(--ink);
-  font-weight: 700;
-  box-shadow: none;
-}
-[data-theme] .timer-display.warn{ color: #b45309; border-color: #f0c98a; }
-[data-theme] .timer-display.danger{ color: #b91c1c; border-color: #f2b8b5; }
-
-[data-theme] .question-text{
-  color: var(--ink);
-  font-weight: 600;
-  letter-spacing: .1px;
-  text-wrap: pretty;
-}
-[data-theme] .question-text u,
-[data-theme] .option u{ text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-
-[data-theme] .options{ gap: 10px; }
-@media (min-width: 961px){
-  [data-theme] .options{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-[data-theme] .option{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--tpx-r-sm);
-  color: var(--ink);
-  box-shadow: none;
-  transition: border-color .13s var(--tpx-ease), background .13s var(--tpx-ease), box-shadow .13s;
-}
-[data-theme] .option:hover{
-  background: var(--tpx-soft);
-  border-color: var(--ink);
-  transform: none;
-  box-shadow: none;
-}
-[data-theme] .option.correct-answer{
-  background: #0f766e;
-  border-color: #0f766e;
-  color: #fff;
-  text-shadow: none;
-  box-shadow: none;
-}
-[data-theme] .option.wrong-feedback{
-  background: #c0392b;
-  border-color: #c0392b;
-  color: #fff;
-  text-shadow: none;
-  box-shadow: none;
-}
-[data-theme] .option.selected-mock{
-  background: var(--paper);
-  border-color: var(--accent);
-  box-shadow: inset 0 0 0 1px var(--accent);
-}
-[data-theme] .key{
-  background: var(--paper-2);
-  border: 1px solid var(--line);
-  color: var(--ink);
-  font-weight: 700;
-  box-shadow: none;
-}
-[data-theme] .option.correct-answer .key,
-[data-theme] .option.wrong-feedback .key{
-  background: rgba(255,255,255,.18);
-  border-color: rgba(255,255,255,.42);
-  color: #fff;
-}
-
-[data-theme] .hide-options-btn{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  color: var(--tpx-muted);
-  opacity: .8;
-  box-shadow: none;
-}
-[data-theme] .hide-options-btn:hover{
-  opacity: 1;
-  color: var(--ink);
-  border-color: var(--ink);
-  background: var(--paper);
-  transform: none;
-  box-shadow: none;
-}
-
-[data-theme] .info{
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--accent);
-  border-radius: var(--tpx-r-sm);
-  background: var(--paper);
-  color: var(--ink);
-  box-shadow: none;
-  line-height: 1.85;
-}
-[data-theme] .info.ai-generated{
-  background: var(--paper);
-  border-color: var(--line);
-  border-left-color: var(--accent);
-  color: var(--ink);
-}
-[data-theme] .nav-buttons-large button{ min-width: 128px; }
-
-/* ---------- 7 · question media ---------- */
-[data-theme] .q-media{
-  margin: 14px 0 16px;
-  display: grid;
-  gap: 8px;
-  justify-items: start;
-  max-width: 100%;
-}
-[data-theme] .q-media.multi{
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  justify-items: stretch;
-  width: 100%;
-}
-[data-theme] .q-media.multi .q-media-cap{ grid-column: 1 / -1; }
-[data-theme] .q-media-shell{
-  position: relative;
-  width: auto;
-  max-width: min(100%, 660px);
-  min-height: 110px;
-  padding: 7px;
-  border-radius: var(--tpx-r-sm);
-  background: var(--paper);
-  border: 1px solid var(--line);
-  box-shadow: none;
-  cursor: zoom-in;
-  overflow: hidden;
-  transition: border-color .15s var(--tpx-ease), box-shadow .15s var(--tpx-ease);
-}
-[data-theme] .q-media.multi .q-media-shell{ width: 100%; }
-[data-theme] .q-media-shell:hover,
-[data-theme] .q-media-shell:focus-visible{
-  border-color: var(--ink);
-  box-shadow: 0 0 0 3px var(--tpx-glow);
-  outline: none;
-  transform: none;
-}
-[data-theme] .q-media-shell img{
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: min(36vh, 380px);
-  object-fit: contain;
-  border-radius: var(--tpx-r-xs);
-  background: var(--paper-2);
-}
-[data-theme] .q-media.multi .q-media-shell img{ width: 100%; }
-[data-theme] .q-media-zoom{
-  position: absolute;
-  right: 12px; bottom: 12px;
-  width: 24px; height: 24px;
-  display: grid; place-items: center;
-  border-radius: 50%;
-  font-size: 12px; font-weight: 700;
-  color: var(--paper);
-  background: rgba(17,24,39,.62);
+/* CRITICAL: the .hidden escape hatch must beat the dark theme rule above,
+   otherwise the lock never fades away after a correct password */
+.warning-overlay.hidden,
+html[data-theme="dark"] .warning-overlay.hidden{
   opacity: 0;
-  transition: opacity .18s;
+  visibility: hidden;
   pointer-events: none;
 }
-[data-theme] .q-media-shell:hover .q-media-zoom{ opacity: 1; }
-[data-theme] .q-media-cap{
-  font-size: 11.5px;
-  color: var(--tpx-muted);
-  padding-left: 2px;
-}
-[data-theme] .q-media-fail{
-  display: grid; gap: 6px; place-items: center;
-  padding: 22px 14px;
-  text-align: center;
-  font-size: 13px;
-  color: var(--tpx-muted);
-  background: var(--paper-2);
-  border-radius: var(--tpx-r-xs);
-  border: 1px dashed var(--line);
-}
-[data-theme] .q-media-fail a{ color: var(--accent); font-weight: 700; text-decoration: none; }
-[data-theme] .q-media-fail a:hover{ text-decoration: underline; }
 
-/* lightbox */
-.tpx-lb{
-  position: fixed; inset: 0; z-index: 99998;
-  display: none;
-  align-items: center; justify-content: center;
-  padding: 18px;
-  background: rgba(8,10,14,.9);
-  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-}
-.tpx-lb.open{ display: flex; animation: tpxLbIn .18s ease-out; }
-@keyframes tpxLbIn{ from { opacity: 0; } to { opacity: 1; } }
-.tpx-lb img{
-  max-width: 96vw; max-height: 86vh;
+/* -------------------------------------------------------------- siren */
+.siren-icon-wrapper,
+html[data-theme="dark"] .siren-icon-wrapper{
+  position: relative; z-index: 2;
   width: auto; height: auto;
-  object-fit: contain;
-  border-radius: 6px;
-  background: #fff;
-  box-shadow: 0 30px 80px -30px rgba(0,0,0,.9);
+  margin: 4px 0 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  animation: sirenBounce .7s ease-in-out infinite;
 }
-.tpx-lb .lb-close{
-  position: absolute; top: 14px; right: 14px;
-  width: 42px; height: 42px;
-  display: grid; place-items: center;
-  font-size: 16px; padding: 0;
-  color: #fff;
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(255,255,255,.3);
-  border-radius: 50%;
+.siren-emoji,
+html[data-theme="dark"] .siren-emoji{
+  font-size: 64px;
+  filter: drop-shadow(0 0 22px rgba(255,0,0,.85)) drop-shadow(0 0 48px rgba(255,0,0,.4));
 }
-.tpx-lb .lb-close:hover{ background: rgba(255,255,255,.22); transform: none; }
 
-/* ---------- 8 · sidebar ---------- */
-[data-theme] .sidebar{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--tpx-r-md);
-  box-shadow: none;
-}
-[data-theme] .score-board{
-  font-family: "Baloo Da 2", "Hind Siliguri", system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  color: var(--ink);
-}
-[data-theme] .score-breakdown{ color: var(--tpx-muted); font-weight: 500; }
-[data-theme] .nav-grid{ gap: 6px; }
-[data-theme] .q-num{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  color: var(--tpx-muted);
-  font-weight: 700;
-  box-shadow: none;
-  transition: border-color .12s var(--tpx-ease), color .12s, background .12s;
-}
-[data-theme] .q-num:hover{ background: var(--paper-2); border-color: var(--ink); color: var(--ink); transform: none; }
-[data-theme] .q-num.current{
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-  box-shadow: none;
-  animation: none;
-}
-[data-theme] .q-num.answered-correct{ background: #0f766e; border-color: #0f766e; color: #fff; box-shadow: none; }
-[data-theme] .q-num.answered-wrong{ background: #c0392b; border-color: #c0392b; color: #fff; box-shadow: none; }
-[data-theme] .q-num.attempted-mock{ background: var(--ink); border-color: var(--ink); color: var(--paper); }
-[data-theme] .q-num.skipped{ border-color: var(--gold); border-style: dashed; color: var(--gold); background: var(--paper); }
-[data-theme] .note-toggle{
-  background: var(--paper-2);
-  border: 1px solid var(--line);
-  color: var(--tpx-muted);
-  box-shadow: none;
-}
-[data-theme] .note-toggle input{ accent-color: var(--accent); }
-
-/* ---------- 9 · footer: paper bar, art at the right end ---------- */
-[data-theme] .footer-contact{
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-top: 2px solid var(--ink);
-  border-radius: 18px;
-  color: var(--ink);
-  box-shadow: none;
-  padding: 12px 20px;
-}
-[data-theme] .footer-contact::before{
-  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background-image: var(--tpx-pat);
-  background-size: var(--tpx-pat-size);
-  opacity: calc(var(--tpx-pat-op) * .8);
-  -webkit-mask-image: linear-gradient(90deg, transparent 55%, #000 100%);
-  mask-image: linear-gradient(90deg, transparent 55%, #000 100%);
-}
-[data-theme] .footer-contact::after{
-  content: ""; position: absolute; z-index: 0; pointer-events: none;
-  top: 50%; right: 4px; transform: translateY(-50%);
-  width: 54px; height: 54px;
-  background-image: var(--tpx-art-main);
-  background-repeat: no-repeat; background-position: center; background-size: contain;
-  opacity: .55;
-}
-[data-theme] .footer-contact > *{ position: relative; z-index: 1; }
-[data-theme] .footer-link{ font-weight: 600; }
-[data-theme] .footer-link.email-link{ color: var(--ink); }
-[data-theme] .footer-link.tg-link{ color: var(--ink); }
-[data-theme] .footer-divider{ color: var(--line); }
-[data-theme] .footer-link.upi-link{ color: #b91c1c !important; }
-[data-theme] .footer-link.upi-link span{ color: #b91c1c !important; }
-[data-theme] .footer-link.upi-link:hover{ color: #b91c1c !important; text-shadow: none; box-shadow: none; }
-
-/* ---------- 10 · overlays ---------- */
-[data-theme] .results-overlay{ background: rgba(10,12,16,.5); }
-[data-theme] .results-card{
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--tpx-r-xl);
-  box-shadow: 0 40px 90px -40px rgba(0,0,0,.55);
-  color: var(--ink);
-}
-[data-theme] .results-message{ color: var(--ink); }
-[data-theme] .fraction-top,
-[data-theme] .fraction-bottom{ color: var(--ink); }
-[data-theme] .fraction-line{ background: var(--ink); }
-[data-theme] .percentage-bar{ background: var(--paper-2); box-shadow: none; }
-[data-theme] .percentage-fill{ background: var(--accent); box-shadow: none; }
-[data-theme] .results-chapters{ color: var(--tpx-muted); border-top-color: var(--line); }
-
-/* ---------- 11 · the unlock gate, now glass ---------- */
-[data-theme] .warning-overlay{
-  isolation: isolate;
-  background-image: none;
-  justify-content: center;
-  overflow-y: auto;
-  padding: 22px 0;
-}
-[data-theme] .warning-overlay::before{
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  background-image: var(--tpx-art-light);
-  background-repeat: no-repeat;
-  background-position: 5% 92%;
-  background-size: 132px;
-  opacity: .3;
-}
-[data-theme] .warning-card{
-  position: relative;
-  background: linear-gradient(150deg, rgba(255,255,255,.80), rgba(255,255,255,.60));
-  border: 1px solid rgba(255,255,255,.72);
-  border-radius: var(--tpx-r-lg);
+/* ------------------------------------------------ warning card (glass) */
+.warning-card,
+html[data-theme="dark"] .warning-card{
+  position: relative; z-index: 2;
+  background: rgba(20,0,0,.82);
+  border: 3px solid #cc0000;
+  border-top: 3px solid #cc0000;
+  border-radius: 16px;
+  padding: 22px 20px;
+  max-width: 520px;
+  text-align: center;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.95),
-    inset 0 -1px 0 rgba(255,255,255,.4),
-    0 30px 70px -34px rgba(0,0,0,.65);
-  -webkit-backdrop-filter: blur(26px) saturate(150%);
-  backdrop-filter: blur(26px) saturate(150%);
-  color: #14161a;
+    0 0 34px rgba(255,0,0,.45),
+    inset 0 0 26px rgba(255,0,0,.12);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  backdrop-filter: blur(10px) saturate(1.1);
+  animation: gateCardIn .5s ease both;
 }
-[data-theme="dark"] .warning-card{
-  background: linear-gradient(150deg, rgba(28,31,38,.86), rgba(18,20,26,.68));
-  border-color: rgba(255,255,255,.18);
-  color: #eef1f5;
+@keyframes gateCardIn{
+  from{ opacity:0; transform: translateY(14px) scale(.97); }
+  to{ opacity:1; transform: none; }
 }
-[data-theme] .warning-label{
-  background: #c0392b;
-  color: #fff;
-  border-radius: 999px;
-  box-shadow: none;
-}
-[data-theme] .warning-text{ color: #14161a; font-weight: 500; }
-[data-theme="dark"] .warning-text{ color: #e6e9ef; }
-[data-theme] .warning-text .highlight{ color: #b42318; font-weight: 700; }
-[data-theme="dark"] .warning-text .highlight{ color: #ff8f85; }
-[data-theme] .password-label{ color: #4b5563; font-weight: 600; }
-[data-theme="dark"] .password-label{ color: #c3ccd8; }
-[data-theme] .warning-card .password-section{ margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(17,24,39,.10); }
-[data-theme="dark"] .warning-card .password-section{ border-top-color: rgba(255,255,255,.14); }
-[data-theme] .warning-card .error-msg{ color: #b42318; font-weight: 600; }
-[data-theme="dark"] .warning-card .error-msg{ color: #ff9b91; }
-[data-theme] .password-input{
-  background: rgba(255,255,255,.9);
-  border: 1px solid rgba(17,24,39,.16);
-  border-radius: 999px;
-  color: #14161a;
-  box-shadow: none;
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-}
-[data-theme="dark"] .password-input{
-  background: rgba(12,14,19,.7);
-  border-color: rgba(255,255,255,.22);
-  color: #f1f3f7;
-}
-[data-theme] .password-input:focus{ border-color: #14161a; }
-[data-theme] .submit-btn{
-  background: #c0392b;
-  border: 1px solid #a93226;
-  color: #fff;
-  border-radius: 999px;
-  box-shadow: none;
-}
-[data-theme] .submit-btn:hover{ background: #a93226; transform: translateY(-1px); }
-[data-theme] .siren-emoji{ filter: drop-shadow(0 0 26px rgba(255,0,0,.85)); }
 
-/* theme chip on the gate */
-.tpx-theme-chip{
-  position: absolute;
-  top: 14px; right: 14px;
-  z-index: 5;
-  display: inline-flex; align-items: center; gap: 7px;
-  padding: 6px 8px 6px 11px;
+.warning-label,
+html[data-theme="dark"] .warning-label{
+  display: inline-block;
+  background: #cc0000;
+  color: #fff;
+  border: 1px solid #ff4444;
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 6px 18px;
+  border-radius: 25px;
+  margin-bottom: 12px;
+  box-shadow: 0 0 18px rgba(255,0,0,.35);
+}
+
+.warning-text,
+html[data-theme="dark"] .warning-text{
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.8;
+}
+.warning-text .highlight,
+html[data-theme="dark"] .warning-text .highlight{
+  color: #ff4444;
+  font-weight: 700;
+}
+
+/* ----------------------------------------------------- password block */
+.password-section,
+html[data-theme="dark"] .password-section{
+  gap: 12px;
+  margin-top: 8px;
+  padding: 0 14px;
+  border-top: 0;
+}
+.password-label,
+html[data-theme="dark"] .password-label{
+  color: #ffcccc;
+  font-size: .9rem;
+  font-weight: 600;
+}
+.password-input,
+html[data-theme="dark"] .password-input{
+  flex: 1;
+  min-width: 170px;
+  padding: 14px 18px;
+  font-size: 1.05rem;
+  border: 2px solid #cc0000;
+  border-radius: 30px;
+  background: rgba(0,0,0,.7);
+  color: #fff;
+  outline: none;
+  text-align: center;
+  letter-spacing: 8px;
+}
+.password-input:focus,
+html[data-theme="dark"] .password-input:focus{
+  border-color: #ff3333;
+  box-shadow: 0 0 0 3px rgba(255,40,40,.18);
+}
+/* dark autofill fix — browser yellow fill would break the red theme */
+.password-input:-webkit-autofill,
+.password-input:-webkit-autofill:hover,
+.password-input:-webkit-autofill:focus{
+  -webkit-box-shadow: 0 0 0 1000px #140505 inset;
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  transition: background-color 9999s ease-out;
+}
+.submit-btn,
+html[data-theme="dark"] .submit-btn{
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 700;
+  background: linear-gradient(180deg, #e60000, #990000);
+  color: #fff;
+  border: 2px solid #ff4444;
+  border-radius: 30px;
+  box-shadow: 0 0 18px rgba(255,0,0,.3);
+}
+.submit-btn:hover,
+html[data-theme="dark"] .submit-btn:hover{
+  background: linear-gradient(180deg, #f21111, #a30000);
+}
+.error-msg,
+html[data-theme="dark"] .error-msg{
+  color: #ff4444;
+  font-size: .85rem;
+  min-height: 22px;
+  font-weight: 700;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   RANDOM THEME BUTTON — the only theme control on the gate
+   · Full random roll, theme list / names never shown
+   ═════════════════════════════════════════════════════════════════════ */
+.tpx-gate-chip,
+html[data-theme="dark"] .tpx-gate-chip{
+  position: relative; z-index: 2;
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(20,0,0,.8);
+  border: 1px solid rgba(255,70,70,.42);
   border-radius: 999px;
-  font-size: 12px; font-weight: 600;
-  color: #f4f6fa;
-  background: rgba(22,25,32,.55);
-  border: 1px solid rgba(255,255,255,.2);
-  box-shadow: none;
-  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-  max-width: 46vw;
+  padding: 5px 6px 5px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffd8d8;
+  box-shadow: 0 0 22px rgba(255,0,0,.25);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
-.tpx-theme-chip .dot{
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px rgba(255,255,255,.14);
-  flex-shrink: 0;
-}
-.tpx-theme-chip.is-off .dot{ background: #9aa4b2; }
-.tpx-theme-chip b{
-  font-family: "Baloo Da 2", "Hind Siliguri", system-ui, sans-serif;
-  font-weight: 700; font-size: 12.5px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.tpx-theme-chip button{
-  width: 22px; height: 22px; padding: 0;
-  display: grid; place-items: center;
-  font-size: 11px; line-height: 1;
+.tpx-gate-chip .sw,
+html[data-theme="dark"] .tpx-gate-chip .sw{
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: rgba(255,255,255,.14) !important;
-  border: 1px solid rgba(255,255,255,.22) !important;
-  color: #fff !important;
-  flex-shrink: 0;
+  background: linear-gradient(135deg, #ff3040, #a80010);
+  box-shadow: 0 0 8px rgba(255,48,64,.8);
 }
-.tpx-theme-chip button:hover{ background: rgba(255,255,255,.26) !important; transform: none; box-shadow: none; }
-.tpx-theme-chip.is-off button{ display: none; }
-
-/* ---------- 12 · readability phone → laptop → TV ---------- */
-@media (min-width: 1500px){
-  [data-theme] .question-text{ font-size: clamp(21px, 1.45vw, 28px); }
-  [data-theme] .option{ font-size: 16px; min-height: 56px; padding: 12px 16px; }
-  [data-theme] .q-media-shell{ max-width: min(100%, 860px); }
-  [data-theme] .q-media-shell img{ max-height: min(36vh, 440px); }
-  [data-theme] .q-media-cap{ font-size: 13px; }
-  [data-theme] .option .key{ width: 34px; height: 34px; font-size: 14px; }
-  [data-theme] button{ font-size: 15px; }
-  [data-theme] .main-header::after{ width: 200px; height: 200px; opacity: .24; }
+.tpx-gate-chip b{ display: none !important; }
+.tpx-gate-chip button,
+html[data-theme="dark"] .tpx-gate-chip button{
+  padding: 9px 18px;
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #e60000, #990000);
+  color: #fff;
+  border: 1px solid #ff4444;
+  animation: gateBtnBreath 2.2s ease-in-out infinite;
 }
-@media (min-width: 1900px){
-  [data-theme] .question-text{ font-size: 31px; line-height: 1.55; }
-  [data-theme] .option{ font-size: 19px; min-height: 68px; padding: 14px 18px; }
-  [data-theme] .question-card{ padding: 28px 28px 26px; padding-right: 68px; }
-  [data-theme] .q-media-shell{ max-width: min(100%, 1000px); }
-  [data-theme] .q-media-shell img{ max-height: min(38vh, 500px); }
-  [data-theme] .sidebar{ padding: 18px; }
-  [data-theme] .q-num{ font-size: 14px; }
-  [data-theme] button{ font-size: 16px; }
-  [data-theme] .question-card::after{ width: 280px; height: 280px; opacity: .08; }
+.tpx-gate-chip button:hover,
+html[data-theme="dark"] .tpx-gate-chip button:hover{
+  background: #c00000;
+  border-color: #ff6666;
+  transform: translateY(-1px);
+  animation-play-state: paused;
 }
-@media (max-width: 1100px){
-  [data-theme] .question-card::after{ display: none; }
-}
-@media (max-width: 960px){
-  [data-theme] .q-media-shell img{ max-height: min(38vh, 340px); }
-  [data-theme] .main-header::after{ width: 120px; height: 120px; opacity: .18; }
-}
-@media (max-width: 640px){
-  [data-theme] .question-card{ padding: 15px 15px 14px; padding-right: 48px; }
-  [data-theme] .q-media-shell{ padding: 6px; }
-  [data-theme] .q-media-shell img{ max-height: min(58vh, 470px); }
-  [data-theme] .q-media-cap{ font-size: 10.5px; }
-  [data-theme] .option{ min-height: 52px; }
-  [data-theme] .main-header::after{ display: none; }
-  [data-theme] .main-header{ padding: 12px 14px; }
-  [data-theme] .controls-right{ justify-content: center; flex-wrap: wrap; overflow: visible; }
-  [data-theme] .subject-header::after{ width: 48px; height: 48px; opacity: .4; }
-  [data-theme] .footer-contact::after{ width: 40px; height: 40px; opacity: .4; }
-  .tpx-theme-btn{ padding: 6px 8px; }
-  .tpx-theme-btn span{ display: none; }
-  .tpx-theme-chip{ top: 10px; right: 10px; font-size: 11px; padding: 5px 6px 5px 9px; }
-  .tpx-theme-chip b{ font-size: 11.5px; }
-  [data-theme] .warning-overlay{ justify-content: flex-start; padding-top: 14px; }
-  [data-theme] .nav-buttons-large button{ min-width: 0; flex: 1; }
-}
-@media (max-width: 380px){
-  [data-theme] .q-media-shell img{ max-height: min(64vh, 430px); }
-  .tpx-theme-chip{ max-width: 62vw; }
+@keyframes gateBtnBreath{
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,40,40,.45); }
+  50%      { box-shadow: 0 0 0 9px rgba(255,40,40,0); }
 }
 
-/* ---------- 13 · scrollbars, motion, focus ---------- */
-[data-theme] .nav-grid::-webkit-scrollbar,
-[data-theme] .subject-chapters-inner::-webkit-scrollbar,
-[data-theme] .results-card::-webkit-scrollbar{ width: 6px; height: 6px; }
-[data-theme] .nav-grid::-webkit-scrollbar-thumb,
-[data-theme] .subject-chapters-inner::-webkit-scrollbar-thumb,
-[data-theme] .results-card::-webkit-scrollbar-thumb{ background: var(--line); border-radius: 999px; }
-[data-theme] .nav-grid::-webkit-scrollbar-thumb:hover,
-[data-theme] .subject-chapters-inner::-webkit-scrollbar-thumb:hover{ background: var(--tpx-muted); }
+/* --------------------------------------------------------- responsive */
+@media (min-width: 900px){
+  .warning-overlay,
+  html[data-theme="dark"] .warning-overlay{
+    align-items: flex-start;
+    padding: 44px clamp(24px, 8vw, 150px);
+  }
+}
+@media (max-width: 520px){
+  .warning-card,
+  html[data-theme="dark"] .warning-card{
+    padding: 16px 14px;
+  }
+  .siren-emoji,
+  html[data-theme="dark"] .siren-emoji{ font-size: 52px; }
+  .tpx-gate-chip button,
+  html[data-theme="dark"] .tpx-gate-chip button{
+    padding: 8px 14px;
+    font-size: 12.5px;
+  }
+}
 
+/* ----------------------------------------------------- reduced motion */
 @media (prefers-reduced-motion: reduce){
-  [data-theme] .subject-chapters{ transition: none; }
-  [data-theme] .question-card{ animation: none !important; }
-  [data-theme] button, [data-theme] .option, [data-theme] .chapter-item{ transition-duration: .001ms !important; }
+  .warning-overlay,
+  html[data-theme="dark"] .warning-overlay{ animation: none !important; }
+  .siren-icon-wrapper,
+  html[data-theme="dark"] .siren-icon-wrapper{ animation: none !important; }
+  .tpx-gate-chip button,
+  html[data-theme="dark"] .tpx-gate-chip button{ animation: none !important; }
+  .warning-card{ animation: none !important; }
 }
-
-[data-theme] :focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>
+
 <script id="tpx-engine">
 /* =========================================================================
-   TPX · theme engine 2
-   ---------------------------------------------------------------------
-   Design rules for this version:
-     · NO colour washes. Bars stay paper (white / near-black) and are
-       "designed" with line-art + a suit pattern that lives in ONE CORNER.
-     · The artwork is original SVG line-art (anime / comic drawing style),
-       never a photo and never a real person. Each fandom has 2 pieces and
-       the composition is picked at random on every load.
-     · One accent colour per fandom, used only on small things.
-     · A "theme off" switch remembers itself in localStorage.
-   The media pipeline (TPXMedia) from the previous build is kept intact.
+   TPX · theme engine 4 — "full-page poster light"
+   -------------------------------------------------------------------------
+   · Full-page photo background on the quiz page (subtle)
+   · No header avatar/cover/banner (removed the "2 photos")
+   · Secondary image in the bottom-right corner
+   · Random theme per session, no visible picker, no theme names
+   · Warning screen stays untouched
    ========================================================================= */
 (function () {
   "use strict";
 
-  /* ------------------------------------------------------------------ art */
-  /* every piece is 120x120 line-art; __INK__ and __ACC__ are swapped for the
-     current palette before the SVG is turned into a data-uri                */
-var ART = {
-    /* ---------------- anime ---------------- */
-    aot_wings:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M60 100V34"/>' +
-      '<path d="M56 44C47 32 36 26 24 26c6 9 17 14 30 18"/>' +
-      '<path d="M56 58C44 48 31 45 19 47c8 8 20 11 33 12"/>' +
-      '<path d="M56 72C45 65 32 64 22 69c9 6 22 7 31 5"/>' +
-      '<path d="M64 44c9-12 20-18 32-18-6 9-17 14-30 18"/>' +
-      '<path d="M64 58c12-10 25-13 37-11-8 8-20 11-33 12"/>' +
-      '<path d="M64 72c11-7 24-8 34-3-9 6-22 7-31 5"/>' +
-      '</g></svg>',
-    aot_titan:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M42 94V54c0-13 8-22 18-22s18 9 18 22v40"/>' +
-      '<path d="M48 52h9M63 52h9"/>' +
-      '<path d="M53 66h14"/>' +
-      '<path d="M34 40c-5-6-3-13 3-16M86 40c5-6 3-13-3-16"/>' +
-      '<path d="M6 94h108"/><path d="M12 94v-5M30 94v-5M48 94v-5M72 94v-5M90 94v-5M106 94v-5"/>' +
-      '</g></svg>',
-    deathnote_apple:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M60 40c-14-8-32 0-32 22s16 34 32 34 32-12 32-34-18-30-32-22z"/>' +
-      '<path d="M60 40c0-10 4-18 14-22"/>' +
-      '<path d="M58 30c-8-8-18-6-20-6 0 8 8 14 18 12" fill="__ACC__" stroke="__INK__"/>' +
-      '</g></svg>',
-    deathnote_book:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g stroke="__INK__" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">' +
-      '<path d="M34 16h52a6 6 0 016 6v76a6 6 0 01-6 6H34z" fill="__INK__" fill-opacity=".9"/>' +
-      '<path d="M34 16v84" stroke="none"/>' +
-      '<path d="M46 34h34M46 46h34M46 58h26" stroke="__ACC__" stroke-width="2.4"/>' +
-      '<path d="M74 16v22l-7-5-7 5V16" fill="__ACC__" stroke="__INK__" stroke-width="2"/>' +
-      '</g></svg>',
-    onepiece_hat:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M24 64c0-22 14-34 36-34s36 12 36 34"/>' +
-      '<path d="M14 66c14-6 30-9 46-9s32 3 46 9c-10 10-70 10-92 0z"/>' +
-      '<path d="M30 54c14 8 46 8 60 0" stroke="__ACC__" stroke-width="6"/>' +
-      '</g></svg>',
-    onepiece_skull:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M24 96l72-22M96 96L24 74" stroke-width="7"/>' +
-      '<path d="M60 16c-15 0-25 11-25 25 0 9 5 15 8 21v10h34V62c3-6 8-12 8-21 0-14-10-25-25-25z" fill="__INK__" fill-opacity=".9"/>' +
-      '<circle cx="50" cy="42" r="5" fill="__ACC__" stroke="none"/><circle cx="70" cy="42" r="5" fill="__ACC__" stroke="none"/>' +
-      '<path d="M55 56v9M65 56v9" stroke-width="3"/>' +
-      '</g></svg>',
-    dbz_ball:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round">' +
-      '<circle cx="60" cy="62" r="34"/><circle cx="60" cy="62" r="40" stroke-opacity=".35"/>' +
-      '<path d="M52 46l4 10 10 2-8 7 2 11-8-6-9 5 3-10-7-8 11-1z" fill="__ACC__" stroke="__INK__"/>' +
-      '<path d="M60 22v-8M60 102v8M16 62h-6M110 62h6"/>' +
-      '</g></svg>',
-    dbz_flame:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M60 104c-17 0-29-12-29-29 0-19 21-25 21-46 11 9 15 19 13 28 7-4 9-11 9-17 12 11 17 23 17 35 0 17-12 29-31 29z"/>' +
-      '<path d="M60 92c-8 0-13-5-13-13 0-9 9-11 9-22 8 8 17 13 17 22 0 8-5 13-13 13z" fill="__ACC__" stroke="none"/>' +
-      '</g></svg>',
-    jjk_eyes:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round">' +
-      '<circle cx="60" cy="60" r="46" stroke-dasharray="4 9" stroke-opacity=".5"/>' +
-      '<path d="M22 54c10-16 26-16 36 0-10 14-26 14-36 0z" fill="__ACC__" stroke="__INK__"/>' +
-      '<path d="M98 54c-10-16-26-16-36 0 10 14 26 14 36 0z" fill="__ACC__" stroke="__INK__"/>' +
-      '<circle cx="40" cy="54" r="4" fill="__INK__" stroke="none"/><circle cx="80" cy="54" r="4" fill="__INK__" stroke="none"/>' +
-      '<path d="M48 84h24"/>' +
-      '</g></svg>',
-    jjk_seal:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round">' +
-      '<circle cx="60" cy="60" r="44"/><circle cx="60" cy="60" r="30" stroke-dasharray="3 8"/>' +
-      '<path d="M60 16v16M60 88v16M16 60h16M88 60h16M29 29l11 11M80 80l11 11M91 29L80 40M40 80L29 91"/>' +
-      '<circle cx="60" cy="60" r="9" fill="__ACC__" stroke="__INK__"/>' +
-      '</g></svg>',
-    ds_earring:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round">' +
-      '<circle cx="60" cy="60" r="40"/><circle cx="60" cy="60" r="26" stroke-dasharray="2 7"/>' +
-      '<circle cx="60" cy="60" r="13" fill="__ACC__" stroke="__INK__"/>' +
-      '<path d="M60 12v12M60 96v12M12 60h12M96 60h12M26 26l9 9M85 85l9 9M94 26l-9 9M35 85l-9 9"/>' +
-      '</g></svg>',
-    ds_katana:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g stroke="__INK__" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M100 12L56 56l-6-6z" fill="__INK__" stroke="none"/>' +
-      '<path d="M52 60l8 8-7 7-8-8z" fill="__ACC__"/>' +
-      '<path d="M45 75L20 100" stroke-width="8"/>' +
-      '<path d="M33 84l6 6M26 91l6 6" stroke="__ACC__" stroke-width="2.4"/>' +
-      '<path d="M20 100l-4 4" stroke-width="5"/>' +
-      '</g></svg>',
-    fma_circle:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round">' +
-      '<circle cx="60" cy="60" r="46"/><circle cx="60" cy="60" r="34"/>' +
-      '<path d="M60 26L90 78H30z"/><path d="M60 44L76 72H44z" stroke="__ACC__"/>' +
-      '<path d="M60 14v6M60 100v6M14 60h6M100 60h6M27 27l5 5M88 88l5 5M93 27l-5 5M32 88l-5 5"/>' +
-      '</g></svg>',
-    fma_armor:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">' +
-      '<path d="M60 22c-13 0-23 10-23 22 0 7 3 12 7 16l-3 12h38l-3-12c4-4 7-9 7-16 0-12-10-22-23-22z"/>' +
-      '<path d="M60 22V8"/><path d="M52 8h16"/>' +
-      '<circle cx="50" cy="50" r="3.4" fill="__ACC__" stroke="none"/><circle cx="70" cy="50" r="3.4" fill="__ACC__" stroke="none"/>' +
-      '<path d="M53 62h14"/>' +
-      '<path d="M36 86h48"/><path d="M42 86v12M78 86v12"/>' +
-      '</g></svg>',
+  /* ══════════════════════════════════════════════════════════════════
+     ✨ ADD YOUR OWN THEMES HERE — just 3 fields:
 
-    /* ---------------- heroes ---------------- */
-    spidey_mask:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round">' +
-      '<circle cx="60" cy="60" r="46"/>' +
-      '<path d="M60 14v92M14 60h92M27 27l66 66M93 27L27 93" stroke-opacity=".55" stroke-width="2"/>' +
-      '<circle cx="60" cy="60" r="30" stroke-opacity=".55" stroke-width="2"/>' +
-      '<circle cx="60" cy="60" r="15" stroke-opacity=".55" stroke-width="2"/>' +
-      '<path d="M30 46c12-12 26-12 34 2-8 14-24 16-34-2z" fill="__ACC__" stroke="__INK__"/>' +
-      '<path d="M90 46c-12-12-26-12-34 2 8 14 24 16 34-2z" fill="__ACC__" stroke="__INK__"/>' +
-      '</g></svg>',
-    spidey_web:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="2.6" stroke-linecap="round">' +
-      '<path d="M6 6v108M6 6h108"/>' +
-      '<path d="M6 6L114 114M6 114L114 6"/>' +
-      '<path d="M6 34v80M34 6h80M6 66v54M66 6h54M6 96v24M96 6h24"/>' +
-      '<path d="M34 6C20 22 8 34 6 34M66 6C46 30 30 46 6 66M96 6c-26 30-60 64-90 90M114 34C86 66 66 86 34 114M114 66c-20 22-42 46-54 48"/>' +
-      '<circle cx="60" cy="60" r="7" fill="__ACC__" stroke="__INK__"/>' +
-      '<path d="M52 52l-6-6M68 52l6-6M52 68l-6 6M68 68l6 6" stroke="__INK__"/>' +
-      '</g></svg>',
-    bat:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="__INK__" stroke="none"><g transform="translate(60,60)">' +
-      '<path d="M0-24c-3-8-7-13-11-16 1 6-1 10-5 12 5 1 8 4 9 8-7-3-13-2-17 2 6 1 10 4 12 8-6 0-10 3-12 8 6-1 11 1 15 5-3 6-3 12-1 17 3-8 7-12 13-12 6 0 10 4 13 12 2-5 2-11-1-17 4-4 9-6 15-5-2-5-6-8-12-8 2-4 6-7 12-8-4-4-10-5-17-2 1-4 4-7 9-8-4-2-6-6-5-12-4 3-8 8-11 16z"/>' +
-      '</g></g></svg>',
-    batsignal:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round">' +
-      '<ellipse cx="60" cy="58" rx="42" ry="26"/>' +
-      '<path d="M22 58l-14 52M98 58l14 52" stroke-opacity=".45" stroke-dasharray="6 8"/>' +
-      '<g transform="translate(60,58) scale(.46)" fill="__ACC__" stroke="__INK__" stroke-width="4">' +
-      '<path d="M0-24c-3-8-7-13-11-16 1 6-1 10-5 12 5 1 8 4 9 8-7-3-13-2-17 2 6 1 10 4 12 8-6 0-10 3-12 8 6-1 11 1 15 5-3 6-3 12-1 17 3-8 7-12 13-12 6 0 10 4 13 12 2-5 2-11-1-17 4-4 9-6 15-5-2-5-6-8-12-8 2-4 6-7 12-8-4-4-10-5-17-2 1-4 4-7 9-8-4-2-6-6-5-12-4 3-8 8-11 16z"/>' +
-      '</g></g></svg>',
-    super_shield:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round">' +
-      '<path d="M60 12l44 14-4 32c-3 24-20 40-40 50-20-10-37-26-40-50l-4-32z" fill="__ACC__" fill-opacity=".12"/>' +
-      '<path d="M46 44c10-8 22-4 20 6-2 8-16 6-18 16-2 10 10 14 20 8" stroke-width="6"/>' +
-      '</g></svg>',
-    super_s:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3">' +
-      '<circle cx="60" cy="60" r="44" fill="__ACC__" fill-opacity=".1"/>' +
-      '<path d="M44 40c13-11 28-5 24 8-4 11-22 9-22 24 0 11 15 16 26 7" stroke-width="8" stroke-linecap="round"/>' +
-      '</g></svg>',
-    iron_helmet:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">' +
-      '<path d="M30 58c0-22 12-34 30-34s30 12 30 34v6c0 20-14 32-30 36-16-4-30-16-30-36z"/>' +
-      '<path d="M60 26v38"/>' +
-      '<path d="M40 52l16 4-2 9-14-5z" fill="__ACC__"/>' +
-      '<path d="M80 52l-16 4 2 9 14-5z" fill="__ACC__"/>' +
-      '<path d="M46 84h28"/>' +
-      '</g></svg>',
-    cap_shield:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round">' +
-      '<circle cx="60" cy="60" r="46"/><circle cx="60" cy="60" r="36" stroke="__ACC__" stroke-width="8" stroke-opacity=".5"/>' +
-      '<circle cx="60" cy="60" r="26"/>' +
-      '<path d="M60 40l6 14 15 1-11 10 3 15-13-8-13 8 3-15-11-10 15-1z" fill="__ACC__" stroke="__INK__"/>' +
-      '</g></svg>',
-    mjolnir:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">' +
-      '<path d="M20 24h60a8 8 0 018 8v20a8 8 0 01-8 8H20a8 8 0 01-8-8V32a8 8 0 018-8z"/>' +
-      '<path d="M20 24v36M28 28v28M80 28v28" stroke-opacity=".45"/>' +
-      '<path d="M48 60h16v8H48z"/>' +
-      '<path d="M44 68v24a6 6 0 006 6h12a6 6 0 006-6V68"/>' +
-      '<path d="M44 78h24M44 88h24" stroke-opacity=".45"/>' +
-      '<path d="M98 16l-9 15h9l-7 13" stroke="__ACC__" stroke-width="4"/>' +
-      '</g></svg>',
-    wonder_w:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M22 48l14 42 24-32 24 32 14-42"/>' +
-      '</g>' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round">' +
-      '<path d="M40 26h40"/>' +
-      '</g>' +
-      '<path d="M60 6l3.4 7 7.6.8-5.6 5.2 1.5 7.4-6.9-3.8-6.9 3.8 1.5-7.4-5.6-5.2 7.6-.8z" fill="__ACC__" stroke="__INK__" stroke-width="2"/>' +
-      '</svg>',
-    agamotto:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round">' +
-      '<circle cx="60" cy="60" r="46"/><circle cx="60" cy="60" r="36" stroke-dasharray="3 8"/><circle cx="60" cy="60" r="24"/>' +
-      '<path d="M60 24v10M60 86v10M24 60h10M86 60h10M35 35l7 7M78 78l7 7M85 35l-7 7M42 78l-7 7"/>' +
-      '<path d="M46 60c9-12 19-12 28 0-9 12-19 12-28 0z" fill="__ACC__" stroke="__INK__"/>' +
-      '<circle cx="60" cy="60" r="6" fill="__INK__" stroke="none"/>' +
-      '</g></svg>',
-    flash_bolt:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="3" stroke-linecap="round">' +
-      '<circle cx="60" cy="60" r="44"/><circle cx="60" cy="60" r="36" stroke="__ACC__" stroke-width="6" stroke-opacity=".45"/>' +
-      '<path d="M66 22L42 64h14l-6 34L86 52H68z" fill="__ACC__" stroke="__INK__" stroke-linejoin="round"/>' +
-      '<path d="M14 44h14M10 60h12M14 76h14" stroke-opacity=".5"/>' +
-      '</g></svg>',
-    avengers_a:
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
-      '<g fill="none" stroke="__INK__" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">' +
-      '<circle cx="60" cy="60" r="46" stroke-dasharray="5 10" stroke-opacity=".55"/>' +
-      '<path d="M42 88L60 30l18 58"/><path d="M50 68h20"/>' +
-      '<path d="M80 44l16-8-4 12" stroke="__ACC__"/>' +
-      '</g></svg>'
-  };
+        name : any text
+        p    : MAIN image URL  → full-page background (lock + quiz)
+        s    : SECONDARY image URL → small box bottom-right
+               ("" or omit if you don't want one)
 
-  /* --------------------------------------------------------------- themes */
+     Colours are auto-assigned for new themes.
+     Existing themes keep their exact colours — do not touch them.
+     ══════════════════════════════════════════════════════════════════ */
   var THEMES = [
-    { id: "aot",         name: "Attack on Titan",     jp: "進撃の巨人",   motif: "wall",    ink: "#15181c", accent: "#3c6e47", arts: ["aot_wings", "aot_titan"] },
-    { id: "deathnote",   name: "Death Note",          jp: "デスノート",   motif: "strings", ink: "#15181c", accent: "#a4161a", arts: ["deathnote_apple", "deathnote_book"] },
-    { id: "onepiece",    name: "One Piece",           jp: "ワンピース",   motif: "wave",    ink: "#15181c", accent: "#b03a48", arts: ["onepiece_hat", "onepiece_skull"] },
-    { id: "dbz",         name: "Dragon Ball Z",       jp: "ドラゴンボール", motif: "stars", ink: "#15181c", accent: "#c2410c", arts: ["dbz_ball", "dbz_flame"] },
-    { id: "jjk",         name: "Jujutsu Kaisen",      jp: "呪術廻戦",     motif: "seal",    ink: "#15181c", accent: "#4c3fbf", arts: ["jjk_eyes", "jjk_seal"] },
-    { id: "demonslayer", name: "Demon Slayer",        jp: "鬼滅の刃",     motif: "haori",   ink: "#15181c", accent: "#0f766e", arts: ["ds_earring", "ds_katana"] },
-    { id: "fma",         name: "Fullmetal Alchemist", jp: "鋼の錬金術師", motif: "alchemy", ink: "#15181c", accent: "#a16207", arts: ["fma_circle", "fma_armor"] },
-    { id: "spiderman",   name: "Spider-Man",          jp: "スパイダーマン", motif: "web",   ink: "#15181c", accent: "#c1121f", arts: ["spidey_mask", "spidey_web"] },
-    { id: "batman",      name: "Batman",              jp: "バットマン",   motif: "rain",    ink: "#15181c", accent: "#a16207", arts: ["bat", "batsignal"] },
-    { id: "superman",    name: "Superman",            jp: "スーパーマン", motif: "diamond", ink: "#15181c", accent: "#1d4ed8", arts: ["super_shield", "super_s"] },
-    { id: "ironman",     name: "Iron Man",            jp: "アイアンマン", motif: "hex",     ink: "#15181c", accent: "#b91c1c", arts: ["iron_helmet"] },
-    { id: "captain",     name: "Captain America",     jp: "キャプテン",   motif: "diamond", ink: "#15181c", accent: "#1d4ed8", arts: ["cap_shield"] },
-    { id: "thor",        name: "Thor",                jp: "ソー",         motif: "bolts",   ink: "#15181c", accent: "#0e7490", arts: ["mjolnir"] },
-    { id: "wonderwoman", name: "Wonder Woman",        jp: "ワンダーウーマン", motif: "zigzag", ink: "#15181c", accent: "#b91c1c", arts: ["wonder_w"] },
-    { id: "strange",     name: "Doctor Strange",      jp: "ドクター・ストレンジ", motif: "mandala", ink: "#15181c", accent: "#6d28d9", arts: ["agamotto"] },
-    { id: "flash",       name: "The Flash",           jp: "フラッシュ",   motif: "speed",   ink: "#15181c", accent: "#a16207", arts: ["flash_bolt"] },
-    { id: "avengers",    name: "Avengers",            jp: "アベンジャーズ", motif: "hex",   ink: "#15181c", accent: "#1e3a8a", arts: ["avengers_a"] }
+    // ─── 📋 SAMPLE (copy this line, replace the 2 URLs + name) ──
+    // { name: "My Theme", p: "https://example.com/main.png", s: "https://example.com/small.png" },
+    // ────────────────────────────────────────────────────────────
+
+    { id: "spiderman", name: "Spider-Man", sub: "স্পাইডারম্যান", k: "web", a: "#b0141c", c: ["#b0141c","#1d222a","#8c0f16","#a61a12","#6d0b11"], p: "https://i.ibb.co/zVGGBpQF/midnight-spiderman-hero-bf.jpg", s: "https://i.ibb.co/wFwzLZVV/spider-man-logo-10k-10000x5625-15274.png", r: 12 },
+    { id: "batman", name: "Batman", sub: "ব্যাটম্যান", k: "bat", a: "#22262e", c: ["#0f1114","#3c434c","#161a20","#2a3037","#0b0d10"], e: "#a16207", p: "https://i.ibb.co/pjnBYNhk/batman-bat-signal-coming-of.jpg", s: "https://i.ibb.co/qZL5vCC/batman.jpg", r: 8 },
+    { id: "superman", name: "Superman", sub: "সুপারম্যান", k: "laser", a: "#1b3fa8", c: ["#1b3fa8","#c01327","#132a6b","#8c0f1d","#24479a"], p: "https://i.ibb.co/27kszPwh/superman-flight-of-the-savior-ti.jpg", s: "https://i.ibb.co/x82BVDQ8/superman-logo-dc-superheroes-blue-background-3840x2160-5646.jpg", r: 16 },
+    { id: "goku", name: "Goku", sub: "গোকু", k: "spark", a: "#c2410c", c: ["#c2410c","#1e4e8c","#8c2c06","#14365f","#a8551a"], p: "https://i.ibb.co/qYCxRHqG/goku-saiyan-warrior-qt.jpg", s: "https://i.ibb.co/ZzfSksk3/goku-ultra-instinct-3840x2160-21414.png", r: 16 },
+    { id: "wonderwoman", name: "Wonder Woman", sub: "ওয়ান্ডার উইম্যান", k: "lasso", a: "#a5182f", c: ["#a5182f","#c9a227","#7a1022","#8c6c12","#941328"], p: "https://i.ibb.co/s9d74pJs/legacy-of-wonder-woman-hd.jpg", s: "https://i.ibb.co/23M5sHYr/wonder-woman-black-background-dc-superheroes-amoled-3840x2160-5961.jpg", r: 16 },
+    { id: "supergirl", name: "Supergirl", sub: "সুপারগার্ল", k: "laser", a: "#1e3fa8", c: ["#1e3fa8","#c81c3a","#14296e","#a01430","#2750b0"], p: "https://i.ibb.co/N6yQXQ7R/supergirl-justice-awakens-24.jpg", s: "https://i.ibb.co/tpSNzwgB/kara-zor-el-5k-3840x2160-26752.jpg", r: 16 },
+    { id: "flash", name: "The Flash", sub: "ফ্ল্যাশ", k: "speed", a: "#c1121f", c: ["#c1121f","#b07a00","#8c0d16","#e0a100","#a8111c"], p: "https://i.ibb.co/Y4qX59X3/flash-the-legend-qo.jpg", s: "https://i.ibb.co/YTcDzwVb/the-flash-injustice-2-barry-allen-black-background-dc-comics-3840x2160-5228.jpg", r: 14 },
+    { id: "ironman", name: "Iron Man", sub: "আইরনম্যান", k: "hex", a: "#a8141b", c: ["#a8141b","#8c5a12","#7c0d12","#c9821f","#96121a"], p: "https://i.ibb.co/0p0PfmR6/iron-man-armored-avenger-4k-0w.jpg", s: "https://i.ibb.co/7x2N2TGv/robert-downey-jr-3840x2160-17822.jpg", r: 12 },
+    { id: "thor", name: "Thor", sub: "থোর", k: "bolts", a: "#1d4e89", c: ["#1d4e89","#a61b1b","#143a66","#7c1212","#2a5a95"], p: "https://i.ibb.co/3mSJ65YN/thor-the-son-of-odin-xg.jpg", s: "https://i.ibb.co/0pHQTF9y/thor-marvel-studios-3840x2160-10337.jpg", r: 12 },
+    { id: "hulk", name: "Hulk", sub: "হাল্ক", k: "impact", a: "#2e6b2b", c: ["#2e6b2b","#4e2c74","#1f4e1e","#6e3fa0","#3a7a36"], p: "https://i.ibb.co/tM1wn4nT/hulk-strongest-avenger-alive-b0.jpg", s: "https://i.ibb.co/NdTpRvVf/wallpapersden-com-k-the-hulk-dark-background-ai-art-2932x2932.jpg", r: 14 },
+    { id: "thanos", name: "Thanos", sub: "থানোস", k: "stones", a: "#4b2c6e", c: ["#4b2c6e","#8c6a1a","#361f50","#c79a2e","#5b3a80"], p: "https://i.ibb.co/PZRL7QrW/thanos-and-the-infinity-gauntlet-power-9q.jpg", s: "https://i.ibb.co/Hf1r6wkr/infinity-gauntlet-thanos-avengers-endgame-infinity-stones-3500x5000-992.jpg", r: 14 },
+    { id: "venom", name: "Venom", sub: "ভেনম", k: "symbiote", a: "#232329", c: ["#1b1b20","#5b2a7a","#2c2c33","#3c1c52","#101014"], p: "https://i.ibb.co/bgy27Cfd/venom-ruler-of-fear-hy.jpg", s: "https://i.ibb.co/Hf1r6wkr/infinity-gauntlet-thanos-avengers-endgame-infinity-stones-3500x5000-992.jpg", r: 10 },
+    { id: "doom", name: "Doctor Doom", sub: "ডক্টর ডুম", k: "plate", a: "#2a4a35", c: ["#2a4a35","#4e5357","#1d3626","#6e7479","#375c43"], p: "https://i.ibb.co/mryJY4B7/doctor-doom-superhero-ds.jpg", s: "https://i.ibb.co/Hf1r6wkr/infinity-gauntlet-thanos-avengers-endgame-infinity-stones-3500x5000-992.jpg", r: 8 },
+    { id: "ultron", name: "Ultron", sub: "অল্ট্রন", k: "ring", a: "#5a6470", c: ["#5a6470","#7c1218","#3e4650","#b01c24","#6b7581"], p: "https://i.ibb.co/wF5YkCgj/ultron-marvel-contest-of-champions-md.jpg", s: "https://i.ibb.co/5XRXHbWn/1060200.jpg", r: 10 },
+    { id: "strange", name: "Doctor Strange", sub: "ডক্টর স্ট্রেঞ্জ", k: "mandala", a: "#5b21a8", c: ["#5b21a8","#8c6118","#43177e","#c08a2e","#6b2cbc"], p: "https://i.ibb.co/bgG0MgVt/doctor-strange-marvel-contest-of-champions-ij.jpg", s: "https://i.ibb.co/PvhhZKzy/doctor-strange.jpg", r: 16 },
+    { id: "wolverine", name: "Wolverine", sub: "ওয়ালভারিন", k: "claw", a: "#a8781a", c: ["#a8781a","#14293f","#8c6412","#1f3a5f","#c08f22"], p: "https://i.ibb.co/M5Dzdf2x/glowing-canine-wolverine-kt.jpg", s: "https://i.ibb.co/PZ35gFW5/wolvarine.jpg", r: 10, light: true },
+    { id: "ghostrider", name: "Ghost Rider", sub: "গোস্ট রাইডার", k: "flame", a: "#b02218", c: ["#b02218","#2b2b30","#8c1a12","#c2530f","#7c150e"], p: "https://i.ibb.co/prjCSfnz/ghost-rider-the-most-dangerous-1x.jpg", s: "https://i.ibb.co/mCMtTZQc/ghost-rider.jpg", r: 10 },
+    { id: "moonknight", name: "Moon Knight", sub: "মুন নাইট", k: "moon", a: "#5e6573", c: ["#5e6573","#101014","#414752","#1e1e24","#717886"], p: "https://i.ibb.co/Qvngt50z/moon-knight-tyrant-wn.jpg", s: "", r: 12 },
+    { id: "joker", name: "Joker", sub: "জোকার", k: "cards", a: "#4a1e5c", c: ["#4a1e5c","#14603a","#33143f","#1e7a4b","#5a2770"], p: "https://i.ibb.co/8DfVbF86/joker-last-laugh-4e.jpg", s: "", r: 14 },
+    { id: "aot", name: "Attack on Titan", sub: "অ্যাটাক অন টাইটান", k: "wall", a: "#3e6b47", c: ["#3e6b47","#6a4e26","#2c4e33","#8a6a3a","#4b7c54"], p: "https://i.ibb.co/QjzGfskY/attack-on-titan-5k-ms.jpg", s: "", r: 8 },
+    { id: "kratos", name: "Kratos", sub: "ক্রাটোস", k: "blade", a: "#8c1f1f", c: ["#8c1f1f","#33373c","#661414","#4a4f55","#7a2b2b"], p: "https://i.ibb.co/FkpNGbr4/kratos-warrior-battle-pose-4k-bv.jpg", s: "", r: 6 },
+    { id: "pikachu", name: "Pikachu", sub: "পিকাচু", k: "bolt", a: "#c98a00", c: ["#e0a100","#a85b00","#c98a00","#8c4a00","#f0b81a"], p: "https://i.ibb.co/vvxMpTtV/ultimate-pikachu-4k-yg.jpg", s: "", r: 20, light: true },
+    { id: "mikasha", name: "Mikasha", sub: "মিকাশা", k: "wing", a: "#a8102b", c: ["#a8102b","#3a3f47","#7c0a1e","#23262b","#8c0d24"], p: "https://i.ibb.co/8gSddpKk/mikasha.png", s: "", r: 14 }
   ];
 
-  var ROOT = document.documentElement;
-  var LAST_KEY = "TPX_LAST";
-  var OFF_KEY = "TPX_OFF";
-  var current = null;
-  var lastTokens = {};
+  /* Auto-fill: colours for themes added without an explicit palette */
+  var FALLBACK_PALETTES = [
+    { a: "#b0141c", c: ["#b0141c","#1d222a","#8c0f16","#a61a12","#6d0b11"] },
+    { a: "#1b3fa8", c: ["#1b3fa8","#c01327","#132a6b","#8c0f1d","#24479a"] },
+    { a: "#2e6b2b", c: ["#2e6b2b","#4e2c74","#1f4e1e","#6e3fa0","#3a7a36"] },
+    { a: "#5b21a8", c: ["#5b21a8","#8c6118","#43177e","#c08a2e","#6b2cbc"] },
+    { a: "#c2410c", c: ["#c2410c","#1e4e8c","#8c2c06","#14365f","#a8551a"] }
+  ];
+  var _MOTIF_CYCLE = ["shield","bolt","speed","flame","ring","spark","hex","moon","web","wing","mandala","claw"];
+  THEMES = THEMES.map(function (t, i) {
+    if (!t.id) t.id = String(t.name || ("theme" + i)).toLowerCase().replace(/[^a-z0-9]/g, "_") + "_" + i;
+    if (!t.sub) t.sub = t.name || t.id;
+    if (!t.k) t.k = _MOTIF_CYCLE[i % _MOTIF_CYCLE.length];
+    if (!t.c || !t.c.length) {
+      var h = 0, s = String(t.name || t.id);
+      for (var j = 0; j < s.length; j++) h = ((h << 5) - h + s.charCodeAt(j)) | 0;
+      var pal = FALLBACK_PALETTES[Math.abs(h) % FALLBACK_PALETTES.length];
+      t.a = t.a || pal.a;
+      t.c = pal.c.slice();
+    }
+    if (!t.a) t.a = t.c[0];
+    if (!t.r) t.r = 14;
+    if (t.p === undefined) t.p = "";
+    if (t.s === undefined) t.s = "";
+    return t;
+  });
 
-  /* the six subject hues the question sheet assigns (gk / aptitude / …) */
-  var SUBJECT_HUES = { gk: 38, aptitude: 258, reasoning: 330, english: 217, science_comp: 142, current: 25 };
+  var PICK_KEY = "MQ_THEME_V1";
+  var MODE_KEY = "MQ_THEME_MODE_V1";
+  var LAST_KEY = "MQ_THEME_LAST_V1";
+  var BG_KEY   = "MQ_THEME_BG_V1";
+
+  var ROOT = document.documentElement;
+  var current = null;
 
   /* ---------------------------------------------------------------- utils */
-  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function esc(v) {
     return String(v == null ? "" : v).replace(/[&<>"']/g, function (ch) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[ch];
     });
   }
-  function byId(id) { for (var i = 0; i < THEMES.length; i++) { if (THEMES[i].id === id) { return THEMES[i]; } } return null; }
-  function isOff() { try { return localStorage.getItem(OFF_KEY) === "1"; } catch (e) { return false; } }
-  function setOff(v) { try { v ? localStorage.setItem(OFF_KEY, "1") : localStorage.removeItem(OFF_KEY); } catch (e) { } }
+  function byId(id) {
+    for (var i = 0; i < THEMES.length; i++) { if (THEMES[i].id === id) { return THEMES[i]; } }
+    return null;
+  }
+  function hex2rgb(h) {
+    h = String(h).replace("#", "");
+    if (h.length === 3) { h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2]; }
+    return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+  }
+  function rgb2hex(r, g, b) {
+    return "#" + [r, g, b].map(function (v) {
+      var s = Math.max(0, Math.min(255, Math.round(v))).toString(16);
+      return s.length === 1 ? "0" + s : s;
+    }).join("");
+  }
+  function mix(a, b, t) {
+    var x = hex2rgb(a), y = hex2rgb(b);
+    return rgb2hex(x[0] + (y[0] - x[0]) * t, x[1] + (y[1] - x[1]) * t, x[2] + (y[2] - x[2]) * t);
+  }
+  function rgba(hex, a) {
+    var c = hex2rgb(hex);
+    return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a + ")";
+  }
+  function lum(hex) {
+    var c = hex2rgb(hex).map(function (v) {
+      v /= 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function contrast(a, b) {
+    var l1 = lum(a), l2 = lum(b);
+    return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+  }
+  function onColor(hex) { return contrast(hex, "#ffffff") >= 4.3 ? "#ffffff" : "#12151b"; }
+  function inkOf(hex) { return contrast(hex, "#ffffff") >= 3.2 ? hex : mix(hex, "#0b0e13", 0.42); }
 
-  /* ------------------------------------------------------------------ art */
-  function artUri(key, ink, accent) {
-    var svg = ART[key];
-    if (!svg) { return ""; }
-    svg = svg.split("__INK__").join(ink).split("__ACC__").join(accent);
-    return "url(\"data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg).replace(/'/g, "%27").replace(/"/g, "%22") + "\")";
+  /* --------------------------------------------------------------- motifs */
+  function svgUri(inner, vb) {
+    var s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + (vb || "0 0 120 120") + '">' + inner + "</svg>";
+    return 'url("data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s).replace(/'/g, "%27").replace(/"/g, "%22") + '")';
   }
 
-  /* ------------------------------------------------------------- patterns */
-  /* all patterns are line textures (never a colour wash) */
-  function pattern(motif, ink) {
-    var c1 = hexA(ink, 0.5), c2 = hexA(ink, 0.28);
-    switch (motif) {
-      case "web":
+  function motif(key, color) {
+    var c1 = rgba(color, 0.55), c2 = rgba(color, 0.3), c3 = rgba(color, 0.16);
+    switch (key) {
+      case "web": /* Spidey — extra rings + rays */
         return {
-          img: "repeating-conic-gradient(from 0deg at 8% 0%," + c1 + " 0 .4deg,transparent .4deg 13deg)," +
-               "repeating-radial-gradient(circle at 8% 0%," + c2 + " 0 1px,transparent 1px 26px)",
+          img: svgUri(
+            '<g fill="none" stroke="' + rgba(color, 0.9) + '" stroke-width="1.5">' +
+            '<circle cx="120" cy="0" r="26"/><circle cx="120" cy="0" r="52"/>' +
+            '<circle cx="120" cy="0" r="78"/><circle cx="120" cy="0" r="104"/>' +
+            '<circle cx="120" cy="0" r="130"/><circle cx="120" cy="0" r="156"/></g>' +
+            '<g fill="none" stroke="' + rgba(color, 0.82) + '" stroke-width="1.4" stroke-opacity=".75">' +
+            '<path d="M120 0L-40 160M120 0L-40 120M120 0L-40 80M120 0L-40 40M120 0L-40 0"/>' +
+            '<path d="M120 0L0 -40M120 0L40 -40M120 0L80 -40M120 0L160 -40"/>' +
+            '<path d="M120 0L20 160M120 0L60 160M120 0L100 160M120 0L140 160M120 0L180 160"/>' +
+            '</g>'),
+          size: "260px 260px"
+        };
+      case "laser": /* Superman / Supergirl — heat-vision beams */
+        return {
+          img: svgUri(
+            '<g stroke="' + rgba(color, 0.55) + '" stroke-width="10" stroke-linecap="round" opacity=".55">' +
+            '<path d="M120 0L-10 120M120 0L-10 90M120 0L-10 60"/></g>' +
+            '<g stroke="' + rgba(color, 0.95) + '" stroke-width="2.4" stroke-linecap="round">' +
+            '<path d="M120 0L-10 120M120 0L-10 90M120 0L-10 60"/></g>' +
+            '<circle cx="120" cy="0" r="14" fill="none" stroke="' + rgba(color, 0.8) + '" stroke-width="2"/>' +
+            '<circle cx="120" cy="0" r="26" fill="none" stroke="' + rgba(color, 0.35) + '" stroke-width="1.2"/>'),
+          size: "260px 260px"
+        };
+      case "bat":
+        return {
+          img: svgUri('<g fill="none" stroke="' + rgba(color, 0.55) + '" stroke-width="1.6"><ellipse cx="94" cy="30" rx="30" ry="18"/><ellipse cx="94" cy="30" rx="42" ry="26" stroke-opacity=".45"/></g>' +
+            '<g stroke="' + rgba(color, 0.32) + '" stroke-width="1.2"><path d="M-10 54L130 6M-10 84L130 36M-10 114L130 66M-10 144L130 96"/></g>', "0 0 120 120"),
+          size: "230px 230px"
+        };
+      case "shield":
+        return {
+          img: svgUri('<g fill="none" stroke="' + rgba(color, 0.85) + '" stroke-width="6" stroke-linejoin="round"><path d="M60 12l40 13-4 30c-3 22-18 37-36 46-18-9-33-24-36-46l-4-30z"/><path d="M60 30l26 8-3 20c-2 14-11 24-23 31-12-7-21-17-23-31l-3-20z" stroke-opacity=".5" stroke-width="3"/></g>'),
+          size: "210px 210px"
+        };
+      case "lasso":
+        return {
+          img: "repeating-radial-gradient(circle at 100% 0%," + c1 + " 0 1px,transparent 1px 26px)," +
+               "repeating-conic-gradient(from 0deg at 100% 0%," + c2 + " 0 .4deg,transparent .4deg 11deg)",
           size: "auto,auto"
         };
-      case "wall":
+      case "speed":
         return {
-          img: "repeating-linear-gradient(0deg," + c2 + " 0 1px,transparent 1px 22px)," +
-               "repeating-linear-gradient(90deg," + c2 + " 0 1px,transparent 1px 46px)",
+          img: "repeating-linear-gradient(0deg," + c2 + " 0 .6px,transparent .6px 34px)," +
+               "repeating-linear-gradient(100deg," + c1 + " 0 1px,transparent 1px 96px)",
           size: "auto,auto"
         };
-      case "strings":
+      case "bolt":
         return {
-          img: "repeating-linear-gradient(90deg," + c1 + " 0 .5px,transparent .5px 22px)",
-          size: "auto"
+          img: svgUri('<path d="M72 10L38 64h20l-6 46 40-64H68z" fill="none" stroke="' + rgba(color, 0.9) + '" stroke-width="6" stroke-linejoin="round"/><path d="M96 22l14-8M100 44h16M20 34l-12-6" stroke="' + rgba(color, 0.55) + '" stroke-width="4" stroke-linecap="round"/>'),
+          size: "200px 200px"
         };
-      case "wave":
+      case "hex":
         return {
-          img: "repeating-radial-gradient(circle at 13% 118%," + c1 + " 0 1px,transparent 1px 30px)," +
-               "repeating-radial-gradient(circle at 92% -18%," + c2 + " 0 1px,transparent 1px 42px)",
-          size: "auto,auto"
+          img: "repeating-linear-gradient(60deg," + c2 + " 0 1px,transparent 1px 32px)," +
+               "repeating-linear-gradient(-60deg," + c2 + " 0 1px,transparent 1px 32px)," +
+               "repeating-linear-gradient(0deg," + c3 + " 0 1px,transparent 1px 56px)",
+          size: "auto,auto,auto"
         };
-      case "stars":
-        return {
-          img: "radial-gradient(" + c1 + " 1.4px,transparent 1.6px)," +
-               "repeating-linear-gradient(112deg," + c2 + " 0 1px,transparent 1px 84px)",
-          size: "38px 38px,auto"
-        };
-      case "seal":
-        return {
-          img: "repeating-radial-gradient(circle at 92% 6%," + c1 + " 0 1px,transparent 1px 34px)," +
-               "repeating-conic-gradient(from 0deg at 92% 6%," + c2 + " 0 .5deg,transparent .5deg 22deg)",
-          size: "auto,auto"
-        };
-      case "haori":
-        return {
-          img: "repeating-conic-gradient(" + c2 + " 0 25%,transparent 0 50%)",
-          size: "40px 40px"
-        };
-      case "alchemy":
-        return {
-          img: "repeating-conic-gradient(from 0deg at 88% 14%," + c1 + " 0 .8deg,transparent .8deg 20deg)," +
-               "repeating-radial-gradient(circle at 88% 14%," + c2 + " 0 1px,transparent 1px 40px)",
-          size: "auto,auto"
-        };
-      case "rain":
-        return {
-          img: "repeating-linear-gradient(102deg," + c1 + " 0 .6px,transparent .6px 13px)",
-          size: "auto"
-        };
-      case "diamond":
+      case "cards":
         return {
           img: "repeating-linear-gradient(45deg," + c2 + " 0 1px,transparent 1px 26px)," +
                "repeating-linear-gradient(-45deg," + c2 + " 0 1px,transparent 1px 26px)",
           size: "auto,auto"
         };
-      case "hex":
+      case "symbiote":
         return {
-          img: "repeating-linear-gradient(60deg," + c2 + " 0 1px,transparent 1px 34px)," +
-               "repeating-linear-gradient(120deg," + c2 + " 0 1px,transparent 1px 34px)," +
-               "repeating-linear-gradient(0deg," + c2 + " 0 1px,transparent 1px 58px)",
-          size: "auto,auto,auto"
-        };
-      case "bolts":
-        return {
-          img: "repeating-linear-gradient(112deg," + c1 + " 0 1px,transparent 1px 52px)," +
-               "radial-gradient(" + c2 + " 1.2px,transparent 1.4px)",
-          size: "auto,44px 44px"
-        };
-      case "zigzag":
-        return {
-          img: "repeating-linear-gradient(135deg," + c1 + " 0 1px,transparent 1px 18px)," +
-               "repeating-linear-gradient(45deg," + c2 + " 0 1px,transparent 1px 18px)",
+          img: "repeating-conic-gradient(from 210deg at 92% -6%," + c1 + " 0 .7deg,transparent .7deg 9deg)," +
+               "repeating-radial-gradient(circle at 92% -6%," + c2 + " 0 1px,transparent 1px 19px)",
           size: "auto,auto"
         };
       case "mandala":
         return {
-          img: "repeating-radial-gradient(circle at 94% 4%," + c1 + " 0 1px,transparent 1px 22px)," +
-               "repeating-conic-gradient(from 0deg at 94% 4%," + c2 + " 0 .6deg,transparent .6deg 15deg)",
+          img: "repeating-conic-gradient(from 0deg at 100% 0%," + c1 + " 0 .5deg,transparent .5deg 15deg)," +
+               "repeating-radial-gradient(circle at 100% 0%," + c2 + " 0 1px,transparent 1px 22px)," +
+               "repeating-radial-gradient(circle at 100% 0%," + c3 + " 0 2px,transparent 2px 66px)",
+          size: "auto,auto,auto"
+        };
+      case "stones":
+        return {
+          img: "radial-gradient(" + c1 + " 2px,transparent 2.4px)," +
+               "repeating-linear-gradient(115deg," + c3 + " 0 1px,transparent 1px 64px)",
+          size: "34px 34px,auto"
+        };
+      case "plate":
+        return {
+          img: "repeating-linear-gradient(0deg," + c2 + " 0 1px,transparent 1px 40px)," +
+               "repeating-linear-gradient(90deg," + c3 + " 0 1px,transparent 1px 72px)",
           size: "auto,auto"
         };
-      case "speed":
+      case "ring":
         return {
-          img: "repeating-linear-gradient(0deg," + c1 + " 0 .6px,transparent .6px 40px)," +
-               "repeating-linear-gradient(90deg," + c2 + " 0 .6px,transparent .6px 120px)",
+          img: "repeating-radial-gradient(circle at 100% 0%," + c1 + " 0 2px,transparent 2px 30px)",
+          size: "auto"
+        };
+      case "claw":
+        return {
+          img: svgUri('<g stroke="' + rgba(color, 0.85) + '" stroke-width="5" stroke-linecap="round"><path d="M30 16L66 100M52 12l30 92M74 14l22 78"/></g>'),
+          size: "180px 180px"
+        };
+      case "flame":
+        return {
+          img: "repeating-linear-gradient(78deg," + c2 + " 0 1px,transparent 1px 26px)," +
+               "radial-gradient(" + c1 + " 1.6px,transparent 2px)",
+          size: "auto,30px 30px"
+        };
+      case "moon":
+        return {
+          img: svgUri('<g fill="none" stroke="' + rgba(color, 0.85) + '" stroke-width="5"><path d="M74 22a34 34 0 100 60 30 30 0 010-60z"/><circle cx="94" cy="34" r="3" fill="' + rgba(color, 0.8) + '" stroke="none"/><circle cx="86" cy="16" r="2" fill="' + rgba(color, 0.6) + '" stroke="none"/></g>'),
+          size: "200px 200px"
+        };
+      case "spark":
+        return {
+          img: "repeating-conic-gradient(from 12deg at 100% 0%," + c2 + " 0 .5deg,transparent .5deg 18deg)," +
+               "repeating-radial-gradient(circle at 100% 0%," + c3 + " 0 1px,transparent 1px 30px)",
+          size: "auto,auto"
+        };
+      case "wall":
+        return {
+          img: "repeating-linear-gradient(0deg," + c2 + " 0 1px,transparent 1px 26px)," +
+               "repeating-linear-gradient(90deg," + c3 + " 0 1px,transparent 1px 54px)",
+          size: "auto,auto"
+        };
+      case "blade":
+        return {
+          img: "repeating-linear-gradient(118deg," + c2 + " 0 1px,transparent 1px 42px)," +
+               "repeating-linear-gradient(118deg," + c3 + " 0 1px,transparent 1px 14px)",
+          size: "auto,auto"
+        };
+      case "impact":
+        return {
+          img: "repeating-conic-gradient(from 0deg at 100% 0%," + c2 + " 0 .8deg,transparent .8deg 24deg)," +
+               "repeating-radial-gradient(circle at 100% 0%," + c3 + " 0 2px,transparent 2px 40px)",
+          size: "auto,auto"
+        };
+      case "wing":
+        return {
+          img: "repeating-linear-gradient(128deg," + c2 + " 0 1px,transparent 1px 18px)," +
+               "repeating-linear-gradient(52deg," + c3 + " 0 1px,transparent 1px 34px)",
           size: "auto,auto"
         };
       default:
@@ -1742,142 +2239,221 @@ var ART = {
     }
   }
 
-  function hexA(hex, a) {
-    var h = String(hex).replace("#", "");
-    if (h.length === 3) { h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2]; }
-    var n = parseInt(h, 16);
-    return "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")";
-  }
-  function mix(hex, target, amt) {
-    var a = parseInt(String(hex).replace("#", ""), 16), b = parseInt(String(target).replace("#", ""), 16);
-    var r = [((a >> 16) & 255), ((a >> 8) & 255), (a & 255)];
-    var t = [((b >> 16) & 255), ((b >> 8) & 255), (b & 255)];
-    var o = r.map(function (v, i) { return Math.round(v + (t[i] - v) * amt); });
-    return "#" + o.map(function (v) { return ("0" + v.toString(16)).slice(-2); }).join("");
+  /* ---------------------------------------------------------------- state */
+  function isDark() { return ROOT.getAttribute("data-theme") === "dark"; }
+  function bgOn() {
+    try { return localStorage.getItem(BG_KEY) !== "0"; } catch (e) { return true; }
   }
 
-  /* --------------------------------------------------------------- tokens */
-  function tokensFor(t, mode, off) {
-    var dark = mode === "dark";
-    var ink = dark ? "#eef1f5" : "#14161a";
-    var accent = off ? (dark ? "#9aa4b2" : "#4b5563") : (dark ? lighten(t.accent) : t.accent);
-
-    var L = {};
-    L["--ink"] = ink;
-    L["--muted"] = dark ? "#98a2b3" : "#6b7280";
-    L["--line"] = dark ? "#2a2e36" : "#e5e6ea";
-    L["--paper"] = dark ? "#12141a" : "#ffffff";
-    L["--paper-2"] = dark ? "#0b0d11" : "#eceef1";
-    L["--bg"] = L["--paper-2"];
-    L["--card"] = L["--paper"];
-    L["--primary"] = ink;
-    L["--primary-dark"] = dark ? "#ffffff" : "#000000";
-    L["--accent"] = accent;
-    L["--accent-ink"] = dark ? "#0b0d11" : "#ffffff";
-    L["--slate"] = dark ? "#3a4150" : "#4b5563";
-    L["--green"] = dark ? "#34d399" : "#0f766e";
-    L["--red"] = dark ? "#f87171" : "#c0392b";
-    L["--gold"] = dark ? "#fbbf24" : "#b45309";
-    L["--orange"] = accent;
-    L["--shadow"] = dark ? "0 20px 50px -30px rgba(0,0,0,.9)" : "0 18px 44px -32px rgba(17,24,39,.45)";
-    L["--radius"] = "20px";
-    L["--header-bg"] = L["--paper"];
-    L["--header-color"] = ink;
-    L["--body-gradient"] = L["--paper-2"];
-
-    L["--tpx-ink"] = ink;
-    L["--tpx-accent"] = accent;
-    L["--tpx-paper"] = L["--paper"];
-    L["--tpx-line"] = L["--line"];
-    L["--tpx-muted"] = L["--muted"];
-    L["--tpx-soft"] = dark ? "rgba(255,255,255,.045)" : "rgba(17,24,39,.035)";
-    L["--tpx-glow"] = hexA(accent, dark ? 0.35 : 0.22);
-    L["--tpx-shadow"] = dark ? "0 24px 60px -34px #000" : "0 20px 50px -34px rgba(17,24,39,.55)";
-
-    /* six slim subject accents — an edge, never a wash */
-    for (var sk in SUBJECT_HUES) {
-      if (!Object.prototype.hasOwnProperty.call(SUBJECT_HUES, sk)) { continue; }
-      L["--tpx-s-" + sk] = off
-        ? (dark ? "#7b8492" : "#9aa3b0")
-        : "hsl(" + SUBJECT_HUES[sk] + "," + (dark ? 46 : 54) + "%," + (dark ? 60 : 42) + "%)";
+  function secondaryEl() {
+    var el = document.getElementById("tpxSecondary");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "tpxSecondary";
+      el.className = "tpx-secondary";
+      el.setAttribute("aria-hidden", "true");
+      /* engine may boot while <body> is still parsing — append when ready */
+      if (document.body) { document.body.appendChild(el); }
     }
-
-    var art = "";
-    if (!off) {
-      var key = t.arts[0];
-      if (t.arts.length > 1 && Math.random() < 0.5) { key = t.arts[1]; }
-      art = artUri(key, ink, accent);
-      L["--tpx-art-url"] = art;
-      var sec = t.arts.length > 1 ? t.arts[(t.arts.indexOf(key) + 1) % t.arts.length] : t.arts[0];
-      L["--tpx-art-2"] = artUri(sec, ink, accent);
-      L["--tpx-art-light"] = artUri(key, "#ffffff", lighten(accent));
-      var pat = pattern(t.motif, ink);
-      L["--tpx-pat"] = pat.img;
-      L["--tpx-pat-size"] = pat.size;
-      L["--tpx-pat-op"] = dark ? ".26" : ".18";
-      var main = t.arts[0];
-      L["--tpx-art-main"] = artUri(main, ink, accent);
-    } else {
-      L["--tpx-art-url"] = "none";
-      L["--tpx-art-2"] = "none";
-      L["--tpx-art-main"] = "none";
-      L["--tpx-art-light"] = "none";
-      L["--tpx-pat"] = "none";
-      L["--tpx-pat-size"] = "auto";
-      L["--tpx-pat-op"] = "0";
-    }
-    return L;
+    return el;
   }
 
-  function lighten(hex) { return mix(hex, "#ffffff", 0.35); }
-
-  var baseTitle = "Mega Quiz";
-
-  function apply(mode) {
+  /* ----------------------------------------------------------------- apply */
+  function apply() {
     if (!current) { return; }
-    var m = mode || ROOT.getAttribute("data-theme") || "light";
-    var off = isOff();
-    var tk = tokensFor(current, m === "dark" ? "dark" : "light", off);
-    for (var k in tk) { if (Object.prototype.hasOwnProperty.call(tk, k)) { ROOT.style.setProperty(k, tk[k]); } }
-    ROOT.setAttribute("data-tpx", off ? "off" : current.id);
-    ROOT.setAttribute("data-tpx-motif", off ? "none" : current.motif);
-    ROOT.setAttribute("data-tpx-off", off ? "1" : "0");
-    lastTokens = tk;
+    var dark = isDark();
+    var acc = current.a;
+    var m = motif(current.k, acc);
+    var st = ROOT.style;
+
+    st.setProperty("--acc", acc);
+    st.setProperty("--acc-d", mix(acc, "#0b0e13", dark ? 0.1 : 0.22));
+    st.setProperty("--acc-2", current.c[2] || current.c[1]);
+    st.setProperty("--acc-3", current.c[1] || acc);
+    st.setProperty("--on-acc", onColor(acc));
+    st.setProperty("--acc-soft", rgba(acc, dark ? 0.16 : 0.08));
+    st.setProperty("--acc-line", rgba(acc, dark ? 0.5 : 0.32));
+    st.setProperty("--acc-text", dark ? mix(acc, "#ffffff", 0.55) : inkOf(acc));
+    st.setProperty("--photo", current.p ? 'url("' + current.p + '")' : "none");
+    st.setProperty("--motif", m.img);
+    st.setProperty("--motif-size", m.size);
+    st.setProperty("--r", (current.r || 16) + "px");
+
+    ROOT.setAttribute("data-tpx", current.id);
+    ROOT.setAttribute("data-tpx-motif", current.k);
 
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) { meta.setAttribute("content", m === "dark" ? "#0b0d11" : "#ffffff"); }
-    try { document.title = baseTitle + (off ? "" : " \u00B7 " + current.name); } catch (e) { }
+    if (meta) { meta.setAttribute("content", dark ? "#0d0f14" : "#ffffff"); }
 
-    var chipName = document.querySelector(".tpx-theme-chip b");
-    if (chipName) { chipName.textContent = off ? "Theme off" : current.name; }
-    var chip = document.querySelector(".tpx-theme-chip");
-    if (chip) { chip.classList.toggle("is-off", off); }
-    var tbtn = document.getElementById("tpxThemeBtn");
-    if (tbtn) {
-      tbtn.classList.toggle("is-off", off);
-      tbtn.setAttribute("title", off ? "Theme off — click to turn on" : "Theme: " + current.name + " — click to turn off");
-      tbtn.setAttribute("aria-pressed", off ? "true" : "false");
+    /* background toggle state (null-safe: the engine boots before <body>) */
+    if (document.body) {
+      if (bgOn()) { document.body.classList.remove("tpx-bg-off"); }
+      else { document.body.classList.add("tpx-bg-off"); }
+    }
+    var bgBtn = document.getElementById("tpxBgBtn");
+    if (bgBtn) {
+      bgBtn.textContent = bgOn() ? "🎨" : "🚫";
+      bgBtn.title = bgOn() ? "Theme background OFF করো" : "Theme background ON করো";
+    }
+
+    /* ── Score board: the SECOND layer ──
+       main layer   = full-page theme photo on <body>
+       second layer = theme's small image behind the score text
+       (CSS side: .score-board.tpx-score-photo::before/::after)  */
+    var sb = document.getElementById("scoreBoard");
+    if (sb) {
+      if (current.s && bgOn()) {
+        sb.style.setProperty("--score-photo", 'url("' + current.s + '")');
+        sb.classList.add("tpx-score-photo");
+      } else {
+        sb.style.removeProperty("--score-photo");
+        sb.classList.remove("tpx-score-photo");
+      }
+    }
+
+    /* secondary corner image */
+    var sec = secondaryEl();
+    if (current.s) {
+      sec.style.backgroundImage = 'url("' + current.s + '")';
+      sec.style.display = "";
+    } else {
+      sec.style.backgroundImage = "none";
+      sec.style.display = "none";
+    }
+
+    paintSubjects();
+  }
+
+  /* ------------------------------------------------------------- subjects */
+  function paintSubjects() {
+    if (!current) { return; }
+    var heads = document.querySelectorAll("#subjectAccordions .subject-header");
+    for (var i = 0; i < heads.length; i++) {
+      var h = heads[i];
+      var col = current.c[i % current.c.length];
+      var txt = onColor(col);
+      h.style.background = "linear-gradient(100deg," + col + " 0%," + mix(col, "#0b0e13", 0.1) + " 100%)";
+      h.style.color = txt;
+      h.style.setProperty("--sub-ink", txt);
+      h.style.setProperty("--sub-check", mix(col, "#0b0e13", 0.6));
+      h.style.setProperty("--sub-edge", current.e || rgba(txt === "#ffffff" ? "#ffffff" : "#000000", 0.22));
+      h.style.setProperty("--sub-box", txt === "#ffffff" ? "rgba(255,255,255,.72)" : "rgba(0,0,0,.45)");
+      h.style.setProperty("--sub-box-bg", txt === "#ffffff" ? "rgba(255,255,255,.16)" : "rgba(255,255,255,.5)");
     }
   }
 
-  /* --------------------------------------------------------------- picking */
-  function pick() {
-    var forced = null;
-    try { forced = new URLSearchParams(location.search).get("theme"); } catch (e) { }
-    if (forced) {
-      if (forced === "off") { setOff(true); }
-      else if (byId(String(forced).toLowerCase())) { setOff(false); return byId(String(forced).toLowerCase()); }
-    }
+  /* -------------------------------------------------------------- picking */
+  function saved() {
+    try { return localStorage.getItem(PICK_KEY); } catch (e) { return null; }
+  }
+  function mode() {
+    try { return localStorage.getItem(MODE_KEY) || "random"; } catch (e) { return "random"; }
+  }
+  function save(id, m) {
+    try {
+      if (id) { localStorage.setItem(PICK_KEY, id); }
+      localStorage.setItem(MODE_KEY, m);
+    } catch (e) { }
+  }
+  function randomTheme(exclude) {
+    var pool = THEMES.filter(function (t) { return t.id !== exclude; });
+    return pool[Math.floor(Math.random() * pool.length)] || THEMES[0];
+  }
+  function initial() {
+    var q = null;
+    try { q = new URLSearchParams(location.search).get("theme"); } catch (e) { }
+    if (q && byId(String(q).toLowerCase())) { return { t: byId(String(q).toLowerCase()), force: true }; }
+    var s = saved();
+    if (mode() === "fixed" && s && byId(s)) { return { t: byId(s) }; }
     var last = null;
     try { last = sessionStorage.getItem(LAST_KEY); } catch (e) { }
-    var pool = THEMES.filter(function (t) { return t.id !== last; });
-    if (!pool.length) { pool = THEMES; }
-    var chosen = pool[Math.floor(Math.random() * pool.length)];
-    try { sessionStorage.setItem(LAST_KEY, chosen.id); } catch (e) { }
-    return chosen;
+    var t = randomTheme(last);
+    try { sessionStorage.setItem(LAST_KEY, t.id); } catch (e) { }
+    return { t: t };
   }
 
-  /* ---------------------------------------------------------------- media */
+  /* ----------------------------------------------------------------- chrome */
+  function header() {
+    var hd = document.querySelector(".main-header");
+    if (!hd) { return; }
+
+    /* make sure legacy photo elements are gone */
+    [".tpx-banner", ".tpx-avatar", ".tpx-cover"].forEach(function (sel) {
+      var el = hd.querySelector(sel);
+      if (el) { el.remove(); }
+    });
+
+    var cluster = hd.querySelector(".flex-row");
+    if (!cluster) { return; }
+
+    /* 🎲 random re-roll */
+    if (!document.getElementById("tpxDiceBtn")) {
+      var dice = document.createElement("button");
+      dice.id = "tpxDiceBtn";
+      dice.type = "button";
+      dice.className = "tpx-icon-btn";
+      dice.title = "Random Theme — চাপ দিলেই নতুন random theme";
+      dice.textContent = "🎲";
+      dice.addEventListener("click", function () {
+        current = randomTheme(current && current.id);
+        try { sessionStorage.setItem(LAST_KEY, current.id); } catch (e) {}
+        try { localStorage.removeItem(PICK_KEY); } catch (e) {}
+        try { localStorage.setItem(MODE_KEY, "random"); } catch (e) {}
+        apply();
+      });
+      cluster.insertBefore(dice, cluster.firstChild);
+    }
+
+    /* 🎨 background on/off */
+    if (!document.getElementById("tpxBgBtn")) {
+      var bg = document.createElement("button");
+      bg.id = "tpxBgBtn";
+      bg.type = "button";
+      bg.className = "tpx-icon-btn";
+      bg.title = bgOn() ? "Theme background OFF করো" : "Theme background ON করো";
+      bg.textContent = bgOn() ? "🎨" : "🚫";
+      bg.addEventListener("click", function () {
+        try { localStorage.setItem(BG_KEY, bgOn() ? "0" : "1"); } catch (e) {}
+        apply();
+      });
+      cluster.insertBefore(bg, cluster.firstChild);
+    }
+  }
+
+  function gateChip() {
+    var ov = document.getElementById("warningOverlay");
+    if (!ov) { return; }
+    /* fold the password block into the warning card (single panel) */
+    var card = ov.querySelector(".warning-card");
+    var psec = ov.querySelector(".password-section");
+    if (card && psec && psec.parentNode === ov) { card.appendChild(psec); }
+    if (ov.querySelector(".tpx-gate-chip")) { return; }
+    var chip = document.createElement("div");
+    chip.className = "tpx-gate-chip";
+    chip.innerHTML = '<span class="sw" aria-hidden="true"></span>' +
+      '<button type="button" id="tpxGateBtn" title="চাপ দিলেই পুরো random একটা character theme আসবে">🎲 Random Theme</button>';
+    ov.appendChild(chip);
+    var b = chip.querySelector("button");
+    if (b) {
+      b.addEventListener("click", function () {
+        current = randomTheme(current && current.id);
+        try { sessionStorage.setItem(LAST_KEY, current.id); } catch (e) {}
+        apply();
+      });
+    }
+  }
+
+  /* --------------------------------------------------------------- picker */
+  /* No public picker — the theme is chosen randomly. The dice buttons just
+     re-roll. Kept as stubs so any old reference is a no-op.               */
+  function openPicker() {
+    current = randomTheme(current && current.id);
+    try { sessionStorage.setItem(LAST_KEY, current.id); } catch (e) {}
+    apply();
+  }
+  function closePicker() {}
+
+  /* --------------------------------------------------------------- media */
   var IMG_EXT = /\.(png|jpe?g|gif|webp|avif|bmp|svg|jfif)(\?[^\s]*)?(#\S*)?$/i;
   var HOSTED = /(drive\.google\.com|googleusercontent\.com|docs\.google\.com|dropbox\.com|lh3\.|photos\.app\.goo\.gl|raw\.githubusercontent\.com|cloudinary\.com|imgur\.com|i\.ibb\.co|ibb\.co)/i;
 
@@ -2062,139 +2638,98 @@ var ART = {
     }
   };
 
-  /* ------------------------------------------------------------- lightbox */
+  /* --------------------------------------------------------------- lightbox */
   var _lb = null;
   function lightbox() {
     if (_lb && document.body.contains(_lb)) { return _lb; }
     _lb = document.createElement("div");
     _lb.className = "tpx-lb";
-    _lb.setAttribute("role", "dialog");
-    _lb.setAttribute("aria-modal", "true");
-    _lb.innerHTML = '<button class="lb-close" type="button" aria-label="বন্ধ করো">✕</button><img alt="প্রশ্নের ছবি">';
+    _lb.innerHTML = '<button type="button" class="lb-close" aria-label="বন্ধ করো">✕</button><img alt="ছবি">';
     _lb.addEventListener("click", function (e) {
-      if (e.target === _lb || e.target.classList.contains("lb-close")) { closeLightbox(); }
+      if (e.target === _lb || (e.target.classList && e.target.classList.contains("lb-close"))) {
+        closeLightbox();
+      }
     });
     document.body.appendChild(_lb);
     return _lb;
   }
   function closeLightbox() {
-    if (!_lb) { return; }
-    _lb.classList.remove("open");
+    if (_lb) { _lb.classList.remove("open"); }
     document.body.style.overflow = "";
   }
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeLightbox(); } });
 
-  var _fitTimer = null;
-  window.addEventListener("resize", function () {
-    if (_fitTimer) { clearTimeout(_fitTimer); }
-    _fitTimer = setTimeout(function () {
-      var shells = document.querySelectorAll(".q-media-shell");
-      for (var i = 0; i < shells.length; i++) {
-        var img = shells[i].querySelector("img");
-        if (!img) { continue; }
-        shells[i].removeAttribute("data-sized");
-        shells[i].style.width = "";
-        TPXMedia.ok(img);
-      }
-    }, 220);
-  });
+  /* ------------------------------------------------------------------- boot */
+  var boot = initial();
+  current = boot.t;
 
-  /* ------------------------------------------------------------ chrome/ui */
-  function themeButton() {
-    var cluster = document.querySelector(".main-header .flex-row");
-    if (!cluster || document.getElementById("tpxThemeBtn")) { return; }
-    var b = document.createElement("button");
-    b.id = "tpxThemeBtn";
-    b.className = "tpx-theme-btn";
-    b.type = "button";
-    b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' +
-      '<path d="M12 3a9 9 0 100 18 5 5 0 010-10 4 4 0 000-8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>' +
-      '<circle cx="9" cy="8" r="1.3" fill="currentColor"/><circle cx="15.5" cy="9.5" r="1.1" fill="currentColor"/>' +
-      '<circle cx="9.5" cy="14" r="1.1" fill="currentColor"/></svg><span>Theme</span>';
-    b.addEventListener("click", function () {
-      setOff(!isOff());
-      apply(ROOT.getAttribute("data-theme"));
-      decorate();
-    });
-    cluster.insertBefore(b, cluster.firstChild);
+  apply();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () { header(); gateChip(); apply(); });
+  } else {
+    header(); gateChip(); apply();
   }
 
-  function gateChip() {
-    var ov = document.getElementById("warningOverlay");
-    if (!ov) { return; }
-
-    /* fold the password block into the glass card so the gate is one panel */
-    var card = ov.querySelector(".warning-card");
-    var psec = ov.querySelector(".password-section");
-    if (card && psec && psec.parentNode === ov) { card.appendChild(psec); }
-
-    if (ov.querySelector(".tpx-theme-chip")) { return; }
-    var chip = document.createElement("div");
-    chip.className = "tpx-theme-chip";
-    chip.innerHTML = '<span class="dot" aria-hidden="true"></span><b>' + esc(isOff() ? "Theme off" : current.name) + '</b>' +
-                     '<button type="button" title="আরেকটা থিম" aria-label="আরেকটা থিম" onclick="TPX.roll()">🎲</button>';
-    ov.appendChild(chip);
-    chip.classList.toggle("is-off", isOff());
-  }
-
-  function decorate() {
-    if (!document.body.querySelector(".tpx-bg")) {
-      var bg = document.createElement("div");
-      bg.className = "tpx-bg";
-      bg.setAttribute("aria-hidden", "true");
-      document.body.insertBefore(bg, document.body.firstChild);
+  new MutationObserver(function (muts) {
+    for (var i = 0; i < muts.length; i++) {
+      if (muts[i].attributeName === "data-theme") { apply(); }
     }
-    themeButton();
-    gateChip();
+  }).observe(ROOT, { attributes: true, attributeFilter: ["data-theme"] });
+
+  /* subject list is rebuilt by the app — repaint the bars each time */
+  var mo = new MutationObserver(function () { paintSubjects(); });
+  function watchSubjects() {
+    var box = document.getElementById("subjectAccordions");
+    if (box) { mo.observe(box, { childList: true, subtree: false }); paintSubjects(); }
   }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", watchSubjects);
+  } else {
+    watchSubjects();
+  }
+
+  /* gate disappears after unlock — re-add the chip if the overlay returns */
+  var bodyWatch = new MutationObserver(function () {
+    header();
+    gateChip();
+  });
+  function attachBodyWatch() {
+    if (document.body) { bodyWatch.observe(document.body, { childList: true, subtree: false }); }
+  }
+  if (document.body) { attachBodyWatch(); }
+  else { document.addEventListener("DOMContentLoaded", attachBodyWatch); }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { closeLightbox(); }
+  });
 
   /* ------------------------------------------------------------------- api */
   window.TPX = {
     themes: THEMES,
-    art: ART,
-    media: TPXMedia,
     get theme() { return current; },
-    get off() { return isOff(); },
     setTheme: function (id) {
       var t = byId(id);
       if (!t) { return false; }
-      current = t;
-      setOff(false);
-      try { sessionStorage.setItem(LAST_KEY, t.id); } catch (e) { }
-      apply(ROOT.getAttribute("data-theme"));
-      decorate();
-      return true;
+      current = t; save(t.id, "fixed"); apply(); return true;
     },
-    setOff: function (v) { setOff(!!v); apply(ROOT.getAttribute("data-theme")); },
     roll: function () {
-      var pool = THEMES.filter(function (t) { return t.id !== (current && current.id); });
-      var t = pool[Math.floor(Math.random() * pool.length)] || THEMES[0];
-      current = t;
-      setOff(false);
-      try { sessionStorage.setItem(LAST_KEY, t.id); } catch (e) { }
-      apply(ROOT.getAttribute("data-theme"));
-      return t;
+      current = randomTheme(current && current.id);
+      try { sessionStorage.setItem(LAST_KEY, current.id); } catch (e) { }
+      apply();
+      return current;
     },
-    tokens: function () { return lastTokens; }
+    open: openPicker,
+    apply: apply
   };
   window.TPXMedia = TPXMedia;
 
-  /* --------------------------------------------------------------- bootstrap */
-  baseTitle = (document.title || "Mega Quiz").split(" \u00B7 ")[0];
-  current = pick();
-  apply(ROOT.getAttribute("data-theme"));
-
-  new MutationObserver(function (muts) {
-    for (var i = 0; i < muts.length; i++) {
-      if (muts[i].attributeName === "data-theme") { apply(ROOT.getAttribute("data-theme")); }
-    }
-  }).observe(ROOT, { attributes: true, attributeFilter: ["data-theme"] });
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", decorate);
-  } else {
-    decorate();
+  /* warm the current theme's images only */
+  function warm() {
+    if (!current) { return; }
+    if (current.p) { var a = new Image(); a.src = current.p; }
+    if (current.s) { var b = new Image(); b.src = current.s; }
   }
+  if (window.requestIdleCallback) { requestIdleCallback(warm, { timeout: 3000 }); }
+  else { setTimeout(warm, 1800); }
 })();
 </script>
 </head>
@@ -2229,27 +2764,27 @@ var ART = {
 <div class="percentage-bar"><div class="percentage-fill" id="percentageFill" style="width:0%"></div></div>
 <p style="margin:8px 0; font-weight:600;" id="percentageText">0%</p>
 <div class="results-chapters" id="resultsChapters"></div>
-<button class="close-results-btn" id="closeResultsBtn">✅ উত্তর দেখুন</button>
+<button class="close-results-btn" id="closeResultsBtn">উত্তর দেখুন</button>
 </div>
 </div>
 <main class="app" id="app">
 <div class="container">
 <div class="main-header">
-<div class="main-title" id="mainTitle">🏆 Loading...</div>
+<div class="main-title" id="mainTitle">Loading...</div>
 <div class="flex-row" style="gap:8px;">
 <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Dark/Light Mode">🌙</button>
 <div class="credit" id="creditName">✨ By Arif Hussain</div>
-<button style="background: var(--slate);" id="syncHeaderBtn" title="Sync from Sheet">🔄</button>
-<button style="background: var(--red);" id="resetHeaderBtn" title="Reset Answers">🗑️</button>
+<button style="background: var(--slate);" id="syncHeaderBtn" title="Sync from Sheet">Sync</button>
+<button style="background: var(--red);" id="resetHeaderBtn" title="Reset Answers">Reset</button>
 </div>
 </div>
 <section class="controls">
 <div class="controls-outer">
 <div class="controls-left">
-<button style="background: var(--slate);" id="chapterToggleBtn">📂 Select Subjects</button>
+<button style="background: var(--slate);" id="chapterToggleBtn">Select Subjects</button>
 <div class="mode-selector" id="modeSelector">
-<button class="mode-btn active" data-mode="practice">📝 Practice</button>
-<button class="mode-btn" data-mode="mock">⏱️ Mock Test</button>
+<button class="mode-btn active" data-mode="practice">Practice</button>
+<button class="mode-btn" data-mode="mock">Mock Test</button>
 </div>
 </div>
 <div class="controls-right">
@@ -2257,15 +2792,15 @@ var ART = {
 <input type="number" id="quizSize" value="200" min="1" max="5000" style="width:70px;">
 <label style="font-size:12px;">Time(min):</label>
 <input type="number" id="timeLimit" value="30" min="1" max="300" style="width:65px;">
-<button id="generateBtn">✅Generate(Seq)</button>
-<button id="randomBtn" style="background: var(--orange);">🎲Random</button>
+<button id="generateBtn">Generate (Seq)</button>
+<button id="randomBtn" style="background: var(--orange);">Random</button>
 </div>
 </div>
 <div class="chapter-panel" id="chapterPanel">
 <div class="subject-action-row">
 <div class="flex-row">
-<button id="selectAllBtn">✅ Select All</button>
-<button id="deselectAllBtn" style="background: var(--slate);">❌ Deselect All</button>
+<button id="selectAllBtn">Select All</button>
+<button id="deselectAllBtn" style="background: var(--slate);">Deselect All</button>
 </div>
 </div>
 <div id="subjectAccordions"></div>
@@ -2273,14 +2808,14 @@ var ART = {
 <div id="syncStatus" class="status-msg"></div>
 </section>
 <section class="quiz-panel">
-<div class="questions-area" id="questionsArea"><div class="question-card" style="text-align:center;padding:50px;">⬆️ Select subjects and click Generate</div></div>
+<div class="questions-area" id="questionsArea"><div class="question-card" style="text-align:center;padding:50px;">Select subjects and click Generate</div></div>
 <aside class="sidebar">
-<div class="score-board" id="scoreBoard">🎯 Score: 0/0</div>
+<div class="score-board" id="scoreBoard">Score: 0/0</div>
 <div id="timerDisplay" style="display:none;"></div>
 <div id="navGrid" class="nav-grid"></div>
-<button id="showScoreBtn" style="margin-top:10px;width:100%; background:var(--slate);">📊 Show Results</button>
+<button id="showScoreBtn" style="margin-top:10px;width:100%; background:var(--slate);">Show Results</button>
 <div class="note-toggle" id="noteToggleRow"><label><input type="checkbox" id="showNoteBeforeAnswer"> Show explanation before answering</label></div>
-<button id="submitMockBtn" style="display:none; margin-top:8px; width:100%; background:var(--green);">✅ Submit Mock Test</button>
+<button id="submitMockBtn" style="display:none; margin-top:8px; width:100%; background:var(--green);">Submit Mock Test</button>
 </aside>
 </section>
 </div>
@@ -2327,6 +2862,17 @@ const CURRENT_CLASS = detectClass();
 const CONFIG = CLASS_CONFIGS[CURRENT_CLASS];
 const SHEET_TSV_URL = CONFIG.tsv;
 const RESULT_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuQhk6uP2EDvT0bXKGrYb6cuE0_6NoOSJq1pjEp0R4s-WmELk9O5q9WKF3T2KO4U2M0_m95lSgtQf/pub?output=tsv";
+/* ════════════ USER SWITCHES — on/off only, code kept intact ════════════
+   RESULT_SONG_ENABLED  : mock test submit / result ের default song (SoundHelix
+                          feedback mp3) OFF । code মুছা হয়নি — শুধু OFF ।
+                          পরে manually music দিলে Sheet-এর music/video media
+                          সবসময় বাজবে (ওটা এই switch দিয়ে control হয় না) ।
+   SHEET_UPDATE_ENABLED : AI explanation Google Sheet-ে write (update-sheet
+                          call) OFF — যতক্ষণ না true করছো, sheet ে কোনো
+                          update যাবে না । Question sync (read) আগের মতোই ।
+   ════════════════════════════════════════════════════════════════════════ */
+const RESULT_SONG_ENABLED = false;
+const SHEET_UPDATE_ENABLED = false;
 let resultMediaRows = [];
 const CORRECT_PASSWORD = CONFIG.password;
 const EMBEDDED_BANK = "";
@@ -2339,7 +2885,7 @@ const LAST_SYNC_KEY = "QUIZ_LAST_SYNC_" + APP_VERSION;
 const ACCORDION_STATE_KEY = "QUIZ_ACCORDION_" + APP_VERSION;
 
 document.title = CONFIG.title + " || Mega Quiz";
-document.getElementById('mainTitle').innerHTML = '🏆 ' + CONFIG.title + ' <small>| ' + CONFIG.subjects + ' |</small>';
+document.getElementById('mainTitle').innerHTML = CONFIG.title + ' <small>| ' + CONFIG.subjects + ' |</small>';
 
 let openAccordions = new Set();
 function loadAccordionState() { 
@@ -2486,7 +3032,7 @@ stopTimer(); timeRemaining=null; timerActive=false;
 if(quizMode==="mock"){const tl=parseInt($("timeLimit").value)||30; timeRemaining=tl*60; startTimer(timeRemaining);}
 renderQuiz(); renderNav(); updateScore(); updateTimerDisplay(); saveQuizState();
 }
-function showSyncStatus(m, ok = true) { $("syncStatus").innerHTML = `<span style="color:${ok ? '#0d9488' : '#dc2626'};font-weight:600;">${ok ? '🦥' : '❌'} ${escapeHtml(m)}</span>`; setTimeout(() => $("syncStatus").innerHTML = "", 3500); }
+function showSyncStatus(m, ok = true) { $("syncStatus").innerHTML = `<span style="color:${ok ? '#0d9488' : '#dc2626'};font-weight:600;">${escapeHtml(m)}</span>`; setTimeout(() => $("syncStatus").innerHTML = "", 3500); }
 
 async function syncFromSheet(url){
 if(!url) return;
@@ -2654,7 +3200,8 @@ async function fetchAIExplanation(questionObj) {
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
       .trim();
 
-    if (explanation && sheetRowIndex) {
+    /* SHEET_UPDATE_ENABLED=false → sheet ে কোনো write যাবে না */
+    if (explanation && sheetRowIndex && SHEET_UPDATE_ENABLED) {
       try {
         await fetch('/api/update-sheet', {
           method: 'POST',
@@ -2757,6 +3304,7 @@ function stopResultMedia(){ const box = document.getElementById('resultsMedia');
 function renderResultMedia(cfg){
 const box = document.getElementById('resultsMedia'); if(!box) return;
 stopResultMedia();
+
 if (!cfg || !cfg.mediaUrl) return;
 const url = escapeAttr(cfg.mediaUrl);
 const t = cfg.mediaType;
@@ -2780,20 +3328,22 @@ if (customCfg && customCfg.message) {
 if (customCfg.message === '-' || customCfg.message.toLowerCase() === 'none') message = '';
 else message = customCfg.message;
 }
-if (customCfg && (customCfg.mediaType==='music'||customCfg.mediaType==='audio'||customCfg.mediaType==='video')) { } else { playFeedbackSound(pct); }
+/* default result song — code intact, OFF by default (RESULT_SONG_ENABLED).
+   Sheet-ে manually দেওয়া music/video media সবসময় প্লে করবে । */
+if (customCfg && (customCfg.mediaType==='music'||customCfg.mediaType==='audio'||customCfg.mediaType==='video')) { } else if (RESULT_SONG_ENABLED) { playFeedbackSound(pct); }
 
 document.getElementById('resultsEmoji').textContent=emoji;
 document.getElementById('resultsMessage').textContent=message;
 renderResultMedia(customCfg);
 document.getElementById('resultsScore').textContent=score+'/'+totalQuestions;
-const banner=document.getElementById('resultsBanner'); if(banner){const ti=quizTimeLimit?' • '+quizTimeLimit+' min':''; if(quizGeneratedBy==='random')banner.textContent='🎲 Random Test'+ti; else if(quizGeneratedBy==='seq')banner.textContent='✅ Sequential Test'+ti; else banner.textContent='';}
+const banner=document.getElementById('resultsBanner'); if(banner){const ti=quizTimeLimit?' • '+quizTimeLimit+' min':''; if(quizGeneratedBy==='random')banner.textContent='Random Test'+ti; else if(quizGeneratedBy==='seq')banner.textContent='Sequential Test'+ti; else banner.textContent='';}
 document.getElementById('resCorrect').textContent=c;
 document.getElementById('resWrong').textContent=w;
 document.getElementById('resSkipped').textContent=s;
 document.getElementById('percentageFill').style.width=pct+'%';
 document.getElementById('percentageText').textContent=pct+'%';
 const chDiv=document.getElementById('resultsChapters'); if(chDiv&&currentQuestions.length){
-const cm=new Map(); for(const q of currentQuestions){const gn=q._groupName||'Unknown';const cn=q._chapterName||'Unknown'; if(!cm.has(gn))cm.set(gn,new Map()); const cc=cm.get(gn); cc.set(cn,(cc.get(cn)||0)+1);} let html='<strong>📚 Subjects & Chapters:</strong><br>'; for(const[group,chapters] of cm){html+='• <strong>'+escapeHtml(group)+':</strong> '; html+=[...chapters].map(([ch,count])=>escapeHtml(ch)+' ('+count+' Qs)').join(', '); html+='<br>';} chDiv.innerHTML=html;} else if(chDiv){chDiv.innerHTML='';}
+const cm=new Map(); for(const q of currentQuestions){const gn=q._groupName||'Unknown';const cn=q._chapterName||'Unknown'; if(!cm.has(gn))cm.set(gn,new Map()); const cc=cm.get(gn); cc.set(cn,(cc.get(cn)||0)+1);} let html='<strong>Subjects & Chapters:</strong><br>'; for(const[group,chapters] of cm){html+='• <strong>'+escapeHtml(group)+':</strong> '; html+=[...chapters].map(([ch,count])=>escapeHtml(ch)+' ('+count+' Qs)').join(', '); html+='<br>';} chDiv.innerHTML=html;} else if(chDiv){chDiv.innerHTML='';}
 document.getElementById('resultsOverlay').classList.remove('hidden');
 }
 function hideResultsOverlay(){ stopResultMedia(); document.getElementById('resultsOverlay').classList.add('hidden'); }
@@ -2823,7 +3373,7 @@ function toggleOptionsVisibility() {
 window.toggleOptionsVisibility = toggleOptionsVisibility;
 
 function renderQuiz(){ 
-if(!currentQuestions.length){$("questionsArea").innerHTML="<div class='question-card' style='text-align:center;padding:50px;'>⬆️ Select subjects and click Generate</div>";return;}
+if(!currentQuestions.length){$("questionsArea").innerHTML="<div class='question-card' style='text-align:center;padding:50px;'>Select subjects and click Generate</div>";return;}
 currentIndex=Math.max(0,Math.min(currentIndex,currentQuestions.length-1));
 const q=currentQuestions[currentIndex];
 
@@ -2858,7 +3408,7 @@ const answered=userAnswers[currentIndex]!==null;
 const showResult=quizSubmitted||(quizMode==="practice"&&answered);
 const noteVisible=quizSubmitted||(quizMode==="practice"&&answered)||(quizMode!=="mock"&&$("showNoteBeforeAnswer").checked);
 const diffClass='pill difficulty-'+(q.difficulty||'medium');
-const diffLabel={easy:'🟢 Easy',medium:'🟠 Medium',hard:'🔴 Hard'}[q.difficulty||'medium']||'Medium';
+const diffLabel={easy:'Easy',medium:'Medium',hard:'Hard'}[q.difficulty||'medium']||'Medium';
 const optHtml=q.o.map((opt,i)=>{
 let cls="option"; if(showResult&&i===q.a)cls+=" correct-answer"; if(showResult&&userAnswers[currentIndex]===i&&userAnswers[currentIndex]!==-1&&!answerStatus[currentIndex])cls+=" wrong-feedback"; if(quizMode==="mock"&&!quizSubmitted&&userAnswers[currentIndex]===i&&answered)cls+=" selected-mock";
 return `<div class="${cls}" data-opt="${i}"><span class="key">${i+1}</span><span>${String.fromCharCode(65+i)}. ${safeHtml(opt)}</span></div>`;
@@ -2878,12 +3428,12 @@ $("questionsArea").innerHTML=`
 <span class="pill">${escapeHtml(q._groupName||"")}</span>
 <span class="pill">${escapeHtml(q._chapterName||"")}</span>
 <span class="${diffClass}">${diffLabel}</span>
-${quizMode==="mock"&&timerActive?`<span class="timer-display" id="timerPill">⏱️ <span id="timerPillText">--:--</span></span>`:""}
+${quizMode==="mock"&&timerActive?`<span class="timer-display" id="timerPill">Time <span id="timerPillText">--:--</span></span>`:""}
 </div>
 <div class="question-text">${currentIndex+1}. ${safeHtml(q.q)}</div>
 ${window.TPXMedia ? TPXMedia.render(q) : ""}
 <div class="options ${optionsHiddenClass}" id="optionsContainer">${optHtml}</div>
-<div class="info ${noteVisible?"show":""} ${q._aiGenerated?'ai-generated':''}" id="noteBox">📖 ${safeHtml(q.note||"No explanation")}</div>
+<div class="info ${noteVisible?"show":""} ${q._aiGenerated?'ai-generated':''}" id="noteBox">${safeHtml(q.note||"No explanation")}</div>
 <div class="nav-buttons-large">
 <button id="prevQ" ${currentIndex===0?"disabled":""}>◀ Previous</button>
 <button id="nextQ" ${currentIndex===totalQuestions-1?"disabled":""}>Next ▶</button>
@@ -2907,7 +3457,7 @@ function updateScore(){
 const c=answerStatus.filter(Boolean).length;
 const a=userAnswers.filter(v=>v!==null&&v!==-1).length;
 const w=a-c;
-const s=totalQuestions-a; if(quizMode==="mock"&&!quizSubmitted){$("scoreBoard").innerHTML=`⏱️ Mock Test in Progress`;}else{if(quizMode==="mock"&&quizSubmitted){const score=Math.max(0,c-w*0.5);$("scoreBoard").innerHTML=`🎯 Score: ${score}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} (×-0.5) | ⏭️${s}</span>`;}else{$("scoreBoard").innerHTML=`🎯 Score: ${c}/${totalQuestions}<br><span class="score-breakdown">✅${c} | ❌${w} | ⏭️${s}</span>`;}}
+const s=totalQuestions-a; if(quizMode==="mock"&&!quizSubmitted){$("scoreBoard").innerHTML=`Mock Test in Progress`;}else{if(quizMode==="mock"&&quizSubmitted){const score=Math.max(0,c-w*0.5);$("scoreBoard").innerHTML=`Score: ${score}/${totalQuestions}<br><span class="score-breakdown">ঠিক ${c} | ভুল ${w} (×-0.5) | বাদ ${s}</span>`;}else{$("scoreBoard").innerHTML=`Score: ${c}/${totalQuestions}<br><span class="score-breakdown">ঠিক ${c} | ভুল ${w} | বাদ ${s}</span>`;}}
 const noteRow=$("noteToggleRow");const showScoreBtn=$("showScoreBtn");if(quizMode==="mock"&&!quizSubmitted){if(noteRow)noteRow.style.display='none';if(showScoreBtn)showScoreBtn.style.display='none';}else{if(noteRow)noteRow.style.display='';if(showScoreBtn)showScoreBtn.style.display='';}
 }
 function resetAnswers(){quizSubmitted=false;optionsVisible=true;optionsHidden=false;userAnswers.fill(null);answerStatus.fill(false);currentIndex=0;stopTimer();timeRemaining=null;timerActive=false;quizGeneratedBy=null;quizTimeLimit=null;if(quizMode==="mock"){const tl=parseInt($("timeLimit").value)||30;timeRemaining=tl*60;startTimer(timeRemaining);}renderQuiz();renderNav();updateScore();updateTimerDisplay();saveQuizState();}
@@ -2945,7 +3495,7 @@ let timerInterval=null;let timeRemaining=null;let timerActive=false;
 function startTimer(seconds){stopTimer();timeRemaining=seconds;timerActive=true;updateTimerDisplay();timerInterval=setInterval(()=>{timeRemaining--;updateTimerDisplay();if(timeRemaining<=0){stopTimer();if(quizMode==="mock"){quizSubmitted=true;renderQuiz();renderNav();updateScore();saveQuizState();fireConfetti();showResultsOverlay();}}},1000);}
 function stopTimer(){if(timerInterval)clearInterval(timerInterval);timerInterval=null;timerActive=false;updateTimerDisplay();}
 function updateTimerDisplay(){
-const td=$('timerDisplay');const tpt=document.getElementById('timerPillText');if(quizMode==="mock"&&timeRemaining!==null){if(td)td.style.display='block';const mins=Math.floor(Math.max(0,timeRemaining)/60);const secs=Math.floor(Math.max(0,timeRemaining)%60);const display=`${mins}:${secs.toString().padStart(2,'0')}`;if(td){td.innerHTML=`⏱️ Time: <strong>${display}</strong>`;td.className=timeRemaining<=60?'timer-display danger':(timeRemaining<=180?'timer-display warn':'timer-display');}if(tpt)tpt.textContent=display;
+const td=$('timerDisplay');const tpt=document.getElementById('timerPillText');if(quizMode==="mock"&&timeRemaining!==null){if(td)td.style.display='block';const mins=Math.floor(Math.max(0,timeRemaining)/60);const secs=Math.floor(Math.max(0,timeRemaining)%60);const display=`${mins}:${secs.toString().padStart(2,'0')}`;if(td){td.innerHTML=`Time: <strong>${display}</strong>`;td.className=timeRemaining<=60?'timer-display danger':(timeRemaining<=180?'timer-display warn':'timer-display');}if(tpt)tpt.textContent=display;
 const qCard=document.getElementById('questionCardEl');if(qCard){qCard.classList.remove('timer-warn','timer-danger');if(timeRemaining<=60)qCard.classList.add('timer-danger');else if(timeRemaining<=180)qCard.classList.add('timer-warn');}}else{if(td)td.style.display='none';if(tpt)tpt.textContent='--:--';}if($("submitMockBtn"))$("submitMockBtn").style.display=(quizMode==="mock"&&timerActive)?'block':'none';
 }
 function updateModeButtons(){document.querySelectorAll('.mode-btn').forEach(b=>{b.classList.toggle('active',b.dataset.mode===quizMode);});}
@@ -2992,7 +3542,7 @@ function renderLatex() {
 }
 
 function init(){
-const savedTheme=localStorage.getItem(THEME_KEY)||'light';
+const savedTheme=localStorage.getItem(THEME_KEY)||'dark';
 applyTheme(savedTheme);
 loadAccordionState();
 initCredits();
