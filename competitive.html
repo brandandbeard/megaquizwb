@@ -326,7 +326,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0
 <main class="app" id="app" style="display:none">
 <div class="container">
 <div class="main-header">
-<div class="main-title" id="mainTitle">🏆 Loading...</div>
+<div class="main-title" id="mainTitle"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" style="height:28px;vertical-align:middle;margin-right:6px;border-radius:8px;border:1px solid var(--line);"> Loading...</div>
 <div class="flex-row" style="gap:8px">
 <button id="themeToggleBtn" class="theme-toggle-btn" title="Theme: Day / Night / AMOLED">🌙</button>
 <div class="credit" id="creditName">✨ By Arif Hussain</div>
@@ -423,7 +423,7 @@ const THEME_KEY="COMP_THEME_"+CURRENT_CLASS;
 const LAST_SYNC_KEY="COMP_SYNC_"+APP_VERSION;
 const ACCORDION_STATE_KEY="COMP_ACCORDION_"+APP_VERSION;
 document.title=CONFIG.title+" || Competitive Quiz";
-document.getElementById('mainTitle').innerHTML='🏆 '+CONFIG.title+' <small>| '+CONFIG.subjects+' |</small>';
+document.getElementById('mainTitle').innerHTML='<img src="https://i.ibb.co/7qJGpT1/icon-192.png" style="height:22px;vertical-align:middle;margin-right:6px;border-radius:6px;border:1px solid var(--line);"> '+CONFIG.title+' <small>| '+CONFIG.subjects+' |</small>';
 document.getElementById('gateSubtitle').textContent=CONFIG.title+' · '+CONFIG.subjects;
 let openAccordions=new Set();
 function loadAccordionState(){openAccordions=new Set();try{const s=localStorage.getItem(ACCORDION_STATE_KEY);if(s)openAccordions=new Set(JSON.parse(s));}catch(e){}}
