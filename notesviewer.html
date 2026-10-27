@@ -262,7 +262,11 @@ body.day .smart-table th{color:#8B6508}
 .sim-overlay-loader.gone{opacity:0;pointer-events:none}
 .sim-loader-ring{width:46px;height:46px;border:3px solid rgba(168,85,247,0.15);border-top-color:#a855f7;border-radius:50%;animation:spin 1s linear infinite}
 .sim-zoom-ctrl{position:absolute;right:18px;top:50%;transform:translateY(-50%);z-index:10003;display:flex;flex-direction:column;gap:12px;align-items:center;transition:opacity .4s}
-.sim-zoom-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.55);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);transition:.25s;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+.sim-zoom-btn{width:48px;hei
+.sim-slide-btn{position:absolute;top:50%;z-index:10003;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.15);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(8px);transition:.2s;transform:translateY(-50%)}
+.sim-slide-btn:hover{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.35)}
+.sim-slide-btn.prev{left:12px}
+.sim-slide-btn.next{right:12px}ght:48px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.55);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);transition:.25s;box-shadow:0 4px 16px rgba(0,0,0,.35)}
 .sim-zoom-btn:active{transform:scale(.9);background:rgba(168,85,247,.75)}
 .sim-zoom-btn.fit-active{background:rgba(240,192,64,.92);color:#06060f;border-color:#f0c040}
 .sim-zoom-lbl{font-family:'Space Grotesk',sans-serif;font-size:.62rem;font-weight:700;color:#fff;background:rgba(0,0,0,.6);padding:3px 8px;border-radius:20px;backdrop-filter:blur(8px);min-width:48px;text-align:center}
@@ -446,6 +450,8 @@ body.day .sidebar{background:#FFFCF0}
     </div>
     <div id="simZoomWrap">
         <iframe id="simOverlayFrame" allow="fullscreen; accelerometer; gyroscope; autoplay" allowfullscreen></iframe>
+        <button class="sim-slide-btn prev" onclick="simSlide(-1)" title="Previous">◀</button>
+        <button class="sim-slide-btn next" onclick="simSlide(1)" title="Next">▶</button>
     </div>
     <div class="sim-zoom-ctrl" id="simZoomCtrl">
         <button class="sim-zoom-btn" onclick="simZoomIn()" title="Zoom In"><i data-lucide="plus" width="22"></i></button>
@@ -1696,5 +1702,5 @@ window.addEventListener('online',()=>{if(mqWasOffline){mqWasOffline=false;showTo
 
 loadSheet();
 </script>
-</body>
+<script>\nlet simSlideIdx=0;\nfunction simSlide(d){simSlideIdx=Math.max(0,simSlideIdx+d);console.log("slide",simSlideIdx);}\n</script>\n</body>
 </html>
