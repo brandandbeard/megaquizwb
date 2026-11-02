@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Mind Maps — Mega Quiz</title>
+<title>Mind Maps — Why X!</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
@@ -243,12 +243,12 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 <div id="toast"><i class="fa-solid fa-circle-check"></i><span id="tmsg"></span></div>
 
 <!-- Tiny permanent branding — bottom-left corner, locked, low-contrast -->
-<div id="brand"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><span><b>Mega Quiz</b><span class="bx"> • Mind Map</span></span></div>
+<div id="brand"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><span><b>Why X!</b><span class="bx"> • Mind Map</span></span></div>
 
 <!--@@MQ_SNAPSHOT@@-->
 <script>
 /* ===== CONFIG ===== */
-const CONFIG={VIEWER:false,SCRIPT_URL:'https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/exec',TSV_URL:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQ7k5BSCdOKc27LOEAmSgSe0aBcMNhnK45hSPIlH2RBsh4Jo50Wx3NbGcO-vsEni9eTPIMVuUQHdVT/pub?output=tsv',PASSWORD:'mindmap0',ADMIN_PW:'Megaquiz0',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
+const CONFIG={VIEWER:false,SCRIPT_URL:'https://script.google.com/macros/s/AKfycbxsezVv1oJ9py3tZE2g4gdsbaspdjb5ooIeTD06H0Hc0XVJwNQzwfHxeh9xdefgqs8D/exec',TSV_URL:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQ7k5BSCdOKc27LOEAmSgSe0aBcMNhnK45hSPIlH2RBsh4Jo50Wx3NbGcO-vsEni9eTPIMVuUQHdVT/pub?output=tsv',PASSWORD:'mindmap0',ADMIN_PW:'Arif@956438',AI_URL:'/api/mindmap-ai',LS:'mq_mm_v7',MINDMAP_URL:'https://megaquizwb.vercel.app/mindmap'};
 // Active script URL: user-configurable (Settings modal) — survives Apps Script re-deploy URL changes.
 const SURL_KEY='mq_mm_scripturl';
 function getScriptUrl(){try{const u=localStorage.getItem(SURL_KEY);if(u&&/^https:\/\/script\.google\.com\/macros\/s\//.test(u))return u}catch(e){}return CONFIG.SCRIPT_URL}
@@ -845,11 +845,11 @@ function goLanding(){S.view='landing';document.body.dataset.view='landing';S.sel
    Permission model:
    - Viewer (no password): dekha + zoom + fit + collapse/expand + style + download + fullscreen + Sync
    - Editor  (password "mindmap0"): + Import / Backup / Trash-Restore / Add-Rename-Delete / node edit / AI
-   - Admin   (password "Megaquiz0"): Google Sheet Settings (gear) — alada password, sob editor pay na */
+   - Admin   (password "Arif@956438"): Google Sheet Settings (gear) — alada password, sob editor pay na */
 function renderTopbar(){
   const ed=S.view==='editor';
   const vw=!!CONFIG.VIEWER; // downloaded HTML copy: edit/back/download/sync sob bad — pure viewer
-  let h=`<a class="logo" href="${CONFIG.MINDMAP_URL}" target="_top" rel="noopener"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><b>MEGA&nbsp;<span>QUIZ</span></b></a>`;
+  let h=`<a class="logo" href="${CONFIG.MINDMAP_URL}" target="_top" rel="noopener"><img src="https://i.ibb.co/7qJGpT1/icon-192.png" alt=""><b>WHY&nbsp;<span>X!</span></b></a>`;
   if(!ed){ // ---- LANDING ----
     if(S.nav.length>0)h+=`<button class="btn" onclick="navBack()" title="Back"><i class="fa-solid fa-arrow-left"></i><span> Back</span></button>`;
     if(!vw)h+=`<button class="btn" onclick="loadBtn()" title="Sheet theke notun data load (reload = latest)"><i class="fa-solid fa-rotate"></i><span> Sync</span></button>`;
@@ -1551,7 +1551,7 @@ function getIconDataURL(){
   });
   return _iconPromise;
 }
-// Brand header: MegaQuiz icon + "MEGAQUIZMINDMAP" wordmark (first & last letters BIG, middle small —
+// Brand header: WhyX! icon + "WHYX!MINDMAP" wordmark (first & last letters BIG, middle small —
 // same style as the main page logo) + topic title + divider.
 function _brandHeader(x1,y1,w,iconData){
   let s='';
@@ -1564,9 +1564,9 @@ function _brandHeader(x1,y1,w,iconData){
     s+=`<ellipse cx="${cx}" cy="${cy}" rx="22" ry="7" fill="none" stroke="#ffc46b" stroke-width="2.5" transform="rotate(-16 ${cx} ${cy})" opacity=".9"/>`;
   }
   const tx=x1+94,ty=y1+52;
-  // Wordmark: Mega (white) + quiz (yellow) + mindmap (white) — user spec
-  s+=`<text x="${tx}" y="${ty}" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800" letter-spacing=".5"><tspan fill="#ffffff">Mega</tspan><tspan fill="#f5b301">quiz</tspan><tspan fill="#ffffff">mindmap</tspan></text>`;
-  s+=`<text x="${tx}" y="${ty+22}" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#64748b" letter-spacing="2.5">MEGA QUIZ • By Arif Hussain</text>`;
+  // Wordmark: WHY (white) + X! (yellow) + mindmap (white) — user spec
+  s+=`<text x="${tx}" y="${ty}" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800" letter-spacing=".5"><tspan fill="#ffffff">WHY</tspan><tspan fill="#f5b301">X!</tspan><tspan fill="#ffffff">mindmap</tspan></text>`;
+  s+=`<text x="${tx}" y="${ty+22}" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#64748b" letter-spacing="2.5">Why X! • By Arif Hussain</text>`;
   const topic=S.topic?String(S.topic.name):'';
   if(topic)s+=`<text x="${x1+w/2}" y="${y1+EXPORT_HEADER-12}" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700" fill="#ffffff">${esc(topic)}</text>`;
   s+=`<line x1="${x1}" y1="${y1+EXPORT_HEADER}" x2="${x1+w}" y2="${y1+EXPORT_HEADER}" stroke="rgba(245,179,1,.35)" stroke-width="1.5"/>`;
