@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#edf0f8">
-    <title>MegaQuiz — PDF Studio</title>
+    <title>WHY X — PDF Studio</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="https://i.ibb.co/7qJGpT1/icon-192.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1419,9 +1419,9 @@
     <div id="home-page" class="page active">
         <header class="topbar">
             <div class="brand">
-                <img class="brand-mark" src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="MegaQuiz">
+                <img class="brand-mark" src="https://i.ibb.co/7qJGpT1/icon-192.png" alt="Why X!">
                 <div>
-                    <span class="brand-name">MegaQuiz</span>
+                    <span class="brand-name">WhyX!</span>
                     <span class="brand-sub">PDF Studio</span>
                 </div>
             </div>
@@ -1484,7 +1484,7 @@
         <div class="classes-grid" id="classes-grid"></div>
 
         <footer class="site-foot">
-            <span>MegaQuiz · Universal Quiz System</span>
+            <span>WhyX! · Universal Quiz System</span>
             <span>megaquizwb.vercel.app</span>
         </footer>
     </div>
@@ -1600,13 +1600,13 @@
                         <button class="clay-btn tiny" id="wm-edit-btn" onclick="openPasswordModal()">🔑 Edit</button>
                     </div>
                     <ul class="lock-list">
-                        <li><span>Watermark</span><b id="lock-wm">Megaquiz / By Arif Hussain</b></li>
+                        <li><span>Watermark</span><b id="lock-wm">WhyX! / By Arif Hussain</b></li>
                         <li><span>Header right</span><b>Final Exam</b></li>
                         <li><span>Page · assets</span><b>A4 · Logo · QR</b></li>
                     </ul>
                     <div class="wm-inputs" id="wm-inputs" style="display:none;">
                         <label>Watermark — odd pages
-                            <input class="clay-input" id="wm-odd-input" type="text" maxlength="34" value="Megaquiz">
+                            <input class="clay-input" id="wm-odd-input" type="text" maxlength="34" value="WhyX!">
                         </label>
                         <label>Watermark — even pages
                             <input class="clay-input" id="wm-even-input" type="text" maxlength="34" value="By Arif Hussain">
@@ -1684,7 +1684,7 @@
             siteLabel: 'megaquizwb.vercel.app',
             logo: 'https://i.ibb.co/7qJGpT1/icon-192.png',
             headerRight: 'Final Exam',
-            wmOdd: 'Megaquiz',
+            wmOdd: 'Why X!',
             wmEven: 'By Arif Hussain'
         };
 
@@ -2838,8 +2838,8 @@
         }
 
         function safeFileName() {
-            const base = (currentChapter || 'MegaQuiz').replace(/[\\/:*?"<>|]+/g, '').trim();
-            return (base || 'MegaQuiz') + '.pdf';
+            const base = (currentChapter || 'Why X!').replace(/[\\/:*?"<>|]+/g, '').trim();
+            return (base || 'Why X!') + '.pdf';
         }
 
         /* ---------------- export ---------------- */
@@ -2897,10 +2897,10 @@
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
 
             pdf.setProperties({
-                title: `${currentChapter || 'Quiz'} — MegaQuiz`,
+                title: `${currentChapter || 'Quiz'} — Why X!`,
                 subject: `${currentSubject || ''} · ${currentChapter || ''}`,
                 author: wmOdd,
-                creator: 'MegaQuiz PDF Studio',
+                creator: 'Why X! PDF Studio',
                 keywords: `quiz, ${currentSubject || ''}, ${currentChapter || ''}, A4`
             });
 
