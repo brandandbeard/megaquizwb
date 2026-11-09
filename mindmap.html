@@ -9,6 +9,25 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--bg:#0b0f19;--sf:#151a25;--sf2:#1e2636;--nd:#161b26;--ac:#f5b301;--tx:#e8ecf4;--tx2:#94a3b8;--bd:#2d3748;--ok:#10b981;--err:#ef4444}
+/* WHITE MODE — puro board white, sob jinisher default color light theme e switch hoy.
+   User er nijer color (node color) thik thake — sudhu DEFAULT gulo change hoy. */
+body.white{--bg:#eef1f6;--sf:#ffffff;--sf2:#f1f4f9;--nd:#ffffff;--tx:#1c2534;--tx2:#5b6779;--bd:#d4dbe6}
+body.white #topbar{background:rgba(255,255,255,.92)}
+body.white .btn:hover{color:#111}
+body.white .crumb .cur{color:#111}
+body.white #wrap{background:radial-gradient(900px 500px at 50% 40%,rgba(245,179,1,.07),transparent 60%)}
+body.white .nd{border-color:rgba(15,23,42,.16);color:#1c2534;box-shadow:0 3px 12px rgba(15,23,42,.10)}
+body.white .nd:hover{border-color:rgba(15,23,42,.42)}
+body.white .nd .handle{color:rgba(15,23,42,.38);border-right-color:rgba(15,23,42,.12)}
+body.white .nd.free{border-color:rgba(176,124,0,.55);box-shadow:0 4px 16px rgba(245,179,1,.16)}
+body.white .nd.note{background:#fff7dd;border-color:rgba(176,124,0,.5);color:#7a5600;box-shadow:0 4px 16px rgba(245,179,1,.12)}
+body.white .nd.root .handle{color:rgba(0,0,0,.45);border-right-color:rgba(0,0,0,.15)}
+body.white .rz{border-color:#ffffff}
+body.white #topbar,body.white #zoomc,body.white #dlMenu,body.white #navc,body.white #toast{backdrop-filter:none}
+body.white #zoomc,body.white #dlMenu{background:rgba(255,255,255,.96);box-shadow:0 6px 20px rgba(15,23,42,.14)}
+body.white #navc{background:rgba(255,255,255,.96);box-shadow:0 6px 20px rgba(15,23,42,.14)}
+body.white #toast{background:rgba(255,255,255,.97);color:#1c2534;box-shadow:0 6px 20px rgba(15,23,42,.16)}
+body.white #toast.ok{color:#0b7d55}body.white #toast.err{color:#c02626}
 html,body{height:100%;overflow:hidden}
 body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx);display:flex;flex-direction:column}
 #topbar{height:54px;flex-shrink:0;display:flex;align-items:center;gap:.5rem;padding:0 .8rem;background:rgba(11,15,25,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);z-index:100;overflow-x:auto;scrollbar-width:none}
@@ -54,15 +73,24 @@ body[data-view="editor"] #landing{display:none}
 #world{position:absolute;left:0;top:0;transform-origin:0 0}
 #linesSvg{position:absolute;left:0;top:0;width:10px;height:10px;overflow:visible}
 #linesSvg path,#linesSvg line{fill:none;stroke-linecap:round;stroke-linejoin:round}
-.nd{position:absolute;transform:translate(-50%,-50%);background:var(--nd);border:1px solid rgba(255,255,255,.14);border-radius:10px;display:flex;align-items:stretch;color:#eef1f6;font-size:13px;line-height:1.4;cursor:pointer;user-select:none;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.nd{position:absolute;transform:translate(-50%,-50%);background:var(--nd);border:1px solid rgba(255,255,255,.14);border-radius:10px;display:flex;align-items:center;color:#eef1f6;font-size:13px;line-height:1.4;cursor:pointer;user-select:none;box-shadow:0 4px 14px rgba(0,0,0,.4)}
 .nd:hover{border-color:rgba(255,255,255,.4);z-index:5}
 .nd.sel{outline:2px solid var(--ac);outline-offset:2px;z-index:6}
 .nd.root{background:linear-gradient(135deg,#ffd34d,#f5b301);border:none;color:#141000;font-weight:700}
-.nd .handle{display:none;align-items:center;padding:0 6px;color:rgba(255,255,255,.35);cursor:grab;font-size:.75rem;border-right:1px solid rgba(255,255,255,.1)}
+.nd .handle{display:none;align-items:center;padding:0 6px;color:rgba(255,255,255,.35);cursor:grab;font-size:.75rem;border-right:1px solid rgba(255,255,255,.1);align-self:stretch}
 body.unlocked .nd .handle{display:flex}
 .nd.root .handle{color:rgba(0,0,0,.45);border-right-color:rgba(0,0,0,.15)}
 .nd .txt{padding:7px 11px;flex:1;text-align:left;word-break:break-word}
-.nd .txt[contenteditable="true"]{outline:1.5px solid var(--ac);cursor:text;user-select:text;border-radius:4px}
+.nd .txt[contenteditable="true"]{outline:1.5px solid var(--ac);cursor:text;user-select:text;border-radius:4px;display:block}
+/* Free node (jekono jaygay) + free note + resize handle + link mode */
+.nd.free{border-style:dashed;border-color:rgba(245,179,1,.55);cursor:move;box-shadow:0 4px 16px rgba(245,179,1,.12)}
+.nd.note{background:#241f33;border:1px dashed rgba(255,211,77,.65);color:#ffe9a8;box-shadow:0 4px 16px rgba(255,211,77,.1)}
+.nd.note .txt{font-style:italic}
+.nd.lksrc{outline:2px solid #4f69e8;outline-offset:2px}
+body.linking .nd{cursor:crosshair}
+body.linking .nd:hover{outline:2px dashed #4f69e8;outline-offset:3px}
+.rz{position:absolute;right:-8px;bottom:-8px;width:16px;height:16px;background:var(--ac);border:2px solid #10131c;border-radius:4px;cursor:nwse-resize;display:none;z-index:7;touch-action:none}
+body.unlocked .nd.sel .rz{display:block}
 .cbadge{position:absolute;right:-10px;top:50%;transform:translateY(-50%);min-width:20px;height:20px;border-radius:99px;background:var(--sf2);border:1.5px solid var(--ac);color:var(--ac);font:700 .66rem/17px Inter;text-align:center;cursor:pointer;z-index:7}
 .cbadge:hover{background:var(--ac);color:#111}
 .ghost{opacity:.85;pointer-events:none;position:fixed;z-index:999}
@@ -155,6 +183,13 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
 .titem .ti-cnt{font-size:.68rem;color:var(--ac)}
 .titem .btn{padding:.35rem .7rem;font-size:.72rem}
 .tempty{font-size:.8rem;color:var(--tx2);text-align:center;padding:1rem 0}
+
+/* ===== Chemistry: sub/sup inside node text + reaction-arrow labels ===== */
+.nd .txt sub,.nd .txt sup{font-size:.68em;line-height:0}
+.nd .txt sub{vertical-align:sub}
+.nd .txt sup{vertical-align:super}
+svg g.lblg{cursor:pointer}
+svg g.lblg:hover text{fill:#ffe08a}
 </style>
 </head>
 <body data-view="landing">
@@ -215,6 +250,39 @@ body.fs .nav-group .btn.ic{width:22px;height:22px}
   <div class="mact ai-end"><button class="btn" onclick="closeM('aiModal')">Cancel</button><button class="btn pri" onclick="runAI()"><i class="fa-solid fa-bolt"></i> Generate</button></div>
 </div></div>
 
+<!-- arrow label (reagent/condition) -->
+<div class="mbg" id="lblModal"><div class="modal">
+  <h2><i class="fa-solid fa-tag"></i> Arrow Label — reagent / condition</h2>
+  <p>Ei lekh ta arrow er <b>upore / niche / dui pashe</b> dekhabe — <b>Style</b> button e tap kore mode bondho koro. Example: <b>Cl~2~ / hν</b>, <b>conc. H~2~SO~4~ , 170°C</b>, <b>alc. KOH, Δ</b><br>
+  <span style="font-size:.78rem;color:var(--tx2)">Dui pashe mode e <b>upor|niche</b> likhleo dui alada text jabe — jemon <b>LiAlH~4~|Et~2~O</b> (upore reagent, niche solvent).</span></p>
+  <div style="font-size:.75rem;color:var(--tx2);margin-bottom:.4rem">Arrow ta giyeche ei node e: <b id="lblTgt"></b></div>
+  <input class="in" id="lblIn" placeholder="e.g. conc. H~2~SO~4~ , 170°C" autocomplete="off">
+  <div id="lblLinkRow" style="display:none;gap:.5rem;margin-top:.6rem;flex-wrap:wrap">
+    <button class="btn" id="lblArr" onclick="lblStyleCycle()" title="Tap korle style switch hoy: arrow er UPORE → NICHE → DUI PASHE (link hole arrow type → / ⇌ / ⇢ o switch hoy)">↕ label: upore</button>
+    <button class="btn" id="lblRm" onclick="lblRemoveLink()" title="Ei link line ta muche dao" style="color:#ff6384"><i class="fa-solid fa-link-slash"></i> Line muche dao</button>
+  </div>
+  <div class="mact"><button class="btn" onclick="closeM('lblModal')">Cancel</button><button class="btn pri" onclick="saveLabel()">Save</button></div>
+</div></div>
+
+<!-- help -->
+<div class="mbg" id="helpModal"><div class="modal" style="max-width:600px">
+  <h2><i class="fa-solid fa-circle-question"></i> Kivabe use korbe</h2>
+  <p style="line-height:1.75">
+  <b style="color:var(--ac)">⚗ Chemistry equation:</b> Node e double-tap kore likho. <b>H~2~SO~4~</b> likhle H₂SO₄ hoy (number niche), <b>SO4^2-^</b> likhle SO₄²⁻ hoy. Toolbar e <b>X₂ / X²</b> button o ache — text select kore chapo. <b>Chem mode ⚗</b> on korle C2H6 auto C₂H₆ hoy.<br>
+  <b style="color:var(--ac)">➜ Reaction arrow:</b> Node select koro → topbar e <b>Arrow</b> button: → normal, ⇌ reversible, ⇢ dashed. Arrow ta ager node (parent) theke ei node e jay.<br>
+  <b style="color:var(--ac)">🏷 Reagent label (arrow er blank):</b> Node select → <b>Label</b> button → reagent/condition likho. Arrow er upor directly click korleo modal khule.<br>
+  <b style="color:var(--ac)">↕ Reagent upore / niche / dui pashe:</b> Label modal er <b>Style button</b> e tap koro — label arrow er <b>upore → niche → dui pashe</b> ghure jay (link hole arrow type →/⇌/⇢ o ek sathe switch hoy). <b>Dui pashe</b> mode e <b>upor|niche</b> likhleo dui alada text bose — jemon <b>LiAlH~4~|Et~2~O</b> (upore reagent, niche solvent).<br>
+  <b style="color:var(--ac)">🌳 Reaction chain:</b> Ek compound theke onek product = <b>Child</b> node; product theke abar reaction = tar o Child (jetai c2h6 → C2H5Cl → C2H5OH chain). Chemistry er jonno <b>Tree style</b> best.<br>
+  <b style="color:var(--ac)">👁 Root node:</b> Main compound ta map er majhe dekhate Root button (eye icon).<br>
+  <b style="color:var(--ac)">📐 Box size + resize:</b> Node select korle box er corner e <b>orange handle</b> ashe — tene box choto/boro koro. Adjust kora size <b>save hoye</b> thake — erpor notun <b>Child / Sibling / Free box</b> oi same size e khulbe. Default e "New Node" ek line e khule.<br>
+  <b style="color:var(--ac)">🧲 Free box (je kono jaygay):</b> <b>Free</b> button → canvas er majhe ekta alada box khulbe — sibling/child chara. Box ta <b>tenen</b> jekono jaygay. <br>
+  <b style="color:var(--ac)">🔗 Link (dui line ek node e mile — converging):</b> <b>JE KONO box</b> (tree node ba Free box) select koro (jemon <b>X</b>) → <b>Link</b> button → tarpor TARGET box e tap koro (jemon <b>CH₂CH₂</b>) → X theke CH₂CH₂ te notun line. Evabe Y thekeo CH₂CH₂ te line draw koro — <b>dui line alada, kintu ek i box e mile</b>. <b>Line er je kono jaygay tap/double-click</b> korle reagent likha'r box khulbe (notun fanka link eo kaj kore) — label curve er sathe mile boshhe, upore/niche/dui pashe + arrow (⇌/⇢) change + line delete o kora jay.<br>
+  <b style="color:var(--ac)">📝 Free note (hide/show):</b> <b>Note</b> button → jekono jaygay chhotо lekha'r box. Topbar er <b>Note 👁 button</b> diye sob note hide/show koro (class e answer hide korte darun).<br>
+  <b style="color:var(--ac)">☀ White board mode:</b> Topbar er <b>moon/sun</b> button — puro board white hoye jay, node/line/label/note sob default color light theme e switch hoy (export eo white background thake). Tor bar abar tap korle dark ferot.<br>
+  <b style="color:var(--ac)">💾 Data safe:</b> Sob change auto Google Sheet e backup hoy. Delete korle Trash e thake (restore kora jay). PNG / PDF / HTML export eo arrow + label + free box sob thake.</p>
+  <div class="mact"><button class="btn pri" onclick="closeM('helpModal')">OK</button></div>
+</div></div>
+
 <!-- download dropdown -->
 <div id="dlMenu">
   <button data-fmt="png"><i class="fa-solid fa-image"></i> PNG image</button>
@@ -256,23 +324,135 @@ function getScriptUrl(){try{const u=localStorage.getItem(SURL_KEY);if(u&&/^https
 // Apps Script down/quota/broken-deploy holei ei link theke data load hobe — load kokhono block hobe na.
 const TSV_KEY='mq_mm_tsvurl';
 function getTsvUrl(){try{const u=localStorage.getItem(TSV_KEY);if(u&&/^https:\/\/docs\.google\.com\/spreadsheets\/d\/e\//.test(u))return u}catch(e){}return CONFIG.TSV_URL}
-const GRAVE_CLS='__DEL__',GRAVE_SEP='∥';  // tombstone marker: deleted rows are stored in the sheet with cls='__DEL__' (never removed from the sheet)
+const GRAVE_CLS='__DEL__',GRAVE_SEP='∥';
+/* Arrow / label / width / chem-mode Google Sheet round-trip:
+   row column + text marker [[MM:...]] (marker survives ANY sheet schema, even old TSV headers). */
+function extrasMarker(n,free){const parts=[];
+  if(n.arrow)parts.push('a'+n.arrow);
+  if(n.label)parts.push('l'+String(n.label).replace(/\|/g,'¦'));
+  if(n.lpos&&n.lpos!=='a')parts.push('p'+n.lpos);
+  if(n.style&&n.style.width)parts.push('w'+n.style.width);
+  if(n.style&&n.style.h)parts.push('h'+n.style.h);
+  if(n.chem)parts.push('c1');
+  if(n.lks&&n.lks.length)parts.push('K'+n.lks.map(lk=>encodeURIComponent(lk.p||'')+'.'+(lk.lpos||'a')+'.'+(lk.arrow||1)+'.'+encodeURIComponent(lk.label||'')).join('¦'));
+  if(free)parts.push('F'+Math.round(n.x||0)+','+Math.round(n.y||0)+','+(n.note?1:0));
+  return parts.length?' [[MM:'+parts.join('|')+']]':''}
+function parseMM2(t){const m=String(t).match(/\[\[MM:([^\]]*)\]\]\s*$/);const out={};if(!m)return out;
+  m[1].split('|').forEach(p=>{const k=p[0],v=p.slice(1);
+    if(k==='a')out.a=Math.max(1,Math.min(3,+v||1));
+    else if(k==='l')out.l=v.replace(/¦/g,'|');
+    else if(k==='p')out.p=(v==='b'||v==='d')?v:'a';
+    else if(k==='w'&&+v)out.w=+v;
+    else if(k==='h'&&+v)out.h=+v;
+    /* K format: purano = p.arrow.label ; notun = p.lpos(a/b/d).arrow.label — dutoi parse hoy */
+    else if(k==='K')out.K=v.split('¦').filter(Boolean).map(s=>{const q=s.split('.');
+      if(q.length>2&&'abd'.indexOf(q[1])>=0)return{p:decodeURIComponent(q[0]),lpos:q[1],arrow:Math.max(1,Math.min(3,+q[2]||1)),label:q.length>3?decodeURIComponent(q.slice(3).join('.')):''};
+      return{p:decodeURIComponent(q[0]),arrow:Math.max(1,Math.min(3,+q[1]||1)),label:q.length>2?decodeURIComponent(q.slice(2).join('.')):''}});
+    else if(k==='F'){const q=v.split(',');out.fx=+q[0]||0;out.fy=+q[1]||0;out.note=q[2]==='1'}
+    else if(k==='c')out.c=true});
+  return out}  // tombstone marker: deleted rows are stored in the sheet with cls='__DEL__' (never removed from the sheet)
 const PALETTE=['#4f69e8','#f29f7c','#4caa70','#2566df','#6178eb','#ff6384','#ffce54','#4bc0c0','#9966ff'];
-const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,pwMode:'editor',delTarget:null,impMode:'new',gap:1,graves:[],foreign:[],cloud:'idle',synced:false};
+const S={view:'landing',nav:[],curriculum:[],topic:null,map:null,selId:null,layout:'timeline',zoom:1,px:0,py:0,history:[],hi:-1,unlocked:false,pwThen:null,pwMode:'editor',delTarget:null,impMode:'new',gap:1,graves:[],foreign:[],cloud:'idle',synced:false,showRoot:false,editing:null,lastBox:null,lblCtx:null,linking:null,showNotes:true,fn:0};
 let segs=[],boxes=[];
 const $=id=>document.getElementById(id);
 const uid=()=>'n'+Math.random().toString(36).slice(2,9);
 const clone=o=>JSON.parse(JSON.stringify(o));
+/* ===== WHITE MODE (light board) =====
+   Board white, sob default color (node, line, label chip, note, export) light theme e switch.
+   User er nijer set kora color unchanged thake. Toggle: topbar e moon/sun button. */
+function isWhite(){return document.body.classList.contains('white')}
+function thm(d,l){return isWhite()?l:d}
+function toggleWhite(){document.body.classList.toggle('white');
+  try{localStorage.setItem('mq_mm_white',document.body.classList.contains('white')?'1':'0')}catch(e){}
+  renderMap();renderTopbar();
+  toast(document.body.classList.contains('white')?'☀ White mode — board white, sob color light':'🌙 Dark mode ferot ela','ok')}
+function applyThemeBoot(){let w=null;try{w=localStorage.getItem('mq_mm_white')}catch(e){}
+  if(w==='1'||(w===null&&document.body.classList.contains('white'))){
+    document.body.classList.add('white');
+    try{localStorage.setItem('mq_mm_white','1')}catch(e){}}}
 // FIXED: if a node is collapsed, hide its CHILDREN (not the node itself)
 const vis=n=>n.collapsed?[]:(n.children||[]);
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* ===== CHEMISTRY INLINE MARKUP =====
+   H~2~SO~4~ → subscript, SO4^2-^ → superscript. Chem mode: digit after letter/) auto-subscripts. */
+const chemSub=s=>String(s).replace(/~([^~\n]+)~/g,'<sub>$1</sub>').replace(/\^([^\^\n]+)\^/g,'<sup>$1</sup>');
+const plainChem=t=>String(t).replace(/~([^~\n]+)~/g,'$1').replace(/\^([^\^\n]+)\^/g,'$1');
+const autoChem=s=>String(s).replace(/([A-Za-z)\]])(\d+)/g,(m,a,d)=>a+'~'+d+'~');
+const stripMM=t=>String(t).replace(/\s*\[\[MM:[^\]]*\]\]\s*$/,'');
+function chemText(line){return chemSub(esc(S.map&&S.map.chem?autoChem(line):line))}
+function chemTspans(line){
+  let out='',cur=0;const src=(S.map&&S.map.chem)?autoChem(line):line;
+  const parts=String(src).split(/(~[^~\n]+~|\^[^\^\n]+\^)/);
+  parts.forEach(p=>{if(!p)return;let m;
+    if(m=p.match(/^~([^~\n]+)~$/)){out+='<tspan'+(cur!==3?' dy="'+(3-cur)+'"':'')+' font-size=".7em">'+esc(m[1])+'</tspan>';cur=3}
+    else if(m=p.match(/^\^([^\^\n]+)\^$/)){out+='<tspan'+(cur!==-5?' dy="'+(-5-cur)+'"':'')+' font-size=".7em">'+esc(m[1])+'</tspan>';cur=-5}
+    else{if(cur!==0){out+='<tspan dy="'+(-cur)+'">'+esc(p)+'</tspan>';cur=0}else out+=esc(p)}
+  });
+  return out}
+function arrowHead(x,y,ang,color,size){return '<polygon points="0,0 '+(-size)+','+(-size*.45)+' '+(-size)+','+(size*.45)+'" fill="'+color+'" transform="translate('+x+' '+y+') rotate('+ang+')"/>'}
+function labelW(t){mctx.font='600 11px Inter,sans-serif';return Math.max(26,mctx.measureText(plainChem(t)).width+10)}
+/* Reagent label er duita possible position compute hoy:
+   A = arrow er UPORE (horizontal line er upore / vertical line er dane),
+   B = arrow er NICHE (horizontal line er niche / vertical line er bame).
+   lpos: 'a'=upore (default), 'b'=niche, 'd'=dui pashe ('|' diye split: 'upor|niche') */
+function segLabelPos(s){if(!s.label)return;
+  if(s.o){const my=(s.y1+s.y2)/2;
+    if(Math.abs(s.x2-s.x1)>44){s.lxA=(s.x1+s.x2)/2;s.lyA=my-9;s.laA=null;s.lxB=(s.x1+s.x2)/2;s.lyB=my+11;s.laB=null}
+    else{s.laA='start';s.lxA=s.x2+10;s.lyA=my+3.5;s.laB='end';s.lxB=s.x1-10;s.lyB=my+3.5}}
+  else{const mx=(s.x1+s.x2)/2,my=(s.y1+s.y2)/2;
+    // Curve link: label curve er MADHYOM khane boshhe (bezier midpoint = endpoint midpoint) —
+    // box move korle renderMap abar chalai gele curve er sathe auto-adjust kore.
+    // Near-vertical curve (dui box uchu-nicho) hole upore/niche chip line er pashe boshhe — line er upor diye na.
+    if(s.v&&Math.abs(s.x2-s.x1)<44){s.laA='start';s.lxA=Math.max(s.x1,s.x2)+10;s.lyA=my+3.5;s.laB='end';s.lxB=Math.min(s.x1,s.x2)-10;s.lyB=my+3.5}
+    else{s.lxA=mx;s.lyA=my-13;s.laA=null;s.lxB=mx;s.lyB=my+15;s.laB=null}}}
+function applyArrowProps(s,k){if(!k.arrow)return;s.arrow=k.arrow;if(k.label)s.label=k.label;if(k.lpos)s.lpos=k.lpos;s.nid=k.id;if(k._col)s.c=k._col;s.w=2.2}
+/* One SVG string per connector: line + arrowheads (→ / ⇌ / ⇢ dashed) + clickable reagent label.
+   Link line e (nid+nlk) ekta transparent wide hit path o thake — line er JE KONO JAYGAY
+   tap/double-click korle label editor khule (notun link e label fanka thakleo kaj kore).
+   ex=true (export) hole hit path bad — export e sudhu dekha jay jinish thake. */
+function segSVG(s,ex){
+  let out='';const dash=s.arrow===3?' stroke-dasharray="7 5"':'';
+  if(s.o){const my=(s.y1+s.y2)/2;
+    out+='<path fill="none" stroke="'+s.c+'" stroke-width="'+s.w+'" stroke-linecap="round" stroke-linejoin="round"'+dash+' d="M '+s.x1+' '+s.y1+' L '+s.x1+' '+my+' L '+s.x2+' '+my+' L '+s.x2+' '+s.y2+'"/>';
+  }else if(s.v){
+    out+='<path fill="none" stroke="'+s.c+'" stroke-width="'+s.w+'" stroke-linecap="round"'+dash+' d="M '+s.x1+' '+s.y1+' C '+s.x1+' '+((s.y1+s.y2)/2)+', '+s.x2+' '+((s.y1+s.y2)/2)+', '+s.x2+' '+s.y2+'"/>';
+  }else out+='<line stroke="'+s.c+'" stroke-width="'+s.w+'" stroke-linecap="round"'+dash+' x1="'+s.x1+'" y1="'+s.y1+'" x2="'+s.x2+'" y2="'+s.y2+'"/>';
+  if(ex!==true&&s.nid&&s.nlk!==undefined){ // link line hit area — curve er upor diye tap (.map(segSVG) kotle ex=e index ashe, tai shudhu true check)
+    const hd=s.o?('M '+s.x1+' '+s.y1+' L '+s.x1+' '+(s.y1+s.y2)/2+' L '+s.x2+' '+(s.y1+s.y2)/2+' L '+s.x2+' '+s.y2)
+      :s.v?('M '+s.x1+' '+s.y1+' C '+s.x1+' '+((s.y1+s.y2)/2)+', '+s.x2+' '+((s.y1+s.y2)/2)+', '+s.x2+' '+s.y2)
+      :('M '+s.x1+' '+s.y1+' L '+s.x2+' '+s.y2);
+    out+='<path class="hitline" d="'+hd+'" fill="none" stroke="rgba(0,0,0,0)" stroke-width="22" style="cursor:pointer" onclick="clickLabel(\''+s.nid+'\','+s.nlk+')"/>';
+  }
+  if(s.arrow){const hs=Math.max(7,s.w*3.6);
+    if(s.o){out+=arrowHead(s.x2,s.y2,90,s.c,hs);if(s.arrow===2)out+=arrowHead(s.x1,s.y1,270,s.c,hs)}
+    else{const ang=Math.atan2(s.y2-s.y1,s.x2-s.x1)*180/Math.PI;
+      out+=arrowHead(s.x2,s.y2,ang,s.c,hs);if(s.arrow===2)out+=arrowHead(s.x1,s.y1,ang+180,s.c,hs)}}
+  if(s.label&&typeof s.lxA==='number'){
+    const both=s.lpos==='d';const raw=String(s.label);
+    let tA=raw,tB=raw;
+    if(both&&raw.indexOf('|')>=0){const ix=raw.indexOf('|');tA=raw.slice(0,ix);tB=raw.slice(ix+1)}
+    const items=[];
+    if(s.lpos!=='b')items.push([tA,s.lxA,s.lyA,s.laA]);
+    if(s.lpos==='b'||both)items.push([tB,s.lxB,s.lyB,s.laB]);
+    const chipBg=thm('rgba(10,14,24,.92)','rgba(255,255,255,.96)');
+    const chipSt=thm('rgba(245,179,1,.5)','rgba(176,124,0,.55)');
+    const chipTx=thm('#ffd76a','#7a5200');
+    const call='clickLabel(\''+(s.nid||'')+'\''+(s.nlk!==undefined?','+s.nlk:'')+')';
+    items.forEach(it=>{if(!it[0])return;const t=it[0],lw=labelW(t),anchor=it[3]||'middle';
+      const rx=anchor==='middle'?it[1]-lw/2-6:anchor==='end'?it[1]-lw-6:it[1]-6;
+      out+='<g class="lblg" onclick="'+call+'">'
+        +'<rect x="'+rx+'" y="'+(it[2]-9)+'" width="'+(lw+12)+'" height="16" rx="5" fill="'+chipBg+'" stroke="'+chipSt+'" stroke-width="1"/>'
+        +'<text class="lbl" x="'+it[1]+'" y="'+(it[2]+3.5)+'" text-anchor="'+anchor+'" fill="'+chipTx+'" font-size="11" font-weight="600" font-family="Inter,Helvetica,Arial,sans-serif">'+chemTspans(t)+'</text></g>'});
+  }
+  return out;
+}
 function toast(m,t){const e=$('toast');$('tmsg').textContent=m;e.className='show '+(t||'');setTimeout(()=>e.className='',2800)}
 function openM(id){$(id).classList.add('show')}function closeM(id){$(id).classList.remove('show')}
 
 /* ===== MEASURE ===== */
 const mctx=document.createElement('canvas').getContext('2d');
 // measure: if forceW is set, returns exactly that width (used for user-specified box width)
-function measure(t,fs,maxW,forceW){mctx.font=fs+'px Inter,sans-serif';
+function measure(t,fs,maxW,forceW){mctx.font=fs+'px Inter,sans-serif';t=plainChem(t);
   const ws=String(t).split(/\s+/),ls=[];let cur='';
   for(const w of ws){const x=cur?cur+' '+w:w;if(mctx.measureText(x).width>maxW-22&&cur){ls.push(cur);cur=w}else cur=x}
   if(cur)ls.push(cur);if(!ls.length)ls.push('');
@@ -285,12 +465,15 @@ const maxWOf=d=>[430,320,340,300,280][Math.min(d,4)];
 const effMaxW=n=>(n.style&&n.style.width)?Math.max(80,+n.style.width):maxWOf(n._d||1);
 // Helper: measure with width override (uses effMaxW + passes forceW if user override set)
 function measureNode(n,d){
-  const fs=fsOf(n,d);
+  const fs=fsOf(n,d);let m;
   if(n.style && n.style.width){
     const w=Math.max(80,+n.style.width);
-    return measure(n.text,fs,w,w);
+    m=measure(n.text,fs,w,w);
+  }else{
+    m=measure(n.text,fs,maxWOf(d));
   }
-  return measure(n.text,fs,maxWOf(d));
+  if(n.style && n.style.h)m.h=Math.max(m.h,+n.style.h); // resized box height floor (size memory)
+  return m;
 }
 const blankMap=()=>({id:uid(),text:'type text',children:[],style:{color:'#f5b301',bold:true}});
 
@@ -302,7 +485,27 @@ function demoData(){const B=(t,c)=>({id:uid(),text:t,children:c||[]});
   B('1751–1800: Company Rule',[B('1757: Battle of Plassey'),B('1764: Battle of Buxar; 1765 Diwani of Bengal'),B('1799: Tipu Sultan dies at Seringapatam')]),
   B('1901–1950: Freedom Movement',[B('1919: Jallianwala Bagh massacre'),B('1930: Dandi March'),B('1947: Independence; 1950 Republic')])]};
 }
-const demoCurriculum=()=>[{id:uid(),name:'Class 10',type:'class',children:[{id:uid(),name:'History',type:'subject',children:[{id:uid(),name:'Modern Indian History',type:'topic',data:demoData()}]}]}];
+/* Demo chemistry reaction chain: C2H6 theke reaction tree — arrow (→/⇌/⇢) + reagent label + subscript markup + converging LINK + free note sob dekhay */
+function demoChemData(){
+  const eth2={id:uid(),text:'C~2~H~5~OH  Ethanol',arrow:1,label:'aq. KOH',children:[]};
+  const ester={id:uid(),text:'CH~3~COOC~2~H~5~  Ester',arrow:1,label:'CH~3~COOH + conc. H~2~SO~4~',children:[],lks:[{p:eth2.id,arrow:2,label:'H^+^ (2nd route)'}]};
+  const E=(t,ar,lb,kids)=>{const n={id:uid(),text:t,children:kids||[]};if(ar)n.arrow=ar;if(lb)n.label=lb;return n};
+  return{id:uid(),text:'C~2~H~6~  (Ethane)',style:{color:'#f5b301',bold:true},chem:true,children:[
+    E('C~2~H~5~Cl  Chloroethane',1,'Cl~2~ / hν (sunlight)',[
+      E('C~2~H~4~  Ethene',1,'alc. KOH, Δ',[
+        E('C~2~H~5~OH  Ethanol',2,'H~2~O / H^+^ (hydration)',[
+          E('C~2~H~4~  Ethene',1,'conc. H~2~SO~4~ , 170°C'),
+          ester
+        ]),
+        E('C~2~H~4~Br~2~  1,2-Dibromoethane',1,'Br~2~ / CCl~4~')
+      ]),
+      eth2
+    ]),
+    E('CO~2~ + H~2~O',3,'O~2~ (excess), combustion')
+  ],free:[{id:uid(),text:'📝 Free note — tene sorao, Note 👁 diye hide koro',x:-470,y:330,note:true,children:[]}]}}
+const demoCurriculum=()=>[{id:uid(),name:'Class 10',type:'class',children:[
+ {id:uid(),name:'History',type:'subject',children:[{id:uid(),name:'Modern Indian History',type:'topic',data:demoData()}]},
+ {id:uid(),name:'Chemistry',type:'subject',children:[{id:uid(),name:'Ethane — Reaction Chain (demo)',type:'topic',data:demoChemData(),layout:'tree',showRoot:true}]}]}];
 
 /* ===== SHEET (permanent storage engine) =====
    Rules:
@@ -319,10 +522,15 @@ const graveKey=g=>g.cls+'|'+g.sub+'|'+g.top+'|'+g.id;
 function gravePath(g){const i=String(g.sub).indexOf(GRAVE_SEP);return i<0?{cls:g.sub,sub:''}:{cls:g.sub.slice(0,i),sub:g.sub.slice(i+1)}}
 // Convert a node subtree into tombstone rows (keeps original class/subject/topic path for restore)
 function tombstoneTree(cls,sub,top,n,parent){
-  const rows=[{cls:GRAVE_CLS,sub:cls+GRAVE_SEP+sub,top:top,id:n.id,parent:parent||'',text:n.text||'',
+  const rows=[{cls:GRAVE_CLS,sub:cls+GRAVE_SEP+sub,top:top,id:n.id,parent:parent||'',text:(n.text||'')+extrasMarker(n),
     color:n.style&&n.style.color||'',size:n.style&&n.style.fontSize||'',
-    bold:n.style&&n.style.bold?'1':'',und:n.style&&n.style.underline?'1':'',ita:n.style&&n.style.italic?'1':''}];
+    bold:n.style&&n.style.bold?'1':'',und:n.style&&n.style.underline?'1':'',ita:n.style&&n.style.italic?'1':'',
+    arrow:n.arrow||'',label:n.label||'',width:n.style&&n.style.width||''}];
   (n.children||[]).forEach(k=>rows.push(...tombstoneTree(cls,sub,top,k,n.id)));
+  (n.free||[]).forEach(f=>rows.push({cls:GRAVE_CLS,sub:cls+GRAVE_SEP+sub,top:top,id:f.id,parent:'__FREE__',text:(f.text||'')+extrasMarker(f,true),
+    color:f.style&&f.style.color||'',size:f.style&&f.style.fontSize||'',
+    bold:f.style&&f.style.bold?'1':'',und:f.style&&f.style.underline?'1':'',ita:f.style&&f.style.italic?'1':'',
+    arrow:f.arrow||'',label:f.label||'',width:f.style&&f.style.width||''}));
   return rows;
 }
 function addGraves(rows){
@@ -340,7 +548,7 @@ function tombstoneItem(item,path){ // tombstone a deleted curriculum item (class
 }
 function appTopicKeys(){const ks=new Set();S.curriculum.forEach(c=>(c.children||[]).forEach(s=>(s.children||[]).forEach(t=>ks.add(c.name+'|'+s.name+'|'+t.name))));return ks}
 function collectAppIds(){const ids=new Set();
-  const w=n=>{ids.add(n.id);(n.children||[]).forEach(w)};
+  const w=n=>{ids.add(n.id);(n.children||[]).forEach(w);(n.free||[]).forEach(f=>ids.add(f.id))};
   S.curriculum.forEach(c=>(c.children||[]).forEach(s=>(s.children||[]).forEach(t=>{if(t.data)w(t.data)})));
   return ids}
 
@@ -384,13 +592,13 @@ function parseTSVRows(txt){
   if(!recs.length)return[];
   const head=recs[0].split('\t').map(h=>h.trim().toLowerCase());
   const ix=n=>head.indexOf(n);
-  const iC=ix('class'),iS=ix('subject'),iT=ix('topic'),iId=ix('nodeid'),iP=ix('parentid'),iT2=ix('text'),iCol=ix('color'),iSz=ix('size'),iB=ix('bold'),iU=ix('underline'),iI=ix('italic');
+  const iC=ix('class'),iS=ix('subject'),iT=ix('topic'),iId=ix('nodeid'),iP=ix('parentid'),iT2=ix('text'),iCol=ix('color'),iSz=ix('size'),iB=ix('bold'),iU=ix('underline'),iI=ix('italic'),iA=ix('arrow'),iL=ix('label'),iW=ix('width');
   if(iId<0||iT2<0)return[];
   const out=[];
   for(let i=1;i<recs.length;i++){const c=recs[i].split('\t');
     const g=k=>(k>=0&&k<c.length)?String(c[k]).trim():'';
     const id=g(iId);if(!id)continue;
-    out.push({cls:g(iC),sub:g(iS),top:g(iT),id,parent:g(iP),text:g(iT2),color:g(iCol),size:g(iSz),bold:g(iB),und:g(iU),ita:g(iI)});}
+    out.push({cls:g(iC),sub:g(iS),top:g(iT),id,parent:g(iP),text:g(iT2),color:g(iCol),size:g(iSz),bold:g(iB),und:g(iU),ita:g(iI),arrow:g(iA),label:g(iL),width:g(iW)});}
   return out;
 }
 // SAFETY NET — self-heal: sheet + TSV dutoi empty hole Trash (graves) theke sob data
@@ -429,24 +637,38 @@ async function loadLive(){
   return selfHealFromTrash();
 }
 function treeFromRows(nodes){
-  const byId=new Map(),made=[];
-  nodes.forEach(r=>{const n={id:r.id||uid(),text:r.text||'Node',children:[],style:{}};
+  const byId=new Map(),made=[],free=[];
+  nodes.forEach(r=>{const mk=parseMM2(r.text||'');const n={id:r.id||uid(),text:stripMM(r.text||'')||'Node',children:[],style:{}};
     if(r.color)n.style.color=r.color;if(r.size)n.style.fontSize=+r.size;
     if(r.bold)n.style.bold=true;if(r.und)n.style.underline=true;if(r.ita)n.style.italic=true;
+    const ar=(r.arrow&&+r.arrow)||mk.a;if(ar)n.arrow=ar;
+    const lb=r.label||mk.l;if(lb)n.label=lb;
+    if(mk.p)n.lpos=mk.p;
+    const wd=(r.width&&+r.width)||mk.w;if(wd)n.style.width=wd;
+    if(mk.h)n.style.h=mk.h;
+    if(mk.K&&mk.K.length)n.lks=mk.K;
+    if(mk.c)n.chem=true;
+    if(r.parent==='__FREE__'){n.x=mk.fx||0;n.y=mk.fy||0;if(mk.note)n.note=true;free.push(n);return}
     byId.set(n.id,n);made.push({r,n})});
   let root=null;
   made.forEach(({r,n})=>{if(!r.parent){if(!root)root=n}else{const p=byId.get(r.parent);if(p)p.children.push(n)}});
   if(!root)root=made[0]?made[0].n:blankMap();
+  if(free.length)root.free=free;
   return root;
 }
 function flattenRows(){
   const rows=[];
   S.curriculum.forEach(c=>(c.children||[]).forEach(s=>(s.children||[]).forEach(t=>{
     if(!t.data)return;
-    (function w(n,parent){rows.push({cls:c.name,sub:s.name,top:t.name,id:n.id,parent:parent||'',text:n.text,
+    (function w(n,parent){rows.push({cls:c.name,sub:s.name,top:t.name,id:n.id,parent:parent||'',text:n.text+extrasMarker(n),
       color:n.style&&n.style.color||'',size:n.style&&n.style.fontSize||'',
-      bold:n.style&&n.style.bold?'1':'',und:n.style&&n.style.underline?'1':'',ita:n.style&&n.style.italic?'1':''});
-      (n.children||[]).forEach(k=>w(k,n.id))})(t.data,'');
+      bold:n.style&&n.style.bold?'1':'',und:n.style&&n.style.underline?'1':'',ita:n.style&&n.style.italic?'1':'',
+      arrow:n.arrow||'',label:n.label||'',width:n.style&&n.style.width||''});
+      (n.children||[]).forEach(k=>w(k,n.id));
+      (n.free||[]).forEach(f=>rows.push({cls:c.name,sub:s.name,top:t.name,id:f.id,parent:'__FREE__',text:f.text+extrasMarker(f,true),
+        color:f.style&&f.style.color||'',size:f.style&&f.style.fontSize||'',
+        bold:f.style&&f.style.bold?'1':'',und:f.style&&f.style.underline?'1':'',ita:f.style&&f.style.italic?'1':'',
+        arrow:f.arrow||'',label:f.label||'',width:f.style&&f.style.width||''}))})(t.data,'');
   })));
   return rows;
 }
@@ -560,7 +782,7 @@ async function loadBtn(){
       const sub=cls&&cls.children.find(s=>s.name===oldPath[1]);
       const t=sub&&sub.children.find(x=>x.name===oldPath[2]&&x.type==='topic');
       if(t){S.topic=t;S.map=t.data||blankMap();S.selId=null;S.history=[clone(S.map)];S.hi=0;
-        S.gap=(typeof t.gap==='number')?t.gap:1;renderTopbar();renderMap();setTimeout(fit,60);
+        S.gap=(typeof t.gap==='number')?t.gap:1;S.showRoot=!!t.showRoot;if(t.layout)S.layout=t.layout;renderTopbar();renderMap();setTimeout(fit,60);
         toast('☑ Open map updated from Sheet','ok')}
       else{goLanding();toast('Ei map Sheet e ar nei (Trash e thakbe)','err')}
     }else{renderLanding();renderTopbar();toast(res.restored?'♻ Trash theke auto-restore holo + Sheet e backup hocche':'☑ Live data loaded from Sheet','ok')}
@@ -609,10 +831,12 @@ function restoreGroupByIdx(g){
   if(!t){t={id:uid(),name:g.top,type:'topic',data:tree};s.children.push(t)}
   else if(rootRow){ // whole topic was deleted before → merge its branches into the existing root
     (t.data.children=t.data.children||[]);tree.children.forEach(k=>t.data.children.push(k));
+    if(tree.free)(t.data.free=t.data.free||[]).push(...tree.free);
   }else{ // node-level delete → re-attach subtree under its old parent (or topic root)
     const pN=rows[0].parent?findN(rows[0].parent,t.data):null;
     if(pN){pN.children=pN.children||[];pN.children.push(tree);pN.collapsed=false}
     else{(t.data.children=t.data.children||[]).push(tree)}
+    if(tree.free)(t.data.free=t.data.free||[]).push(...tree.free);
   }
   // remove restored graves
   S.graves=S.graves.filter(gr=>{const p=gravePath(gr);return(p.cls+'|'+p.sub+'|'+gr.top)!==(g.cls+'|'+g.sub+'|'+g.top)});
@@ -668,7 +892,7 @@ async function testScriptUrl(){
 }
 
 /* ===== FILE IMPORT PARSERS ===== */
-function norm(o,d){const n={id:uid(),text:String(o.text||o.title||o.name||o.TEXT||o.label||'').replace(/\s+/g,' ').trim()||'Node',children:[],style:{}};
+function norm(o,d){const n={id:uid(),text:stripMM(String(o.text||o.title||o.name||o.TEXT||o.label||'')).replace(/\s+/g,' ').trim()||'Node',children:[],style:{}};
   if(d===0){n.style.color='#f5b301';n.style.bold=true}
   const kids=o.children||o.items||o.nodes||o.topics||o.subtopics||[];
   if(Array.isArray(kids))kids.slice(0,40).forEach(k=>n.children.push(norm(k,d+1)));
@@ -682,7 +906,7 @@ function parseMD(t){const lines=t.split(/\r?\n/);const root={id:uid(),text:'Impo
     let d=null,text=null;
     if(h){d=h[1].length-1;text=h[2];lastHeadingDepth=d}
     else if(b){const ind=Math.floor(b[1].replace(/\t/g,'  ').length/2);d=(lastHeadingDepth<0?0:lastHeadingDepth+1)+ind;text=b[2]}
-    if(text===null)return;text=text.trim();if(!text)return;
+    if(text===null)return;text=stripMM(text).trim();if(!text)return;
     if(d===null)d=0;
     const n={id:uid(),text,children:[],style:{}};
     while(stack.length>1&&stack[stack.length-1].d>=d)stack.pop();
@@ -697,7 +921,7 @@ function parseOPML(t){const d=new DOMParser().parseFromString(t,'text/xml');
   const body=d.querySelector('body');if(!body)throw new Error('Bad OPML');
   const kids=walk(body);return{ id:uid(),text:d.querySelector('title')?.textContent||'Imported',children:kids,style:{color:'#f5b301',bold:true}}}
 function parseMM(t){const d=new DOMParser().parseFromString(t,'text/xml');
-  const walk=(el,dep)=>{const n={id:uid(),text:el.getAttribute('TEXT')||'Node',children:[],style:{}};
+  const walk=(el,dep)=>{const n={id:uid(),text:stripMM(el.getAttribute('TEXT')||'')||'Node',children:[],style:{}};
     if(dep===0){n.style.color='#f5b301';n.style.bold=true}
     [...el.children].forEach(c=>{if(c.tagName.toLowerCase()==='node')n.children.push(walk(c,dep+1))});return n};
   const root=d.querySelector('node');if(!root)throw new Error('Bad FreeMind file');return walk(root,0)}
@@ -834,6 +1058,8 @@ function openItem(id){
   S.topic=x;S.map=x.data;S.selId=null; // NOTE: S.unlocked persists — editor stays unlocked across maps until Lock pressed
   // Load per-topic gap multiplier (defaults to 1.0 if not set)
   S.gap=(typeof x.gap==='number')?x.gap:1;
+  S.showRoot=!!x.showRoot;if(x.layout&&x.layout!==S.layout)S.layout=x.layout;
+  S.showNotes=x.notes!==false;S.lastBox=x.lastBox||null;S.linking=null;S.lblCtx=null;
   S.history=[clone(S.map)];S.hi=0;S.view='editor';document.body.dataset.view='editor';
   if(S.unlocked)document.body.classList.add('unlocked');else document.body.classList.remove('unlocked');
   pushHist();renderTopbar();renderMap();setTimeout(fit,60);
@@ -863,7 +1089,8 @@ function renderTopbar(){
       h+=`<button class="btn ic" onclick="openTrash()" title="Trash — deleted data restore koro (data kokhono hariye jay na)"><i class="fa-solid fa-trash-can"></i></button>
       <button class="btn ic" onclick="openSettings()" title="Google Sheet Settings (admin only — alada password lage)"><i class="fa-solid fa-gear"></i></button>`;
     }
-    h+=`<button class="btn ic" onclick="fscreen()" title="Fullscreen (TV er jonno)"><i class="fa-solid fa-expand"></i></button>`;
+    h+=`<button class="btn ic" onclick="openM('helpModal')" title="Help — kivabe use korbe"><i class="fa-solid fa-circle-question"></i></button>
+    <button class="btn ic" onclick="fscreen()" title="Fullscreen (TV er jonno)"><i class="fa-solid fa-expand"></i></button>`;
     if(!vw)h+=`${S.unlocked
       ?`<button class="btn pri" onclick="lock()" title="Editor mode off koro"><i class="fa-solid fa-lock-open"></i><span> Lock</span></button>`
       :`<button class="btn pri" onclick="askPw(unlockNow)" title="Edit korte chaile password din (editor)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>`}`;
@@ -871,6 +1098,11 @@ function renderTopbar(){
     h+=`<span class="ttl">${S.topic?esc(S.topic.name):''}</span><span class="spacer"></span>
     <button class="btn ic" id="colBtn" title="Collapse all / Expand all" onclick="collapseToggle()"><i class="fa-solid fa-folder-closed"></i></button>
     <button class="btn ic" id="styBtn" title="Switch style (Timeline / Tree)" onclick="toggleLayout()"><i class="fa-solid fa-timeline"></i></button>
+    <button class="btn ic${S.map&&S.map.chem?' on':''}" onclick="toggleChem()" title="Chem mode: C2H6 auto C₂H₆ hoy"><i class="fa-solid fa-flask"></i></button>
+    <button class="btn ic${S.showRoot?' on':''}" onclick="toggleRoot()" title="Root / main compound node dekhao-hide"><i class="fa-solid fa-eye"></i></button>
+    <button class="btn ic${S.showNotes?' on':''}" onclick="toggleNotes()" title="Free note dekhao-hide"><i class="fa-solid fa-sticky-note"></i></button>
+    <button class="btn ic${isWhite()?' on':''}" onclick="toggleWhite()" title="White board mode — puro board white, sob default color light"><i class="fa-solid fa-${isWhite()?'sun':'moon'}"></i></button>
+    <button class="btn ic" onclick="openM('helpModal')" title="Help"><i class="fa-solid fa-circle-question"></i></button>
     ${vw?'':`<button class="btn ic" title="Download PNG / PDF / HTML" onclick="toggleDownloadMenu(event)"><i class="fa-solid fa-download"></i></button>`}
     <button class="btn ic" title="Fullscreen (TV er jonno)" onclick="fscreen()"><i class="fa-solid fa-expand"></i></button>
     ${vw?'':`<button class="btn pri" onclick="askPw(unlockNow)" title="Edit korte chaile password din (editor)"><i class="fa-solid fa-pen"></i><span> Edit</span></button>
@@ -884,11 +1116,15 @@ function renderTopbar(){
     <button class="btn" onclick="addChild()" title="Notun child node"><i class="fa-solid fa-plus"></i><span> Child</span></button>
     <button class="btn" onclick="addSibling()" title="Notun sibling node"><i class="fa-solid fa-grip-lines"></i><span> Sibling</span></button>
     <button class="btn" onclick="delSel()" title="Node delete (Trash e safe thakbe)"><i class="fa-solid fa-trash"></i><span> Delete</span></button>
+    <button class="btn" onclick="addFree()" title="Free box — canvas e jekono jaygay, Link diye je kono box er sathe line"><i class="fa-solid fa-arrows-to-dot"></i><span> Free</span></button>
+    <button class="btn" onclick="addNote()" title="Free note — jekono jaygay lekha, hide/show kora jay"><i class="fa-solid fa-sticky-note"></i><span> Note</span></button>
     <div class="sep"></div>
     <button class="btn ic" onclick="fsDelta(-1)" title="Text choto">A−</button><span id="fsz">14</span><button class="btn ic" onclick="fsDelta(1)" title="Text boro">A+</button>
     <button class="btn ic" id="bB" onclick="fmt('bold')" title="Bold"><i class="fa-solid fa-bold"></i></button>
     <button class="btn ic" id="bI" onclick="fmt('italic')" title="Italic"><i class="fa-solid fa-italic"></i></button>
     <button class="btn ic" id="bU" onclick="fmt('underline')" title="Underline"><i class="fa-solid fa-underline"></i></button>
+    <button class="btn ic" onmousedown="event.preventDefault()" onclick="chemWrap('sub')" title="Subscript — node edit e text select kore chapo (H~2~O)"><i class="fa-solid fa-subscript"></i></button>
+    <button class="btn ic" onmousedown="event.preventDefault()" onclick="chemWrap('sup')" title="Superscript — node edit e text select kore chapo (SO4^2-^)"><i class="fa-solid fa-superscript"></i></button>
     <div class="sep"></div>
     <button class="btn ic" title="Box narrower" onclick="wDelta(-20)"><i class="fa-solid fa-arrows-left-right" style="transform:scaleX(.7)"></i></button>
     <button class="btn ic" title="Box wider" onclick="wDelta(20)"><i class="fa-solid fa-arrows-left-right"></i></button>
@@ -896,6 +1132,15 @@ function renderTopbar(){
     <button class="btn ic" title="Smaller gap between nodes" onclick="gapDelta(-0.1)"><i class="fa-solid fa-down-left-and-up-right-to-center"></i></button>
     <span id="gapz" title="Current gap multiplier">${(S.gap||1).toFixed(1)}x</span>
     <button class="btn ic" title="Larger gap between nodes" onclick="gapDelta(0.1)"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
+    <div class="sep"></div>
+    <button class="btn ic" id="arwBtn" onclick="cycleArrow()" title="Reaction arrow off (tap = → single)"><i class="fa-solid fa-arrow-right-long"></i></button>
+    <button class="btn ic" onclick="editLabel()" title="Arrow er upor reagent/condition (blank) likho"><i class="fa-solid fa-tag"></i></button>
+    <button class="btn ic" onclick="startLink()" title="Link — ei node theke onno JE KONO box e notun line (converging: X→CH2CH2 ar Y→CH2CH2 ek box e mile)"><i class="fa-solid fa-link"></i></button>
+    <button class="btn ic${S.showRoot?' on':''}" onclick="toggleRoot()" title="Root / main compound node dekhao-hide"><i class="fa-solid fa-eye"></i></button>
+    <button class="btn ic${S.showNotes?' on':''}" onclick="toggleNotes()" title="Free note dekhao-hide"><i class="fa-solid fa-sticky-note"></i></button>
+    <button class="btn ic${isWhite()?' on':''}" onclick="toggleWhite()" title="White board mode — puro board white, sob default color light"><i class="fa-solid fa-${isWhite()?'sun':'moon'}"></i></button>
+    <button class="btn ic${S.map&&S.map.chem?' on':''}" onclick="toggleChem()" title="Chem mode: C2H6 auto C₂H₆ hoy"><i class="fa-solid fa-flask"></i></button>
+    <button class="btn ic" onclick="openM('helpModal')" title="Help"><i class="fa-solid fa-circle-question"></i></button>
     <div class="sep"></div>
     ${PALETTE.map(c=>`<span class="dot" style="background:${c}" onclick="setColor('${c}')"></span>`).join('')}
     <span class="dot reset" onclick="setColor(null)"></span>
@@ -940,7 +1185,7 @@ function setLayout(l){
   if(S.view==='editor'){renderMap();setTimeout(fit,40);}
 }
 // One-tap style toggle: Timeline ⇄ Tree (10-year-old friendly — no dropdown needed)
-function toggleLayout(){setLayout(S.layout==='timeline'?'tree':'timeline');toast(S.layout==='timeline'?'⏱ Timeline style':'🌳 Tree style','ok')}
+function toggleLayout(){setLayout(S.layout==='timeline'?'tree':'timeline');if(S.topic){S.topic.layout=S.layout;saveLocal()}toast(S.layout==='timeline'?'⏱ Timeline style':'🌳 Tree style','ok')}
 
 /* ===== NAVIGATION (left/right/up/down) =====
    Timeline layout: even-index branches grow DOWN, odd-index grow UP (mirror sections).
@@ -1036,6 +1281,7 @@ function pwOk(){
   if($('pwIn').value===want){const f=S.pwThen;S.pwThen=null;closeM('pwModal');if(f)f()}
   else toast(S.pwMode==='admin'?'Wrong admin password':'Wrong password','err')}
 $('pwIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();pwOk()}});
+$('lblIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();saveLabel()}});
 $('delIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();delOk()}});
 function unlockNow(){S.unlocked=true;document.body.classList.add('unlocked');renderTopbar();
   if(S.view==='editor'){renderMap()}else{renderLanding()}
@@ -1072,6 +1318,72 @@ document.addEventListener('webkitfullscreenchange',()=>{
   if(!document.webkitFullscreenElement)document.body.classList.remove('fs');
   else document.body.classList.add('fs');
 });
+
+/* ===== REACTION ARROWS + REAGENT LABELS + CHEM MODE + ROOT ===== */
+function cycleArrow(){const n=S.selId&&findN(S.selId);if(!n||n._d===0)return toast('Node select koro (root chara)','err');
+  n.arrow=((n.arrow||0)+1)%4;if(!n.arrow)delete n.arrow;mutate();
+  toast(['Arrow off','→ arrow on — ager node theke ei node e'+(n._free?' (Free box theke notun Link er default arrow)':''),'⇌ reversible arrow','⇢ dashed arrow'][n.arrow||0],'ok')}
+function editLabel(){const n=S.selId&&findN(S.selId);if(!n||n._d===0)return toast('Node select koro','err');
+  if(n._free)return toast('Free box er nijer label nei — Link er label e tap kore edit koro','err');
+  if(!n.arrow)n.arrow=1;
+  S.lblCtx=null;const lr=$('lblLinkRow');if(lr)lr.style.display='flex';
+  const rm=$('lblRm');if(rm)rm.style.display='none';
+  updateLblStyleBtn(null);
+  $('lblIn').value=n.label||'';$('lblTgt').textContent=(n.text||'').slice(0,40);
+  openM('lblModal');setTimeout(()=>$('lblIn').focus(),80)}
+function saveLabel(){const c=S.lblCtx;S.lblCtx=null;
+  if(c){const n=findN(c.id);const lk=n&&(n.lks||[])[c.li];
+    if(lk){const v=$('lblIn').value.trim();if(v)lk.label=v;else delete lk.label;
+      closeM('lblModal');mutate();toast('🏷 Link label saved','ok')}
+    else closeM('lblModal');
+    return}
+  const n=S.selId&&findN(S.selId);if(!n){closeM('lblModal');return}
+  const v=$('lblIn').value.trim();if(v)n.label=v;else delete n.label;
+  if(!n.label&&!n.arrow)delete n.arrow;
+  closeM('lblModal');mutate();toast('🏷 Arrow label saved','ok')}
+function clickLabel(id,li){if(!S.unlocked)return toast('Label edit korte upore Edit (pen) button theke unlock koro','err');
+  const n=id&&findN(id);if(!n)return;S.selId=id;
+  if(li!==undefined&&li!==null){ // LINK label (extra/converging line er label)
+    const lk=(n.lks||[])[+li];if(!lk)return;
+    S.lblCtx={id:id,li:+li};
+    const src=findN(lk.p);
+    $('lblIn').value=lk.label||'';
+    $('lblTgt').textContent='🔗 '+(src?plainChem(src.text).slice(0,20)+' → ':'')+(n.text||'').slice(0,26);
+    const lr=$('lblLinkRow');if(lr){lr.style.display='flex';const rm=$('lblRm');if(rm)rm.style.display='';updateLblStyleBtn(lk)}
+    openM('lblModal');renderMap();setTimeout(()=>$('lblIn').focus(),80);return}
+  renderMap();editLabel()}
+// Link label modal: style cycle (existing button — kono notun button nei) + link remove
+function lblCtxLk(){const c=S.lblCtx;if(!c)return null;const n=findN(c.id);return n&&(n.lks||[])[c.li]||null}
+const LPOS_TXT={a:'upore',b:'niche',d:'dui pashe'};
+function lblStyleText(lk){const pos=LPOS_TXT[lk?(lk.lpos||'a'):'a'];
+  return lk?({1:'→',2:'⇌',3:'⇢'}[lk.arrow||1]+' '+pos):('↕ label: '+pos)}
+function updateLblStyleBtn(lk){const b=$('lblArr');if(b)b.textContent=lblStyleText(lk)}
+/* Ek-i button (lblArr) e tap korle mode switch:
+   LINK: → upore → ⇌ upore → ⇢ upore → → niche ... 9 ta state ghure jay (arrow × position)
+   MAIN arrow: upore → niche → dui pashe */
+function lblStyleCycle(){const c=S.lblCtx;
+  if(c){const lk=lblCtxLk();if(!lk)return;
+    const order=['a','b','d'];
+    const st=((lk.arrow||1)-1)*3+order.indexOf(lk.lpos||'a');const ns=(st+1)%9;
+    lk.arrow=Math.floor(ns/3)+1;lk.lpos=order[ns%3];
+    updateLblStyleBtn(lk);mutate();toast('🏷 Style: '+lblStyleText(lk),'ok');return}
+  const n=S.selId&&findN(S.selId);if(!n)return;
+  n.lpos=n.lpos==='a'?'b':n.lpos==='b'?'d':'a';
+  updateLblStyleBtn(null);mutate();toast('🏷 Label ekhon arrow er '+LPOS_TXT[n.lpos],'ok')}
+function lblRemoveLink(){const c=S.lblCtx;if(!c)return;const n=findN(c.id);const lk=lblCtxLk();
+  if(n&&lk){n.lks=n.lks.filter(x=>x!==lk);if(!n.lks.length)delete n.lks}
+  S.lblCtx=null;closeM('lblModal');mutate();toast('✂ Link line muche gelo','ok')}
+function toggleRoot(){S.showRoot=!S.showRoot;if(S.topic){S.topic.showRoot=S.showRoot;saveLocal()}renderMap();setTimeout(fit,40);
+  toast(S.showRoot?'👁 Root node map e dekha jacche':'🙈 Root hide — topic name topbar e ache','ok')}
+function toggleChem(){if(!S.map)return;S.map.chem=!S.map.chem;mutate();
+  toast(S.map.chem?'⚗ Chem mode ON — C2H6 auto C₂H₆ hoy':'⚗ Chem mode off','ok')}
+function chemWrap(kind){
+  const ed=(S.editing&&S.editing.el===document.activeElement&&document.activeElement.isContentEditable)?S.editing:null;
+  if(!ed)return toast('Node e double-tap kore edit mode khulo, text select kore tap koro','err');
+  const sel=window.getSelection();const t=(sel&&String(sel))||'';
+  const w=kind==='sub'?['~','~']:['^','^'];
+  document.execCommand('insertText',false,w[0]+t+w[1]);
+}
 
 /* ===== NAV / HISTORY (browser back support) ===== */
 function pushHist(){
@@ -1119,7 +1431,9 @@ function layoutTimeline(){
     b._d=1;b._x=bx;b._y=0;b._w=bm.w;b._h=bm.h;b._lines=bm.lines;
     b._col=(b.style&&b.style.color)||PALETTE[i%PALETTE.length];boxes.push(b);
     const prev=i>0?vis(R)[i-1]:null;
-    if(prev)segs.push({x1:prev._x+prev._w/2+8,y1:0,x2:bx-bm.w/2-8,y2:0,c:'rgba(255,255,255,.35)',w:3});
+    if(prev){const s={x1:prev._x+prev._w/2+8,y1:0,x2:bx-bm.w/2-8,y2:0,c:thm('rgba(255,255,255,.35)','rgba(15,23,42,.35)'),w:3};applyArrowProps(s,b);segLabelPos(s);segs.push(s)}
+    else if(b.arrow){const s={x1:R._w/2+8,y1:0,x2:bx-bm.w/2-8,y2:0,c:thm('rgba(255,255,255,.5)','rgba(15,23,42,.5)'),w:3};applyArrowProps(s,b);segLabelPos(s);segs.push(s)}
+    else if(S.showRoot)segs.push({x1:R._w/2+8,y1:0,x2:bx-bm.w/2-8,y2:0,c:thm('rgba(255,255,255,.25)','rgba(15,23,42,.25)'),w:2.5});
     // Gaps multiplied by S.gap: vertical first-child 99, child sibling 63, horizontal column 153/126
     const dir=i%2===0?1:-1;let y=dir*(bm.h/2+99*G),colRight=bx+bm.w/2,last2=null;
     b._dir=dir; // remember branch orientation for nav/insert mirroring
@@ -1131,7 +1445,7 @@ function layoutTimeline(){
         const left=d===1?bx+153*G:msx+126*G;
         k._d=d+1;k._w=m.w;k._h=m.h;k._lines=m.lines;k._x=left+m.w/2;k._y=y+dir*m.h/2;k._dir=dir;
         k._col=(k.style&&k.style.color)||n._col;boxes.push(k);
-        segs.push({x1:d===1?bx:msx,y1:k._y,x2:left,y2:k._y,c:k._col,w:1.4});
+        const cs={x1:d===1?bx:msx,y1:k._y,x2:left,y2:k._y,c:k._col,w:1.4};applyArrowProps(cs,k);segLabelPos(cs);segs.push(cs);
         colRight=Math.max(colRight,k._x+m.w/2);y+=dir*(m.h+63*G);lastY=k._y;
         if(d===1)last2=k._y;
         place(k,d+1);
@@ -1143,7 +1457,30 @@ function layoutTimeline(){
     const dep=maxDepth(b);
     cx=colRight+(150+dep*25)*G;
   });
+  pushFree();addLinkSegs();
 }
+/* ===== FREE NODES + EXTRA LINKS (converging lines) =====
+   Free node = tree er baire, canvas e je kono jaygay (x,y soho) — note o hoy.
+   Link = node.lks [{p:sourceId, arrow, label}] → source box theke ei node e alada line (X→CH2CH2 ar Y→CH2CH2 dui line ek box e mile). */
+function pushFree(){
+  (S.map.free||[]).forEach(f=>{
+    if(f.note&&!S.showNotes)return;
+    const m=measureNode(f,f.note?2:1);
+    f._d=2;f._free=true;f._x=+f.x||0;f._y=+f.y||0;f._w=m.w;f._h=m.h;f._lines=m.lines;
+    f._col=(f.style&&f.style.color)||'#f29f7c';
+    boxes.push(f)})}
+function addLinkSegs(){
+  const byId={};boxes.forEach(b=>{byId[b.id]=b});
+  boxes.forEach(n=>(n.lks||[]).forEach((lk,i)=>{
+    if(!lk||!lk.p||lk.p===n.id)return;
+    const p=byId[lk.p];if(!p)return;
+    if(p._d===0&&!S.showRoot)return;if(n._d===0&&!S.showRoot)return;
+    const ts={v:1,x1:p._x,y1:p._y+p._h/2,x2:n._x,y2:n._y-n._h/2,c:n._col,w:2};
+    if(lk.arrow)ts.arrow=lk.arrow;
+    if(lk.label)ts.label=lk.label;
+    if(lk.lpos)ts.lpos=lk.lpos;
+    ts.nid=n.id;ts.nlk=i;
+    segLabelPos(ts);segs.push(ts)}))}
 function layoutTree(){ /* north → south, tidy tree, orthogonal (90°) lines */
   segs=[];boxes=[];
   // S.gap multiplier applies to all gaps
@@ -1179,47 +1516,42 @@ function layoutTree(){ /* north → south, tidy tree, orthogonal (90°) lines */
     kids.forEach(k=>{
       const kc=cursor+k._sw/2;
       // ORTHOGONAL (90° right-angle) line: parent bottom -> down to midY -> horizontal to child x -> down to child top
-      segs.push({o:1,x1:xCenter,y1:n._y+n._h/2,x2:kc,y2:y+VG-k._h/2,c:k._col,w:1.5});
+      const ts={o:1,x1:xCenter,y1:n._y+n._h/2,x2:kc,y2:y+VG-k._h/2,c:k._col,w:1.5};applyArrowProps(ts,k);segLabelPos(ts);segs.push(ts);
       assign(k,d+1,kc,y+VG);
       cursor+=k._sw+HG;
     });
   }
   assign(S.map,0,0,0);
+  pushFree();addLinkSegs();
 }
 function renderMap(){
   if(!S.map)return;
   if(S.layout==='timeline')layoutTimeline();else layoutTree();
-  // Render segments. New flag 'o' = orthogonal (90° right-angle) line; 'v' = curve; default = straight line.
-  $('linesSvg').innerHTML=segs.map(s=>{
-    if(s.o){
-      const my=(s.y1+s.y2)/2;
-      return `<path d="M ${s.x1} ${s.y1} L ${s.x1} ${my} L ${s.x2} ${my} L ${s.x2} ${s.y2}" stroke="${s.c}" stroke-width="${s.w}"/>`;
-    }
-    if(s.v){
-      return `<path d="M ${s.x1} ${s.y1} C ${s.x1} ${(s.y1+s.y2)/2}, ${s.x2} ${(s.y1+s.y2)/2}, ${s.x2} ${s.y2}" stroke="${s.c}" stroke-width="${s.w}"/>`;
-    }
-    return `<line x1="${s.x1}" y1="${s.y1}" x2="${s.x2}" y2="${s.y2}" stroke="${s.c}" stroke-width="${s.w}"/>`;
-  }).join('');
+  // Render segments (lines + reaction arrows + reagent labels) — shared with SVG/PNG/PDF export
+  $('linesSvg').innerHTML=segs.map(segSVG).join('');
   const wrap=$('nodes');wrap.innerHTML='';
   boxes.forEach(n=>{
-    if(n._d===0)return; // hide root (topic name) box - shown only in topbar
+    if(n._d===0&&!S.showRoot)return; // root hidden unless Root toggle on (reaction maps e main compound dekhay)
     const el=document.createElement('div');
-    el.className='nd'+(n._d===0?' root':'')+(S.selId===n.id?' sel':'');
+    el.className='nd'+(n._d===0?' root':'')+(n._free?' free':'')+(n.note?' note':'')+(S.selId===n.id?' sel':'')+(S.linking&&S.linking.src===n.id?' lksrc':'');
     el.dataset.id=n.id;el.style.left=n._x+'px';el.style.top=n._y+'px';el.style.width=n._w+'px';
+    if(n.style&&n.style.h)el.style.minHeight=n._h+'px'; // resized height floor
     const st=n.style||{};
     if(n._d>0&&st.color){el.style.background=st.color;el.style.borderColor=st.color;el.style.color=lum(st.color)>.6?'#141000':'#fff'}
     if(st.fontSize)el.style.fontSize=st.fontSize+'px';
     if(st.bold)el.style.fontWeight='700';
     if(st.italic)el.style.fontStyle='italic';
     if(st.underline)el.style.textDecoration='underline';
-    el.innerHTML=(n._d>0?'<span class="handle">⠿</span>':'')+`<span class="txt">${n._lines.map(esc).join('<br>')}</span>`+
+    el.innerHTML=(n._d>0&&!n._free?'<span class="handle">⠿</span>':'')+`<span class="txt">${n._lines.map(chemText).join('<br>')}</span>`+
       ((n.children||[]).length?`<span class="cbadge" title="${n.collapsed?'Expand':'Collapse'}">${n.collapsed?'+'+(n.children.length):n.children.length}</span>`:'');
     const badge=el.querySelector('.cbadge');
     if(badge)badge.onclick=e=>{e.stopPropagation();n.collapsed=!n.collapsed;mutate()};
     const txt=el.querySelector('.txt');
     // In view mode, clicking a node SELECTS it (so nav buttons work). In edit mode it also selects.
-    // Only re-render if selection actually changed — otherwise dblclick won't fire.
-    el.onclick=e=>{if(e.target.classList.contains('cbadge'))return;if(S.selId!==n.id){S.selId=n.id;renderMap()}};
+    // Link mode cholche hole click = link complete. Only re-render if selection actually changed — otherwise dblclick won't fire.
+    el.onclick=e=>{if(e.target.classList.contains('cbadge'))return;
+      if(S.linking){completeLink(n.id);return}
+      if(S.selId!==n.id){S.selId=n.id;renderMap()}};
     // Double-click to edit (works in edit mode after password unlock)
     txt.ondblclick=e=>{e.stopPropagation();if(S.unlocked)startEdit(txt,n)};
     // Mobile double-tap detection (browsers don't reliably fire dblclick on touch)
@@ -1232,6 +1564,11 @@ function renderMap(){
     },{passive:false});
     const hd=el.querySelector('.handle');
     if(hd)hd.addEventListener('pointerdown',e=>startDrag(e,n.id));
+    if(n._free)el.addEventListener('pointerdown',e=>startFreeDrag(e,n.id));
+    // Resize handle — selected node er corner e (edit mode): tene size bodlao, size save thake
+    if(S.unlocked&&!CONFIG.VIEWER&&S.selId===n.id){
+      const rz=document.createElement('span');rz.className='rz';rz.title='Tene box choto/boro koro — ei size e porer notun child/sibling/f box khulbe';
+      rz.addEventListener('pointerdown',e=>startRz(e,n.id));el.appendChild(rz)}
     wrap.appendChild(el);
   });
   // keep dock toggle icons in sync with map state
@@ -1245,13 +1582,18 @@ function lum(hex){const n=parseInt(hex.slice(1),16);return(0.299*(n>>16)+0.587*(
 function syncBtns(){const n=S.selId&&findN(S.selId);const st=n&&n.style||{};
   const f=$('fsz');if(f)f.textContent=st.fontSize||14;
   const b=$('bB'),i=$('bI'),u=$('bU');
-  if(b)b.classList.toggle('on',!!st.bold);if(i)i.classList.toggle('on',!!st.italic);if(u)u.classList.toggle('on',!!st.underline)}
+  if(b)b.classList.toggle('on',!!st.bold);if(i)i.classList.toggle('on',!!st.italic);if(u)u.classList.toggle('on',!!st.underline);
+  const ab=$('arwBtn');
+  if(ab){const a=(n&&n.arrow)||0;
+    ab.innerHTML=a===2?'<i class="fa-solid fa-arrows-left-right"></i>':a===3?'<i class="fa-solid fa-arrow-right-long-to-line"></i>':'<i class="fa-solid fa-arrow-right-long"></i>';
+    ab.classList.toggle('on',!!a);
+    ab.title=a===1?'Arrow: → single (tap = reversible ⇌)':a===2?'Arrow: ⇌ reversible (tap = dashed ⇢)':a===3?'Arrow: ⇢ dashed (tap = off)':'Reaction arrow off (tap = → single)';}}
 function applyT(){$('world').style.transform=`translate(${S.px}px,${S.py}px) scale(${S.zoom})`;$('zi').textContent=Math.round(S.zoom*100)+'%'}
 // Minimum zoom lock (downloaded HTML copy): map jeno ekdom chuye jete na pare —
 // puro map ekbar screen-e fit hoy jay emon level er niche zoom-out lock.
 function vminZ(){if(!CONFIG.VIEWER||!boxes.length)return .15;
   const w=$('wrap').clientWidth,h=$('wrap').clientHeight;let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
-  boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2)});
+  boxes.forEach(b=>{if(b._d===0&&!S.showRoot)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2)});
   // EXACT fit-level lock: puro map ekbar screen-e jokhon fit hoy — THIK sei level ei minimum.
   // (ager *.94 margin saray) — fit-er niche zoom-out kichuta-o lock.
   return Math.max(.03,Math.min(w/(x2-x1+160),h/(y2-y1+160)))}
@@ -1259,7 +1601,7 @@ function zoomBy(f){const w=$('wrap').clientWidth/2,h=$('wrap').clientHeight/2;co
   S.px=w-(w-S.px)*(nz/S.zoom);S.py=h-(h-S.py)*(nz/S.zoom);S.zoom=nz;applyT()}
 function fit(){if(!boxes.length)return;const w=$('wrap').clientWidth,h=$('wrap').clientHeight;
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
-  boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2)});
+  boxes.forEach(b=>{if(b._d===0&&!S.showRoot)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2)});
   // Viewer copy te fit SOB SOMOY puro map dekhay (floor khub kom) — tahole lock ar fit eksathe match kore
   S.zoom=Math.max(CONFIG.VIEWER?.03:.15,Math.min(2.4,Math.min(w/(x2-x1+160),h/(y2-y1+160))));
   S.px=w/2-(x1+x2)/2*S.zoom;S.py=h/2-(y1+y2)/2*S.zoom;applyT()}
@@ -1316,37 +1658,48 @@ $('wrap').addEventListener('touchend',e=>{
 $('wrap').addEventListener('touchcancel',()=>{pinch=null;pan=null;});
 
 /* ===== NODE OPS ===== */
-function findN(id,n=S.map){if(n.id===id)return n;for(const c of n.children||[]){const f=findN(id,c);if(f)return f}return null}
+function findN(id,n=S.map){if(n.id===id)return n;for(const c of n.children||[]){const f=findN(id,c);if(f)return f}if(n.free)for(const f of n.free){if(f.id===id)return f}return null}
 function findP(id,n=S.map){for(const c of n.children||[]){if(c.id===id)return n;const f=findP(id,c);if(f)return f}return null}
 function isDesc(a,id){for(const c of a.children||[]){if(c.id===id||isDesc(c,id))return true}return false}
 function mutate(){S.history=S.history.slice(0,S.hi+1);S.history.push(clone(S.map));S.hi++;if(S.history.length>60){S.history.shift();S.hi--}
   S.topic.data=S.map;saveLocal();renderMap();scheduleAutoBackup()}
 function undo(){if(S.hi>0){S.hi--;S.map=clone(S.history[S.hi]);S.topic.data=S.map;saveLocal();renderMap();toast('↶ Undone','ok');scheduleAutoBackup()}}
 function redo(){if(S.hi<S.history.length-1){S.hi++;S.map=clone(S.history[S.hi]);S.topic.data=S.map;saveLocal();renderMap();toast('↷ Redone','ok');scheduleAutoBackup()}}
+// New node = last adjusted box size e khule (size memory), default "New Node" ek line e
+function sizeFromLast(){if(S.lastBox&&S.lastBox.w){const st={width:S.lastBox.w};if(S.lastBox.h)st.h=S.lastBox.h;return{style:st}}return{}}
 function addChild(){const p=S.selId?findN(S.selId):S.map;if(!p)return;
-  p.children=p.children||[];const c={id:uid(),text:'New node',children:[]};p.children.push(c);p.collapsed=false;S.selId=c.id;mutate();centerOn('both');editSoon(c.id)}
+  p.children=p.children||[];const c=Object.assign({id:uid(),text:'New Node',children:[]},sizeFromLast());p.children.push(c);p.collapsed=false;S.selId=c.id;mutate();centerOn('both');editSoon(c.id)}
 function addSibling(){if(!S.selId||S.selId===S.map.id)return addChild();const p=findP(S.selId);if(!p)return;
   const me=findN(S.selId);
-  const s={id:uid(),text:'New node',children:[]};
+  const s=Object.assign({id:uid(),text:'New Node',children:[]},sizeFromLast());
   const idx=p.children.findIndex(c=>c.id===S.selId);
   // Mirror rule: in the upper timeline section insert BEFORE so the new sibling appears
   // directly BELOW the selected node on screen (same feel as the lower section)
   p.children.splice(flipForUpper(me)?idx:idx+1,0,s);S.selId=s.id;mutate();centerOn('both');editSoon(s.id)}
 function delSel(){if(!S.selId||S.selId===S.map.id)return toast('Root delete kora jabe na','err');
+  // Free node delete (tree er baire) — direct remove
+  if((S.map.free||[]).some(f=>f.id===S.selId)){
+    S.map.free=S.map.free.filter(f=>f.id!==S.selId);S.selId=null;mutate();
+    return toast('🗑 Free box delete holo','ok')}
   const p=findP(S.selId);if(!p)return;
   const n=findN(S.selId);if(n){
     // TOMBSTONE the deleted subtree with its topic path (restorable from Trash)
     const pn=curPathNames();
     addGraves(tombstoneTree(pn[0]||'',pn[1]||'',S.topic?S.topic.name:'',n,p.id));
   }
+  // Ei node ke SOURCE hishebe reference kora link gulo o muche dao
+  (function prune(x){if(x.lks){x.lks=x.lks.filter(l=>l.p!==S.selId);if(!x.lks.length)delete x.lks}(x.children||[]).forEach(prune);(x.free||[]).forEach(prune)})(S.map);
   p.children=p.children.filter(c=>c.id!==S.selId);S.selId=p.id;mutate();toast('🗑 Node deleted — Trash e safe (restore kora jabe)','ok')}
 function fmt(f){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};n.style[f]=!n.style[f];mutate()}
 function fsDelta(d){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};
   n.style.fontSize=Math.max(9,Math.min(30,(n.style.fontSize||fsOf(n,n._d||0))+d));mutate()}
-// Adjust box width (min 80, max 600)
+// Adjust box width (min 80, max 600) — adjusted size SAVE hoy (S.lastBox) → notun child/sibling/f box ei size e khule
 function wDelta(d){const n=S.selId&&findN(S.selId);if(!n)return;n.style=n.style||{};
   const cur=n.style.width?(+n.style.width):(maxWOf(n._d||1));
-  n.style.width=Math.max(80,Math.min(600,cur+d));mutate()}
+  n.style.width=Math.max(80,Math.min(600,cur+d));
+  S.lastBox={w:n.style.width,h:(n.style.h||+((S.lastBox||{}).h||0))||0};
+  if(S.topic)S.topic.lastBox=S.lastBox;
+  mutate()}
 // Adjust gap multiplier between siblings/children (min 0.5, max 2.5, step 0.1)
 // Applies to both Timeline and Tree layouts. Persisted in S.gap (not in node, but in topic data via mutate).
 function gapDelta(d){
@@ -1370,8 +1723,8 @@ function collapseToggle(){
   toast(anyOpen?'📁 Sob collapse holo':'🔎 Sob expand holo','ok');
 }
 function editSoon(id){setTimeout(()=>{const el=document.querySelector(`.nd[data-id="${id}"] .txt`);if(el)startEdit(el,findN(id))},60)}
-function startEdit(el,n){const old=n.text;el.contentEditable='true';el.focus();document.execCommand('selectAll',false,null);
-  const done=()=>{el.contentEditable='false';const t=el.innerText.replace(/\s*\n\s*/g,' ').trim();
+function startEdit(el,n){const old=n.text;el.innerText=old;el.contentEditable='true';el.focus();document.execCommand('selectAll',false,null);S.editing={el,n};
+  const done=()=>{el.contentEditable='false';S.editing=null;const t=el.innerText.replace(/\s*\n\s*/g,' ').trim();
     if(t&&t!==n.text){n.text=t;mutate()}else renderMap();el.removeEventListener('blur',done)};
   el.addEventListener('blur',done);
   el.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();el.blur()}if(e.key==='Escape'){el.innerText=old;el.blur()}}}
@@ -1419,6 +1772,72 @@ function moveNode(id,tid,zone){
     a.splice(z==='before'?i:i+1,0,n)}
   mutate();toast('↔ Node moved','ok');
 }
+
+/* ===== FREE BOX / NOTE / LINK / RESIZE ===== */
+// Free box: tree er baire, canvas er ekdom majhe khule — tene jekono jaygay noya jay,
+// ar "Link" diye JE KONO box er sathe line joga jay (converging reaction line)
+function addFree(note){if(!S.map)return;
+  const w=$('wrap');const i=(S.fn=(S.fn||0)+1)%6;
+  const x=Math.round((w.clientWidth/2-S.px)/S.zoom-70+i*30),y=Math.round((w.clientHeight/2-S.py)/S.zoom-18+i*24);
+  const f=Object.assign({id:uid(),text:note?'Note — double-tap kore likho':'New Node',x:x,y:y,children:[]},sizeFromLast());
+  if(note)f.note=true;
+  S.map.free=S.map.free||[];S.map.free.push(f);S.selId=f.id;mutate();editSoon(f.id);
+  toast(note?'📝 Note add holo — tene jekono jaygay nino, Note 👁 diye hide/show koro':'🧲 Free box add holo — Link button diye je kono box er sathe line dao','ok')}
+function addNote(){addFree(true)}
+// Link mode: SELECTED node (source) theke TARGET box e notun line — X→CH2CH2, Y→CH2CH2 dui line ek node e mile
+function startLink(){const n=S.selId&&findN(S.selId);if(!n)return toast('Age node select koro — jei node theke line JABE','err');
+  S.linking={src:S.selId};document.body.classList.add('linking');renderMap();
+  toast('🔗 Link mode: "'+plainChem(n.text).slice(0,24)+'" theke line — TARGET box e tap koro (Esc = cancel)','ok')}
+function completeLink(tid){const L=S.linking;S.linking=null;document.body.classList.remove('linking');
+  if(!L)return;
+  if(tid===L.src){renderMap();return toast('Nijer sathe link hoy na — onno box e tap koro','err')}
+  const t=findN(tid);if(!t)return;
+  t.lks=t.lks||[];
+  if(t.lks.some(l=>l.p===L.src)){renderMap();return toast('Ei line already ache (dui node er majhe ek line)','err')}
+  const src=findN(L.src);if(!src){renderMap();return}
+  t.lks.push({p:L.src,arrow:src.arrow||1,label:''});
+  S.selId=tid;mutate();
+  toast('🔗 Line add holo! Label dite hole line er label e tap koro','ok')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.linking){S.linking=null;document.body.classList.remove('linking');renderMap();toast('Link cancel holo','ok')}});
+// Notes hide/show (class e answer hide korte darun) — per topic e save thake
+function toggleNotes(){S.showNotes=!S.showNotes;if(S.topic){S.topic.notes=S.showNotes;saveLocal()}renderMap();
+  toast(S.showNotes?'📝 Note dekha jacche':'🙈 Note hide — Note button abar tap korle ashbe','ok')}
+// Resize handle: tene box er width+height bodlao → size save hoye notun child/sibling/f box eo oi size
+let rzdrag=null;
+function startRz(e,id){if(!S.unlocked||CONFIG.VIEWER)return;
+  e.preventDefault();e.stopPropagation();
+  const el=document.querySelector(`.nd[data-id="${id}"]`);if(!el)return;
+  rzdrag={id:id,el:el,sx:e.clientX,sy:e.clientY,sw:el.offsetWidth,sh:el.offsetHeight,nw:0,nh:0}}
+// Free box drag: tene jekono jaygay
+let fdrag=null;
+function startFreeDrag(e,id){if(!S.unlocked||CONFIG.VIEWER||S.editing||S.linking)return;
+  const el=e.currentTarget;if(!el)return;
+  const n=findN(id);if(!n)return;
+  fdrag={id:id,el:el,sx:e.clientX,sy:e.clientY,ox:n.x||0,oy:n.y||0,moved:false};
+  e.preventDefault()}
+window.addEventListener('pointermove',e=>{
+  if(rzdrag){
+    const dx=(e.clientX-rzdrag.sx)/S.zoom,dy=(e.clientY-rzdrag.sy)/S.zoom;
+    rzdrag.nw=Math.max(80,Math.min(600,Math.round(rzdrag.sw+dx)));
+    rzdrag.nh=Math.max(30,Math.min(600,Math.round(rzdrag.sh+dy)));
+    rzdrag.el.style.width=rzdrag.nw+'px';rzdrag.el.style.minHeight=rzdrag.nh+'px';return}
+  if(fdrag){
+    const n=findN(fdrag.id);if(!n){fdrag=null;return}
+    const dx=(e.clientX-fdrag.sx)/S.zoom,dy=(e.clientY-fdrag.sy)/S.zoom;
+    if(!fdrag.moved&&Math.abs(dx)+Math.abs(dy)>4)fdrag.moved=true;
+    if(fdrag.moved){n.x=Math.round(fdrag.ox+dx);n.y=Math.round(fdrag.oy+dy);
+      fdrag.el.style.left=n.x+'px';fdrag.el.style.top=n.y+'px';
+      $('linesSvg').innerHTML=segs.map(segSVG).join('')}
+  }
+});
+window.addEventListener('pointerup',()=>{
+  if(rzdrag){if(rzdrag.nw){const n=findN(rzdrag.id);
+      if(n){n.style=n.style||{};n.style.width=rzdrag.nw;n.style.h=rzdrag.nh;
+        S.lastBox={w:rzdrag.nw,h:rzdrag.nh};if(S.topic)S.topic.lastBox=S.lastBox;
+        mutate();toast('📐 Box size save holo — notun Child/Sibling/Free ei size e khulbe','ok')}}
+    rzdrag=null}
+  if(fdrag){if(fdrag.moved)mutate();fdrag=null}
+});
 
 /* ===== AI ===== */
 function repairJSON(s){
@@ -1532,7 +1951,7 @@ function _loadScript(src){
 const EXPORT_HEADER=116,EXPORT_FOOTER=44;
 function _computeBounds(){
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
-  boxes.forEach(b=>{if(b._d===0)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2);});
+  boxes.forEach(b=>{if(b._d===0&&!S.showRoot)return;x1=Math.min(x1,b._x-b._w/2);x2=Math.max(x2,b._x+b._w/2);y1=Math.min(y1,b._y-b._h/2);y2=Math.max(y2,b._y+b._h/2);});
   const PAD=80;
   return {x1:x1-PAD,y1:y1-PAD-EXPORT_HEADER,x2:x2+PAD,y2:y2+PAD+EXPORT_FOOTER,w:(x2-x1)+2*PAD,h:(y2-y1)+2*PAD+EXPORT_HEADER+EXPORT_FOOTER};
 }
@@ -1565,10 +1984,11 @@ function _brandHeader(x1,y1,w,iconData){
   }
   const tx=x1+94,ty=y1+52;
   // Wordmark: WHY (white) + X! (yellow) + mindmap (white) — user spec
-  s+=`<text x="${tx}" y="${ty}" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800" letter-spacing=".5"><tspan fill="#ffffff">WHY</tspan><tspan fill="#f5b301">X!</tspan><tspan fill="#ffffff">mindmap</tspan></text>`;
+  const wm=thm('#ffffff','#1c2534');
+  s+=`<text x="${tx}" y="${ty}" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800" letter-spacing=".5"><tspan fill="${wm}">WHY</tspan><tspan fill="#f5b301">X!</tspan><tspan fill="${wm}">mindmap</tspan></text>`;
   s+=`<text x="${tx}" y="${ty+22}" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#64748b" letter-spacing="2.5">Why X! • By Arif Hussain</text>`;
   const topic=S.topic?String(S.topic.name):'';
-  if(topic)s+=`<text x="${x1+w/2}" y="${y1+EXPORT_HEADER-12}" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700" fill="#ffffff">${esc(topic)}</text>`;
+  if(topic)s+=`<text x="${x1+w/2}" y="${y1+EXPORT_HEADER-12}" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700" fill="${wm}">${esc(topic)}</text>`;
   s+=`<line x1="${x1}" y1="${y1+EXPORT_HEADER}" x2="${x1+w}" y2="${y1+EXPORT_HEADER}" stroke="rgba(245,179,1,.35)" stroke-width="1.5"/>`;
   return s;
 }
@@ -1578,46 +1998,36 @@ function _brandFooter(x1,y2,w){
 // Build a standalone SVG string containing brand header + all boxes + lines + text + brand footer.
 // This is the source of truth for PNG, SVG and HTML export.
 function buildSVGString(x1,y1,w,h,iconData){
-  let svg=`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${x1} ${y1} ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet" style="background:#0b0f19;font-family:Inter,Helvetica,Arial,sans-serif">`;
-  svg+=`<rect x="${x1}" y="${y1}" width="${w}" height="${h}" fill="#0b0f19"/>`;
+  const EXP_BG=thm('#0b0f19','#ffffff');
+  let svg=`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${x1} ${y1} ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet" style="background:${EXP_BG};font-family:Inter,Helvetica,Arial,sans-serif">`;
+  svg+=`<rect x="${x1}" y="${y1}" width="${w}" height="${h}" fill="${EXP_BG}"/>`;
   svg+=_brandHeader(x1,y1,w,iconData);
-  // Segments (lines connecting nodes)
-  segs.forEach(s=>{
-    if(s.o){
-      // Orthogonal (90° right-angle) line
-      const my=(s.y1+s.y2)/2;
-      svg+=`<path fill="none" stroke="${s.c}" stroke-width="${s.w}" stroke-linecap="round" stroke-linejoin="round" d="M ${s.x1} ${s.y1} L ${s.x1} ${my} L ${s.x2} ${my} L ${s.x2} ${s.y2}"/>`;
-    }else if(s.v){
-      // Curved line (cubic bezier)
-      svg+=`<path fill="none" stroke="${s.c}" stroke-width="${s.w}" stroke-linecap="round" d="M ${s.x1} ${s.y1} C ${s.x1} ${(s.y1+s.y2)/2}, ${s.x2} ${(s.y1+s.y2)/2}, ${s.x2} ${s.y2}"/>`;
-    }else{
-      // Straight line
-      svg+=`<line stroke="${s.c}" stroke-width="${s.w}" stroke-linecap="round" x1="${s.x1}" y1="${s.y1}" x2="${s.x2}" y2="${s.y2}"/>`;
-    }
-  });
+  // Segments (lines + reaction arrows + reagent labels)
+  svg+=segs.map(s=>segSVG(s,true)).join('');
   // Nodes
   boxes.forEach(n=>{
-    if(n._d===0)return; // hide root (topic name) box
+    if(n._d===0&&!S.showRoot)return; // root hidden unless Root toggle on
     const fs=fsOf(n,n._d)||13;
     const st=n.style||{};
-    let bg='#161b26', strokeColor='rgba(255,255,255,.14)', textColor='#eef1f6';
+    let bg=thm('#161b26','#ffffff'), strokeColor=thm('rgba(255,255,255,.14)','rgba(15,23,42,.18)'), textColor=thm('#eef1f6','#1c2534');
+    if(n.note){bg=thm('#241f33','#fff7dd');strokeColor=thm('rgba(255,211,77,.65)','rgba(176,124,0,.55)');textColor=thm('#ffe9a8','#7a5600')}
     if(n._d>0 && st.color){bg=st.color;strokeColor=st.color;textColor=lum(st.color)>.6?'#141000':'#fff';}
     svg+=`<g transform="translate(${n._x-n._w/2} ${n._y-n._h/2})">`;
-    svg+=`<rect x="0" y="0" width="${n._w}" height="${n._h}" rx="10" ry="10" fill="${bg}" stroke="${strokeColor}" stroke-width="1"/>`;
+    svg+=`<rect x="0" y="0" width="${n._w}" height="${n._h}" rx="10" ry="10" fill="${bg}" stroke="${strokeColor}" stroke-width="1"${n.note?' stroke-dasharray="5 4"':''}/>`;
     const lh=fs*1.35;
     const startY=fs+(n._h-(n._lines.length*lh))/2;
     n._lines.forEach((line,i)=>{
       const ty=startY+i*lh;
       const weight=(st.bold||(n._d===0))?'bold':'normal';
-      const fontStyle=st.italic?'italic':'normal';
+      const fontStyle=(st.italic||n.note)?'italic':'normal';
       const textDecoration=st.underline?'underline':'none';
-      svg+=`<text x="11" y="${ty}" font-size="${fs}" font-weight="${weight}" font-style="${fontStyle}" text-decoration="${textDecoration}" fill="${textColor}" font-family="Inter,Helvetica,Arial,sans-serif">${line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</text>`;
+      svg+=`<text x="11" y="${ty}" font-size="${fs}" font-weight="${weight}" font-style="${fontStyle}" text-decoration="${textDecoration}" fill="${textColor}" font-family="Inter,Helvetica,Arial,sans-serif">${chemTspans(line)}</text>`;
     });
     if((n.children||[]).length){
       const count=n.children.length;
       const bx=n._w-4, by=n._h/2;
-      svg+=`<circle cx="${bx}" cy="${by}" r="11" fill="#1e2636" stroke="#f5b301" stroke-width="1.5"/>`;
-      svg+=`<text x="${bx}" y="${by+4}" font-size="11" font-weight="700" text-anchor="middle" fill="#f5b301">${count}</text>`;
+      svg+=`<circle cx="${bx}" cy="${by}" r="11" fill="${thm('#1e2636','#ffffff')}" stroke="#f5b301" stroke-width="1.5"/>`;
+      svg+=`<text x="${bx}" y="${by+4}" font-size="11" font-weight="700" text-anchor="middle" fill="${thm('#f5b301','#b07c00')}">${count}</text>`;
     }
     svg+=`</g>`;
   });
@@ -1638,7 +2048,7 @@ function _rasterizeSVG(svgString,w,h,pixelRatio){
         canvas.width=Math.max(2,Math.round(w*pixelRatio));
         canvas.height=Math.max(2,Math.round(h*pixelRatio));
         const ctx=canvas.getContext('2d');
-        ctx.fillStyle='#0b0f19';
+        ctx.fillStyle=thm('#0b0f19','#ffffff');
         ctx.fillRect(0,0,canvas.width,canvas.height);
         ctx.drawImage(img,0,0,canvas.width,canvas.height);
         URL.revokeObjectURL(url);
@@ -1794,7 +2204,7 @@ async function buildPDFFromSVG(){
   if(!dataUrl){try{dataUrl=canvas.toDataURL('image/png');embed='png'}catch(e){}}
   if(!dataUrl)throw new Error('image encode fail — device canvas limit');
   const page=doc.addPage([Math.round(b.w),Math.round(b.h)]);
-  page.drawRectangle({x:0,y:0,width:page.getWidth(),height:page.getHeight(),color:rgb(0.043,0.06,0.098)});
+  page.drawRectangle({x:0,y:0,width:page.getWidth(),height:page.getHeight(),color:isWhite()?rgb(1,1,1):rgb(0.043,0.06,0.098)});
   const img=embed==='jpg'?await doc.embedJpg(dataUrl):await doc.embedPng(dataUrl);
   page.drawImage(img,{x:0,y:0,width:page.getWidth(),height:page.getHeight()});
   // ---- PAGE 2..N: READABLE SECTION PAGES ----
@@ -1821,7 +2231,7 @@ async function buildPDFFromSVG(){
         if(!du){try{du=sc.toDataURL('image/png');em='png'}catch(e){}}
         if(!du)continue;
         const pg=doc.addPage([Math.round(cw),Math.round(b.h)]);
-        pg.drawRectangle({x:0,y:0,width:pg.getWidth(),height:pg.getHeight(),color:rgb(0.043,0.06,0.098)});
+        pg.drawRectangle({x:0,y:0,width:pg.getWidth(),height:pg.getHeight(),color:isWhite()?rgb(1,1,1):rgb(0.043,0.06,0.098)});
         const im=em==='jpg'?await doc.embedJpg(du):await doc.embedPng(du);
         pg.drawImage(im,{x:0,y:0,width:pg.getWidth(),height:pg.getHeight()});
       }catch(e){/* ekta slice fail korle baki gulo thakbe */}
@@ -1852,6 +2262,7 @@ window.addEventListener('keydown',e=>{
    zoom minimum lock (vminZ) — baki sob live page er motoi chole. */
 function viewerBoot(){
   try{
+    applyThemeBoot();
     const sn=window.__MM_SNAPSHOT__||{};
     S.curriculum=Array.isArray(sn.curriculum)?sn.curriculum:[];
     if(sn.layout)S.layout=sn.layout;
@@ -1884,6 +2295,7 @@ if(!CONFIG.VIEWER&&('serviceWorker' in navigator)&&/^https?:$/.test(location.pro
    Load order: Google Sheet (source of truth) → local cache → demo.
    The open map NEVER live-updates (no polling). Reload/refresh always shows the latest sheet data. */
 (async function(){
+  applyThemeBoot();
   if(CONFIG.VIEWER){viewerBoot();return} // downloaded copy — no network, no sync, snapshot data only
   loadGraves();loadForeign();
   const res=await loadLive();
