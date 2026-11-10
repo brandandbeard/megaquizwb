@@ -11,6 +11,7 @@
 //   • "বানানো/self-made ব্যাখ্যা" বন্ধ: critic fail করলে retry ও পুনঃযাচাই, তাতেও fail
 //     করলে AI-এর ব্যাখ্যা বাদ দিয়ে শুধু যাচাইকৃত তথ্য (keyFacts/evidence) বসে
 //   • gpt-oss-এ reasoning_effort=low (সময় বাঁচাতে); মডেল param reject করলে bare retry
+//   • ব্যাখ্যার সব সংখ্যা ইংরেজি অঙ্কে (0-9) — বাংলা অঙ্ক (০-৯) বাদ (enDigits দিয়ে কোডেই রূপান্তর)
 //
 // পুরনো ভার্সনের সমস্যা ছিল:
 //   • AI একই call-এ "উত্তর দাও + ব্যাখ্যা দাও" করত → key মিলে গেলেও ব্যাখ্যা বানানো/ভুল হত
@@ -80,6 +81,11 @@ function stripTags(text) {
 }
 
 const BN_DIGITS = { '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4', '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9' };
+
+// ব্যাখ্যায় বাংলা অঙ্ক (০-৯) নয় — ইংরেজি অঙ্ক (0-9) বসবে
+function enDigits(text) {
+  return String(text == null ? '' : text).replace(/[০-৯]/g, function (d) { return BN_DIGITS[d]; });
+}
 
 // তুলনার জন্য normalize: ট্যাগ, যুক্তাক্ষর-ঝামেলা, বাংলা অঙ্ক, punctuation
 function normText(text) {
@@ -297,7 +303,7 @@ function composeExplanation(parts) {
     }
   }
 
-  const text = lines.filter(Boolean).join(sep);
+  const text = enDigits(lines.filter(Boolean).join(sep));
   return multiline ? text : text.replace(/\s*•\s*/g, ' • ').replace(/\s{2,}/g, ' ');
 }
 
@@ -318,6 +324,7 @@ const GROUND_RULES = `━━ অতিরিক্ত কঠোর নিয়�
     শহরে স্বাক্ষরিত; ভারত-পাকিস্তান যুদ্ধ/যুদ্ধবন্দী বিনিময়/শরণার্থী পুনর্বাসনের সাথে এর কোনো
     সম্পর্ক নেই।
 • অপশনের লেখা হুবহু বসাবে, নিজের ভাষায় বদলাবে না, সংক্ষেপ করবে না।
+• সংখ্যা সবসময় ইংরেজি অঙ্কে লিখবে (1971, 2, 85 — বাংলা অঙ্ক ০-৯ নয়)।
 • মনে না থাকলে সৎভাবে "নিশ্চিত নই" লেখো — বানানো ব্যাখ্যার চেয়ে সেটা অনেক ভালো।
 • শুধু valid JSON ফেরত দাও, markdown fence বা অতিরিক্ত লেখা নয়।`;
 
@@ -875,7 +882,7 @@ export default async function handler(req, res) {
         out.push({
           index: idx,
           status: idx === finalKey ? 'correct' : 'wrong',
-          why: sanitize(item.why)
+          why: enDigits(sanitize(item.why))
         });
       }
       return out.sort(function (a, b) { return a.index - b.index; });
