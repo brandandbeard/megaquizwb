@@ -11,7 +11,8 @@
 //   • "বানানো/self-made ব্যাখ্যা" বন্ধ: critic fail করলে retry ও পুনঃযাচাই, তাতেও fail
 //     করলে AI-এর ব্যাখ্যা বাদ দিয়ে শুধু যাচাইকৃত তথ্য (keyFacts/evidence) বসে
 //   • gpt-oss-এ reasoning_effort=low (সময় বাঁচাতে); মডেল param reject করলে bare retry
-//   • ব্যাখ্যার সব সংখ্যা ইংরেজি অঙ্কে (0-9) — বাংলা অঙ্ক (০-৯) বাদ (enDigits দিয়ে কোডেই রূপান্তর)
+//   • ডিজিট নীতি: class 5 → বাংলা অঙ্ক (০-৯); বাকি সব ক্লাস → কঠোরভাবে ইংরেজি অঙ্ক (0-9)
+//     (enDigits/toBnDigits দিয়ে কোডেই রূপান্তর — AI যা লিখুক, ফাইনাল আউটপুট নিয়ন্ত্রিত)
 //
 // পুরনো ভার্সনের সমস্যা ছিল:
 //   • AI একই call-এ "উত্তর দাও + ব্যাখ্যা দাও" করত → key মিলে গেলেও ব্যাখ্যা বানানো/ভুল হত
@@ -85,6 +86,30 @@ const BN_DIGITS = { '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4', 
 // ব্যাখ্যায় বাংলা অঙ্ক (০-৯) নয় — ইংরেজি অঙ্ক (0-9) বসবে
 function enDigits(text) {
   return String(text == null ? '' : text).replace(/[০-৯]/g, function (d) { return BN_DIGITS[d]; });
+}
+
+// ইংরেজি অঙ্ক (0-9) → বাংলা অঙ্ক (০-৯) — শুধু class 5-এর ব্যাখ্যার জন্য
+const BN_BY_ASCII = {};
+for (const bn in BN_DIGITS) BN_BY_ASCII[BN_DIGITS[bn]] = bn;
+function toBnDigits(text) {
+  return String(text == null ? '' : text).replace(/[0-9]/g, function (d) { return BN_BY_ASCII[d] || d; });
+}
+
+// ডিজিট নীতি: শুধু class 5-এর ব্যাখ্যায় বাংলা অঙ্ক (০-৯); বাকি সব ক্লাসে কঠোরভাবে ইংরেজি অঙ্ক (0-9)
+// class জানা যায় body-র class/className/classLevel/studentClass/grade/standard ফিল্ড থেকে,
+// অথবা subject/chapter/quizType-এর ভেতরে স্পষ্ট "Class 5 / ক্লাস ৫" থাকলে। কিছু না পেলে ইংরেজি (ডিফল্ট)।
+function digitPolicy(body) {
+  const b = body || {};
+  const classText = clean([
+    b.class, b.className, b.class_name, b.classLevel, b.class_level,
+    b.studentClass, b.standard, b.grade, b.shreni
+  ].filter(Boolean).join(' '));
+  const classNorm = classText.replace(/[০-৯]/g, function (d) { return BN_DIGITS[d]; });
+  if (classNorm && (/পঞ্চম|five/i.test(classNorm) || /(^|\D)5(\D|$)/.test(classNorm))) return 'bn';
+  const hint = clean([b.subject, b.chapter, b.quizType].filter(Boolean).join(' '))
+    .replace(/[০-৯]/g, function (d) { return BN_DIGITS[d]; });
+  if (/(?:class|ক্লাস|শ্রেণি)\s*[-–—]?\s*5\b/i.test(hint)) return 'bn';
+  return 'en';
 }
 
 // তুলনার জন্য normalize: ট্যাগ, যুক্তাক্ষর-ঝামেলা, বাংলা অঙ্ক, punctuation
@@ -277,6 +302,7 @@ function composeExplanation(parts) {
   const options = parts.options;
   const keyIndex = parts.keyIndex;
   const multiline = !!parts.multiline;
+  const digits = parts.digitMode === 'bn' ? toBnDigits : enDigits;
   const sep = multiline ? '\n' : ' • ';
   const lines = [];
 
@@ -303,7 +329,7 @@ function composeExplanation(parts) {
     }
   }
 
-  const text = enDigits(lines.filter(Boolean).join(sep));
+  const text = digits(lines.filter(Boolean).join(sep));
   return multiline ? text : text.replace(/\s*•\s*/g, ' • ').replace(/\s{2,}/g, ' ');
 }
 
@@ -581,6 +607,9 @@ export default async function handler(req, res) {
   const chapter = clean(body.chapter);
   const rowIndex = body.rowIndex;
   const quizType = clean(body.quizType);
+  // ডিজিট নীতি — শুধু class 5: বাংলা অঙ্ক (০-৯); বাকি সব ক্লাস: কঠোরভাবে ইংরেজি অঙ্ক (0-9)
+  const digitMode = digitPolicy(body);
+  const applyDigitStyle = digitMode === 'bn' ? toBnDigits : enDigits;
   const alreadyChecked = !!body.alreadyChecked;
   const force = !!body.force || !!body.recheck;
   const multiline = process.env.CHECK_MULTILINE_EXPLANATION === '1';
@@ -882,7 +911,7 @@ export default async function handler(req, res) {
         out.push({
           index: idx,
           status: idx === finalKey ? 'correct' : 'wrong',
-          why: enDigits(sanitize(item.why))
+          why: applyDigitStyle(sanitize(item.why))
         });
       }
       return out.sort(function (a, b) { return a.index - b.index; });
@@ -1043,7 +1072,8 @@ export default async function handler(req, res) {
       keyIndex: finalKey,
       answerExplanation: answerExplanation,
       optionExplanations: optionExplanations,
-      multiline: multiline
+      multiline: multiline,
+      digitMode: digitMode
     });
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -1152,5 +1182,6 @@ export {
   sanitize,
   normText,
   parseJSON,
-  findDuplicateOptions
+  findDuplicateOptions,
+  digitPolicy
 };
