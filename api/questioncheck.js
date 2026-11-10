@@ -1,26 +1,38 @@
 // api/questioncheck.js
 // ─────────────────────────────────────────────────────────────────────────────
-// v2 · answer-key verification (back-test) + detailed per-option explanation
+// v2.1 · answer-key verification (back-test) + detailed per-option explanation
+//
+// v2 থেকে v2.1-এ যা বদলেছে:
+//   • PRIMARY model = openai/gpt-oss-120b (main), FALLBACK = qwen/qwen3.6-27b
+//   • back-test refuted বললেও যাচাইযোগ্য প্রমাণ (evidence) না থাকলে key বদলায় না —
+//     "প্রমাণ না পেলে বর্তমান key-ই ঠিক ধরা হয়"
+//   • ব্যাখ্যা আরও বিস্তারিত: সঠিক উত্তরের কারণ ৪-৮ বাক্য + বাকি প্রতিটি অপশনের নির্দিষ্ট
+//     কারণ (কারণ ছাড়া কোনো ভুল অপশন রইলে writer আবার চলে)
+//   • "বানানো/self-made ব্যাখ্যা" বন্ধ: critic fail করলে retry ও পুনঃযাচাই, তাতেও fail
+//     করলে AI-এর ব্যাখ্যা বাদ দিয়ে শুধু যাচাইকৃত তথ্য (keyFacts/evidence) বসে
+//   • gpt-oss-এ reasoning_effort=low (সময় বাঁচাতে); মডেল param reject করলে bare retry
 //
 // পুরনো ভার্সনের সমস্যা ছিল:
 //   • AI একই call-এ "উত্তর দাও + ব্যাখ্যা দাও" করত → key মিলে গেলেও ব্যাখ্যা বানানো/ভুল হত
 //     (যেমন: রামসর চুক্তি ১৯৭১ — উত্তর ঠিক, ব্যাখ্যায় ভারত-বাংলাদেশ যুদ্ধবন্দী)
 //   • letter ↔ option mapping AI-এর হাতে ছিল → ভুল অপশনে উত্তর বসার ঝুঁকি
-//   • key সন্দেহ হলেও "prমাণ" ছাড়াই বদলে যেত, আবার প্রমাণ থাকলেও বদলাত না
+//   • key সন্দেহ হলেও "প্রমাণ" ছাড়াই বদলে যেত, আবার প্রমাণ থাকলেও বদলাত না
 //
-// নতুন ধাপ:
-//   1) blind solve   — উত্তর key না দিয়ে próprio সমাধান (anchoring বন্ধ)
+// ধাপগুলো:
+//   1) blind solve   — উত্তর key না দিয়ে সম্পূর্ণ নিজে সমাধান (anchoring বন্ধ)
 //   2) back-test     — "বর্তমান key ভুল" ধরে নিয়ে disprove করার চেষ্টা (প্রসিকিউটর)
-//   3) verdict       — কোডে নির্ধারিত: দুটো pass মিললেই key বদলায়, নাহলে key অটুট
-//   4) writer        — ফরম্যাট ঠিক + সঠিক উত্তর ও প্রতিটি অপশনের ব্যাখ্যা (index ধরে)
+//   3) verdict       — কোডে নির্ধারিত: প্রমাণ + স্বাধীন সমর্থন মিললেই কেবল key বদলায়
+//   4) writer        — ফরম্যাট ঠিক + সঠিক উত্তর ও প্রতিটি অপশনের বিস্তারিত ব্যাখ্যা (index ধরে)
 //   5) critic        — ব্যাখ্যা প্রশ্নের বিষয়ের সাথেই আছে কি না, বানানো তথ্য আছে কি না
 //
 // letter / option লেখা কোড থেকেই বসে (composeExplanation) — AI কখনো letter লিখে না।
 //
 // ENV (সবই optional):
 //   GROQ_API_KEY_3            — বাধ্যতামূলক
-//   CHECK_MODEL_PRIMARY       — ডিফল্ট qwen/qwen3.6-27b
-//   CHECK_MODEL_FALLBACK      — ডিফল্ট openai/gpt-oss-120b
+//   CHECK_MODEL_PRIMARY       — ডিফল্ট openai/gpt-oss-120b  ← main model
+//   CHECK_MODEL_FALLBACK      — ডিফল্ট qwen/qwen3.6-27b
+//     ⚠ Vercel env-এ CHECK_MODEL_PRIMARY সেট করা থাকলে ওই env-ই জিতবে — gpt-oss main
+//       রাখতে হলে ওই env মুছে দিন বা openai/gpt-oss-120b মান দিন।
 //   CHECK_BUDGET_MS           — পুরো কাজের সময়সীমা, ডিফল্ট 9000
 //   CHECK_EXPLANATION_MODE    — refresh (ডিফল্ট) | auto | keep
 //   CHECK_MULTILINE_EXPLANATION=1 — ব্যাখ্যায় newline (⚠ ক্লায়েন্টের TSV পার্সার ভাঙতে পারে)
@@ -28,9 +40,9 @@
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
-// model গুলো env দিয়ে বদলানো যাবে, ডিফল্ট আগের মতোই
-const MODEL_PRIMARY = process.env.CHECK_MODEL_PRIMARY || 'qwen/qwen3.6-27b';
-const MODEL_FALLBACK = process.env.CHECK_MODEL_FALLBACK || 'openai/gpt-oss-120b';
+// main model = openai/gpt-oss-120b, backup = qwen/qwen3.6-27b (দুটোই Groq-এ সক্রিয় মডেল)
+const MODEL_PRIMARY = process.env.CHECK_MODEL_PRIMARY || 'openai/gpt-oss-120b';
+const MODEL_FALLBACK = process.env.CHECK_MODEL_FALLBACK || 'qwen/qwen3.6-27b';
 
 // পুরো কাজ শেষ করার সময়সীমা (ms). Vercel-এ default 10s হলে এই budget নিরাপদ।
 const DEFAULT_BUDGET_MS = Number(process.env.CHECK_BUDGET_MS || 9000);
@@ -186,6 +198,73 @@ function findDuplicateOptions(options) {
 }
 
 // ───────────────────────────────────────────────────────────────────────────
+// verdict — সিদ্ধান্ত কোডে হয়, AI-এর মুখে নয়
+// নিয়ম: back-test refuted বললেও যাচাইযোগ্য প্রমাণ (evidenceOk) + স্বাধীন সমর্থন
+// (blind solve একমত, নয়তো refutation confidence ≥ 85) না থাকলে key বদলায় না।
+// অর্থাৎ "প্রমাণ না পেলে বর্তমান key-ই ঠিক ধরা হয়"।
+// ───────────────────────────────────────────────────────────────────────────
+function decideKeyVerdict(input) {
+  const currentKey = input.currentKey;
+  const blindIndex = input.blindIndex;
+  const refuted = !!input.refuted;
+  const altIndex = input.altIndex;
+  const refConfidence = Number(input.refConfidence) || 0;
+  const evidenceOk = !!input.evidenceOk;
+  const ambiguous = !!input.ambiguous;
+
+  const flags = [];
+  let finalKey = currentKey;
+  let keyChanged = false;
+  let status = 'verified';
+  let verdictReason = '';
+
+  if (ambiguous) {
+    status = 'kept_ambiguous';
+    verdictReason = 'একই লেখার একাধিক অপশন আছে, তাই key অপরিবর্তিত রাখা হয়েছে';
+  } else if (refuted && altIndex !== null && altIndex !== currentKey) {
+    const corroborated = evidenceOk && (blindIndex === altIndex || refConfidence >= 85);
+    const contradicted = blindIndex !== null && blindIndex !== altIndex;
+    if (corroborated && !contradicted) {
+      finalKey = altIndex;
+      keyChanged = true;
+      status = 'corrected';
+      verdictReason = 'back-test যাচাইযোগ্য প্রমাণসহ পুরনো key ভুল প্রমাণ করেছে, এবং স্বাধীন সমাধানও একই অপশনে পৌঁছেছে';
+    } else if (!evidenceOk) {
+      status = 'kept_disputed';
+      flags.push('refutation-without-evidence');
+      verdictReason = 'back-test ভুল দাবি করেছে কিন্তু কোনো যাচাইযোগ্য প্রমাণ দেয়নি — প্রমাণ ছাড়া key বদলায় না, তাই রাখা হলো';
+    } else {
+      status = 'kept_disputed';
+      flags.push(contradicted ? 'model-conflict' : 'unconfirmed-refutation');
+      verdictReason = contradicted
+        ? 'এক ধাপ key বদলাতে চায়, অন্য ধাপ ভিন্ন অপশন বলছে — প্রমাণ টেকসই নয়, তাই key রাখা হলো'
+        : 'refuted দাবি করা হয়েছে কিন্তু দ্বিতীয় সমর্থন নেই, তাই key রাখা হলো';
+    }
+  } else if (refuted && altIndex === currentKey) {
+    status = 'verified';
+    flags.push('backtest-inconsistent');
+    verdictReason = 'refuted বলেছে কিন্তু বিকল্প হিসেবে একই অপশন দিয়েছে — key রাখা হলো';
+  } else if (refuted) {
+    status = 'kept_disputed';
+    flags.push('refutation-no-alternative');
+    verdictReason = 'back-test ভুল বলেছে কিন্তু বিকল্প অপশন দিতে পারেনি — key রাখা হলো';
+  } else if (blindIndex === null) {
+    status = input.hasBackTest ? 'kept_uncertain' : 'kept_unverified';
+    flags.push('no-independent-answer');
+    verdictReason = 'স্বাধীন সমাধান পাওয়া যায়নি, key অপরিবর্তিত';
+  } else if (blindIndex !== currentKey) {
+    status = 'kept_uncertain';
+    flags.push('blind-disagreement');
+    verdictReason = 'স্বাধীন সমাধান ভিন্ন অপশন বলছে, কিন্তু key ভুল প্রমাণিত হয়নি — তাই key রাখা হলো';
+  } else {
+    status = 'verified';
+    verdictReason = 'স্বাধীন সমাধান key-কে সমর্থন করেছে, back-test-এ ভুল প্রমাণ মেলেনি';
+  }
+
+  return { finalKey: finalKey, keyChanged: keyChanged, status: status, verdictReason: verdictReason, flags: flags };
+}
+
+// ───────────────────────────────────────────────────────────────────────────
 // ব্যাখ্যা জোড়া লাগানো — এখানেই letter ↔ option লেখা বসে (AI নয়)
 // ───────────────────────────────────────────────────────────────────────────
 function composeExplanation(parts) {
@@ -211,7 +290,11 @@ function composeExplanation(parts) {
     wrong.push('(' + LETTERS[idx] + ') ' + sanitize(options[idx]) + ' — ' + why);
   }
   if (wrong.length) {
-    lines.push((multiline ? '\n' : '') + 'কেন বাকি অপশনগুলো নয়: ' + wrong.join('; '));
+    if (multiline) {
+      lines.push('\nকেন বাকি অপশনগুলো নয়:\n' + wrong.join('\n'));
+    } else {
+      lines.push('কেন বাকি অপশনগুলো নয়: ' + wrong.join('; '));
+    }
   }
 
   const text = lines.filter(Boolean).join(sep);
@@ -226,6 +309,14 @@ const GROUND_RULES = `━━ অতিরিক্ত কঠোর নিয়�
 • যে তথ্য নিশ্চিতভাবে জানো শুধু সেটাই লেখো। সাল, তারিখ, নাম, স্থান আন্দাজ করবে না।
 • প্রশ্নের বিষয় (যেমন "রামসর চুক্তি") আর অন্য কোনো ঘটনা/চুক্তি মিলিয়ে ফেলবে না।
   একই বছরে অন্য ঘটনা থাকলেও সেটা এই প্রশ্নের উত্তর নয় — সেটাই সবচেয়ে বড় ভুল।
+• কাছাকাছি নামের ভিন্ন ব্যক্তি/ঘটনা মেশাবে না। আগে শনাক্ত করো: ব্যক্তি/ঘটনাটি কোন দেশ ও
+  কোন যুগের। দুটো বাস্তব উদাহরণ — এমন ভুল কখনোই করবে না:
+  ─ দিল্লি সুলতানির শাসকরা (গিয়াসউদ্দিন বলবন ১২৬৬-১২৮৭, আলাউদ্দিন খিলজি ১২৯৬-১৩১৬) মধ্যযুগের
+    ভারতের; এঁদের "পাকিস্তানের প্রধানমন্ত্রী/গৃহমন্ত্রী" বা ১৯৪৭-পরবর্তী কোনো পদের সাথে যুক্ত
+    করা সম্পূর্ণ বানানো তথ্য। পাকিস্তানের প্রথম প্রধানমন্ত্রী ছিলেন লিয়াকত আলি খান।
+  ─ রামসর চুক্তি = জলাভূমি সংরক্ষণের আন্তর্জাতিক চুক্তি, ২ ফেব্রুয়ারি ১৯৭১-এ ইরানের রামসার
+    শহরে স্বাক্ষরিত; ভারত-পাকিস্তান যুদ্ধ/যুদ্ধবন্দী বিনিময়/শরণার্থী পুনর্বাসনের সাথে এর কোনো
+    সম্পর্ক নেই।
 • অপশনের লেখা হুবহু বসাবে, নিজের ভাষায় বদলাবে না, সংক্ষেপ করবে না।
 • মনে না থাকলে সৎভাবে "নিশ্চিত নই" লেখো — বানানো ব্যাখ্যার চেয়ে সেটা অনেক ভালো।
 • শুধু valid JSON ফেরত দাও, markdown fence বা অতিরিক্ত লেখা নয়।`;
@@ -242,7 +333,10 @@ function buildSolvePrompt(ctx) {
 ${GROUND_RULES}
 
 ━━ কীভাবে করবে ━━
-1. topicAnchor: প্রশ্নটি ঠিক কোন সত্তা/ঘটনা/সংজ্ঞা নিয়ে (এক লাইনে, নাম ধরে)।
+1. topicAnchor: প্রশ্নটি ঠিক কোন সত্তা/ঘটনা/সংজ্ঞা নিয়ে — এক লাইনে, দেশ/যুগসহ নাম ধরে।
+   (যেমন: "রামসর চুক্তি — জলাভূমি সংরক্ষণের আন্তর্জাতিক চুক্তি, ১৯৭১" বা
+   "বলবন — দিল্লি সুলতানির সুলতান, ১৩শ শতক") নাম দেখে ভিন্ন যুগ/দেশের একই-রকম
+   নামের কাউকে ধরা যাবে না।
 2. নিজের জ্ঞান দিয়ে সঠিক অপশন বেছে নাও।
 3. answerText-এ সেই অপশনের লেখা হুবহু বসাও (শুধু A/B/C/D নয় — পুরো লেখা)।
 4. keyFacts: ২-৪টি ছোট তথ্য যেগুলো সিদ্ধান্তে পৌঁছাতে ব্যবহার করলে; প্রতিটির সাথে certainty (high/medium/low)।
@@ -292,6 +386,9 @@ ${GROUND_RULES}
 
 ━━ কঠোর নিয়ম ━━
 • প্রমাণ ছাড়া refuted বলা যাবে না। "মনে হয় ভুল" টাইপ কিছু চলবে না।
+• evidence-এ অন্তত ১টি যাচাইযোগ্য তথ্য দাও (সাল/স্থান/সংজ্ঞা/হিসাবের ধাপ) — প্রমাণ ছাড়া
+  refuted কোডে গ্রহণ করা হবে না।
+• কোনো ব্যাখ্যা/নোট ভুল থাকলেও সেটা key ভুল প্রমাণ করে না — তুমি শুধু key-ই যাচাই করবে।
 • ভিন্ন ঘটনার সাথে সাল/নাম জুড়ে দিলে সেটা প্রমাণ নয়, বরং তোমার ভুল।
 • সত্যিই বৈধ প্রমাণ না পেলে verdict = "not_refuted" — এটা ব্যর্থতা নয়, ভালো ফল।
 • একটি বছর/নাম শুধু "অন্য কোনো ঘটনার সাথে পরিচিত" বলে সেটাকে ভুল প্রমাণ ধরা যাবে না।
@@ -342,18 +439,28 @@ ${GROUND_RULES}
 • স্পষ্ট টাইপো/বানান ঠিক করো, কিন্তু প্রশ্নের অর্থ বা অপশনের ক্রম বদলাবে না।
 • অপশন ঠিক থাকলে হুবহু ফেরত দাও।
 
-━━ ২) answerExplanation (৩-৬ বাক্য) ━━
-• প্রশ্নটি ঠিক কী জানতে চাইছে সেটা দিয়ে শুরু করো, তারপর সঠিক উত্তরটি কেন সঠিক তা বলো।
-• প্রশ্নের বিষয়ের (একই সত্তা/ঘটনা) ভেতরেই থাকো। অন্য চুক্তি/ঘটনার বর্ণনা দিয়ে উত্তর justify করবে না।
+━━ ২) answerExplanation (৪-৮ বাক্য, বিস্তারিত) ━━
+• কাঠামো: (১) প্রশ্নের বিষয়টি শনাক্ত করো — কী/কে, কোন দেশ/যুগ/ক্ষেত্র; (২) সঠিক উত্তরের পক্ষে
+  নির্দিষ্ট প্রমাণ-তথ্য (সাল, স্থান, ব্যক্তি, সংজ্ঞা, সূত্র, হিসাব) দাও; (৩) এই প্রশ্নে সাধারণ
+  ফাঁদটা কী এবং সেটা কেন উত্তর নয় — পরিষ্কার করো; (৪) এক বাক্যে সিদ্ধান্ত।
+• প্রশ্নের বিষয়ের (একই সত্তা/ঘটনা) ভেতরেই থাকো। অন্য চুক্তি/ঘটনা/ব্যক্তির বর্ণনা দিয়ে উত্তর
+  justify করবে না।
 • যে তথ্য দিয়ে উত্তর প্রমাণ হয় (সাল, স্থান, সংজ্ঞা, সূত্র) সেটাই মূল কথা।
 • প্রশ্ন "কত সালে স্বাক্ষরিত" হলে আর অপশনে "কার্যকর হওয়ার সাল" থাকলে — এই পার্থক্যটা স্পষ্ট করে বলো।
+• নিচের facts যাচাই-ধাপ থেকে এসেছে — এর ভেতরের তথ্য ব্যবহার করো; এর বাইরে নতুন সাল/নাম/
+  সংখ্যা আনা যাবে না। facts-এ নেই আর নিশ্চিতও না — সেটা বাদ দাও।
 
-━━ ৩) optionExplanations (প্রতিটি অপশনের জন্য, ৪টাই) ━━
-• সঠিক অপশন: status "correct", why = কেন এটাই সঠিক (সংক্ষেপে)।
-• ভুল অপশন: status "wrong", why = নির্দিষ্ট কারণ। শুধু "এটি সঠিক নয়" লেখা চলবে না।
-  উদাহরণ ভালো কারণ: "এটি চুক্তি কার্যকর হওয়ার সাল, স্বাক্ষরের সাল নয়"।
-• নির্দিষ্ট তথ্য না জানলে জোর করে কারণ বানাবে না — লিখো "এই মানটি এই প্রশ্নের দাবির সাথে মেলে না"।
-• index অবশ্যই 0-${ctx.options.length - 1} এর মধ্যে, অপশনের ক্রম অনুযায়ী।
+━━ ৩) optionExplanations (প্রতিটি অপশনের জন্য — কোনোটাই বাদ নয়) ━━
+• সঠিক অপশন: status "correct", why = কেন এটাই সঠিক (১-২ বাক্যে)।
+• প্রতিটি ভুল অপশন: status "wrong", why = নির্দিষ্ট কারণ (১-২ বাক্যে)। শুধু "এটি সঠিক নয়"
+  লেখা চলবে না। ভালো কারণ এরকম: "এটি চুক্তি কার্যকর হওয়ার সাল, স্বাক্ষরের সাল নয়",
+  "এটি মুগল যুগের সম্রাট, দিল্লি সুলতানির নয়"।
+• প্রতিটি why শুধু তার নিজের index-এর অপশন নিয়ে — ভুল অপশনের কারণে সঠিক অপশনের পক্ষে
+  যুক্তি দেবে না।
+• নির্দিষ্ট তথ্য না জানলে জোর করে কারণ বানাবে না — লিখো "এই মানটি প্রশ্নের বিষয়ের
+  নির্ধারক তথ্যের সাথে মেলে না"।
+• index অবশ্যই 0-${ctx.options.length - 1} এর মধ্যে, অপশনের ক্রম অনুযায়ী; সবগুলো index
+  ঢুকতেই হবে।
 
 ━━ JSON ━━
 {
@@ -393,8 +500,11 @@ function buildCriticPrompt(ctx) {
 ━━ যা যাচাই করবে ━━
 1. topicAligned — ব্যাখ্যা কি প্রশ্নের বিষয় (একই সত্তা/ঘটনা) নিয়েই? ভিন্ন চুক্তি/ঘটনা দিয়ে উত্তর justify করা হয়েছে?
 2. explainsFinalAnswer — ব্যাখ্যা কি সত্যিই index ${ctx.keyIndex} ("${clean(ctx.options[ctx.keyIndex])}") এর পক্ষে? অন্য অপশনের পক্ষে যুক্তি দিলে ধরা পড়বে।
-3. optionCoverage — প্রতিটি ভুল অপশনের জন্য নির্দিষ্ট কারণ আছে? "এটি সঠিক নয়" ধাঁচের ফাঁকা কারণ থাকলে badOptionIndexes-এ দাও।
-4. inventedDetail — কোনো সাল/নাম/স্থান সন্দেহজনক বা প্রশ্নের বিষয়ের সাথে বেমানান?
+3. optionCoverage — প্রতিটি ভুল অপশনের জন্য নির্দিষ্ট কারণ আছে? কারণ না থাকলে বা "এটি সঠিক
+   নয়" ধাঁচের ফাঁকা কারণ থাকলে badOptionIndexes-এ দাও।
+4. inventedDetail — কোনো সাল/নাম/স্থান সন্দেহজনক বা প্রশ্নের বিষয়ের সাথে বেমানান? বিশেষ করে
+   প্রশ্নের ব্যক্তিকে ভিন্ন দেশ/যুগের পদ বা ঘটনার সাথে যুক্ত করা হলে (যেমন দিল্লির সুলতানকে
+   আধুনিক কোনো দেশের মন্ত্রী বলা) inventedDetail=true করে issues-এ বিস্তারিত লেখো।
 5. answerMapping — ব্যাখ্যায় যে অপশনের কথা বলা হচ্ছে তার লেখা আর index মিলছে?
 
 ━━ JSON ━━
@@ -511,39 +621,49 @@ export default async function handler(req, res) {
   const remaining = function () { return deadline - Date.now(); };
 
   // ─────────────────────────────────────────────────────────────────────────
-  // AI call (JSON mode, 429/5xx-তে একবার retry)
+  // AI call (JSON mode; 429/5xx-তে retry, মডেল param reject করলে bare retry)
   // ─────────────────────────────────────────────────────────────────────────
   async function callJSON(model, prompts, opts) {
-    const maxTokens = (opts && opts.maxTokens) || 1200;
+    const maxTokens = (opts && opts.maxTokens) || 1600;
     const temperature = (opts && opts.temperature) === undefined ? 0.2 : opts.temperature;
     const timeoutMs = Math.max(3000, Math.min((opts && opts.timeoutMs) || 20000, remaining() + 2000));
+    // gpt-oss = reasoning model; effort কম দিলে সময়/টোকেন বাঁচে (Groq-এ এই param শুধু gpt-oss-এ সাপোর্টেড)
+    const useReasoningEffort = /gpt-oss/i.test(model);
 
-    for (let attempt = 0; attempt < 2; attempt++) {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (attempt > 0 && remaining() < 1500) return null;
       const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
       const timer = controller ? setTimeout(function () { controller.abort(); }, timeoutMs) : null;
       try {
+        const payload = {
+          model: model,
+          messages: [
+            { role: 'system', content: prompts.system },
+            { role: 'user', content: prompts.user }
+          ],
+          temperature: temperature,
+          max_tokens: maxTokens
+        };
+        // প্রথম দুই চেষ্টায় JSON mode + reasoning effort; 400-তে (অসাপোর্টেড param)
+        // শেষ চেষ্টায় bare request — কোনো মডেল যেন শুধু param-জন্য বাদ না পড়ে
+        if (attempt < 2) {
+          payload.response_format = { type: 'json_object' };
+          if (useReasoningEffort) payload.reasoning_effort = 'low';
+        }
         const response = await fetch(GROQ_URL, {
           method: 'POST',
           headers: {
             'Authorization': 'Bearer ' + GROQ_KEY,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
-            model: model,
-            messages: [
-              { role: 'system', content: prompts.system },
-              { role: 'user', content: prompts.user }
-            ],
-            temperature: temperature,
-            max_tokens: maxTokens,
-            response_format: { type: 'json_object' }
-          }),
+          body: JSON.stringify(payload),
           signal: controller ? controller.signal : undefined
         });
 
         if (!response.ok) {
           const status = response.status;
-          if ((status === 429 || status >= 500) && attempt === 0) { await sleep(700); continue; }
+          if (attempt < 2 && (status === 429 || status >= 500)) { await sleep(700); continue; }
+          if (attempt < 2 && status === 400) continue;
           console.warn('[' + model + '] HTTP ' + status);
           return null;
         }
@@ -556,7 +676,7 @@ export default async function handler(req, res) {
         if (!parsed) console.warn('[' + model + '] unparseable JSON');
         return parsed;
       } catch (e) {
-        if (attempt === 0) { await sleep(300); continue; }
+        if (attempt < 2) { await sleep(300); continue; }
         console.warn('[' + model + '] ' + (e && e.message));
         return null;
       } finally {
@@ -587,12 +707,12 @@ export default async function handler(req, res) {
     // ধাপ ১ ∥ ধাপ ২ — blind solve আর back-test একসাথে (একে অন্যের প্রভাবে আসবে না)
     // ═══════════════════════════════════════════════════════════════════════
     const [solveResult, backTestResult] = await Promise.all([
-      callWithFallback(function () { return buildSolvePrompt(ctxBase); }, { maxTokens: 1400, temperature: 0.1 }),
+      callWithFallback(function () { return buildSolvePrompt(ctxBase); }, { maxTokens: 1800, temperature: 0.1 }),
       callWithFallback(function () {
         return buildBackTestPrompt({
           question: question, options: options, subject: subject, chapter: chapter, currentKey: currentKey
         });
-      }, { maxTokens: 1200, temperature: 0.1 })
+      }, { maxTokens: 1600, temperature: 0.1 })
     ]);
 
     const solve = solveResult.parsed || null;
@@ -630,40 +750,33 @@ export default async function handler(req, res) {
     let status = 'verified';
     let verdictReason = '';
 
-    if (ambiguousOptions) {
-      // দুটো অপশনের লেখা একই হলে key বদলানো নিরাপদ নয়
-      status = 'kept_ambiguous';
-      verdictReason = 'একই লেখার একাধিক অপশন আছে, তাই key অপরিবর্তিত রাখা হয়েছে';
-    } else if (refuted && altIndex !== null && altIndex !== currentKey) {
-      const corroborated = blind.index === altIndex || refConfidence >= 85;
-      const contradicted = blind.index !== null && blind.index !== altIndex;
-      if (corroborated && !contradicted) {
-        finalKey = altIndex;
-        keyChanged = true;
-        status = 'corrected';
-        verdictReason = 'back-test প্রমাণ করেছে পুরনো key ভুল, এবং স্বাধীন সমাধানও একই অপশনে পৌঁছেছে';
-      } else {
-        status = 'kept_disputed';
-        flags.push(contradicted ? 'model-conflict' : 'unconfirmed-refutation');
-        verdictReason = contradicted
-          ? 'এক ধাপ key বদলাতে চায়, অন্য ধাপ ভিন্ন অপশন বলছে — প্রমাণ টেকসই নয়, তাই key রাখা হলো'
-          : 'refuted দাবি করা হয়েছে কিন্তু দ্বিতীয় সমর্থন নেই, তাই key রাখা হলো';
-      }
-    } else if (refuted && altIndex === currentKey) {
-      status = 'verified';
-      flags.push('backtest-inconsistent');
-      verdictReason = 'refuted বলেছে কিন্তু বিকল্প হিসেবে একই অপশন দিয়েছে — key রাখা হলো';
-    } else if (blind.index === null) {
-      status = backTest ? 'kept_uncertain' : 'kept_unverified';
-      flags.push('no-independent-answer');
-      verdictReason = 'স্বাধীন সমাধান পাওয়া যায়নি, key অপরিবর্তিত';
-    } else if (blind.index !== currentKey) {
-      status = 'kept_uncertain';
-      flags.push('blind-disagreement');
-      verdictReason = 'স্বাধীন সমাধান ভিন্ন অপশন বলছে, কিন্তু key ভুল প্রমাণিত হয়নি — তাই key রাখা হলো';
-    } else {
-      status = 'verified';
-      verdictReason = 'স্বাধীন সমাধান key-কে সমর্থন করেছে, back-test-এ ভুল প্রমাণ মেলেনি';
+    // ─── verdict: কোডে সিদ্ধান্ত — প্রমাণ ছাড়া key বদলায় না ───
+    const evidenceList = backTest && Array.isArray(backTest.evidence)
+      ? backTest.evidence.map(function (e) { return clean(e); }).filter(Boolean)
+      : [];
+    const attemptText = backTest ? clean(backTest.attempt) : '';
+    const disproofText = backTest ? clean(backTest.disproofTest) : '';
+    // প্রমাণ গণ্য হবে যদি: evidence থাকে, অথবা বিস্তারিত disproofTest+attempt থাকে ও
+    // back-test confidence উঁচু হয় (গণিত/ব্যাকরণে evidence array খালি থাকতে পারে)
+    const evidenceOk = evidenceList.length > 0
+      || (!!disproofText && attemptText.length >= 40 && refConfidence >= 80);
+
+    const verdict = decideKeyVerdict({
+      currentKey: currentKey,
+      blindIndex: blind.index,
+      refuted: refuted,
+      altIndex: altIndex,
+      refConfidence: refConfidence,
+      evidenceOk: evidenceOk,
+      ambiguous: ambiguousOptions,
+      hasBackTest: !!backTest
+    });
+    finalKey = verdict.finalKey;
+    keyChanged = verdict.keyChanged;
+    status = verdict.status;
+    verdictReason = verdict.verdictReason;
+    for (const vflag of verdict.flags) {
+      if (flags.indexOf(vflag) === -1) flags.push(vflag);
     }
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -690,7 +803,7 @@ export default async function handler(req, res) {
           keyIndex: finalKey,
           facts: facts
         });
-      }, { maxTokens: 2600, temperature: 0.25 });
+      }, { maxTokens: 3400, temperature: 0.2 });
       writer = writerResult.parsed;
       writerModel = writerResult.model;
       if (writerModel) usedModels.push(writerModel);
@@ -720,11 +833,11 @@ export default async function handler(req, res) {
     const needsUnderline = /under-?line/i.test(question);
     const hasUnderline = /<u>[\s\S]+<\/u>/i.test(correctedQuestion);
     if (needsUnderline && !hasUnderline && remaining() > 3000) {
-      const formatResult = await callJSON(MODEL_FALLBACK, buildFormatPrompt(ctxBase), { maxTokens: 1200, temperature: 0.1 });
-      if (formatResult && /<u>[\s\S]+<\/u>/i.test(clean(formatResult.correctedQuestion))) {
-        correctedQuestion = clean(formatResult.correctedQuestion);
+      const formatResult = await callWithFallback(function () { return buildFormatPrompt(ctxBase); }, { maxTokens: 1200, temperature: 0.1 });
+      if (formatResult.parsed && /<u>[\s\S]+<\/u>/i.test(clean(formatResult.parsed.correctedQuestion))) {
+        correctedQuestion = clean(formatResult.parsed.correctedQuestion);
         formatChanged = true;
-        usedModels.push(MODEL_FALLBACK + ':format');
+        if (formatResult.model) usedModels.push(formatResult.model + ':format');
       } else {
         flags.push('underline-missing');
       }
@@ -780,7 +893,9 @@ export default async function handler(req, res) {
         answerExplanation: answerExplanation,
         optionExplanations: optionExplanations
       });
-      const critic = await callJSON(MODEL_PRIMARY, criticPrompts, { maxTokens: 900, temperature: 0 });
+      const criticResult = await callWithFallback(function () { return criticPrompts; }, { maxTokens: 1200, temperature: 0 });
+      const critic = criticResult.parsed;
+      if (criticResult.model) usedModels.push(criticResult.model + ':critic');
       if (critic) {
         const bad = Array.isArray(critic.badOptionIndexes)
           ? critic.badOptionIndexes.map(function (i) { return toIndex(i, options.length); }).filter(function (i) { return i !== null; })
@@ -794,7 +909,16 @@ export default async function handler(req, res) {
           issues: Array.isArray(critic.issues) ? critic.issues.map(clean).filter(Boolean) : []
         };
 
+        // কোন ভুল অপশনের কারণ একেবারে নেই — সেগুলোও retry-তে ভরাতে হবে
+        const covered = new Set(optionExplanations.map(function (o) { return o.index; }));
+        const missingReasons = [];
+        options.forEach(function (_, i) {
+          if (i !== finalKey && !covered.has(i)) missingReasons.push(i);
+        });
+        if (missingReasons.length) flags.push('option-reasons-incomplete');
+
         const failed = !criticPass.pass || bad.length > 0 || criticPass.explainsFinalAnswer === false || criticPass.topicAligned === false;
+        const needsRegenerate = failed || missingReasons.length > 0;
 
         // retry-র আগের লেখাগুলো মনে রাখি — একই লেখা ফিরে এলে সেটা এখনো খারাপ
         const prevWhy = new Map();
@@ -802,7 +926,11 @@ export default async function handler(req, res) {
         let regenerated = false;
 
         // একবার মাত্র আবার লেখা — সমস্যাগুলো বলে দিয়ে
-        if (failed && remaining() > 4000) {
+        if (needsRegenerate && remaining() > 4000) {
+          const retryIssues = criticPass.issues.slice();
+          for (const mi of missingReasons) {
+            retryIssues.push('অপশন (' + LETTERS[mi] + ') "' + clean(options[mi]) + '" — এর জন্য নির্দিষ্ট কারণ দেয়া হয়নি, এবার দাও');
+          }
           const retry = await callWithFallback(function () {
             return buildWriterPrompt({
               question: question,
@@ -811,9 +939,9 @@ export default async function handler(req, res) {
               chapter: chapter,
               keyIndex: finalKey,
               facts: facts,
-              issues: criticPass.issues
+              issues: retryIssues
             });
-          }, { maxTokens: 2600, temperature: 0.2 });
+          }, { maxTokens: 3400, temperature: 0.2 });
           if (retry.parsed) {
             regenerated = true;
             if (retry.model) usedModels.push(retry.model + ':retry');
@@ -844,16 +972,63 @@ export default async function handler(req, res) {
         }
 
         if (criticPass.topicAligned === false || criticPass.explainsFinalAnswer === false || criticPass.inventedDetail) {
-          flags.push('explanation-unreliable');
-          answerExplanation = '';
+          // retry-এর পর ব্যাখ্যা বদলে থাকলে আবার critic চালিয়ে পুনঃযাচাই; সময় না থাকলে
+          // বা আবারও fail করলে নিরাপদ দিক — বানানো ব্যাখ্যা রাখা নয়, বাদ দেওয়াই
+          let reCritic = null;
+          if (regenerated && answerExplanation && remaining() > 2000) {
+            const reCriticResult = await callWithFallback(function () {
+              return buildCriticPrompt({
+                question: correctedQuestion,
+                options: correctedOptions,
+                keyIndex: finalKey,
+                answerExplanation: answerExplanation,
+                optionExplanations: optionExplanations
+              });
+            }, { maxTokens: 1200, temperature: 0 });
+            reCritic = reCriticResult.parsed;
+            if (reCriticResult.model) usedModels.push(reCriticResult.model + ':critic2');
+          }
+          const stillBad = !reCritic
+            || reCritic.topicAligned === false
+            || reCritic.explainsFinalAnswer === false
+            || !!reCritic.inventedDetail;
+          if (stillBad) {
+            flags.push('explanation-unreliable');
+            answerExplanation = '';
+          } else {
+            flags.push('explanation-fixed-on-retry');
+            criticPass.pass = true;
+            if (Array.isArray(reCritic.issues)) criticPass.issues = reCritic.issues.map(clean).filter(Boolean);
+          }
         }
       }
     }
 
-    // writer ব্যর্থ হলে ন্যূনতম ব্যাখ্যা (পুরনো "✅ প্রশ্নটি সঠিক আছে" ফাঁকা লাইনের বদলে)
-    if (!answerExplanation && !optionExplanations.length) {
-      answerExplanation = 'এই প্রশ্নের সঠিক উত্তরটি যাচাই করা হয়েছে; ব্যাখ্যা তৈরি করা যায়নি, তাই বিস্তারিত ব্যাখ্যা বাদ দেওয়া হলো।';
-      flags.push('explanation-missing');
+    // ব্যাখ্যা নেই (writer ব্যর্থ বা critic বাতিল করেছে) — AI-এর বানানো ব্যাখ্যা রাখার বদলে
+    // যাচাই-ধাপে পাওয়া নিশ্চিত তথ্যগুলো দিয়েই ব্যাখ্যা বসে; কিছুই না পেলে সৎ স্বীকারোক্তি।
+    if (!answerExplanation) {
+      const groundedBits = [];
+      if (solve && Array.isArray(solve.keyFacts)) {
+        for (const f of solve.keyFacts) {
+          const statement = clean(f && f.statement);
+          const certainty = clean(f && f.certainty).toLowerCase();
+          if (statement && certainty !== 'low') groundedBits.push(statement);
+        }
+      }
+      for (const e of evidenceList) groundedBits.push(e);
+      const uniqBits = [];
+      for (const bit of groundedBits) {
+        if (uniqBits.indexOf(bit) === -1) uniqBits.push(bit);
+      }
+      const topBits = uniqBits.slice(0, 4);
+      if (topBits.length) {
+        answerExplanation = 'যাচাইকৃত তথ্য (AI-এর তৈরি ব্যাখ্যা নির্ভরযোগ্য হয়নি, তাই শুধু নিশ্চিত তথ্যগুলো): '
+          + topBits.join('; ') + '।';
+        flags.push('explanation-grounded-fallback');
+      } else {
+        answerExplanation = 'সঠিক উত্তরটি যাচাই করা হয়েছে; নির্ভরযোগ্য বিস্তারিত ব্যাখ্যা তৈরি করা যায়নি।';
+        flags.push('explanation-missing');
+      }
     }
 
     const aiExplanation = composeExplanation({
@@ -938,7 +1113,8 @@ export default async function handler(req, res) {
           claim: clean(backTest.claim),
           test: clean(backTest.disproofTest),
           alternativeIndex: altIndex,
-          confidence: refConfidence
+          confidence: refConfidence,
+          evidenceCount: evidenceList.length
         }
         : null,
       blindAnswer: blind.index,
@@ -958,3 +1134,16 @@ export default async function handler(req, res) {
     });
   }
 }
+
+// pure helper গুলো টেস্টেও ব্যবহারযোগ্য — Vercel default export-ই ব্যবহার করে
+export {
+  composeExplanation,
+  decideKeyVerdict,
+  resolveAnswer,
+  toIndex,
+  similarity,
+  sanitize,
+  normText,
+  parseJSON,
+  findDuplicateOptions
+};
