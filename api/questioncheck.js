@@ -13,6 +13,11 @@
 //   • gpt-oss-এ reasoning_effort=low (সময় বাঁচাতে); মডেল param reject করলে bare retry
 //   • ডিজিট নীতি: class 5 → বাংলা অঙ্ক (০-৯); বাকি সব ক্লাস → কঠোরভাবে ইংরেজি অঙ্ক (0-9)
 //     (enDigits/toBnDigits দিয়ে কোডেই রূপান্তর — AI যা লিখুক, ফাইনাল আউটপুট নিয়ন্ত্রিত)
+//   • v2.2: সাল-guard — ব্যাখ্যায় এমন সাল থাকলে যা যাচাইকৃত তথ্যে (keyFacts/evidence/প্রশ্ন/অপশন)
+//     নেই, writer সমস্যাটা বলে আবার লেখে; তাতেও থাকলে ব্যাখ্যা বাতিল করে যাচাইকৃত তথ্য-fallback বসে
+//     (যেমন: ডালহৌসি ১৮৪৮-১৮৫৬ কে ১৯৪৭-১৯৫২ লেখা self-made ব্যাখ্যা আর কোনো পথেই যাবে না)
+//   • v2.2: critic এখন যাচাইকৃত তথ্যও দেখে — facts-বিরোধী/facts-বহির্ভূত সাল-নাম ধরলে inventedDetail
+//   • v2.2: solve keyFacts ৩-৬টি — guard ও fallback দুটোরই প্রাণ এই তথ্যগুলো
 //
 // পুরনো ভার্সনের সমস্যা ছিল:
 //   • AI একই call-এ "উত্তর দাও + ব্যাখ্যা দাও" করত → key মিলে গেলেও ব্যাখ্যা বানানো/ভুল হত
@@ -110,6 +115,26 @@ function digitPolicy(body) {
     .replace(/[০-৯]/g, function (d) { return BN_DIGITS[d]; });
   if (/(?:class|ক্লাস|শ্রেণি)\s*[-–—]?\s*5\b/i.test(hint)) return 'bn';
   return 'en';
+}
+
+// ─── সাল-guard: ব্যাখ্যায় এমন সাল থাকা যাবে না, যা যাচাইকৃত তথ্যে নেই ─────────────
+// AI critic নিজের অজানা ভুল সাল ধরতে পারে না (ডালহৌসি ১৮৪৮-১৮৫৬ কে ১৯৪৭-১৯৫২ লেখা)।
+// তাই কোড নিজেই ব্যাখ্যার প্রতিটি সাল (বাংলা/ইংরেজি অঙ্ক) যাচাইকৃত তথ্যের সাথে মেলায়।
+const YEAR_RE = /\b(?:1[4-9]\d{2}|20[0-4]\d)\b/g; // 1400-2049
+
+function extractYears(text) {
+  const norm = String(text == null ? '' : text).replace(/[০-৯]/g, function (d) { return BN_DIGITS[d]; });
+  const out = [];
+  let m;
+  YEAR_RE.lastIndex = 0;
+  while ((m = YEAR_RE.exec(norm)) !== null) out.push(m[0]);
+  return out;
+}
+
+// text-এ আছে কিন্তু allowed-এ নেই এমন সালের তালিকা (খালি মানে সব সালই যাচাইকৃত)
+function unverifiedYears(text, allowedText) {
+  const allowed = new Set(extractYears(allowedText));
+  return extractYears(text).filter(function (y) { return !allowed.has(y); });
 }
 
 // তুলনার জন্য normalize: ট্যাগ, যুক্তাক্ষর-ঝামেলা, বাংলা অঙ্ক, punctuation
@@ -372,7 +397,9 @@ ${GROUND_RULES}
    নামের কাউকে ধরা যাবে না।
 2. নিজের জ্ঞান দিয়ে সঠিক অপশন বেছে নাও।
 3. answerText-এ সেই অপশনের লেখা হুবহু বসাও (শুধু A/B/C/D নয় — পুরো লেখা)।
-4. keyFacts: ২-৪টি ছোট তথ্য যেগুলো সিদ্ধান্তে পৌঁছাতে ব্যবহার করলে; প্রতিটির সাথে certainty (high/medium/low)।
+4. keyFacts: ৩-৬টি ছোট কিন্তু নির্দিষ্ট তথ্য যেগুলো সিদ্ধান্তে পৌঁছাতে ব্যবহার করলে —
+   বিশেষ করে সঠিক সাল, তারিখ, স্থান, পদ/নাম (পরের ধাপে শুধু এই তথ্যগুলোই ব্যাখ্যায় ব্যবহারযোগ্য);
+   প্রতিটির সাথে certainty (high/medium/low)।
 5. optionChecks: প্রতিটি অপশনের জন্য এক লাইনে কেন সঠিক বা কেন ভুল।
 6. গণিত/পদার্থ/রসায়ন হলে হিসাবটা keyFacts-এ দেখাও।
 
@@ -457,7 +484,7 @@ function buildWriterPrompt(ctx) {
   const optionLines = ctx.options.map(function (option, i) {
     return LETTERS[i] + '. ' + clean(option);
   }).join('\n');
-  const facts = (ctx.facts || []).slice(0, 6).map(function (f) { return '- ' + f; }).join('\n');
+  const facts = (ctx.facts || []).slice(0, 8).map(function (f) { return '- ' + f; }).join('\n');
 
   return {
     system: `তুমি একজন অভিজ্ঞ শিক্ষক। নিচের প্রশ্নের চূড়ান্ত সঠিক উত্তর আগেই ঠিক হয়ে গেছে (নিচে দেয়া)।
@@ -482,6 +509,10 @@ ${GROUND_RULES}
 • প্রশ্ন "কত সালে স্বাক্ষরিত" হলে আর অপশনে "কার্যকর হওয়ার সাল" থাকলে — এই পার্থক্যটা স্পষ্ট করে বলো।
 • নিচের facts যাচাই-ধাপ থেকে এসেছে — এর ভেতরের তথ্য ব্যবহার করো; এর বাইরে নতুন সাল/নাম/
   সংখ্যা আনা যাবে না। facts-এ নেই আর নিশ্চিতও না — সেটা বাদ দাও।
+• কঠোর সতর্কতা: facts-এ নেই এমন কোনো সাল/বছর লিখলে সিস্টেম সেই ব্যাখ্যাটাই বাতিল করে দেবে।
+  facts-এ প্রয়োজনীয় সাল না থাকলে সাল ছাড়াই ব্যাখ্যা লেখো — ভুল সাল লেখার চেয়ে শতগুণ ভালো।
+  মূল ব্যাখ্যায় ভুল অপশনের সাল উল্লেখ করবে না — ফাঁদ ব্যাখ্যা করো সাল ছাড়াই ("অন্য সালটি চুক্তি
+  কার্যকর হওয়ার"); ভুল অপশনের সাল শুধু সেই অপশনের নিজের optionExplanations-why-তে দাও।
 
 ━━ ৩) optionExplanations (প্রতিটি অপশনের জন্য — কোনোটাই বাদ নয়) ━━
 • সঠিক অপশন: status "correct", why = কেন এটাই সঠিক (১-২ বাক্যে)।
@@ -525,6 +556,7 @@ function buildCriticPrompt(ctx) {
   const perOption = (ctx.optionExplanations || []).map(function (item) {
     return 'index ' + item.index + ' → ' + clean(item.why);
   }).join('\n');
+  const factLines = (ctx.facts || []).slice(0, 8).map(function (f) { return '- ' + clean(f); }).join('\n');
 
   return {
     system: `তুমি একজন স্বাধীন পর্যালোচক। নিচে প্রশ্ন, চূড়ান্ত সঠিক উত্তর এবং তৈরি করা ব্যাখ্যা আছে।
@@ -535,9 +567,9 @@ function buildCriticPrompt(ctx) {
 2. explainsFinalAnswer — ব্যাখ্যা কি সত্যিই index ${ctx.keyIndex} ("${clean(ctx.options[ctx.keyIndex])}") এর পক্ষে? অন্য অপশনের পক্ষে যুক্তি দিলে ধরা পড়বে।
 3. optionCoverage — প্রতিটি ভুল অপশনের জন্য নির্দিষ্ট কারণ আছে? কারণ না থাকলে বা "এটি সঠিক
    নয়" ধাঁচের ফাঁকা কারণ থাকলে badOptionIndexes-এ দাও।
-4. inventedDetail — কোনো সাল/নাম/স্থান সন্দেহজনক বা প্রশ্নের বিষয়ের সাথে বেমানান? বিশেষ করে
-   প্রশ্নের ব্যক্তিকে ভিন্ন দেশ/যুগের পদ বা ঘটনার সাথে যুক্ত করা হলে (যেমন দিল্লির সুলতানকে
-   আধুনিক কোনো দেশের মন্ত্রী বলা) inventedDetail=true করে issues-এ বিস্তারিত লেখো।
+4. inventedDetail — নিচের "যাচাইকৃত তথ্য" দিয়ে মিলিয়ে দেখো: ব্যাখ্যায় এমন সাল/তারিখ/নাম/স্থান
+   থাকলে যা যাচাইকৃত তথ্যে নেই বা তার বিপরীত — inventedDetail=true। বিশেষ করে: যাচাইকৃত
+   তথ্যে ১৮৪৮-১৮৫৬ আছে, ব্যাখ্যায় ১৯৪৭-১৯৫২ লেখা — এই সাল-বদলই সবচেয়ে বড় ভুল।
 5. answerMapping — ব্যাখ্যায় যে অপশনের কথা বলা হচ্ছে তার লেখা আর index মিলছে?
 
 ━━ JSON ━━
@@ -556,7 +588,7 @@ function buildCriticPrompt(ctx) {
 ${optionLines}
 
 চূড়ান্ত সঠিক উত্তর: index ${ctx.keyIndex} = "${clean(ctx.options[ctx.keyIndex])}" (${LETTERS[ctx.keyIndex]})
-
+${factLines ? '\nযাচাইকৃত তথ্য (solve/back-test ধাপ থেকে — ব্যাখ্যার সাল/নাম এর সাথে মিলিয়ে দেখো):\n' + factLines + '\n' : ''}
 তৈরি করা answerExplanation:
 ${clean(ctx.answerExplanation)}
 
@@ -827,6 +859,11 @@ export default async function handler(req, res) {
         : [])
       .filter(Boolean);
 
+    // সাল-guard-এর "অনুমোদিত সাল": মূল ব্যাখ্যায় শুধু প্রশ্ন + সঠিক অপশন + যাচাইকৃত তথ্যের সাল চলবে।
+    // ভুল (ফাঁদ) অপশনের সাল মূল ব্যাখ্যায় চলবে না — ডালহৌসি কেসে ফাঁদ-অপশনের ১৯৪৭-১৯৫২
+    // ব্যাখ্যায় ঢুকে গিয়েছিল; প্রতিটি অপশনের নিজের why-তে সেই অপশনের সাল + সঠিক অপশনের সাল চলবে।
+    const allowedSource = [question, clean(options[finalKey])].concat(facts).join(' ');
+
     let writer = null;
     let writerModel = null;
     if (remaining() > 3500) {
@@ -920,6 +957,16 @@ export default async function handler(req, res) {
     let answerExplanation = writer ? sanitize(writer.answerExplanation) : '';
     let optionExplanations = writer ? normalizeOptionExplanations(writer.optionExplanations) : [];
     let criticPass = null;
+    // সাল-guard: bodyBad = মূল ব্যাখ্যার বানানো সাল; whyBad = কোন অপশনের কারণে বানানো সাল আছে
+    const guardCheck = function () {
+      const bodyBad = unverifiedYears(answerExplanation, allowedSource);
+      const whyBad = [];
+      for (const o of optionExplanations) {
+        const src = [question, clean(options[o.index]), clean(options[finalKey])].concat(facts).join(' ');
+        if (unverifiedYears(o.why, src).length) whyBad.push(o.index);
+      }
+      return { bodyBad: bodyBad, whyBad: whyBad };
+    };
 
     if (writer && answerExplanation && remaining() > 2500) {
       const criticPrompts = buildCriticPrompt({
@@ -927,7 +974,8 @@ export default async function handler(req, res) {
         options: correctedOptions,
         keyIndex: finalKey,
         answerExplanation: answerExplanation,
-        optionExplanations: optionExplanations
+        optionExplanations: optionExplanations,
+        facts: facts
       });
       const criticResult = await callWithFallback(function () { return criticPrompts; }, { maxTokens: 1200, temperature: 0 });
       const critic = criticResult.parsed;
@@ -945,6 +993,21 @@ export default async function handler(req, res) {
           issues: Array.isArray(critic.issues) ? critic.issues.map(clean).filter(Boolean) : []
         };
 
+        // ─── সাল-guard (কোড-নিশ্চিত): critic যা-ই বলুক, অযাচাইকৃত সাল থাকলে fail ───
+        const guardInit = guardCheck();
+        if (guardInit.bodyBad.length || guardInit.whyBad.length) {
+          flags.push('explanation-unverified-year');
+          criticPass.inventedDetail = true;
+          if (guardInit.bodyBad.length) {
+            criticPass.issues.push('মূল ব্যাখ্যায় এই সালগুলো যাচাইকৃত তথ্যে নেই (বানানো): ' + guardInit.bodyBad.join(', ')
+              + ' — শুধু যাচাইকৃত তথ্যের সাল ব্যবহার করো; তথ্য না থাকলে সাল ছাড়াই লেখো');
+          }
+          if (guardInit.whyBad.length) {
+            criticPass.issues.push('অপশন ' + guardInit.whyBad.map(function (i) { return '(' + LETTERS[i] + ')'; }).join(', ')
+              + ' -এর কারণে এমন সাল আছে যা যাচাইকৃত তথ্যে বা সেই অপশনের লেখায় নেই — ঠিক করো বা সাল বাদ দাও');
+          }
+        }
+
         // কোন ভুল অপশনের কারণ একেবারে নেই — সেগুলোও retry-তে ভরাতে হবে
         const covered = new Set(optionExplanations.map(function (o) { return o.index; }));
         const missingReasons = [];
@@ -953,7 +1016,7 @@ export default async function handler(req, res) {
         });
         if (missingReasons.length) flags.push('option-reasons-incomplete');
 
-        const failed = !criticPass.pass || bad.length > 0 || criticPass.explainsFinalAnswer === false || criticPass.topicAligned === false;
+        const failed = !criticPass.pass || bad.length > 0 || criticPass.explainsFinalAnswer === false || criticPass.topicAligned === false || guardInit.bodyBad.length > 0 || guardInit.whyBad.length > 0;
         const needsRegenerate = failed || missingReasons.length > 0;
 
         // retry-র আগের লেখাগুলো মনে রাখি — একই লেখা ফিরে এলে সেটা এখনো খারাপ
@@ -1018,25 +1081,48 @@ export default async function handler(req, res) {
                 options: correctedOptions,
                 keyIndex: finalKey,
                 answerExplanation: answerExplanation,
-                optionExplanations: optionExplanations
+                optionExplanations: optionExplanations,
+                facts: facts
               });
             }, { maxTokens: 1200, temperature: 0 });
             reCritic = reCriticResult.parsed;
             if (reCriticResult.model) usedModels.push(reCriticResult.model + ':critic2');
           }
+          // দ্বিতীয় সাল-guard: retry-র পরও মূল ব্যাখ্যায় অযাচাইকৃত সাল থাকলে বাতিল;
+          // শুধু কোনো why-তে থাকলে সেই অপশনের কারণটাই বাদ যাবে
+          const guardFinal = guardCheck();
           const stillBad = !reCritic
             || reCritic.topicAligned === false
             || reCritic.explainsFinalAnswer === false
-            || !!reCritic.inventedDetail;
+            || !!reCritic.inventedDetail
+            || guardFinal.bodyBad.length > 0;
           if (stillBad) {
             flags.push('explanation-unreliable');
+            if (guardFinal.bodyBad.length) flags.push('explanation-unverified-year');
             answerExplanation = '';
           } else {
+            if (guardFinal.whyBad.length) {
+              optionExplanations = optionExplanations.filter(function (o) { return guardFinal.whyBad.indexOf(o.index) === -1; });
+              flags.push('explanation-trimmed');
+            }
             flags.push('explanation-fixed-on-retry');
             criticPass.pass = true;
             if (Array.isArray(reCritic.issues)) criticPass.issues = reCritic.issues.map(clean).filter(Boolean);
           }
         }
+      }
+    }
+
+    // সাল-guard এর নেট: critic না চললেও (সময় শেষ/model ব্যর্থ) খাটবে — ভুল সালের
+    // ব্যাখ্যা কোনো পথেই শীটে যাবে না
+    if (answerExplanation) {
+      const gNet = guardCheck();
+      if (gNet.bodyBad.length) {
+        flags.push('explanation-unverified-year');
+        answerExplanation = '';
+      } else if (gNet.whyBad.length) {
+        optionExplanations = optionExplanations.filter(function (o) { return gNet.whyBad.indexOf(o.index) === -1; });
+        flags.push('explanation-trimmed');
       }
     }
 
@@ -1183,5 +1269,7 @@ export {
   normText,
   parseJSON,
   findDuplicateOptions,
-  digitPolicy
+  digitPolicy,
+  extractYears,
+  unverifiedYears
 };
