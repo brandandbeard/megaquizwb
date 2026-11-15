@@ -627,9 +627,30 @@ function autoLoadSheetIfNeeded(){
 }
 window.autoLoadSheetIfNeeded=autoLoadSheetIfNeeded;
 
+// Patterns that indicate fabricated/incorrect explanations (must regenerate)
+const INCORRECT_PATTERNS = [
+  // Panipat battle wrong explanations
+  /লুথের|Luther/i,
+  /তামিল রাজা ভাস্করদেব|Tamil.*Bhaskar/i,
+  /তুর্কি সেনাবাহিনী|Turkish army/i,
+  /১৫৫৬.*তাজমহল|১৫৫৬.*Taj Mahal|1556.*Taj Mahal/i,
+  /প্লাসি戰爭.*পানিপথ|Plassey.*Panipat/i,
+  /প্লাসি যুদ্ধ.*পানিপথ|Plassey.*Panipat/i,
+  // Other common fabricated patterns
+  /সেলফ মেড|self.?made|mind.?made/i,
+  /আমি ভাবি|আমার মতে|I think|in my opinion/i,
+  /আমার Experience|My experience/i,
+  /According to my|میرি Experience/i,
+];
+
+function isExplanationWrong(explanation) {
+  return INCORRECT_PATTERNS.some(pattern => pattern.test(explanation));
+}
+
 async function fetchAIExplanation(questionObj, rowIndex, quizType){
   if(!questionObj || !questionObj.q) return null;
-  if(questionObj.note && questionObj.note.trim().length > 10 && !questionObj._aiGenerated) return null;
+  // Force regeneration if: already AI-generated but explanation is wrong, OR no valid AI explanation exists
+  if(questionObj.note && questionObj._aiGenerated && !isExplanationWrong(questionObj.note)) return null;
   if(questionObj._aiFetched) return null;
   questionObj._aiFetched = true;
   try{
@@ -792,7 +813,7 @@ function renderQuiz(){
     }, 100);
   }
   
-  if(!q.note&&!q._aiFetched&&quizMode!=='mock'){
+  if((!q.note || isExplanationWrong(q.note)) && !q._aiFetched && quizMode!=='mock'){
     setTimeout(async()=>{
       const explanation=await fetchAIExplanation(q, sheetRowIndex, quizType);
       if(explanation){
